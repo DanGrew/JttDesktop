@@ -9,6 +9,7 @@
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 
@@ -46,5 +47,11 @@ public interface TestCase {
     * @return the {@link DoubleProperty} providing the {@link TestClass} the {@link TestClass} belongs to.
     */
    public ObjectProperty< TestClass > testClassProperty();
+
+   /**
+    * Provides access to the property associated with the age of the test case when failing.
+    * @return the {@link IntegerProperty} providing the age of the failure.
+    */
+   public IntegerProperty ageProperty();
 
 }//End Interface

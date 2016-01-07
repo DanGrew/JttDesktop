@@ -10,9 +10,11 @@ package model.tests;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -25,12 +27,14 @@ public class TestCaseImpl implements TestCase {
    static final double DEFAULT_DURATION = 0.0;
    static final boolean DEFAULT_SKIPPED = false;
    static final TestResultStatus DEFAULT_STATUS = TestResultStatus.FAILED;
+   static final int DEFAULT_AGE = 0;
    
    private StringProperty name;
    private ObjectProperty< TestClass > testClass;
    private DoubleProperty duration;
    private BooleanProperty skipped;
    private ObjectProperty< TestResultStatus > status;
+   private IntegerProperty age;
 
    /**
     * Constructs a new {@link TestCaseImpl}.
@@ -47,6 +51,7 @@ public class TestCaseImpl implements TestCase {
       this.duration = new SimpleDoubleProperty( DEFAULT_DURATION );
       this.skipped = new SimpleBooleanProperty( DEFAULT_SKIPPED );
       this.status = new SimpleObjectProperty< TestResultStatus >( DEFAULT_STATUS );
+      this.age = new SimpleIntegerProperty( DEFAULT_AGE );
    }//End Constructor
 
    /**
@@ -82,6 +87,13 @@ public class TestCaseImpl implements TestCase {
     */
    @Override public ObjectProperty< TestClass > testClassProperty() {
       return testClass;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public IntegerProperty ageProperty() {
+      return age;
    }//End Method
 
 }//End Class

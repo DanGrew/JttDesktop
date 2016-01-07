@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import utility.TestCommon;
@@ -68,6 +69,15 @@ public class TestCaseImplTest {
       TestCase testCase = new TestCaseImpl( "anything", testClass );
       ObjectProperty< TestClass > testClassProperty = testCase.testClassProperty();
       Assert.assertEquals( testClass, testClassProperty.get() );
+   }//End Method
+   
+   /**
+    * Prove that the {@link TestCase#ageProperty()} is provided with the default age.
+    */
+   @Test public void shouldProvideAgeProperty(){
+      TestCase testCase = new TestCaseImpl( "anything", Mockito.mock( TestClass.class ) );
+      IntegerProperty ageProperty = testCase.ageProperty();
+      Assert.assertEquals( TestCaseImpl.DEFAULT_AGE, ageProperty.get() );
    }//End Method
    
    /**
