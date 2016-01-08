@@ -81,9 +81,9 @@ public class TestClassImplTest {
    }//End Method
    
    /**
-    * Prove that an empty location is rejected.
+    * Prove that an empty location is accepted.
     */
-   @Test( expected = IllegalArgumentException.class ) public void shouldRejectEmptyLocation() {
+   @Test public void shouldAcceptEmptyLocation() {
       new TestClassImpl( "anything", "" );
    }//End Method
    
@@ -94,4 +94,62 @@ public class TestClassImplTest {
       new TestClassImpl( "anything", "    " );
    }//End Method
 
+   /**
+    * Prove that a full name can be given to the constructor, and the {@link TestClass} named correctly.
+    */
+   @Test public void shouldAcceptNameAndLocation(){
+      TestClass testClass = new TestClassImpl( "something.anything.name" );
+      Assert.assertEquals( "name", testClass.nameProperty().get() );
+      Assert.assertEquals( "something.anything", testClass.locationProperty().get() );
+      
+      testClass = new TestClassImpl( "something.name" );
+      Assert.assertEquals( "name", testClass.nameProperty().get() );
+      Assert.assertEquals( "something", testClass.locationProperty().get() );
+      
+      testClass = new TestClassImpl( "name" );
+      Assert.assertEquals( "name", testClass.nameProperty().get() );
+      Assert.assertEquals( "", testClass.locationProperty().get() );
+   }//End Method
+   
+   /**
+    * Prove that a null full name is rejected.
+    */
+   @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullFullName(){
+      new TestClassImpl( null );
+   }//End Method
+   
+   /**
+    * Prove that an empty full name is rejected.
+    */
+   @Test( expected = IllegalArgumentException.class ) public void shouldRejectEmptyFullName(){
+      new TestClassImpl( "" );
+   }//End Method
+   
+   /**
+    * Prove that a space only full name is rejected.
+    */
+   @Test( expected = IllegalArgumentException.class ) public void shouldRejectSpacesOnlyFullName(){
+      new TestClassImpl( "    " );
+   }//End Method
+   
+   /**
+    * Prove that the {@link TestClass} name can be extracted from a full name.
+    */
+   @Test public void shouldExtractName(){
+      Assert.assertEquals( "name", TestClassImpl.identifyName( "location.here.name" ) );
+      Assert.assertEquals( "name", TestClassImpl.identifyName( "location.name" ) );
+      Assert.assertEquals( "name", TestClassImpl.identifyName( "name" ) );
+      Assert.assertEquals( "name", TestClassImpl.identifyName( ".name" ) );
+   }//End Method
+   
+   /**
+    * Prove that the location of the {@link TestClass} can be extracted from the full name.
+    */
+   @Test public void shouldExtractLocation(){
+      Assert.assertEquals( "location.here", TestClassImpl.identifyLocation( "location.here.name" ) );
+      Assert.assertEquals( "location", TestClassImpl.identifyLocation( "location.name" ) );
+      Assert.assertEquals( "", TestClassImpl.identifyLocation( "name" ) );
+      Assert.assertEquals( "", TestClassImpl.identifyLocation( ".name" ) );
+   }//End Method
+   
 }//End Class

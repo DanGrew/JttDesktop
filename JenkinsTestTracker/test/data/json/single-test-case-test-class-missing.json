@@ -1,0 +1,45 @@
+{
+  "failCount" : 0,
+  "skipCount" : 0,
+  "totalCount" : 113,
+  "urlName" : "testReport",
+  "childReports" : [
+    {
+      "child" : {
+        "number" : 96,
+        "url" : "http://jenkins:8080/job/SingletonDevelopmentKit/Portfolio$SingletonDevelopmentKit/96/"
+      },
+      "result" : {
+        "testActions" : [
+          
+        ],
+        "duration" : 18.603,
+        "empty" : false,
+        "failCount" : 0,
+        "passCount" : 113,
+        "skipCount" : 0,
+        "suites" : [
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 1,
+                "duration" : 0.053,
+                "failedSince" : 0,
+                "name" : "shouldStoreObjectsAndRemoveAllMatches",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.071,
+            "id" : null,
+            "name" : "architecture.data.DataManagerTest",
+            "timestamp" : null
+          }          
+        ]
+      }
+    }
+  ]
+}

@@ -8,6 +8,7 @@
  */
 package storage.database;
 
+import javafx.collections.ObservableList;
 import model.tests.TestCase;
 import model.tests.TestClass;
 
@@ -51,5 +52,11 @@ public interface JenkinsDatabase {
     * @return the removed {@link TestClass}.
     */
    public TestClass remove( TestClassKey testClassKey );
+
+   /**
+    * Provides the {@link ObservableList} of {@link TestClass}es held by the {@link JenkinsDatabase}.
+    * @return the {@link ObservableList} of {@link TestClass}es.
+    */
+   public ObservableList< TestClass > testClasses();
 
 }//End Interface

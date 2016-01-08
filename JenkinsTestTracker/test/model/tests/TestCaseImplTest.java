@@ -30,7 +30,7 @@ public class TestCaseImplTest {
    @Test public void shouldProvideDurationProperty(){
       TestCase testCase = new TestCaseImpl( "anything", Mockito.mock( TestClass.class ) );
       DoubleProperty duration = testCase.durationProperty();
-      Assert.assertEquals( TestCaseImpl.DEFAULT_DURATION, duration.get(), TestCommon.precision() );
+      Assert.assertEquals( TestCase.DEFAULT_DURATION, duration.get(), TestCommon.precision() );
    }//End Method
    
    /**
@@ -49,7 +49,7 @@ public class TestCaseImplTest {
    @Test public void shouldProvideSkippedProperty(){
       TestCase testCase = new TestCaseImpl( "anything", Mockito.mock( TestClass.class ) );
       BooleanProperty skipped = testCase.skippedProperty();
-      Assert.assertEquals( TestCaseImpl.DEFAULT_SKIPPED, skipped.get() );
+      Assert.assertEquals( TestCase.DEFAULT_SKIPPED, skipped.get() );
    }//End Method
    
    /**
@@ -58,7 +58,7 @@ public class TestCaseImplTest {
    @Test public void shouldProvideStatusProperty(){
       TestCase testCase = new TestCaseImpl( "anything", Mockito.mock( TestClass.class ) );
       ObjectProperty< TestResultStatus > status = testCase.statusProperty();
-      Assert.assertEquals( TestCaseImpl.DEFAULT_STATUS, status.get() );
+      Assert.assertEquals( TestCase.DEFAULT_STATUS, status.get() );
    }//End Method
    
    /**
@@ -77,7 +77,7 @@ public class TestCaseImplTest {
    @Test public void shouldProvideAgeProperty(){
       TestCase testCase = new TestCaseImpl( "anything", Mockito.mock( TestClass.class ) );
       IntegerProperty ageProperty = testCase.ageProperty();
-      Assert.assertEquals( TestCaseImpl.DEFAULT_AGE, ageProperty.get() );
+      Assert.assertEquals( TestCase.DEFAULT_AGE, ageProperty.get() );
    }//End Method
    
    /**

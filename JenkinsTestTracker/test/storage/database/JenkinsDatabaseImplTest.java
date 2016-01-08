@@ -42,6 +42,8 @@ public class JenkinsDatabaseImplTest {
    @Test public void shouldStoreTestClass() {
       systemUnderTest.store( testClass );
       Assert.assertTrue( systemUnderTest.has( new TestClassKeyImpl( NAME, LOCATION ) ) );
+      Assert.assertEquals( 1, systemUnderTest.testClasses().size() );
+      Assert.assertTrue( systemUnderTest.testClasses().contains( testClass ) );
    }//End Method
    
    /**
@@ -68,9 +70,14 @@ public class JenkinsDatabaseImplTest {
    @Test public void shouldOverwriteDuplicateTestClass() {
       systemUnderTest.store( testClass );
       Assert.assertTrue( systemUnderTest.has( new TestClassKeyImpl( NAME, LOCATION ) ) );
+      Assert.assertEquals( 1, systemUnderTest.testClasses().size() );
+      Assert.assertTrue( systemUnderTest.testClasses().contains( testClass ) );
+      
       TestClass alternate = new TestClassImpl( NAME, LOCATION );
       systemUnderTest.store( alternate );
       Assert.assertEquals( alternate, systemUnderTest.get( new TestClassKeyImpl( NAME, LOCATION ) ) );
+      Assert.assertEquals( 1, systemUnderTest.testClasses().size() );
+      Assert.assertTrue( systemUnderTest.testClasses().contains( alternate ) );
    }//End Method
    
    /**
@@ -102,6 +109,7 @@ public class JenkinsDatabaseImplTest {
       Assert.assertTrue( systemUnderTest.has( new TestClassKeyImpl( NAME, LOCATION ) ) );
       Assert.assertEquals( testClass, systemUnderTest.remove( new TestClassKeyImpl( NAME, LOCATION ) ) );
       Assert.assertFalse( systemUnderTest.has( new TestClassKeyImpl( NAME, LOCATION ) ) );
+      Assert.assertEquals( 0, systemUnderTest.testClasses().size() );
    }//End Method
    
    /**
@@ -111,6 +119,7 @@ public class JenkinsDatabaseImplTest {
       Assert.assertFalse( systemUnderTest.has( new TestClassKeyImpl( NAME, LOCATION ) ) );
       Assert.assertNull( systemUnderTest.remove( new TestClassKeyImpl( NAME, LOCATION ) ) );
       Assert.assertFalse( systemUnderTest.has( new TestClassKeyImpl( NAME, LOCATION ) ) );
+      Assert.assertEquals( 0, systemUnderTest.testClasses().size() );
    }//End Method
    
    /**
@@ -121,6 +130,8 @@ public class JenkinsDatabaseImplTest {
       Assert.assertTrue( systemUnderTest.has( new TestClassKeyImpl( NAME, LOCATION ) ) );
       Assert.assertNull( systemUnderTest.remove( new TestClassKeyImpl( "something", "else" ) ) );
       Assert.assertTrue( systemUnderTest.has( new TestClassKeyImpl( NAME, LOCATION ) ) );
+      Assert.assertEquals( 1, systemUnderTest.testClasses().size() );
+      Assert.assertTrue( systemUnderTest.testClasses().contains( testClass ) );
    }//End Method
    
    /**

@@ -16,6 +16,8 @@ import javafx.collections.ObservableList;
  * Interface defining the properties of a test class being run by Jenkins.
  */
 public interface TestClass {
+   
+   public static final double DEFAULT_DURATION = 0.0;
 
    /**
     * Provides the property defining the name of the {@link TestClass}.

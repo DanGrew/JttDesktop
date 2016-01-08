@@ -11,6 +11,8 @@ package storage.database;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.tests.TestClass;
 
 /**
@@ -18,20 +20,22 @@ import model.tests.TestClass;
  */
 public class JenkinsDatabaseImpl implements JenkinsDatabase {
 
-   private Map< TestClassKey, TestClass > testClasses;
+   private Map< TestClassKey, TestClass > testClassesMap;
+   private ObservableList< TestClass > testClasses;
 
    /**
     * Constructs a new {@link JenkinsDatabaseImpl}.
     */
    public JenkinsDatabaseImpl() {
-      testClasses = new HashMap<>();
+      testClassesMap = new HashMap<>();
+      testClasses = FXCollections.observableArrayList();
    }//End Constructor
    
    /**
     * {@inheritDoc}
     */
    @Override public boolean isEmpty() {
-      return testClasses.isEmpty();
+      return testClassesMap.isEmpty();
    }//End Method
 
    /**
@@ -40,7 +44,7 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
    @Override public boolean has( TestClassKey testClassKey ) {
       if ( testClassKey == null ) throw new IllegalArgumentException( "Null key provided." );
       
-      return testClasses.containsKey( testClassKey );
+      return testClassesMap.containsKey( testClassKey );
    }//End Method
 
    /**
@@ -48,14 +52,18 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
     */
    @Override public void store( TestClass testClass ) {
       if ( testClass == null ) throw new IllegalArgumentException( "Null TestClass provided." );
-      
-      testClasses.put( 
-         new TestClassKeyImpl( 
+ 
+      TestClassKey representativeKey = new TestClassKeyImpl( 
             testClass.nameProperty().get(), 
             testClass.locationProperty().get() 
-         ), 
-         testClass 
       );
+      if ( testClassesMap.containsKey( representativeKey ) ) {
+         TestClass currentTestClass = testClassesMap.remove( representativeKey );
+         testClasses.remove( currentTestClass );
+      }
+      
+      testClassesMap.put( representativeKey, testClass );
+      testClasses.add( testClass );
    }//End Method
 
    /**
@@ -64,7 +72,7 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
    @Override public TestClass get( TestClassKey testClassKey ) {
       if ( testClassKey == null ) throw new IllegalArgumentException( "Null key provided." );
       
-      return testClasses.get( testClassKey );
+      return testClassesMap.get( testClassKey );
    }//End Method
    
    /**
@@ -73,7 +81,16 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
    @Override public TestClass remove( TestClassKey testClassKey ) {
       if ( testClassKey == null ) throw new IllegalArgumentException( "Null key provided." );
       
-      return testClasses.remove( testClassKey );
+      TestClass testClass = testClassesMap.remove( testClassKey );
+      testClasses.remove( testClass );
+      return testClass;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObservableList< TestClass > testClasses() {
+      return testClasses;
    }//End Method
 
 }//End Class

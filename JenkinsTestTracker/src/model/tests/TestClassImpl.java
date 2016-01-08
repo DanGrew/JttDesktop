@@ -20,8 +20,6 @@ import javafx.collections.ObservableList;
  */
 public class TestClassImpl implements TestClass {
 
-   static final double DEFAULT_DURATION = 0.0;
-   
    private StringProperty name;
    private StringProperty location;
    private DoubleProperty duration;
@@ -36,12 +34,20 @@ public class TestClassImpl implements TestClass {
       if ( name == null ) throw new IllegalArgumentException( "Null name provided." );
       if ( name.trim().length() == 0 ) throw new IllegalArgumentException( "Invalid name provided." );
       if ( location == null ) throw new IllegalArgumentException( "Null location provided." );
-      if ( location.trim().length() == 0 ) throw new IllegalArgumentException( "Invalid location provided." );
+      if ( location.length() > 0 && location.trim().length() == 0 ) throw new IllegalArgumentException( "Invalid location specified as space." );
       
       this.name = new SimpleStringProperty( name );
       this.location = new SimpleStringProperty( location );
       this.duration = new SimpleDoubleProperty( DEFAULT_DURATION );
       this.testCases = FXCollections.observableArrayList();
+   }//End Constructor
+
+   /**
+    * Constructs a new {@link TestClassImpl} with the given full name of the {@link TestClass}.
+    * @param fullName the name including location, such as package.subpackage.ClassName
+    */
+   public TestClassImpl( String fullName ) {
+      this( identifyName( fullName ), identifyLocation( fullName ) );
    }//End Constructor
 
    /**
@@ -71,5 +77,34 @@ public class TestClassImpl implements TestClass {
    @Override public ObservableList< TestCase > testCasesList() {
       return testCases;
    }//End Method
-
+   
+   /**
+    * Method to identify the name of the {@link TestClass} from the full name.
+    * @param fullName the name including location, such as package.subpackage.ClassName
+    * @return the {@link TestClass} name.
+    */
+   public static final String identifyName( String fullName ) {
+      if ( fullName == null ) throw new IllegalArgumentException( "Null name provided." );
+      if ( fullName.trim().length() == 0 ) throw new IllegalArgumentException( "Invalid name provided." );
+      
+      String[] elements = fullName.split( "\\." );
+      return elements[ elements.length - 1 ];
+   }//End Method
+   
+   /**
+    * Method to identify the location of the {@link TestClass} from the full name.
+    * @param fullName the name including location, such as package.subpackage.ClassName
+    * @return the {@link TestClass} location.
+    */
+   public static final String identifyLocation( String fullName ) {
+      if ( fullName == null ) throw new IllegalArgumentException( "Null name provided." );
+      if ( fullName.trim().length() == 0 ) throw new IllegalArgumentException( "Invalid name provided." );
+      
+      String[] elements = fullName.split( "\\." );
+      String[] locationElements = new String[ elements.length - 1 ];
+      System.arraycopy( elements, 0, locationElements, 0, locationElements.length );
+      String location = String.join( ".", locationElements );
+      return location;
+   }//End Method
+   
 }//End Class

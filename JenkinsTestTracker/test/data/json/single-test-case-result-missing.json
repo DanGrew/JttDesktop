@@ -1,0 +1,14 @@
+{
+  "failCount" : 0,
+  "skipCount" : 0,
+  "totalCount" : 113,
+  "urlName" : "testReport",
+  "childReports" : [
+    {
+      "child" : {
+        "number" : 96,
+        "url" : "http://jenkins:8080/job/SingletonDevelopmentKit/Portfolio$SingletonDevelopmentKit/96/"
+      }
+    }
+  ]
+}

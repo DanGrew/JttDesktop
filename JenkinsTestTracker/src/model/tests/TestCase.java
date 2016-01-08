@@ -18,6 +18,11 @@ import javafx.beans.property.StringProperty;
  */
 public interface TestCase {
 
+   public static final double DEFAULT_DURATION = 0.0;
+   public static final boolean DEFAULT_SKIPPED = false;
+   public static final TestResultStatus DEFAULT_STATUS = TestResultStatus.FAILED;
+   public static final int DEFAULT_AGE = 0;
+   
    /**
     * Provides access to the property associated with the duration of the test case.
     * @return the {@link DoubleProperty} providing how long the test case took to run.

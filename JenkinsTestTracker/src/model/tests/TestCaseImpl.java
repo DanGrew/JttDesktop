@@ -24,11 +24,6 @@ import javafx.beans.property.StringProperty;
  */
 public class TestCaseImpl implements TestCase {
    
-   static final double DEFAULT_DURATION = 0.0;
-   static final boolean DEFAULT_SKIPPED = false;
-   static final TestResultStatus DEFAULT_STATUS = TestResultStatus.FAILED;
-   static final int DEFAULT_AGE = 0;
-   
    private StringProperty name;
    private ObjectProperty< TestClass > testClass;
    private DoubleProperty duration;

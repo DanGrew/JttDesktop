@@ -1,0 +1,24 @@
+{
+  "failCount" : 0,
+  "skipCount" : 0,
+  "totalCount" : 113,
+  "urlName" : "testReport",
+  "childReports" : [
+    {
+      "child" : {
+        "number" : 96,
+        "url" : "http://jenkins:8080/job/SingletonDevelopmentKit/Portfolio$SingletonDevelopmentKit/96/"
+      },
+      "result" : {
+        "testActions" : [
+          
+        ],
+        "duration" : 18.603,
+        "empty" : false,
+        "failCount" : 0,
+        "passCount" : 113,
+        "skipCount" : 0
+      }
+    }
+  ]
+}
