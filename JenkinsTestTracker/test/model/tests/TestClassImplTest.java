@@ -152,4 +152,13 @@ public class TestClassImplTest {
       Assert.assertEquals( "", TestClassImpl.identifyLocation( ".name" ) );
    }//End Method
    
+   @Test public void shouldProvideDescription(){
+      final String fullName = "somewhere.something.MyClassName";
+      TestClass testClass = new TestClassImpl( fullName );
+      Assert.assertEquals( fullName, testClass.getDescription() );
+      
+      testClass.nameProperty().set( "Alternative" );
+      Assert.assertEquals( "somewhere.something.Alternative", testClass.getDescription() );
+   }//End Method
+   
 }//End Class

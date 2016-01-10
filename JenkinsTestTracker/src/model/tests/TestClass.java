@@ -43,4 +43,11 @@ public interface TestClass {
     */
    public ObservableList< TestCase > testCasesList();
 
+   /**
+    * Method to get a description of the {@link TestClass}. This represents the full name of the 
+    * {@link TestClass} as {@link #locationProperty()}"."{@link #nameProperty()}.
+    * @return a {@link String} description.
+    */
+   public String getDescription();
+
 }//End Interface

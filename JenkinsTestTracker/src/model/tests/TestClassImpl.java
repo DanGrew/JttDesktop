@@ -106,5 +106,12 @@ public class TestClassImpl implements TestClass {
       String location = String.join( ".", locationElements );
       return location;
    }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String getDescription() {
+      return location.get() + "." + name.get();
+   }//End Method
    
 }//End Class
