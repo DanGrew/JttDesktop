@@ -9,6 +9,7 @@
 package view.table;
 
 import javafx.beans.property.StringProperty;
+import javafx.scene.Node;
 import javafx.scene.control.TreeTableView;
 
 /**
@@ -30,5 +31,11 @@ public interface TestTableItem {
     * @return the {@link StringProperty} being updated with the cell value.
     */
    public StringProperty getColumnProperty( int columnReference );
+
+   /**
+    * Getter for the {@link Node} graphic describing the status visually.
+    * @return the {@link Node} representing the status.
+    */
+   public Node getStatusGraphic();
 
 }//End Interface

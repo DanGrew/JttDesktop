@@ -10,6 +10,7 @@ package view.table;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.Node;
 import javafx.scene.control.TreeTableView;
 import model.tests.TestClass;
 
@@ -59,6 +60,13 @@ public class TestClassItemImpl implements TestTableItem {
     */
    @Override public Object getSubject() {
       return subject;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public Node getStatusGraphic() {
+      return null;
    }//End Method
 
 }//End Class

@@ -14,5 +14,6 @@ package model.tests;
 public enum TestResultStatus {
 
    PASSED,
-   FAILED
+   FAILED,
+   UNKNOWN
 }//End Enum

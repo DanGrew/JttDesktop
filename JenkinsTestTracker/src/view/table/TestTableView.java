@@ -59,7 +59,7 @@ public class TestTableView extends BorderPane {
       branch.setExpanded( true );
       testClass.testCasesList().forEach( object -> {
          TestTableItem caseDescriber = new TestCaseItemImpl( object );
-         branch.getChildren().add( new TreeItem<>( caseDescriber ) );
+         branch.getChildren().add( new TreeItem<>( caseDescriber, caseDescriber.getStatusGraphic() ) );
       } );
       parent.getChildren().add( branch );
       return branch;

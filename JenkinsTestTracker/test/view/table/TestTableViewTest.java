@@ -266,4 +266,9 @@ public class TestTableViewTest {
       Assert.assertEquals( "" + testCase.durationProperty().get(), testCaseItem.getValue().getColumnProperty( 4 ).get() );
    }//End Method
    
+   @Test public void testCasesShouldDisplayStatusGraphic(){
+      TreeItem< TestTableItem > testCaseItem = treeTableView.getRoot().getChildren().get( 0 ).getChildren().get( 0 );
+      Assert.assertEquals( testCaseItem.getValue().getStatusGraphic(), testCaseItem.getGraphic() );
+   }//End Method
+   
 }//End Class

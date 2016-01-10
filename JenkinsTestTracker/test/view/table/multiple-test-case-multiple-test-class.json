@@ -67,7 +67,7 @@
                 "failedSince" : 0,
                 "name" : "shouldStoreObjectsAndRemoveSingle",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -79,7 +79,7 @@
                 "failedSince" : 0,
                 "name" : "shouldStoreObjectsAndRetrieveAllCustomMatch",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.071,
@@ -99,7 +99,7 @@
                 "failedSince" : 0,
                 "name" : "shouldReceiveEvent",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.002,
@@ -119,7 +119,7 @@
                 "failedSince" : 0,
                 "name" : "shouldProcessAll",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -131,7 +131,7 @@
                 "failedSince" : 0,
                 "name" : "shouldProcessSingle",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.012,
@@ -275,7 +275,7 @@
                 "failedSince" : 0,
                 "name" : "DoubleEventNotificationTest",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -403,7 +403,7 @@
                 "failedSince" : 0,
                 "name" : "shouldMatch",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.0,
@@ -423,7 +423,7 @@
                 "failedSince" : 0,
                 "name" : "shouldConstruct",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -435,7 +435,7 @@
                 "failedSince" : 0,
                 "name" : "shouldNotConstruct",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.004,
@@ -455,7 +455,7 @@
                 "failedSince" : 0,
                 "name" : "shouldRemove",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -467,7 +467,7 @@
                 "failedSince" : 0,
                 "name" : "shouldBehaveCorrectly",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.0050000004,
@@ -487,7 +487,7 @@
                 "failedSince" : 0,
                 "name" : "shouldGetValuesAndSize",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -499,7 +499,7 @@
                 "failedSince" : 0,
                 "name" : "shouldPopulateObserableListAndIterateProperties",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -511,7 +511,7 @@
                 "failedSince" : 0,
                 "name" : "shouldConstructAndIterate",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.014,
@@ -531,7 +531,7 @@
                 "failedSince" : 0,
                 "name" : "shouldNotRemove",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -703,7 +703,7 @@
                 "failedSince" : 0,
                 "name" : "shouldReassignColumnNamesForOnceAssigned",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -715,7 +715,7 @@
                 "failedSince" : 0,
                 "name" : "shouldExcludeRows",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.001,
@@ -795,7 +795,7 @@
                 "failedSince" : 0,
                 "name" : "shouldParseMultipleLines",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.087000005,
@@ -879,7 +879,7 @@
                 "failedSince" : 0,
                 "name" : "shouldUseDefensiveConverter",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.062,
@@ -995,7 +995,7 @@
                 "failedSince" : 0,
                 "name" : "shouldConvertToString",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -1007,7 +1007,7 @@
                 "failedSince" : 0,
                 "name" : "shouldConvertFromString",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               }
             ],
             "duration" : 0.121,
@@ -1027,7 +1027,7 @@
                 "failedSince" : 0,
                 "name" : "shouldCalculateLengthOfRightAngleTriangle",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -1039,7 +1039,7 @@
                 "failedSince" : 0,
                 "name" : "shouldCalculatePointOnCircle",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -1051,7 +1051,7 @@
                 "failedSince" : 0,
                 "name" : "shouldInvertScale",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -1063,7 +1063,7 @@
                 "failedSince" : 0,
                 "name" : "shouldRotateVector",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -1075,7 +1075,7 @@
                 "failedSince" : 0,
                 "name" : "shouldScalePoint",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [

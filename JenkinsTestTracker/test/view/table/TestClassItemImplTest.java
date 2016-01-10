@@ -101,4 +101,8 @@ public class TestClassItemImplTest {
    @Test public void shouldProvideSubject(){
       Assert.assertEquals( testClass1, testClass1Item.getSubject() );
    }//End Method
+   
+   @Test public void shouldNotProvideStatusGraphic(){
+      Assert.assertNull( testClass1Item.getStatusGraphic() );
+   }//End Method
 }//End Class

@@ -13,6 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import model.tests.TestCase;
 import model.tests.TestCaseImpl;
 import model.tests.TestClass;
@@ -34,6 +37,7 @@ public class TestCaseItemImplTest {
     */
    @Before public void initialiseSystemUnderTest(){
       testCase1 = new TestCaseImpl( "first", Mockito.mock( TestClass.class ) );
+      testCase1.statusProperty().set( TestResultStatus.PASSED );
       testCase1Item = new TestCaseItemImpl( testCase1 );
       testCase2 = new TestCaseImpl( "second", Mockito.mock( TestClass.class ) );
       testCase2Item = new TestCaseItemImpl( testCase2 );
@@ -117,5 +121,49 @@ public class TestCaseItemImplTest {
    @Test public void shouldProvideSubject(){
       Assert.assertEquals( testCase1, testCase1Item.getSubject() );
    }//End Method
+   
+   @Test public void shouldProvideCommonJenkinsStyleStatusGraphic(){
+      Node node = testCase1Item.getStatusGraphic();
+      Assert.assertTrue( node instanceof Circle );
+      Circle circle = ( Circle )node;
+      Assert.assertEquals( TestCaseItemImpl.DEFAULT_STATUS_GRAPHIC_RADIUS, circle.getRadius(), TestCommon.precision() );
+      Assert.assertEquals( 0, circle.getCenterX(), TestCommon.precision() );
+      Assert.assertEquals( 0, circle.getCenterY(), TestCommon.precision() );
+   }//End Method
 
+   @Test public void shouldNotRecreateStatusGraphic(){
+      Node firstCall = testCase1Item.getStatusGraphic();
+      Node secondCall = testCase1Item.getStatusGraphic();
+      Assert.assertEquals( firstCall, secondCall );
+   }//End Method
+   
+   @Test public void statusGraphicShouldReflectPassStatus(){
+      assertStatusGraphicColour( testCase1Item, TestCaseItemImpl.DEFAULT_PASS_COLOUR );
+   }//End Method
+   
+   @Test public void statusGraphicShouldReflectFailStatus(){
+      assertStatusGraphicColour( testCase2Item, TestCaseItemImpl.DEFAULT_FAIL_COLOUR );
+   }//End Method
+   
+   @Test public void statusGraphicShouldUpdateWithStatusChange(){
+      assertStatusGraphicColour( testCase1Item, TestCaseItemImpl.DEFAULT_PASS_COLOUR );
+      testCase1.statusProperty().set( TestResultStatus.FAILED );
+      assertStatusGraphicColour( testCase1Item, TestCaseItemImpl.DEFAULT_FAIL_COLOUR );
+      testCase1.statusProperty().set( TestResultStatus.UNKNOWN );
+      assertStatusGraphicColour( testCase1Item, TestCaseItemImpl.DEFAULT_UNKNOWN_COLOUR );
+   }//End Method
+   
+   /**
+    * Method to assert that the {@link Color} is as expected on the status graphic.
+    * @param item the {@link TestTableItem} in question.
+    * @param colour the expected {@link Color}.
+    */
+   private void assertStatusGraphicColour( TestTableItem item, Color colour ) {
+      Node passNode = item.getStatusGraphic();
+      Assert.assertTrue( passNode instanceof Circle );
+      Circle passGraphic = ( Circle )passNode;
+      Assert.assertEquals( colour, passGraphic.strokeProperty().get() );
+      Assert.assertEquals( colour, passGraphic.fillProperty().get() );
+   }//End Method
+   
 }//End Class
