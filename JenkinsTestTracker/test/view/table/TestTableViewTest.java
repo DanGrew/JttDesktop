@@ -16,12 +16,15 @@ import org.junit.Test;
 import data.TestResultsImporter;
 import data.json.JsonTestResultImporter;
 import graphics.JavaFxInitializer;
+import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import model.tests.TestCase;
+import model.tests.TestCaseImpl;
 import model.tests.TestClass;
+import model.tests.TestClassImpl;
 import model.tests.TestResultStatus;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
@@ -271,4 +274,75 @@ public class TestTableViewTest {
       Assert.assertEquals( testCaseItem.getValue().getStatusGraphic(), testCaseItem.getGraphic() );
    }//End Method
    
+   @Test public void shouldRemoveTestClassesWhenDatabaseChanges(){
+      TestClass first = database.testClasses().get( 0 );
+      TreeItem< TestTableItem > firstItem = treeTableView.getRoot().getChildren().get( 0 );
+      Assert.assertEquals( first, firstItem.getValue().getSubject() );
+      
+      database.testClasses().remove( first );
+      Assert.assertFalse( database.testClasses().contains( first ) );
+      
+      TreeItem< TestTableItem > firstItemFollowingChange = treeTableView.getRoot().getChildren().get( 0 );
+      Assert.assertNotEquals( first, firstItemFollowingChange.getValue().getSubject() );
+   }//End Method
+   
+   @Test public void shouldAddTestClassesWhenDatabaseChanges(){
+      ObservableList< TreeItem< TestTableItem > > rootChildren = treeTableView.getRoot().getChildren();
+      
+      TestClass newClass = new TestClassImpl( "newClass" );
+      Assert.assertFalse( database.testClasses().contains( newClass ) );
+      database.testClasses().add( newClass );
+      Assert.assertTrue( database.testClasses().contains( newClass ) );
+      
+      TreeItem< TestTableItem > lastItemFollowingChange = rootChildren.get( rootChildren.size() - 1 );
+      Assert.assertEquals( newClass, lastItemFollowingChange.getValue().getSubject() );
+   }//End Method
+   
+   @Test( expected = IllegalStateException.class ) public void shouldNotAddTestClassIfAlreadyPresent(){
+      systemUnderTest.addTestClass( database.testClasses().get( 0 ) );
+   }//End Method
+   
+   @Test( expected = IllegalStateException.class ) public void shouldNotRemoveTestClassIfNotPresent(){
+      systemUnderTest.removeTestClass( new TestClassImpl( "anything" ) );
+   }//End Method
+   
+   @Test public void shouldRemoveTestCasesWhenDatabaseChanges(){
+      TestClass testClass = database.testClasses().get( 0 );
+      TestCase first = testClass.testCasesList().get( 0 );
+      TreeItem< TestTableItem > testCaseItem = treeTableView.getRoot().getChildren().get( 0 );
+      TreeItem< TestTableItem > firstItem = testCaseItem.getChildren().get( 0 );
+      Assert.assertEquals( first, firstItem.getValue().getSubject() );
+      
+      testClass.testCasesList().remove( first );
+      Assert.assertFalse( testClass.testCasesList().contains( first ) );
+      
+      TreeItem< TestTableItem > firstItemFollowingChange = testCaseItem.getChildren().get( 0 );
+      Assert.assertNotEquals( first, firstItemFollowingChange.getValue().getSubject() );
+   }//End Method
+   
+   @Test public void shouldAddTestCasesWhenDatabaseChanges(){
+      TestClass testClass = database.testClasses().get( 0 );
+      TestCase newCase = new TestCaseImpl( "newCase", testClass );
+      
+      TreeItem< TestTableItem > testCaseItem = treeTableView.getRoot().getChildren().get( 0 );
+      
+      testClass.testCasesList().add( newCase );
+      Assert.assertTrue( testClass.testCasesList().contains( newCase ) );
+      
+      TreeItem< TestTableItem > firstItemFollowingChange = testCaseItem.getChildren().get( testCaseItem.getChildren().size() - 1 );
+      Assert.assertEquals( newCase, firstItemFollowingChange.getValue().getSubject() );
+   }//End Method
+   
+   @Test( expected = IllegalStateException.class ) public void shouldNotAddTestCaseItemIfTestClassNotPresent(){
+      TestClass unassociatedClass = new TestClassImpl( "anyClass" );
+      TestCase newCase = new TestCaseImpl( "anything", unassociatedClass );
+      systemUnderTest.addTestCase( newCase );
+   }//End Method
+   
+   @Test( expected = IllegalStateException.class ) public void shouldNotRemoveTestCaseItemIfTestClassNotPresent(){
+      TestClass unassociatedClass = new TestClassImpl( "anyClass" );
+      TestCase newCase = new TestCaseImpl( "anything", unassociatedClass );
+      systemUnderTest.removeTestCase( newCase );
+   }//End Method
+
 }//End Class
