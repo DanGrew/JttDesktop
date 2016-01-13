@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package data.json;
+package data.json.tests;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import data.TestResultsImporter;
+import data.json.tests.JsonTestResultImporter;
 import model.tests.TestCase;
 import model.tests.TestClass;
 import model.tests.TestResultStatus;
@@ -84,25 +85,25 @@ public class JsonTestResultImporterTest {
    @Test public void shouldNotImportSingleTestClassWithMissingClass() {
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-missing.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingChildReports(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-child-reports-missing.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingResult(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-result-missing.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingSuites(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-suites-missing.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingClassDuration(){
@@ -110,7 +111,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.ClassDuration ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       Assert.assertEquals( TestClass.DEFAULT_DURATION, testClass.durationProperty().get(), TestCommon.precision() );
    }//End Method
    
@@ -119,7 +120,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.CaseDuration ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       TestCase testCase = testClass.testCasesList().get( 0 );
       Assert.assertEquals( TestCase.DEFAULT_DURATION, testCase.durationProperty().get(), TestCommon.precision() );
    }//End Method
@@ -127,19 +128,19 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleMissingClassName(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-class-name-missing.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingCaseName(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-name-missing.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingTestClass(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-name-missing.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingAge(){
@@ -147,7 +148,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.Age ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       TestCase testCase = testClass.testCasesList().get( 0 );
       Assert.assertEquals( TestCase.DEFAULT_AGE, testCase.ageProperty().get() );
    }//End Method
@@ -157,7 +158,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.Skipped ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       TestCase testCase = testClass.testCasesList().get( 0 );
       Assert.assertEquals( TestCase.DEFAULT_SKIPPED, testCase.skippedProperty().get() );
    }//End Method
@@ -167,7 +168,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList(  AssertableProperty.Status ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       TestCase testCase = testClass.testCasesList().get( 0 );
       Assert.assertEquals( TestCase.DEFAULT_STATUS, testCase.statusProperty().get() );
    }//End Method
@@ -177,7 +178,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.ClassDuration ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       Assert.assertEquals( TestClass.DEFAULT_DURATION, testClass.durationProperty().get(), TestCommon.precision() );
    }//End Method
    
@@ -186,7 +187,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.CaseDuration ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       TestCase testCase = testClass.testCasesList().get( 0 );
       Assert.assertEquals( TestCase.DEFAULT_DURATION, testCase.durationProperty().get(), TestCommon.precision() );
    }//End Method
@@ -194,19 +195,19 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleInvalidClassName(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-class-name-invalid.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleInvalidCaseName(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-name-invalid.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleInvalidTestClass(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-name-invalid.json" );
       systemUnderTest.parse( input );
-      Assert.assertTrue( database.isEmpty() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleInvalidAge(){
@@ -214,7 +215,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.Age ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       TestCase testCase = testClass.testCasesList().get( 0 );
       Assert.assertEquals( TestCase.DEFAULT_AGE, testCase.ageProperty().get() );
    }//End Method
@@ -224,7 +225,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.Skipped ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       TestCase testCase = testClass.testCasesList().get( 0 );
       Assert.assertEquals( TestCase.DEFAULT_SKIPPED, testCase.skippedProperty().get() );
    }//End Method
@@ -234,7 +235,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.parse( input );
       assertTestClassAndTestCasePresent( Arrays.asList(  AssertableProperty.Status ) );
       
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       TestCase testCase = testClass.testCasesList().get( 0 );
       Assert.assertEquals( TestCase.DEFAULT_STATUS, testCase.statusProperty().get() );
    }//End Method
@@ -307,7 +308,7 @@ public class JsonTestResultImporterTest {
     * some values to vary but performing common assertions.
     */
    private void assertTestClassAndTestCasePresent( List< AssertableProperty > propertiesToIgnore ){
-      TestClass testClass = database.get( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
+      TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       Assert.assertNotNull( testClass );
       
       Assert.assertEquals( CLASS_NAME, testClass.nameProperty().get() );

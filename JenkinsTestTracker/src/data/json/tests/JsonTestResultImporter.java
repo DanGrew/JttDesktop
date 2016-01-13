@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package data.json;
+package data.json.tests;
 
 import org.json.JSONArray;
 import org.json.JSONException;

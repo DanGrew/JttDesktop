@@ -8,89 +8,119 @@
  */
 package storage.database;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.jobs.JenkinsJob;
 import model.tests.TestClass;
+import storage.structure.MappedObservableStoreManagerImpl;
+import storage.structure.ObjectStoreManager;
 
 /**
  * Basic implementation of the {@link JenkinsDatabase}.
  */
 public class JenkinsDatabaseImpl implements JenkinsDatabase {
 
-   private Map< TestClassKey, TestClass > testClassesMap;
-   private ObservableList< TestClass > testClasses;
+   private ObjectStoreManager< TestClassKey, TestClass > testClasses;
+   private ObjectStoreManager< String, JenkinsJob > jenkinsJobs;
 
    /**
     * Constructs a new {@link JenkinsDatabaseImpl}.
     */
    public JenkinsDatabaseImpl() {
-      testClassesMap = new HashMap<>();
-      testClasses = FXCollections.observableArrayList();
+      testClasses = new MappedObservableStoreManagerImpl<>();
+      jenkinsJobs = new MappedObservableStoreManagerImpl<>();
    }//End Constructor
    
    /**
     * {@inheritDoc}
     */
-   @Override public boolean isEmpty() {
-      return testClassesMap.isEmpty();
+   @Override public boolean hasNoTestClasses() {
+      return testClasses.isEmpty();
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean hasNoJenkinsJobs() {
+      return jenkinsJobs.isEmpty();
    }//End Method
 
    /**
     * {@inheritDoc}
     */
-   @Override public boolean has( TestClassKey testClassKey ) {
-      if ( testClassKey == null ) throw new IllegalArgumentException( "Null key provided." );
-      
-      return testClassesMap.containsKey( testClassKey );
+   @Override public boolean hasTestClass( TestClassKey testClassKey ) {
+      return testClasses.has( testClassKey );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean hasJenkinsJob( String key ) {
+      return jenkinsJobs.has( key );
    }//End Method
 
    /**
     * {@inheritDoc}
     */
    @Override public void store( TestClass testClass ) {
-      if ( testClass == null ) throw new IllegalArgumentException( "Null TestClass provided." );
- 
+      if ( testClass == null ) return;
+      
       TestClassKey representativeKey = new TestClassKeyImpl( 
-            testClass.nameProperty().get(), 
-            testClass.locationProperty().get() 
+               testClass.nameProperty().get(), 
+               testClass.locationProperty().get() 
       );
-      if ( testClassesMap.containsKey( representativeKey ) ) {
-         TestClass currentTestClass = testClassesMap.remove( representativeKey );
-         testClasses.remove( currentTestClass );
-      }
-      
-      testClassesMap.put( representativeKey, testClass );
-      testClasses.add( testClass );
-   }//End Method
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override public TestClass get( TestClassKey testClassKey ) {
-      if ( testClassKey == null ) throw new IllegalArgumentException( "Null key provided." );
-      
-      return testClassesMap.get( testClassKey );
+      testClasses.store( representativeKey, testClass );
    }//End Method
    
    /**
     * {@inheritDoc}
     */
-   @Override public TestClass remove( TestClassKey testClassKey ) {
-      if ( testClassKey == null ) throw new IllegalArgumentException( "Null key provided." );
+   @Override public void store( JenkinsJob jenkinsJob ) {
+      if ( jenkinsJob == null ) return;
+      if ( jenkinsJob.nameProperty().get() == null ) return;
       
-      TestClass testClass = testClassesMap.remove( testClassKey );
-      testClasses.remove( testClass );
-      return testClass;
+      jenkinsJobs.store( jenkinsJob.nameProperty().get(), jenkinsJob );
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public TestClass getTestClass( TestClassKey testClassKey ) {
+      return testClasses.get( testClassKey );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public JenkinsJob getJenkinsJob( String key ) {
+      return jenkinsJobs.get( key );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public TestClass removeTestClass( TestClassKey testClassKey ) {
+      return testClasses.remove( testClassKey );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public JenkinsJob removeJenkinsJob( String key ) {
+      return jenkinsJobs.remove( key );
    }//End Method
 
    /**
     * {@inheritDoc}
     */
    @Override public ObservableList< TestClass > testClasses() {
-      return testClasses;
+      return testClasses.objectList();
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObservableList< JenkinsJob > jenkinsJobs() {
+      return jenkinsJobs.objectList();
    }//End Method
 
 }//End Class

@@ -9,6 +9,7 @@
 package storage.database;
 
 import javafx.collections.ObservableList;
+import model.jobs.JenkinsJob;
 import model.tests.TestCase;
 import model.tests.TestClass;
 
@@ -19,10 +20,16 @@ import model.tests.TestClass;
 public interface JenkinsDatabase {
 
    /**
-    * Method to determine whether the {@link JenkinsDatabase} is empty.
+    * Method to determine whether the {@link JenkinsDatabase} has any {@link TestClass}es.
     * @return true if the {@link JenkinsDatabase} has no {@link TestClass}es.
     */
-   public boolean isEmpty();
+   public boolean hasNoTestClasses();
+   
+   /**
+    * Method to determine whether the {@link JenkinsDatabase} has any {@link JenkinsJob}s.
+    * @return true if the {@link JenkinsDatabase} has no {@link JenkinsJob}s.
+    */
+   public boolean hasNoJenkinsJobs();
 
    /**
     * Method to determine whether the {@link JenkinsDatabase} has a {@link TestClass} matching the
@@ -30,7 +37,15 @@ public interface JenkinsDatabase {
     * @param testClassKey the {@link TestClassKey} to identify the {@link TestClass}.
     * @return true if the {@link TestClass} is present.
     */
-   public boolean has( TestClassKey testClassKey );
+   public boolean hasTestClass( TestClassKey testClassKey );
+   
+   /**
+    * Method to determine whether the {@link JenkinsDatabase} has a {@link JenkinsJob} matching the
+    * given {@link String} name key.
+    * @param key the {@link String} to identify the {@link JenkinsJob}.
+    * @return true if the {@link JenkinsJob} is present.
+    */
+   public boolean hasJenkinsJob( String key );
 
    /**
     * Method to store the given {@link TestClass}. Note that this will replace anything matching the same resulting
@@ -38,25 +53,52 @@ public interface JenkinsDatabase {
     * @param testClass the {@link TestClass} to store.
     */
    public void store( TestClass testClass );
+   
+   /**
+    * Method to store the given {@link JenkinsJob}. Note that this will replace anything matching the same resulting
+    * {@link String} key.
+    * @param jenkinsJob the {@link JenkinsJob} to store.
+    */
+   public void store( JenkinsJob jenkinsJob );
 
    /**
     * Method to get the {@link TestClass} matching the given {@link TestClassKey}.
     * @param testClassKey the {@link TestClassKey} to identify the {@link TestClass}.
     * @return the matching {@link TestClass}, or null.
     */
-   public TestClass get( TestClassKey testClassKey );
+   public TestClass getTestClass( TestClassKey testClassKey );
+   
+   /**
+    * Method to get the {@link JenkinsJob} matching the given {@link String} name key.
+    * @param key the {@link String} to identify the {@link JenkinsJob}.
+    * @return the matching {@link JenkinsJob}, or null.
+    */
+   public JenkinsJob getJenkinsJob( String key );
 
    /**
     * Method to remove the {@link TestClass} matching the given {@link TestClassKey}.
     * @param testClassKey the {@link TestClassKey} to identify the {@link TestClass}.
     * @return the removed {@link TestClass}.
     */
-   public TestClass remove( TestClassKey testClassKey );
+   public TestClass removeTestClass( TestClassKey testClassKey );
+   
+   /**
+    * Method to remove the {@link JenkinsJob} matching the given {@link String} name key.
+    * @param key the {@link String} to identify the {@link JenkinsJob}.
+    * @return the removed {@link JenkinsJob}.
+    */
+   public JenkinsJob removeJenkinsJob( String key );
 
    /**
     * Provides the {@link ObservableList} of {@link TestClass}es held by the {@link JenkinsDatabase}.
     * @return the {@link ObservableList} of {@link TestClass}es.
     */
    public ObservableList< TestClass > testClasses();
+
+   /**
+    * Provides the {@link ObservableList} of {@link JenkinsJob}s held by the {@link JenkinsDatabase}.
+    * @return the {@link ObservableList} of {@link JenkinsJob}s.
+    */
+   public ObservableList< JenkinsJob > jenkinsJobs();
 
 }//End Interface

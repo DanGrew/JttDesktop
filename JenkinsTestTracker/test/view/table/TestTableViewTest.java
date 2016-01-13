@@ -14,7 +14,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import data.TestResultsImporter;
-import data.json.JsonTestResultImporter;
+import data.json.tests.JsonTestResultImporter;
 import graphics.JavaFxInitializer;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
