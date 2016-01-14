@@ -15,6 +15,7 @@ import org.junit.Test;
 import api.handling.BuildState;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
+import model.jobs.JenkinsJobImpl;
 import utility.TestCommon;
 
 /**

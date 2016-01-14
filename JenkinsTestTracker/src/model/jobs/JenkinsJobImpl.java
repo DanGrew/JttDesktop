@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package data.json.jobs;
+package model.jobs;
 
 import api.handling.BuildState;
 import javafx.beans.property.IntegerProperty;
@@ -15,8 +15,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import model.jobs.BuildResultStatus;
-import model.jobs.JenkinsJob;
 
 /**
  * {@link JenkinsJobImpl} provides an implementation of the {@link JenkinsJob}.

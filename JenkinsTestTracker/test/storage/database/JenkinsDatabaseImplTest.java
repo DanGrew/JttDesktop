@@ -13,8 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import data.json.jobs.JenkinsJobImpl;
 import model.jobs.JenkinsJob;
+import model.jobs.JenkinsJobImpl;
 import model.tests.TestClass;
 import model.tests.TestClassImpl;
 

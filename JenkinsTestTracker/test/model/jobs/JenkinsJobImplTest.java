@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import api.handling.BuildState;
-import data.json.jobs.JenkinsJobImpl;
 
 /**
  * {@link JenkinsJobImpl} test.

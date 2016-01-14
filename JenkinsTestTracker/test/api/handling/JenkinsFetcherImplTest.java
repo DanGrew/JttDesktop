@@ -14,9 +14,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import api.sources.ExternalApi;
-import data.json.jobs.JenkinsJobImpl;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
+import model.jobs.JenkinsJobImpl;
 import storage.database.JenkinsDatabase;
 import utility.TestCommon;
 
