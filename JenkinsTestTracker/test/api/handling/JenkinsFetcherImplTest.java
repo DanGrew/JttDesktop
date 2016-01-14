@@ -18,6 +18,7 @@ import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
 import storage.database.JenkinsDatabase;
+import storage.database.JenkinsDatabaseImpl;
 import utility.TestCommon;
 
 /**
@@ -32,7 +33,7 @@ public class JenkinsFetcherImplTest {
    
    @Before public void initialiseSystemUnderTest(){
       externalApi = Mockito.mock( ExternalApi.class );
-      database = Mockito.mock( JenkinsDatabase.class );
+      database = new JenkinsDatabaseImpl();
       jenkinsJob = new JenkinsJobImpl( "JenkinsJob" );
       database.store( jenkinsJob );
       systemUnderTest = new JenkinsFetcherImpl( externalApi );
@@ -60,9 +61,11 @@ public class JenkinsFetcherImplTest {
    
    @Test public void shouldUpdateJobDetailsWhenBuilt() {
       String buildingResponse = TestCommon.readFileIntoString( getClass(), "built-state.json" );
+      Assert.assertNotNull( buildingResponse );
       Mockito.when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
       
       String response = TestCommon.readFileIntoString( getClass(), "job-details.json" );
+      Assert.assertNotNull( response );
       Mockito.when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( response );
       
       Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
@@ -74,6 +77,7 @@ public class JenkinsFetcherImplTest {
    
    @Test public void shouldNotUpdateJobDetailsWhenBuilding() {
       String buildingResponse = TestCommon.readFileIntoString( getClass(), "building-state.json" );
+      Assert.assertNotNull( buildingResponse );
       Mockito.when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
 
       Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
@@ -94,6 +98,29 @@ public class JenkinsFetcherImplTest {
       
       Mockito.verify( externalApi, Mockito.times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
       Mockito.verify( externalApi, Mockito.times( 0 ) ).getLastBuildBuildingState( Mockito.any() );
+   }//End Method
+   
+   @Test public void shouldNotFetchJobsWithNullDatabase(){
+      JenkinsDatabase database = Mockito.mock( JenkinsDatabase.class );
+      systemUnderTest.fetchJobs( database );
+      Mockito.verifyNoMoreInteractions( database );
+   }//End Method
+   
+   @Test public void shouldFetchAllJobs(){
+      String response = TestCommon.readFileIntoString( getClass(), "jobs-list.json" );
+      Assert.assertNotNull( response );
+      Mockito.when( externalApi.getJobsList() ).thenReturn( response );
+      
+      systemUnderTest.fetchJobs( database );
+      Assert.assertEquals( 8, database.jenkinsJobs().size() );
+      Assert.assertEquals( jenkinsJob.nameProperty().get(), database.jenkinsJobs().get( 0 ).nameProperty().get() );
+      Assert.assertEquals( "ClassicStuff", database.jenkinsJobs().get( 1 ).nameProperty().get() );
+      Assert.assertEquals( "CommonProject", database.jenkinsJobs().get( 2 ).nameProperty().get() );
+      Assert.assertEquals( "JenkinsTestTracker", database.jenkinsJobs().get( 3 ).nameProperty().get() );
+      Assert.assertEquals( "MySpecialProject", database.jenkinsJobs().get( 4 ).nameProperty().get() );
+      Assert.assertEquals( "Silly Project", database.jenkinsJobs().get( 5 ).nameProperty().get() );
+      Assert.assertEquals( "SomeOtherTypeOfProject", database.jenkinsJobs().get( 6 ).nameProperty().get() );
+      Assert.assertEquals( "Zebra!", database.jenkinsJobs().get( 7 ).nameProperty().get() );
    }//End Method
    
 }//End Class

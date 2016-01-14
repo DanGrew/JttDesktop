@@ -10,6 +10,7 @@ package api.handling;
 
 import api.sources.ExternalApi;
 import model.jobs.JenkinsJob;
+import storage.database.JenkinsDatabase;
 
 /**
  * The {@link Fetcher} describes an object that can retrieve updated information
@@ -28,5 +29,12 @@ public interface Fetcher {
     * @param jenkinsJob the {@link JenkinsJob} to update.
     */
    public void updateJobDetails( JenkinsJob jenkinsJob );
+   
+   /**
+    * Method to fetch the current jobs from the {@link ExternalApi} and populate them
+    * in the {@link JenkinsDatabase}.
+    * @param database the {@link JenkinsDatabase} to populate.
+    */
+   public void fetchJobs( JenkinsDatabase database );
 
 }//End Interface

@@ -1,0 +1,25 @@
+{
+  "jobs" : [
+    {
+      "name" : 679
+    },
+    {
+      "name" : "CommonProject"
+    },
+    {
+      "name" : "JenkinsTestTracker"
+    },
+    {
+      "name" : "MySpecialProject"
+    },
+    {
+      "name" : "Silly Project"
+    },
+    {
+      "name" : "SomeOtherTypeOfProject"
+    },
+    {
+      "name" : "Zebra!"
+    }
+  ]
+}

@@ -8,6 +8,7 @@
  */
 package data.json.jobs;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +16,8 @@ import api.handling.BuildState;
 import api.sources.ExternalApi;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
+import model.jobs.JenkinsJobImpl;
+import storage.database.JenkinsDatabase;
 
 /**
  * The {@link JsonJobImporter} provides a method of converting json responses 
@@ -25,6 +28,8 @@ public class JsonJobImporter {
    private static final String BUILDING_KEY = "building";
    private static final String NUMBER_KEY = "number";
    private static final String RESULT_KEY = "result";
+   private static final String JOBS_KEY = "jobs";
+   private static final String NAME_KEY = "name";
 
    /**
     * Default constructor.
@@ -71,6 +76,43 @@ public class JsonJobImporter {
          
          jenkinsJob.lastBuildNumberProperty().set( lastBuildNumber );
          jenkinsJob.lastBuildStatusProperty().set( lastBuildResult );
+      } catch ( JSONException exception ) {
+         System.out.println( exception.getMessage() );
+         return;
+      }
+   }//End Method
+   
+   /**
+    * Method to import the jobs from a json {@link String} into the given {@link JenkinsDatabase}.
+    * @param database the {@link JenkinsDatabase} to import to.
+    * @param response the response from the {@link ExternalApi}.
+    */
+   public void importJobs( JenkinsDatabase database, String response ) {
+      if ( response == null || database == null ) return;
+      try {
+         JSONObject object = new JSONObject( response );
+         
+         if ( !object.has( JOBS_KEY ) ) return;
+         
+         JSONArray jobs = object.getJSONArray( JOBS_KEY );
+         for ( int i = 0; i < jobs.length(); i++ ) {
+            try { //Protective wrapper for parse in constructor.
+               JSONObject job = jobs.getJSONObject( i );
+               if ( !job.has( NAME_KEY ) ) continue;
+               
+               String name = job.getString( NAME_KEY );
+               if ( name.trim().length() == 0 ) continue;
+               if ( database.hasJenkinsJob( name ) ) {
+                  continue;
+               }
+               
+               JenkinsJob jenkinsJob = new JenkinsJobImpl( name );
+               database.store( jenkinsJob );
+            } catch ( JSONException exception ) {
+               System.out.println( exception.getMessage() );
+               continue;
+            }
+         }
       } catch ( JSONException exception ) {
          System.out.println( exception.getMessage() );
          return;

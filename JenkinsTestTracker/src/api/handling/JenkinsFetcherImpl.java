@@ -11,6 +11,7 @@ package api.handling;
 import api.sources.ExternalApi;
 import data.json.jobs.JsonJobImporter;
 import model.jobs.JenkinsJob;
+import storage.database.JenkinsDatabase;
 
 /**
  * {@link JenkinsFetcherImpl} provides an implementation of the {@link Fetcher} interface
@@ -57,6 +58,15 @@ public class JenkinsFetcherImpl implements Fetcher {
             break;
          
       }
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void fetchJobs( JenkinsDatabase database ) {
+      if ( database == null ) return;
+      String response = externalApi.getJobsList();
+      jobsImporter.importJobs( database, response );
    }//End Method
 
 }//End Class
