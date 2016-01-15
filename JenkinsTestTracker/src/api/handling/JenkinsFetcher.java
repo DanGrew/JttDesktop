@@ -35,6 +35,12 @@ public interface JenkinsFetcher {
     * in the {@link JenkinsDatabase}.
     * @param database the {@link JenkinsDatabase} to populate.
     */
-   public void fetchJobs( JenkinsDatabase database );
+   public void fetchJobs();
+
+   /**
+    * Method to fetch the latest test results from the latest build of the given {@link JenkinsJob}.
+    * @param jenkinsJob the {@link JenkinsJob} to get results for.
+    */
+   public void fetchTestResults( JenkinsJob jenkinsJob );
 
 }//End Interface

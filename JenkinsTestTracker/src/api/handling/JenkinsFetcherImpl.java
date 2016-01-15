@@ -20,14 +20,17 @@ import storage.database.JenkinsDatabase;
  */
 public class JenkinsFetcherImpl implements JenkinsFetcher {
 
+   private JenkinsDatabase database;
    private ExternalApi externalApi;
    private JsonJobImporter jobsImporter;
    
    /**
     * Constructs a new {@link JenkinsFetcherImpl}.
+    * @param database the {@link JenkinsDatabase} to populate and update.
     * @param externalApi the {@link ExternalApi} to retrieve updates from.
     */
-   public JenkinsFetcherImpl( ExternalApi externalApi ) {
+   public JenkinsFetcherImpl( JenkinsDatabase database, ExternalApi externalApi ) {
+      this.database = database;
       this.externalApi = externalApi;
       jobsImporter = new JsonJobImporterImpl();
    }//End Constructor
@@ -57,17 +60,22 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
             break;
          default:
             break;
-         
       }
    }//End Method
 
    /**
     * {@inheritDoc}
     */
-   @Override public void fetchJobs( JenkinsDatabase database ) {
+   @Override public void fetchJobs() {
       if ( database == null ) return;
       String response = externalApi.getJobsList();
       jobsImporter.importJobs( database, response );
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void fetchTestResults( JenkinsJob jenkinsJob ) {
    }//End Method
 
 }//End Class
