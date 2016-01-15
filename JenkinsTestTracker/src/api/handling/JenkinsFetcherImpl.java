@@ -35,7 +35,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
    public JenkinsFetcherImpl( JenkinsDatabase database, ExternalApi externalApi ) {
       this.database = database;
       this.externalApi = externalApi;
-      jobsImporter = new JsonJobImporterImpl();
+      jobsImporter = new JsonJobImporterImpl( database );
       testsImporter = new JsonTestResultsImporterImpl( database );
    }//End Constructor
 
@@ -73,7 +73,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
    @Override public void fetchJobs() {
       if ( database == null ) return;
       String response = externalApi.getJobsList();
-      jobsImporter.importJobs( database, response );
+      jobsImporter.importJobs( response );
    }//End Method
 
    /**

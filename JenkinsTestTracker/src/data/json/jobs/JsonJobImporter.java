@@ -34,9 +34,8 @@ public interface JsonJobImporter {
 
    /**
     * Method to import the jobs from a json {@link String} into the given {@link JenkinsDatabase}.
-    * @param database the {@link JenkinsDatabase} to import to.
     * @param response the response from the {@link ExternalApi}.
     */
-   public void importJobs( JenkinsDatabase database, String response );//End Method
+   public void importJobs( String response );//End Method
 
 }//End Interface

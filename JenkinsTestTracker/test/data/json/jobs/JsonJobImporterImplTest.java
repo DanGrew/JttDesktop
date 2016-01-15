@@ -37,8 +37,8 @@ public class JsonJobImporterImplTest {
    
    @Before public void initialiseSystemUnderTest(){
       jenkinsJob = new JenkinsJobImpl( "anyName" );
-      systemUnderTest = new JsonJobImporterImpl();
       database = new JenkinsDatabaseImpl();
+      systemUnderTest = new JsonJobImporterImpl( database );
    }//End Method
 
    @Test public void shouldParseBuildingState() {
@@ -152,7 +152,7 @@ public class JsonJobImporterImplTest {
       Assert.assertNotNull( response );
       
       JenkinsDatabase database = new JenkinsDatabaseImpl();
-      systemUnderTest.importJobs( database, response );
+      systemUnderTest.importJobs( response );
       Assert.assertTrue( database.hasNoJenkinsJobs() );
       Assert.assertTrue( database.jenkinsJobs().isEmpty() );
    }//End Method
@@ -169,7 +169,7 @@ public class JsonJobImporterImplTest {
       Assert.assertNotNull( response );
       
       JenkinsDatabase database = new JenkinsDatabaseImpl();
-      systemUnderTest.importJobs( database, response );
+      systemUnderTest.importJobs( response );
       Assert.assertTrue( database.hasNoJenkinsJobs() );
       Assert.assertTrue( database.jenkinsJobs().isEmpty() );
    }//End Method
@@ -228,7 +228,7 @@ public class JsonJobImporterImplTest {
          expected.add( "Zebra!" );
       }
       
-      systemUnderTest.importJobs( database, response );
+      systemUnderTest.importJobs( response );
       Assert.assertEquals( 7 - missingJobs.size(), database.jenkinsJobs().size() );
       for ( int i = 0; i < 7 - missingJobs.size(); i ++ ) {
          Assert.assertEquals( expected.get( i ), database.jenkinsJobs().get( i ).nameProperty().get() );
@@ -237,11 +237,11 @@ public class JsonJobImporterImplTest {
    
    @Test public void shouldIgnoreNullDatabaseInJobList(){
       JenkinsDatabase database = Mockito.mock( JenkinsDatabase.class );
-      systemUnderTest.importJobs( database, null );
+      systemUnderTest.importJobs( null );
       Mockito.verifyNoMoreInteractions( database );
    }//End Method
    
    @Test public void shouldIgnoreNullResponseInJobList(){
-      systemUnderTest.importJobs( null, "anything" );
+      systemUnderTest.importJobs( "anything" );
    }//End Method
 }//End Class

@@ -31,10 +31,15 @@ public class JsonJobImporterImpl implements JsonJobImporter {
    private static final String JOBS_KEY = "jobs";
    private static final String NAME_KEY = "name";
 
+   private JenkinsDatabase database;
+   
    /**
-    * Default constructor.
+    * Constructs a new {@link JsonJobImporterImpl}.
+    * @param database the {@link JenkinsDatabase} to import to.
     */
-   public JsonJobImporterImpl() {}
+   public JsonJobImporterImpl( JenkinsDatabase database ) {
+      this.database = database;
+   }//End Constructor
 
    /**
     * Method to update the state of the build in the given {@link JenkinsJob}.
@@ -84,10 +89,9 @@ public class JsonJobImporterImpl implements JsonJobImporter {
    
    /**
     * Method to import the jobs from a json {@link String} into the given {@link JenkinsDatabase}.
-    * @param database the {@link JenkinsDatabase} to import to.
     * @param response the response from the {@link ExternalApi}.
     */
-   @Override public void importJobs( JenkinsDatabase database, String response ) {
+   @Override public void importJobs( String response ) {
       if ( response == null || database == null ) return;
       try {
          JSONObject object = new JSONObject( response );
