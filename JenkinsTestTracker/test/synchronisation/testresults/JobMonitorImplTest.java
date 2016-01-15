@@ -44,7 +44,7 @@ public class JobMonitorImplTest {
       JenkinsJob job = new JenkinsJobImpl( "first job" );
       database.store( job );
       
-      Mockito.verify( fetcher ).fetchTestResults( job );
+      Mockito.verify( fetcher ).updateTestResults( job );
       Mockito.verifyNoMoreInteractions( fetcher );
    }//End Method
    
@@ -54,30 +54,30 @@ public class JobMonitorImplTest {
       JenkinsJob job = new JenkinsJobImpl( "second job" );
       database.store( job );
       
-      Mockito.verify( fetcher ).fetchTestResults( job );
+      Mockito.verify( fetcher ).updateTestResults( job );
       Mockito.verifyNoMoreInteractions( fetcher );
    }//End Method
    
    @Test public void shouldFetchTestResultsForNewLastBuildNumber() {
       JenkinsJob storedJob = new JenkinsJobImpl( "already stored" );
       database.store( storedJob );
-      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchTestResults( storedJob );
+      Mockito.verify( fetcher, Mockito.times( 1 ) ).updateTestResults( storedJob );
       
       storedJob.lastBuildNumberProperty().set( 21 );
-      Mockito.verify( fetcher, Mockito.times( 2 ) ).fetchTestResults( storedJob );
+      Mockito.verify( fetcher, Mockito.times( 2 ) ).updateTestResults( storedJob );
       Mockito.verifyNoMoreInteractions( fetcher );
    }//End Method
    
    @Test public void shouldNotFetchTestResultsForNewLastBuildNumberIfRemovedFromDatabase() {
       JenkinsJob storedJob = new JenkinsJobImpl( "already stored" );
       database.store( storedJob );
-      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchTestResults( storedJob );
+      Mockito.verify( fetcher, Mockito.times( 1 ) ).updateTestResults( storedJob );
       
       database.removeJenkinsJob( storedJob.nameProperty().get() );
       Assert.assertFalse( database.hasJenkinsJob( storedJob.nameProperty().get() ) );
       
       storedJob.lastBuildNumberProperty().set( 21 );
-      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchTestResults( storedJob );
+      Mockito.verify( fetcher, Mockito.times( 1 ) ).updateTestResults( storedJob );
       Mockito.verifyNoMoreInteractions( fetcher );
    }//End Method
    
@@ -87,9 +87,9 @@ public class JobMonitorImplTest {
       JenkinsJob job3 = new JenkinsJobImpl( "job3" );
       Change< JenkinsJob > change = new SimpleAddChange< JenkinsJob >( 0, 3, FXCollections.observableArrayList( job1, job2, job3 ) );
       systemUnderTest.onChanged( change );
-      Mockito.verify( fetcher ).fetchTestResults( job1 );
-      Mockito.verify( fetcher ).fetchTestResults( job2 );
-      Mockito.verify( fetcher ).fetchTestResults( job3 );
+      Mockito.verify( fetcher ).updateTestResults( job1 );
+      Mockito.verify( fetcher ).updateTestResults( job2 );
+      Mockito.verify( fetcher ).updateTestResults( job3 );
       Mockito.verifyNoMoreInteractions( fetcher );
    }//End Method
 

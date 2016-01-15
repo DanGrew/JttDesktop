@@ -57,11 +57,11 @@ public class JobMonitorImpl implements ListChangeListener< JenkinsJob > {
     */
    private void handleNewJob( JenkinsJob job ) {
       ChangeListener< Number > lastBuildNumberListener = ( source, old, updated ) -> {
-         fetcher.fetchTestResults( job );
+         fetcher.updateTestResults( job );
       };
       lastBuildNumberListeners.put( job, lastBuildNumberListener );
       job.lastBuildNumberProperty().addListener( lastBuildNumberListener );
-      fetcher.fetchTestResults( job );
+      fetcher.updateTestResults( job );
    }//End Method
    
    /**

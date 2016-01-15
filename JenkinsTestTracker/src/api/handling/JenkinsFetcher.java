@@ -41,6 +41,6 @@ public interface JenkinsFetcher {
     * Method to fetch the latest test results from the latest build of the given {@link JenkinsJob}.
     * @param jenkinsJob the {@link JenkinsJob} to get results for.
     */
-   public void fetchTestResults( JenkinsJob jenkinsJob );
+   public void updateTestResults( JenkinsJob jenkinsJob );
 
 }//End Interface

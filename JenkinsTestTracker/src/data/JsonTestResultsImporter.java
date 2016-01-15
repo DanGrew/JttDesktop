@@ -18,8 +18,8 @@ public interface JsonTestResultsImporter {
 
    /**
     * Method to parse the input into {@link TestClass}es and {@link TestCase}s.
-    * @param input the input data to parse.
+    * @param response the input data to parse.
     */
-   public void parse( String input );
+   public void updateTestResults( String response );
 
 }//End Interface

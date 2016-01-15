@@ -9,8 +9,10 @@
 package api.handling;
 
 import api.sources.ExternalApi;
+import data.JsonTestResultsImporter;
 import data.json.jobs.JsonJobImporter;
 import data.json.jobs.JsonJobImporterImpl;
+import data.json.tests.JsonTestResultsImporterImpl;
 import model.jobs.JenkinsJob;
 import storage.database.JenkinsDatabase;
 
@@ -23,6 +25,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
    private JenkinsDatabase database;
    private ExternalApi externalApi;
    private JsonJobImporter jobsImporter;
+   private JsonTestResultsImporter testsImporter;
    
    /**
     * Constructs a new {@link JenkinsFetcherImpl}.
@@ -33,6 +36,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       this.database = database;
       this.externalApi = externalApi;
       jobsImporter = new JsonJobImporterImpl();
+      testsImporter = new JsonTestResultsImporterImpl( database );
    }//End Constructor
 
    /**
@@ -75,7 +79,10 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
    /**
     * {@inheritDoc}
     */
-   @Override public void fetchTestResults( JenkinsJob jenkinsJob ) {
+   @Override public void updateTestResults( JenkinsJob jenkinsJob ) {
+      if ( jenkinsJob == null ) return;
+      String response = externalApi.getLatestTestResults( jenkinsJob );
+      testsImporter.updateTestResults( response );
    }//End Method
 
 }//End Class

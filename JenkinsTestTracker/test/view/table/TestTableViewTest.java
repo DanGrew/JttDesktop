@@ -43,7 +43,7 @@ public class TestTableViewTest {
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
       database = new JenkinsDatabaseImpl();
       JsonTestResultsImporter importer = new JsonTestResultsImporterImpl( database );
-      importer.parse( input );
+      importer.updateTestResults( input );
       JavaFxInitializer.startPlatform();
       systemUnderTest = new TestTableView( database );
       

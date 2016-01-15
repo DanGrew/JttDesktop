@@ -50,7 +50,7 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
    /**
     * {@inheritDoc}
     */
-   @Override public void parse( String input ) {
+   @Override public void updateTestResults( String input ) {
       if ( input == null || database == null ) {
          return;
       }

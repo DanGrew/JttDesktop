@@ -36,4 +36,11 @@ public interface ExternalApi {
     */
    public String getJobsList();
 
+   /**
+    * Method to get the results of the latest build of the given {@link JenkinsJob}.
+    * @param jenkinsJob the {@link JenkinsJob} in question.
+    * @return the {@link String} response from the api.
+    */
+   public String getLatestTestResults( JenkinsJob jenkinsJob );
+
 }//End Interface

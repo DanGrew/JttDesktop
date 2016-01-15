@@ -36,7 +36,7 @@ public class JenkinsFetcherImplTest {
       database = new JenkinsDatabaseImpl();
       jenkinsJob = new JenkinsJobImpl( "JenkinsJob" );
       database.store( jenkinsJob );
-      systemUnderTest = new JenkinsFetcherImpl( externalApi );
+      systemUnderTest = new JenkinsFetcherImpl( database, externalApi );
    }//End Method
 
    @Test public void shouldUpdateJobBuilding() {
@@ -100,18 +100,12 @@ public class JenkinsFetcherImplTest {
       Mockito.verify( externalApi, Mockito.times( 0 ) ).getLastBuildBuildingState( Mockito.any() );
    }//End Method
    
-   @Test public void shouldNotFetchJobsWithNullDatabase(){
-      JenkinsDatabase database = Mockito.mock( JenkinsDatabase.class );
-      systemUnderTest.fetchJobs( database );
-      Mockito.verifyNoMoreInteractions( database );
-   }//End Method
-   
    @Test public void shouldFetchAllJobs(){
       String response = TestCommon.readFileIntoString( getClass(), "jobs-list.json" );
       Assert.assertNotNull( response );
       Mockito.when( externalApi.getJobsList() ).thenReturn( response );
       
-      systemUnderTest.fetchJobs( database );
+      systemUnderTest.fetchJobs();
       Assert.assertEquals( 8, database.jenkinsJobs().size() );
       Assert.assertEquals( jenkinsJob.nameProperty().get(), database.jenkinsJobs().get( 0 ).nameProperty().get() );
       Assert.assertEquals( "ClassicStuff", database.jenkinsJobs().get( 1 ).nameProperty().get() );
@@ -121,6 +115,21 @@ public class JenkinsFetcherImplTest {
       Assert.assertEquals( "Silly Project", database.jenkinsJobs().get( 5 ).nameProperty().get() );
       Assert.assertEquals( "SomeOtherTypeOfProject", database.jenkinsJobs().get( 6 ).nameProperty().get() );
       Assert.assertEquals( "Zebra!", database.jenkinsJobs().get( 7 ).nameProperty().get() );
+   }//End Method
+   
+   @Test public void shouldNotFetchTestResultsForNullJob(){
+      systemUnderTest.updateTestResults( null );
+      Mockito.verifyZeroInteractions( externalApi );
+   }//End Method
+   
+   @Test public void shouldFetchTestResultsJob(){
+      String response = TestCommon.readFileIntoString( getClass(), "single-test-case.json" );
+      Assert.assertNotNull( response );
+      Mockito.when( externalApi.getLatestTestResults( jenkinsJob) ).thenReturn( response );
+      
+      systemUnderTest.updateTestResults( jenkinsJob );
+      Assert.assertEquals( 1, database.testClasses().size() );
+      Assert.assertEquals( 1, database.testClasses().get( 0 ).testCasesList().size() );
    }//End Method
    
 }//End Class
