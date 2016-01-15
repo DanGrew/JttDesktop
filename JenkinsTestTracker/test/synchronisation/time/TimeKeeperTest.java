@@ -34,8 +34,6 @@ public class TimeKeeperTest {
    
    @Test public void shouldRunTaskAtLeastOnceBeforeAndOnceOnInterval() throws InterruptedException{
       new TimeKeeper( fetcher, 1000 );
-      Thread.sleep( 1 );
-      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobs();;
       Thread.sleep( 1000 );
       Mockito.verify( fetcher, Mockito.times( 2 ) ).fetchJobs();
    }//End Method
@@ -44,8 +42,7 @@ public class TimeKeeperTest {
       TimeKeeper systemUnderTest = new TimeKeeper( fetcher, 1000 );
       Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobs();
       systemUnderTest.setInterval( 2000 );
-      Thread.sleep( 1 );
-      Mockito.verify( fetcher, Mockito.times( 2 ) ).fetchJobs();
+      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobs();
       systemUnderTest.setInterval( 1 );
       Thread.sleep( 10 );
       Mockito.verify( fetcher, Mockito.atLeast( 10 ) ).fetchJobs();
