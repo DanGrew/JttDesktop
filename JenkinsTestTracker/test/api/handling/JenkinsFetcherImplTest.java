@@ -125,11 +125,35 @@ public class JenkinsFetcherImplTest {
    @Test public void shouldFetchTestResultsJob(){
       String response = TestCommon.readFileIntoString( getClass(), "single-test-case.json" );
       Assert.assertNotNull( response );
-      Mockito.when( externalApi.getLatestTestResults( jenkinsJob) ).thenReturn( response );
+      Mockito.when( externalApi.getLatestTestResults( jenkinsJob ) ).thenReturn( response );
       
       systemUnderTest.updateTestResults( jenkinsJob );
       Assert.assertEquals( 1, database.testClasses().size() );
       Assert.assertEquals( 1, database.testClasses().get( 0 ).testCasesList().size() );
+   }//End Method
+   
+   @Test public void shouldFetchJobsAndUpdateDetailsOnAllNotBuilding(){
+      JenkinsFetcher spy = Mockito.spy( systemUnderTest );
+      
+      JenkinsJob buildingJob1 = new JenkinsJobImpl( "buildingJob1" );
+      database.store( buildingJob1 );
+      buildingJob1.buildStateProperty().set( BuildState.Building );
+      JenkinsJob builtJob1 = new JenkinsJobImpl( "builtJob1" );
+      database.store( builtJob1 );
+      JenkinsJob buildingJob2 = new JenkinsJobImpl( "buildingJob2" );
+      database.store( buildingJob2 );
+      buildingJob2.buildStateProperty().set( BuildState.Building );
+      JenkinsJob builtJob2 = new JenkinsJobImpl( "builtJob2" );
+      database.store( builtJob2 );
+      
+      spy.fetchJobsAndUpdateDetails();
+      Mockito.verify( spy ).fetchJobs();
+      Mockito.verify( spy ).updateBuildState( buildingJob1 );
+      Mockito.verify( spy ).updateBuildState( builtJob1 );
+      Mockito.verify( spy ).updateBuildState( buildingJob2 );
+      Mockito.verify( spy ).updateBuildState( builtJob2 );
+      Mockito.verify( spy ).updateJobDetails( builtJob1 );
+      Mockito.verify( spy ).updateJobDetails( builtJob2 );
    }//End Method
    
 }//End Class

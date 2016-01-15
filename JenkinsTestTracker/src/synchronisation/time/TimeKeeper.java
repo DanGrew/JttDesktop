@@ -42,7 +42,7 @@ public class TimeKeeper {
 
       TimerTask task = new TimerTask() {
          @Override public void run() {
-            fetcher.fetchJobs();
+            fetcher.fetchJobsAndUpdateDetails();
          }
       };
       timer = new Timer();

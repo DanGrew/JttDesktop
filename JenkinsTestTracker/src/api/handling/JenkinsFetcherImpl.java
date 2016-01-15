@@ -85,4 +85,12 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       testsImporter.updateTestResults( response );
    }//End Method
 
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void fetchJobsAndUpdateDetails() {
+      fetchJobs();
+      database.jenkinsJobs().forEach( job -> updateJobDetails( job ) );
+   }//End Method
+
 }//End Class

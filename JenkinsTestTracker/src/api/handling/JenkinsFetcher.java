@@ -42,5 +42,11 @@ public interface JenkinsFetcher {
     * @param jenkinsJob the {@link JenkinsJob} to get results for.
     */
    public void updateTestResults( JenkinsJob jenkinsJob );
+   
+   /**
+    * Method to {@link #fetchJobs()} and {@link #updateJobDetails(JenkinsJob)} for all
+    * {@link JenkinsJob}s.
+    */
+   public void fetchJobsAndUpdateDetails();
 
 }//End Interface

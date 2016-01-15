@@ -27,25 +27,25 @@ public class TimeKeeperTest {
    
    @Test public void shouldRecordSomeInteractionsWhenRunQuickly() throws InterruptedException{
       new TimeKeeper( fetcher, 1 );
-      Mockito.verify( fetcher, Mockito.atLeast( 1 ) ).fetchJobs();;
+      Mockito.verify( fetcher, Mockito.atLeast( 1 ) ).fetchJobsAndUpdateDetails();;
       Thread.sleep( 10 );
-      Mockito.verify( fetcher, Mockito.atLeast( 8 ) ).fetchJobs();
+      Mockito.verify( fetcher, Mockito.atLeast( 8 ) ).fetchJobsAndUpdateDetails();
    }//End Method
    
    @Test public void shouldRunTaskAtLeastOnceBeforeAndOnceOnInterval() throws InterruptedException{
       new TimeKeeper( fetcher, 1000 );
-      Thread.sleep( 1000 );
-      Mockito.verify( fetcher, Mockito.times( 2 ) ).fetchJobs();
+      Thread.sleep( 1500 );
+      Mockito.verify( fetcher, Mockito.times( 2 ) ).fetchJobsAndUpdateDetails();
    }//End Method
    
    @Test public void shouldRecordSomeInteractionsWhenIntervalIsChanged() throws InterruptedException{
       TimeKeeper systemUnderTest = new TimeKeeper( fetcher, 1000 );
-      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobs();
+      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobsAndUpdateDetails();
       systemUnderTest.setInterval( 2000 );
-      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobs();
+      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobsAndUpdateDetails();
       systemUnderTest.setInterval( 1 );
       Thread.sleep( 10 );
-      Mockito.verify( fetcher, Mockito.atLeast( 10 ) ).fetchJobs();
+      Mockito.verify( fetcher, Mockito.atLeast( 5 ) ).fetchJobsAndUpdateDetails();
    }//End Method
 
 }//End Class
