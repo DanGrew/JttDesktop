@@ -29,7 +29,7 @@ public class JenkinsFetcherImplTest {
    private JenkinsJob jenkinsJob;
    private JenkinsDatabase database;
    private ExternalApi externalApi;
-   private Fetcher systemUnderTest;
+   private JenkinsFetcher systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       externalApi = Mockito.mock( ExternalApi.class );

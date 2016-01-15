@@ -17,8 +17,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import data.TestResultsImporter;
-import data.json.tests.JsonTestResultImporter;
+import data.JsonTestResultsImporter;
+import data.json.tests.JsonTestResultsImporterImpl;
 import model.tests.TestCase;
 import model.tests.TestClass;
 import model.tests.TestResultStatus;
@@ -28,7 +28,7 @@ import storage.database.TestClassKeyImpl;
 import utility.TestCommon;
 
 /**
- * {@link JsonTestResultImporter} test.
+ * {@link JsonTestResultsImporterImpl} test.
  */
 public class JsonTestResultImporterTest {
 
@@ -48,18 +48,18 @@ public class JsonTestResultImporterTest {
    }//End Enum
    
    private JenkinsDatabase database;
-   private TestResultsImporter systemUnderTest;
+   private JsonTestResultsImporter systemUnderTest;
    
    /**
-    * Method to initialise the {@link JsonTestResultImporter} being tested.
+    * Method to initialise the {@link JsonTestResultsImporterImpl} being tested.
     */
    @Before public void initialiseSystemUnderTest() throws IOException{
       database = new JenkinsDatabaseImpl();
-      systemUnderTest = new JsonTestResultImporter( database );
+      systemUnderTest = new JsonTestResultsImporterImpl( database );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullDatabase(){
-      systemUnderTest = new JsonTestResultImporter( null );
+      systemUnderTest = new JsonTestResultsImporterImpl( null );
    }//End Method
    
    @Test public void shouldImportSingleTestCase() {

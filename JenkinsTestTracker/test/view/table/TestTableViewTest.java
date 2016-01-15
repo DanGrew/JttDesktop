@@ -13,8 +13,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import data.TestResultsImporter;
-import data.json.tests.JsonTestResultImporter;
+import data.JsonTestResultsImporter;
+import data.json.tests.JsonTestResultsImporterImpl;
 import graphics.JavaFxInitializer;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
@@ -42,7 +42,7 @@ public class TestTableViewTest {
    @Before public void initialiseSystemUnderTest(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
       database = new JenkinsDatabaseImpl();
-      TestResultsImporter importer = new JsonTestResultImporter( database );
+      JsonTestResultsImporter importer = new JsonTestResultsImporterImpl( database );
       importer.parse( input );
       JavaFxInitializer.startPlatform();
       systemUnderTest = new TestTableView( database );

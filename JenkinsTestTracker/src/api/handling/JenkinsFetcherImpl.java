@@ -10,14 +10,15 @@ package api.handling;
 
 import api.sources.ExternalApi;
 import data.json.jobs.JsonJobImporter;
+import data.json.jobs.JsonJobImporterImpl;
 import model.jobs.JenkinsJob;
 import storage.database.JenkinsDatabase;
 
 /**
- * {@link JenkinsFetcherImpl} provides an implementation of the {@link Fetcher} interface
+ * {@link JenkinsFetcherImpl} provides an implementation of the {@link JenkinsFetcher} interface
  * for updating {@link JenkinsJob}s.
  */
-public class JenkinsFetcherImpl implements Fetcher {
+public class JenkinsFetcherImpl implements JenkinsFetcher {
 
    private ExternalApi externalApi;
    private JsonJobImporter jobsImporter;
@@ -28,7 +29,7 @@ public class JenkinsFetcherImpl implements Fetcher {
     */
    public JenkinsFetcherImpl( ExternalApi externalApi ) {
       this.externalApi = externalApi;
-      jobsImporter = new JsonJobImporter();
+      jobsImporter = new JsonJobImporterImpl();
    }//End Constructor
 
    /**

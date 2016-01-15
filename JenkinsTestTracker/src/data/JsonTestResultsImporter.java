@@ -14,7 +14,7 @@ import model.tests.TestClass;
 /**
  * Interface defining the api for importing test results from Jenkins.
  */
-public interface TestResultsImporter {
+public interface JsonTestResultsImporter {
 
    /**
     * Method to parse the input into {@link TestClass}es and {@link TestCase}s.

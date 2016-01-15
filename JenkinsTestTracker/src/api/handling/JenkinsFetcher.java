@@ -13,10 +13,10 @@ import model.jobs.JenkinsJob;
 import storage.database.JenkinsDatabase;
 
 /**
- * The {@link Fetcher} describes an object that can retrieve updated information
+ * The {@link JenkinsFetcher} describes an object that can retrieve updated information
  * from an {@link ExternalApi} and update {@link JenkinsJob}s with responses.
  */
-public interface Fetcher {
+public interface JenkinsFetcher {
 
    /**
     * Method to update the build state of the given {@link JenkinsJob}.

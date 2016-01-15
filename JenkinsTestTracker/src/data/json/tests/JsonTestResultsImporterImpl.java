@@ -12,7 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import data.TestResultsImporter;
+import data.JsonTestResultsImporter;
 import model.tests.TestCase;
 import model.tests.TestCaseImpl;
 import model.tests.TestClass;
@@ -21,9 +21,9 @@ import model.tests.TestResultStatus;
 import storage.database.JenkinsDatabase;
 
 /**
- * The {@link JsonTestResultImporter} defines a {@link TestResultsImporter} specifically for JSON data.
+ * The {@link JsonTestResultsImporterImpl} defines a {@link JsonTestResultsImporter} specifically for JSON data.
  */
-public class JsonTestResultImporter implements TestResultsImporter {
+public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
 
    private static final String CHILD_REPORTS = "childReports";
    private static final String RESULT = "result";
@@ -38,10 +38,10 @@ public class JsonTestResultImporter implements TestResultsImporter {
    private JenkinsDatabase database;
    
    /**
-    * Constructs a new {@link JsonTestResultImporter}.
+    * Constructs a new {@link JsonTestResultsImporterImpl}.
     * @param database the {@link JenkinsDatabase} to import to.
     */
-   public JsonTestResultImporter( JenkinsDatabase database ) {
+   public JsonTestResultsImporterImpl( JenkinsDatabase database ) {
       if ( database == null ) throw new IllegalArgumentException( "Null Jenkins Database provided." );
       
       this.database = database;

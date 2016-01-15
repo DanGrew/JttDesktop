@@ -27,9 +27,9 @@ import storage.database.JenkinsDatabaseImpl;
 import utility.TestCommon;
 
 /**
- * {@link JsonJobImporter} test.
+ * {@link JsonJobImporterImpl} test.
  */
-public class JsonJobImporterTest {
+public class JsonJobImporterImplTest {
    
    private JenkinsDatabase database;
    private JenkinsJob jenkinsJob;
@@ -37,7 +37,7 @@ public class JsonJobImporterTest {
    
    @Before public void initialiseSystemUnderTest(){
       jenkinsJob = new JenkinsJobImpl( "anyName" );
-      systemUnderTest = new JsonJobImporter();
+      systemUnderTest = new JsonJobImporterImpl();
       database = new JenkinsDatabaseImpl();
    }//End Method
 
