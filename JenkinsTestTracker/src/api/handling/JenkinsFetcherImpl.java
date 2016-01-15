@@ -33,6 +33,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     * @param externalApi the {@link ExternalApi} to retrieve updates from.
     */
    public JenkinsFetcherImpl( JenkinsDatabase database, ExternalApi externalApi ) {
+      if ( database == null ) throw new IllegalArgumentException( "Null database provided." );
+      if ( externalApi == null ) throw new IllegalArgumentException( "Null api provided." );
+      
       this.database = database;
       this.externalApi = externalApi;
       jobsImporter = new JsonJobImporterImpl( database );
@@ -71,7 +74,6 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     * {@inheritDoc}
     */
    @Override public void fetchJobs() {
-      if ( database == null ) return;
       String response = externalApi.getJobsList();
       jobsImporter.importJobs( response );
    }//End Method

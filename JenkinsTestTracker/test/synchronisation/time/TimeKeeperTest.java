@@ -40,9 +40,7 @@ public class TimeKeeperTest {
    
    @Test public void shouldRecordSomeInteractionsWhenIntervalIsChanged() throws InterruptedException{
       TimeKeeper systemUnderTest = new TimeKeeper( fetcher, 1000 );
-      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobsAndUpdateDetails();
       systemUnderTest.setInterval( 2000 );
-      Mockito.verify( fetcher, Mockito.times( 1 ) ).fetchJobsAndUpdateDetails();
       systemUnderTest.setInterval( 1 );
       Thread.sleep( 10 );
       Mockito.verify( fetcher, Mockito.atLeast( 5 ) ).fetchJobsAndUpdateDetails();

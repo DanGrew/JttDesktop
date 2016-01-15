@@ -156,4 +156,12 @@ public class JenkinsFetcherImplTest {
       Mockito.verify( spy ).updateJobDetails( builtJob2 );
    }//End Method
    
+   @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullDatabaseInConstructor(){
+      systemUnderTest = new JenkinsFetcherImpl( null, externalApi );
+   }//End Method
+
+   @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullApiInConstructor(){
+      systemUnderTest = new JenkinsFetcherImpl( database, null );
+   }//End Method
+   
 }//End Class
