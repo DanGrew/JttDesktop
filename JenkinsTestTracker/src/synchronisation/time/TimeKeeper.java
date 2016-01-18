@@ -21,14 +21,14 @@ public class TimeKeeper {
 
    private JenkinsFetcher fetcher;
    private Timer timer;
-   private long interval;
+   private Long interval;
    
    /**
     * Constructs a new {@link TimeKeeper}.
     * @param fetcher the {@link JenkinsFetcher} to use to fetch data.
-    * @param interval the interval of the polling.
+    * @param interval the interval of the polling, null requires manual polling.
     */
-   public TimeKeeper( JenkinsFetcher fetcher, long interval ) {
+   public TimeKeeper( JenkinsFetcher fetcher, Long interval ) {
       this.fetcher = fetcher;
       this.interval = interval;
       schedule();
@@ -39,10 +39,11 @@ public class TimeKeeper {
     */
    private void schedule(){
       if ( timer != null ) timer.cancel();
-
+      if ( interval == null ) return;
+      
       TimerTask task = new TimerTask() {
          @Override public void run() {
-            fetcher.fetchJobsAndUpdateDetails();
+            poll();
          }
       };
       timer = new Timer();
@@ -52,11 +53,19 @@ public class TimeKeeper {
    /**
     * Method to set the interval to poll at. This will cancel the current and 
     * start a fresh, causing an immediate poll.
-    * @param newInterval the new interval to poll at.
+    * @param newInterval the new interval to poll at. Null will cancel current 
+    * {@link Timer} and require manual polling.
     */
-   public void setInterval( long newInterval ) {
+   public void setInterval( Long newInterval ) {
       this.interval = newInterval;
       schedule();
+   }//End Method
+
+   /**
+    * Method to manually poll.
+    */
+   public void poll() {
+      fetcher.fetchJobsAndUpdateDetails();
    }//End Method
 
 }//End Class
