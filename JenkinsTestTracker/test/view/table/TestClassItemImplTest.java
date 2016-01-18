@@ -36,14 +36,14 @@ public class TestClassItemImplTest {
       testClass1 = new TestClassImpl( "somewhere.something.ClassName" );
       pass = new TestCaseImpl( "shouldBePassing", testClass1 );
       pass.statusProperty().set( TestResultStatus.PASSED );
-      testClass1.testCasesList().add( pass );
+      testClass1.addTestCase( pass );
       testClass1Item = new TestClassItemImpl( testClass1 );
       
       testClass2 = new TestClassImpl( "another.place.SomethingElse" );
       fail = new TestCaseImpl( "shouldBeFailing", testClass2 );
       fail.statusProperty().set( TestResultStatus.FAILED );
-      testClass2.testCasesList().add( pass );
-      testClass2.testCasesList().add( fail );
+      testClass2.addTestCase( pass );
+      testClass2.addTestCase( fail );
       testClass2Item = new TestClassItemImpl( testClass2 );
    }//End Method
    

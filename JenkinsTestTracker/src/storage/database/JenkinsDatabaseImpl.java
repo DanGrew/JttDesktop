@@ -57,6 +57,20 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
    @Override public boolean hasJenkinsJob( String key ) {
       return jenkinsJobs.has( key );
    }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean containsTestClass( TestClass testClass ) {
+      return testClasses.objectList().contains( testClass );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean containsJenkinsJob( JenkinsJob jenkinsJob ) {
+      return jenkinsJobs.objectList().contains( jenkinsJob );
+   }//End Method
 
    /**
     * {@inheritDoc}
@@ -107,6 +121,26 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
     */
    @Override public JenkinsJob removeJenkinsJob( String key ) {
       return jenkinsJobs.remove( key );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean removeTestClass( TestClass testClass ) {
+      if ( testClass == null ) return false;
+      TestClass removed = testClasses.remove( new TestClassKeyImpl( 
+               testClass.nameProperty().get(), testClass.locationProperty().get() ) 
+      );
+      return removed != null;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean removeJenkinsJob( JenkinsJob jenkinsJob ) {
+      if ( jenkinsJob == null ) return false;
+      JenkinsJob removed = jenkinsJobs.remove( jenkinsJob.nameProperty().get() );
+      return removed != null;
    }//End Method
 
    /**

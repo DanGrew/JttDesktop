@@ -114,10 +114,18 @@ public class JenkinsDatabaseImplTest {
    /**
     * Prove that a {@link TestClass} can be removed.
     */
-   @Test public void shouldRemoveTestClass(){
+   @Test public void shouldRemoveTestClassUsingKey(){
       systemUnderTest.store( testClass );
       Assert.assertTrue( systemUnderTest.hasTestClass( new TestClassKeyImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION ) ) );
       Assert.assertEquals( testClass, systemUnderTest.removeTestClass( new TestClassKeyImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION ) ) );
+      Assert.assertFalse( systemUnderTest.hasTestClass( new TestClassKeyImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION ) ) );
+      Assert.assertEquals( 0, systemUnderTest.testClasses().size() );
+   }//End Method
+   
+   @Test public void shouldRemoveTestClassUsingInstance(){
+      systemUnderTest.store( testClass );
+      Assert.assertTrue( systemUnderTest.hasTestClass( new TestClassKeyImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION ) ) );
+      Assert.assertTrue( systemUnderTest.removeTestClass( testClass ) );
       Assert.assertFalse( systemUnderTest.hasTestClass( new TestClassKeyImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION ) ) );
       Assert.assertEquals( 0, systemUnderTest.testClasses().size() );
    }//End Method
@@ -144,18 +152,24 @@ public class JenkinsDatabaseImplTest {
       Assert.assertTrue( systemUnderTest.testClasses().contains( testClass ) );
    }//End Method
    
-   @Test public void shouldNotRemoveNullTestClass(){
-      Assert.assertNull( systemUnderTest.removeTestClass( null ) );
+   @Test public void shouldNotRemoveNullTestClassWithKey(){
+      TestClassKey testClass = null;
+      Assert.assertNull( systemUnderTest.removeTestClass( testClass ) );
+   }//End Method
+   
+   @Test public void shouldNotRemoveNullTestClassWithInstance(){
+      TestClass testClass = null;
+      Assert.assertFalse( systemUnderTest.removeTestClass( testClass ) );
    }//End Method
    
    @Test public void shouldProvideJenkinsJobs(){
       Assert.assertNotNull( systemUnderTest.jenkinsJobs() );
       Assert.assertTrue( systemUnderTest.jenkinsJobs().isEmpty() );
-      JenkinsJob mockJob = Mockito.mock( JenkinsJob.class );
-      systemUnderTest.jenkinsJobs().add( mockJob );
+      JenkinsJob anotherJob = new JenkinsJobImpl( "some random job" );
+      systemUnderTest.store( anotherJob );
       Assert.assertFalse( systemUnderTest.jenkinsJobs().isEmpty() );
-      Assert.assertTrue( systemUnderTest.jenkinsJobs().contains( mockJob ) );
-   }
+      Assert.assertTrue( systemUnderTest.jenkinsJobs().contains( anotherJob ) );
+   }//End Method
    
    @Test public void shouldStoreJenkinsJob() {
       systemUnderTest.store( jenkinsJob );
@@ -203,10 +217,18 @@ public class JenkinsDatabaseImplTest {
       Assert.assertNull( systemUnderTest.getJenkinsJob( null ) );
    }//End Method
    
-   @Test public void shouldRemoveJenkinsJob(){
+   @Test public void shouldRemoveJenkinsJobUsingKey(){
       systemUnderTest.store( jenkinsJob );
       Assert.assertTrue( systemUnderTest.hasJenkinsJob( JENKINS_JOB_NAME ) );
       Assert.assertEquals( jenkinsJob, systemUnderTest.removeJenkinsJob( JENKINS_JOB_NAME ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsJob( JENKINS_JOB_NAME ) );
+      Assert.assertEquals( 0, systemUnderTest.jenkinsJobs().size() );
+   }//End Method
+   
+   @Test public void shouldRemoveJenkinsJobUsinginstance(){
+      systemUnderTest.store( jenkinsJob );
+      Assert.assertTrue( systemUnderTest.hasJenkinsJob( JENKINS_JOB_NAME ) );
+      Assert.assertTrue( systemUnderTest.removeJenkinsJob( jenkinsJob ) );
       Assert.assertFalse( systemUnderTest.hasJenkinsJob( JENKINS_JOB_NAME ) );
       Assert.assertEquals( 0, systemUnderTest.jenkinsJobs().size() );
    }//End Method
@@ -227,8 +249,14 @@ public class JenkinsDatabaseImplTest {
       Assert.assertTrue( systemUnderTest.jenkinsJobs().contains( jenkinsJob ) );
    }//End Method
    
-   @Test public void shouldNotRemoveNullJenkinsJob(){
-      Assert.assertNull( systemUnderTest.removeJenkinsJob( null ) );
+   @Test public void shouldNotRemoveNullJenkinsJobWithKey(){
+      String name = null;
+      Assert.assertNull( systemUnderTest.removeJenkinsJob( name ) );
+   }//End Method
+   
+   @Test public void shouldNotRemoveNullJenkinsJobWithInstance(){
+      JenkinsJob job = null;
+      Assert.assertFalse( systemUnderTest.removeJenkinsJob( job ) );
    }//End Method
    
    @Test public void shouldNotStoreJenkinsJobWithNoName(){
@@ -239,4 +267,14 @@ public class JenkinsDatabaseImplTest {
       Assert.assertFalse( systemUnderTest.hasJenkinsJob( null ) );
       Assert.assertNull( systemUnderTest.getJenkinsJob( null ) );
    }//End Method   
+   
+   @Test public void shouldContainTestClasses(){
+      systemUnderTest.store( testClass );
+      Assert.assertTrue( systemUnderTest.containsTestClass( testClass ) );
+   }//End Method
+   
+   @Test public void shouldContainJenkinsJob(){
+      systemUnderTest.store( jenkinsJob );
+      Assert.assertTrue( systemUnderTest.containsJenkinsJob( jenkinsJob ) );
+   }//End Method
 }//End Class

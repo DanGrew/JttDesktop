@@ -279,7 +279,7 @@ public class TestTableViewTest {
       TreeItem< TestTableItem > firstItem = treeTableView.getRoot().getChildren().get( 0 );
       Assert.assertEquals( first, firstItem.getValue().getSubject() );
       
-      database.testClasses().remove( first );
+      database.removeTestClass( first );
       Assert.assertFalse( database.testClasses().contains( first ) );
       
       TreeItem< TestTableItem > firstItemFollowingChange = treeTableView.getRoot().getChildren().get( 0 );
@@ -291,7 +291,7 @@ public class TestTableViewTest {
       
       TestClass newClass = new TestClassImpl( "newClass" );
       Assert.assertFalse( database.testClasses().contains( newClass ) );
-      database.testClasses().add( newClass );
+      database.store( newClass );
       Assert.assertTrue( database.testClasses().contains( newClass ) );
       
       TreeItem< TestTableItem > lastItemFollowingChange = rootChildren.get( rootChildren.size() - 1 );
@@ -313,7 +313,7 @@ public class TestTableViewTest {
       TreeItem< TestTableItem > firstItem = testCaseItem.getChildren().get( 0 );
       Assert.assertEquals( first, firstItem.getValue().getSubject() );
       
-      testClass.testCasesList().remove( first );
+      testClass.removeTestCase( first );
       Assert.assertFalse( testClass.testCasesList().contains( first ) );
       
       TreeItem< TestTableItem > firstItemFollowingChange = testCaseItem.getChildren().get( 0 );
@@ -326,7 +326,7 @@ public class TestTableViewTest {
       
       TreeItem< TestTableItem > testCaseItem = treeTableView.getRoot().getChildren().get( 0 );
       
-      testClass.testCasesList().add( newCase );
+      testClass.addTestCase( newCase );
       Assert.assertTrue( testClass.testCasesList().contains( newCase ) );
       
       TreeItem< TestTableItem > firstItemFollowingChange = testCaseItem.getChildren().get( testCaseItem.getChildren().size() - 1 );

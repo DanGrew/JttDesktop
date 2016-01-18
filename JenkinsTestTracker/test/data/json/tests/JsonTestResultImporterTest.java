@@ -68,6 +68,23 @@ public class JsonTestResultImporterTest {
       assertTestClassAndTestCasePresent( new ArrayList<>() );
    }//End Method
    
+   @Test public void shouldNotDuplicateImportSingleTestCase() {
+      String input = TestCommon.readFileIntoString( getClass(), "single-test-case.json" );
+      systemUnderTest.updateTestResults( input );
+      assertTestClassAndTestCasePresent( new ArrayList<>() );
+      
+      TestClass firstImported = database.testClasses().get( 0 );
+      Assert.assertNotNull( firstImported );
+      Assert.assertEquals( 1, database.testClasses().size() );
+      
+      systemUnderTest.updateTestResults( input );
+      
+      Assert.assertEquals( 1, database.testClasses().size() );
+      TestClass secondImported = database.testClasses().get( 0 );
+      Assert.assertNotNull( secondImported );
+      Assert.assertEquals( firstImported, secondImported );
+   }//End Method
+   
    @Test public void shouldSafelyAvoidNullInput(){
       systemUnderTest.updateTestResults( null );
    }//End Method
@@ -249,6 +266,23 @@ public class JsonTestResultImporterTest {
       Assert.assertEquals( 5, testClass.testCasesList().size() );
    }//End Method
    
+   @Test public void shouldAddNewTestCasesAndNotDuplicate(){
+      String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-single-test-class.json" );
+      systemUnderTest.updateTestResults( input );
+      
+      Assert.assertEquals( 1, database.testClasses().size() );
+      TestClass testClass = database.testClasses().get( 0 );
+      Assert.assertEquals( 5, testClass.testCasesList().size() );
+      
+      testClass.removeTestCase( testClass.testCasesList().get( 4 ) );
+      Assert.assertEquals( 4, testClass.testCasesList().size() );
+      
+      systemUnderTest.updateTestResults( input );
+      
+      Assert.assertEquals( 1, database.testClasses().size() );
+      Assert.assertEquals( 5, testClass.testCasesList().size() );
+   }//End Method
+   
    @Test public void shouldHandleMultipleTestCasesAndMultipleClasses(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
       systemUnderTest.updateTestResults( input );
@@ -308,6 +342,7 @@ public class JsonTestResultImporterTest {
     * some values to vary but performing common assertions.
     */
    private void assertTestClassAndTestCasePresent( List< AssertableProperty > propertiesToIgnore ){
+      Assert.assertEquals( 1, database.testClasses().size() );
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
       Assert.assertNotNull( testClass );
       

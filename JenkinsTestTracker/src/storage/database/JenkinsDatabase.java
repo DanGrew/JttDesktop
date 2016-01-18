@@ -40,6 +40,20 @@ public interface JenkinsDatabase {
    public boolean hasTestClass( TestClassKey testClassKey );
    
    /**
+    * Method to determine whether the {@link JenkinsDatabase} has the given {@link TestClass}.
+    * @param testClass the {@link TestClass} in question.
+    * @return true if contained.
+    */
+   public boolean containsTestClass( TestClass testClass );
+   
+   /**
+    * Method to determine whether the {@link JenkinsDatabase} has the given {@link JenkinsJob}.
+    * @param testClass the {@link JenkinsJob} in question.
+    * @return true if contained.
+    */
+   public boolean containsJenkinsJob( JenkinsJob jenkinsJob );
+   
+   /**
     * Method to determine whether the {@link JenkinsDatabase} has a {@link JenkinsJob} matching the
     * given {@link String} name key.
     * @param key the {@link String} to identify the {@link JenkinsJob}.
@@ -88,6 +102,20 @@ public interface JenkinsDatabase {
     * @return the removed {@link JenkinsJob}.
     */
    public JenkinsJob removeJenkinsJob( String key );
+   
+   /**
+    * Method to remove the given {@link TestClass} from the {@link JenkinsDatabase}.
+    * @param testClass the {@link TestClass} to remove.
+    * @return true if removed.
+    */
+   public boolean removeTestClass( TestClass testClass );
+   
+   /**
+    * Method to remove the given {@link JenkinsJob} from the {@link JenkinsDatabase}.
+    * @param testClass the {@link JenkinsJob} to remove.
+    * @return true if removed.
+    */
+   public boolean removeJenkinsJob( JenkinsJob jenkinsJob );
 
    /**
     * Provides the {@link ObservableList} of {@link TestClass}es held by the {@link JenkinsDatabase}.

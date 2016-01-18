@@ -19,6 +19,8 @@ import model.tests.TestClass;
 import model.tests.TestClassImpl;
 import model.tests.TestResultStatus;
 import storage.database.JenkinsDatabase;
+import storage.database.TestClassKey;
+import storage.database.TestClassKeyImpl;
 
 /**
  * The {@link JsonTestResultsImporterImpl} defines a {@link JsonTestResultsImporter} specifically for JSON data.
@@ -110,8 +112,15 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
       try {
          if ( !jsonTestClass.has( NAME ) ) return;
          String fullName = jsonTestClass.getString( NAME );
-         TestClass testClass = new TestClassImpl( fullName );
-         database.store( testClass );
+         
+         TestClassKey key = new TestClassKeyImpl( 
+                  TestClassImpl.identifyName( fullName ), TestClassImpl.identifyLocation( fullName ) 
+         );
+         if ( !database.hasTestClass( key ) ){
+            database.store( new TestClassImpl( fullName ) );
+         }
+         
+         TestClass testClass = database.getTestClass( key );
          
          if ( jsonTestClass.has( DURATION ) ) {
             Double duration = extractDouble( jsonTestClass, DURATION );
@@ -140,8 +149,11 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
          if ( !jsonTestCase.has( NAME ) ) return;
          String name = jsonTestCase.getString( NAME );
          
-         TestCase testCase = new TestCaseImpl( name, testClass );
-         testClass.testCasesList().add( testCase );
+         TestCase testCase = testClass.getTestCase( name );
+         if ( testCase == null ) {
+            testCase = new TestCaseImpl( name, testClass );
+            testClass.addTestCase( testCase );
+         }
          
          if ( jsonTestCase.has( DURATION ) ) {
             Double duration = extractDouble( jsonTestCase, DURATION );

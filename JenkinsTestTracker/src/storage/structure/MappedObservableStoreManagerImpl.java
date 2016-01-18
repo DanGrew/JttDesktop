@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import utility.observable.PrivatelyModifiableObservableListImpl;
 
 /**
  * The {@link MappedObservableStoreManagerImpl} provides an implementation of the {@link ObjectStoreManager} that
@@ -22,6 +23,7 @@ public class MappedObservableStoreManagerImpl< KeyTypeT, ObjectTypeT > implement
 
    private Map< KeyTypeT, ObjectTypeT > objectMap;
    private ObservableList< ObjectTypeT > objectList;
+   private PrivatelyModifiableObservableListImpl< ObjectTypeT > publiclyAvailableObjectList;
    
    /**
     * Constructs a new {@link MappedObservableStoreManagerImpl}.
@@ -29,6 +31,7 @@ public class MappedObservableStoreManagerImpl< KeyTypeT, ObjectTypeT > implement
    public MappedObservableStoreManagerImpl() {
       objectMap = new HashMap<>();
       objectList = FXCollections.observableArrayList();
+      publiclyAvailableObjectList = new PrivatelyModifiableObservableListImpl<>( objectList );
    }//End Constructor
    
    /**
@@ -86,7 +89,7 @@ public class MappedObservableStoreManagerImpl< KeyTypeT, ObjectTypeT > implement
     * {@inheritDoc}
     */
    @Override public ObservableList< ObjectTypeT > objectList() {
-      return objectList;
+      return publiclyAvailableObjectList;
    }//End Method
 
 }//End Class

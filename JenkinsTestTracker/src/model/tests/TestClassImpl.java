@@ -14,6 +14,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import storage.structure.MappedObservableStoreManagerImpl;
+import storage.structure.ObjectStoreManager;
 
 /**
  * Basic implementation of the {@link TestClass}.
@@ -23,7 +25,7 @@ public class TestClassImpl implements TestClass {
    private StringProperty name;
    private StringProperty location;
    private DoubleProperty duration;
-   private ObservableList< TestCase > testCases;
+   private ObjectStoreManager< String, TestCase > testCases;
 
    /**
     * Constructs a new {@link TestCaseImpl}.
@@ -39,7 +41,7 @@ public class TestClassImpl implements TestClass {
       this.name = new SimpleStringProperty( name );
       this.location = new SimpleStringProperty( location );
       this.duration = new SimpleDoubleProperty( DEFAULT_DURATION );
-      this.testCases = FXCollections.observableArrayList();
+      this.testCases = new MappedObservableStoreManagerImpl<>();
    }//End Constructor
 
    /**
@@ -63,6 +65,13 @@ public class TestClassImpl implements TestClass {
    @Override public StringProperty locationProperty() {
       return location;
    }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String getDescription() {
+      return location.get() + "." + name.get();
+   }//End Method
 
    /**
     * {@inheritDoc}
@@ -75,7 +84,35 @@ public class TestClassImpl implements TestClass {
     * {@inheritDoc}
     */
    @Override public ObservableList< TestCase > testCasesList() {
-      return testCases;
+      return testCases.objectList();
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void addTestCase( TestCase testCase ) {
+      testCases.store( testCase.nameProperty().get(), testCase );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean hasTestCase( String name ) {
+      return testCases.has( name );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public TestCase getTestCase( String name ) {
+      return testCases.get( name );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void removeTestCase( TestCase testCase ) {
+      testCases.remove( testCase.nameProperty().get() );
    }//End Method
    
    /**
@@ -105,13 +142,6 @@ public class TestClassImpl implements TestClass {
       System.arraycopy( elements, 0, locationElements, 0, locationElements.length );
       String location = String.join( ".", locationElements );
       return location;
-   }//End Method
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override public String getDescription() {
-      return location.get() + "." + name.get();
    }//End Method
    
 }//End Class

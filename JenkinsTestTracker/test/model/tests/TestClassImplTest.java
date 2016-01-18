@@ -161,4 +161,92 @@ public class TestClassImplTest {
       Assert.assertEquals( "somewhere.something.Alternative", testClass.getDescription() );
    }//End Method
    
+   @Test public void shouldContainTestCases(){
+      TestClass testClass = new TestClassImpl( "something.somehwere.ClassName" );
+      
+      TestCase testCase1 = new TestCaseImpl( "testCase1", testClass );
+      Assert.assertFalse( testClass.hasTestCase( testCase1.nameProperty().get() ) );
+      
+      testClass.addTestCase( testCase1 );
+      Assert.assertTrue( testClass.hasTestCase( testCase1.nameProperty().get() ) );
+      
+      TestCase testCase2 = new TestCaseImpl( "testCase2", testClass );
+      Assert.assertFalse( testClass.hasTestCase( testCase2.nameProperty().get() ) );
+      
+      testClass.addTestCase( testCase2 );
+      Assert.assertTrue( testClass.hasTestCase( testCase2.nameProperty().get() ) );
+   }//End Method
+   
+   @Test public void shouldContainTestCaseAfterReplacement(){
+      TestClass testClass = new TestClassImpl( "something.somehwere.ClassName" );
+      
+      TestCase testCase1 = new TestCaseImpl( "testCase1", testClass );
+      Assert.assertFalse( testClass.hasTestCase( testCase1.nameProperty().get() ) );
+      
+      testClass.addTestCase( testCase1 );
+      Assert.assertTrue( testClass.hasTestCase( testCase1.nameProperty().get() ) );
+      
+      TestCase testCase2 = new TestCaseImpl( "testCase1", testClass );
+      Assert.assertTrue( testClass.hasTestCase( testCase2.nameProperty().get() ) );
+      
+      testClass.addTestCase( testCase2 );
+      Assert.assertTrue( testClass.hasTestCase( testCase1.nameProperty().get() ) );
+      Assert.assertTrue( testClass.hasTestCase( testCase2.nameProperty().get() ) );
+      Assert.assertEquals( 1, testClass.testCasesList().size() );
+      Assert.assertFalse( testClass.testCasesList().contains( testCase1 ) );
+      Assert.assertTrue( testClass.testCasesList().contains( testCase2 ) );
+   }//End Method
+   
+   @Test public void shouldGetTestCase(){
+      TestClass testClass = new TestClassImpl( "something.somehwere.ClassName" );
+      
+      TestCase testCase1 = new TestCaseImpl( "testCase1", testClass );
+      testClass.addTestCase( testCase1 );
+      Assert.assertEquals( testCase1, testClass.getTestCase( testCase1.nameProperty().get() ) );
+      TestCase testCase2 = new TestCaseImpl( "testCase1", testClass );
+      testClass.addTestCase( testCase2 );
+      Assert.assertEquals( testCase2, testClass.getTestCase( testCase1.nameProperty().get() ) );
+   }//End Method
+   
+   @Test public void shouldRemoveTestCase(){
+      TestClass testClass = new TestClassImpl( "something.somehwere.ClassName" );
+      
+      TestCase testCase1 = new TestCaseImpl( "testCase1", testClass );
+      testClass.addTestCase( testCase1 );
+      TestCase testCase2 = new TestCaseImpl( "testCase2", testClass );
+      testClass.addTestCase( testCase2 );
+      
+      Assert.assertTrue( testClass.hasTestCase( testCase1.nameProperty().get() ) );
+      Assert.assertEquals( testCase1, testClass.getTestCase( testCase1.nameProperty().get() ) );
+      Assert.assertTrue( testClass.hasTestCase( testCase2.nameProperty().get() ) );
+      Assert.assertEquals( testCase2, testClass.getTestCase( testCase2.nameProperty().get() ) );
+      
+      testClass.removeTestCase( testCase1 );
+      Assert.assertFalse( testClass.hasTestCase( testCase1.nameProperty().get() ) );
+      Assert.assertNull( testClass.getTestCase( testCase1.nameProperty().get() ) );
+      Assert.assertTrue( testClass.hasTestCase( testCase2.nameProperty().get() ) );
+      Assert.assertEquals( testCase2, testClass.getTestCase( testCase2.nameProperty().get() ) );
+   }//End Method
+   
+   @Test public void shouldAddTestCase() {
+      TestClass testClass = new TestClassImpl( "something.somehwere.ClassName" );
+      
+      TestCase testCase = new TestCaseImpl( "anything", testClass );
+      testClass.addTestCase( testCase );
+      
+      Assert.assertTrue( testClass.testCasesList().contains( testCase ) );
+      Assert.assertTrue( testClass.hasTestCase( testCase.nameProperty().get() ) );
+   }//End Method
+   
+   @Test public void shouldHaveTestCase() {
+      TestClass testClass = new TestClassImpl( "something.somehwere.ClassName" );
+      
+      TestCase testCase = new TestCaseImpl( "anything", testClass );
+      testClass.addTestCase( testCase );
+      Assert.assertTrue( testClass.hasTestCase( testCase.nameProperty().get() ) );
+      
+      testClass.removeTestCase( testCase );
+      Assert.assertFalse( testClass.hasTestCase( testCase.nameProperty().get() ) );
+   }//End Method
+   
 }//End Class

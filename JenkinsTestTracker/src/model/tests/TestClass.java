@@ -30,6 +30,13 @@ public interface TestClass {
     * @return the {@link StringProperty}.
     */
    public StringProperty locationProperty();
+   
+   /**
+    * Method to get a description of the {@link TestClass}. This represents the full name of the 
+    * {@link TestClass} as {@link #locationProperty()}"."{@link #nameProperty()}.
+    * @return a {@link String} description.
+    */
+   public String getDescription();
 
    /**
     * Provides the property defining how long it took to run the {@link TestClass}.
@@ -42,12 +49,32 @@ public interface TestClass {
     * @return the {@link ObservableList}.
     */
    public ObservableList< TestCase > testCasesList();
-
+   
    /**
-    * Method to get a description of the {@link TestClass}. This represents the full name of the 
-    * {@link TestClass} as {@link #locationProperty()}"."{@link #nameProperty()}.
-    * @return a {@link String} description.
+    * Method to add a {@link TestCase} to the {@link TestClass}. This will replace ant {@link TestCase}
+    * that shares the same name.
+    * @param testCase the {@link TestCase} to add.
     */
-   public String getDescription();
+   public void addTestCase( TestCase testCase );
+   
+   /**
+    * Method to determine whether the {@link TestClass} has a {@link TestCase} matching the given name.
+    * @param name the name of the {@link TestCase}.
+    * @return true if found.
+    */
+   public boolean hasTestCase( String name );
+   
+   /**
+    * Method to get the {@link TestCase} held by this {@link TestClass} for the given name.
+    * @param name the name of the {@link TestCase} to get.
+    * @return the {@link TestCase} found.
+    */
+   public TestCase getTestCase( String name );
+   
+   /**
+    * Method to remove the given {@link TestCase} from the {@link TestClass}.
+    * @param testCase the {@link TestCase} to remove.
+    */
+   public void removeTestCase( TestCase testCase );
 
 }//End Interface

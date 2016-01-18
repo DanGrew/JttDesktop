@@ -12,6 +12,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import utility.observable.PrivatelyModifiableObservableListImpl;
+
 /**
  * {@link MappedObservableStoreManagerImpl} test.
  */
@@ -95,6 +97,21 @@ public class MappedObservableStoreManagerImplTest {
       final Object object2 = new Object();
       systemUnderTest.store( key, object2 );
       Assert.assertEquals( object2, systemUnderTest.get( key ) );
+   }//End Method
+   
+   @Test public void shouldAddToListOnceOnly(){
+      systemUnderTest.store( key, object );
+      Assert.assertTrue( systemUnderTest.has( key ) );
+      systemUnderTest.store( key, object );
+      Assert.assertEquals( 1, systemUnderTest.objectList().size() );
+   }//End Method
+   
+   @Test public void shouldUseAppropriateClassToRestrictModifications(){
+      Assert.assertTrue( systemUnderTest.objectList() instanceof PrivatelyModifiableObservableListImpl );
+   }//End Method
+   
+   @Test( expected = UnsupportedOperationException.class ) public void shouldNotAllowModificationsToList(){
+      systemUnderTest.objectList().add( object );
    }//End Method
 
 }//End Class
