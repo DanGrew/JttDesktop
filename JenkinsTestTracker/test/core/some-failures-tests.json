@@ -1,0 +1,1670 @@
+{
+  "failCount" : 0,
+  "skipCount" : 0,
+  "totalCount" : 113,
+  "urlName" : "testReport",
+  "childReports" : [
+    {
+      "child" : {
+        "number" : 96,
+        "url" : "http://jenkins:8080/job/SingletonDevelopmentKit/Portfolio$SingletonDevelopmentKit/96/"
+      },
+      "result" : {
+        "testActions" : [
+          
+        ],
+        "duration" : 18.603,
+        "empty" : false,
+        "failCount" : 0,
+        "passCount" : 113,
+        "skipCount" : 0,
+        "suites" : [
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DataManagerTest",
+                "duration" : 0.053,
+                "failedSince" : 0,
+                "name" : "shouldStoreObjectsAndRemoveAllMatches",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DataManagerTest",
+                "duration" : 0.005,
+                "failedSince" : 0,
+                "name" : "shouldStoreObjectsAndRetrieveAllDefaultMatch",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DataManagerTest",
+                "duration" : 0.004,
+                "failedSince" : 0,
+                "name" : "shouldStoreAndRetrieveFirst",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DataManagerTest",
+                "duration" : 0.005,
+                "failedSince" : 0,
+                "name" : "shouldStoreObjectsAndRemoveSingle",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DataManagerTest",
+                "duration" : 0.004,
+                "failedSince" : 0,
+                "name" : "shouldStoreObjectsAndRetrieveAllCustomMatch",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.071,
+            "id" : null,
+            "name" : "architecture.data.DataManagerTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsNotificationTest",
+                "duration" : 0.002,
+                "failedSince" : 0,
+                "name" : "shouldReceiveEvent",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.002,
+            "id" : null,
+            "name" : "architecture.data.DmsNotificationTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsProcessTest",
+                "duration" : 0.007,
+                "failedSince" : 0,
+                "name" : "shouldProcessAll",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsProcessTest",
+                "duration" : 0.005,
+                "failedSince" : 0,
+                "name" : "shouldProcessSingle",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.012,
+            "id" : null,
+            "name" : "architecture.data.DmsProcessTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsRetrieveTest",
+                "duration" : 0.022,
+                "failedSince" : 0,
+                "name" : "shouldRetrieveMatchingClassAndObject",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsRetrieveTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldRetrieveAllForClass",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsRetrieveTest",
+                "duration" : 0.013,
+                "failedSince" : 0,
+                "name" : "shouldRetrieveMatchingObject",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsRetrieveTest",
+                "duration" : 0.009,
+                "failedSince" : 0,
+                "name" : "shouldRetrieveMatchingClass",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.044999998,
+            "id" : null,
+            "name" : "architecture.data.DmsRetrieveTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsStorageTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldStoreAllObjectTypes",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.data.DmsStorageTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldNotStoreUnassignableClassTypes",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.0,
+            "id" : null,
+            "name" : "architecture.data.DmsStorageTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.event.EventManagementSystemTest",
+                "duration" : 0.011,
+                "failedSince" : 0,
+                "name" : "ObservableListTest",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.event.EventManagementSystemTest",
+                "duration" : 0.017,
+                "failedSince" : 0,
+                "name" : "ObservableTest",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.event.EventManagementSystemTest",
+                "duration" : 0.002,
+                "failedSince" : 0,
+                "name" : "ShouldNotObserveAlreadyObserved",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.event.EventManagementSystemTest",
+                "duration" : 0.007,
+                "failedSince" : 0,
+                "name" : "DoubleEventNotificationTest",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.event.EventManagementSystemTest",
+                "duration" : 0.005,
+                "failedSince" : 0,
+                "name" : "EventNotificationTest",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.042,
+            "id" : null,
+            "name" : "architecture.event.EventManagementSystemTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.serialization.DataSerializationSystemTest",
+                "duration" : 1.216,
+                "failedSince" : 0,
+                "name" : "shouldSerializeAndDeserialize",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 1.216,
+            "id" : null,
+            "name" : "architecture.serialization.DataSerializationSystemTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.ComparatorsTest",
+                "duration" : 0.057,
+                "failedSince" : 0,
+                "name" : "shouldConstructComparatorForSingletonStringExtraction",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.ComparatorsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldStringCompare",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.ComparatorsTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldNumberCompare",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.058,
+            "id" : null,
+            "name" : "architecture.utility.ComparatorsTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.DefenseTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldDefendNumber",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.DefenseTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldDefendString",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.002,
+            "id" : null,
+            "name" : "architecture.utility.DefenseTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.IdentificationMatcherTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldMatch",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.0,
+            "id" : null,
+            "name" : "architecture.utility.IdentificationMatcherTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.ObjectGeneratorTest",
+                "duration" : 0.003,
+                "failedSince" : 0,
+                "name" : "shouldConstruct",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.ObjectGeneratorTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldNotConstruct",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.004,
+            "id" : null,
+            "name" : "architecture.utility.ObjectGeneratorTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.PropertyUnwrapperTest",
+                "duration" : 0.004,
+                "failedSince" : 0,
+                "name" : "shouldRemove",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.PropertyUnwrapperTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldBehaveCorrectly",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.0050000004,
+            "id" : null,
+            "name" : "architecture.utility.PropertyUnwrapperTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.ReadOnlyArrayTest",
+                "duration" : 0.004,
+                "failedSince" : 0,
+                "name" : "shouldGetValuesAndSize",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.ReadOnlyArrayTest",
+                "duration" : 0.009,
+                "failedSince" : 0,
+                "name" : "shouldPopulateObserableListAndIterateProperties",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.ReadOnlyArrayTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldConstructAndIterate",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.014,
+            "id" : null,
+            "name" : "architecture.utility.ReadOnlyArrayTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.UnmodifiableIteratorTest",
+                "duration" : 0.063,
+                "failedSince" : 0,
+                "name" : "shouldNotRemove",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "architecture.utility.UnmodifiableIteratorTest",
+                "duration" : 0.02,
+                "failedSince" : 0,
+                "name" : "shouldForwardCalls",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.083000004,
+            "id" : null,
+            "name" : "architecture.utility.UnmodifiableIteratorTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvColumnNamesTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldProvideDefault",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvColumnNamesTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldUseSetColumnNames",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvColumnNamesTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldClearColumnNames",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.001,
+            "id" : null,
+            "name" : "export.csv.CsvColumnNamesTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldExcludeRowUsedForColumnNames",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldExcludeColumns",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldNotReassignColumnNamesForInvalidRow",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldAssignUniqueIdentifier",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldNotAssumeUniqueIdentifier",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldAssumeNewColumnNames",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldReassignColumnNames",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldParseDataIntoRowsOnly",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldReassignColumnNamesForOnceAssigned",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.CsvFileContentsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldExcludeRows",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.001,
+            "id" : null,
+            "name" : "export.csv.CsvFileContentsTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.OpenCsvLibraryTest",
+                "duration" : 0.085,
+                "failedSince" : 0,
+                "name" : "shouldParseSingleLine",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.OpenCsvLibraryTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldParseSingleWord",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.OpenCsvLibraryTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldParseWithDifferentLengthLines",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.OpenCsvLibraryTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldParseWithQuotes",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.OpenCsvLibraryTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldParseEmpty",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "export.csv.OpenCsvLibraryTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldParseMultipleLines",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.087000005,
+            "id" : null,
+            "name" : "export.csv.OpenCsvLibraryTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.JavaFxInitializerTest",
+                "duration" : 1.4,
+                "failedSince" : 0,
+                "name" : "shouldHaveLaunched",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.JavaFxInitializerTest",
+                "duration" : 0.007,
+                "failedSince" : 0,
+                "name" : "shouldNotRelaunch",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.JavaFxInitializerTest",
+                "duration" : 0.015,
+                "failedSince" : 0,
+                "name" : "shouldSwapCenter",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 1.4219999,
+            "id" : null,
+            "name" : "graphics.JavaFxInitializerTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.events.JavaFxEventSystemTest",
+                "duration" : 0.999,
+                "failedSince" : 0,
+                "name" : "shouldCallBackOnPlatformThread",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.999,
+            "id" : null,
+            "name" : "graphics.events.JavaFxEventSystemTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.DefensiveDoubleSpinnerValueFactoryTest",
+                "duration" : 0.062,
+                "failedSince" : 0,
+                "name" : "shouldUseDefensiveConverter",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.062,
+            "id" : null,
+            "name" : "graphics.utility.DefensiveDoubleSpinnerValueFactoryTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.DefensiveDoubleStringConverterTest",
+                "duration" : 0.018,
+                "failedSince" : 0,
+                "name" : "shouldAcceptNonNumber",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.DefensiveDoubleStringConverterTest",
+                "duration" : 0.003,
+                "failedSince" : 0,
+                "name" : "shouldAcceptNumber",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.021,
+            "id" : null,
+            "name" : "graphics.utility.DefensiveDoubleStringConverterTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.EnumStringConverterTest",
+                "duration" : 0.011,
+                "failedSince" : 0,
+                "name" : "shouldConvertToString",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.EnumStringConverterTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldConvertFromString",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.012,
+            "id" : null,
+            "name" : "graphics.utility.EnumStringConverterTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.SdkBindingsTest",
+                "duration" : 0.029,
+                "failedSince" : 0,
+                "name" : "shouldBindDoublesAndAutoSetPropertyFirst",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.SdkBindingsTest",
+                "duration" : 0.002,
+                "failedSince" : 0,
+                "name" : "shouldBindDoublesAndAutoSetPropertySecond",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.031,
+            "id" : null,
+            "name" : "graphics.utility.SdkBindingsTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.SingletonStringConverterTest",
+                "duration" : 0.008,
+                "failedSince" : 0,
+                "name" : "shouldConvertToString",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "graphics.utility.SingletonStringConverterTest",
+                "duration" : 0.113,
+                "failedSince" : 0,
+                "name" : "shouldConvertFromString",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.121,
+            "id" : null,
+            "name" : "graphics.utility.SingletonStringConverterTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "math.ShapesAndVectorsTest",
+                "duration" : 0.617,
+                "failedSince" : 0,
+                "name" : "shouldCalculateLengthOfRightAngleTriangle",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "math.ShapesAndVectorsTest",
+                "duration" : 0.048,
+                "failedSince" : 0,
+                "name" : "shouldCalculatePointOnCircle",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "math.ShapesAndVectorsTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldInvertScale",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "math.ShapesAndVectorsTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldRotateVector",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "math.ShapesAndVectorsTest",
+                "duration" : 7.027,
+                "failedSince" : 0,
+                "name" : "shouldScalePoint",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "math.ShapesAndVectorsTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldCalculateAngles",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "math.ShapesAndVectorsTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldCalculateRadiusOfPolygon",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "math.ShapesAndVectorsTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldRotateVectorAbout",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 7.6959996,
+            "id" : null,
+            "name" : "math.ShapesAndVectorsTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "model.result.ComplexReturnResultTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldSetAndGet",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.0,
+            "id" : null,
+            "name" : "model.result.ComplexReturnResultTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "model.singleton.SingletonImplTest",
+                "duration" : 2.497,
+                "failedSince" : 0,
+                "name" : "shouldCallExtensibleRead",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "model.singleton.SingletonImplTest",
+                "duration" : 0.002,
+                "failedSince" : 0,
+                "name" : "shouldNotAcceptInvalidIdentificationInConstructor",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "model.singleton.SingletonImplTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldAccessIdentification",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "model.singleton.SingletonImplTest",
+                "duration" : 0.012,
+                "failedSince" : 0,
+                "name" : "shouldCallExtensibleWrite",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "model.singleton.SingletonImplTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldNotAcceptInvalidIdentificationSet",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "model.singleton.SingletonImplTest",
+                "duration" : 0.004,
+                "failedSince" : 0,
+                "name" : "shouldToStringAsName",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 2.517,
+            "id" : null,
+            "name" : "model.singleton.SingletonImplTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.FileFinderTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldFindThisClass",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.FileFinderTest",
+                "duration" : 0.002,
+                "failedSince" : 0,
+                "name" : "shouldFindFiles",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.FileFinderTest",
+                "duration" : 0.002,
+                "failedSince" : 0,
+                "name" : "shouldIgnoreNonExistentPackage",
+                "skipped" : false,
+                "status" : "FAILED"
+              }
+            ],
+            "duration" : 0.005,
+            "id" : null,
+            "name" : "packages.FileFinderTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.TestFinderTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldNotIncludeTestInNameWithoutTest",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.TestFinderTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldExcludePrivateClass",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.TestFinderTest",
+                "duration" : 0.024,
+                "failedSince" : 0,
+                "name" : "shouldExcludeNestedClass",
+                "skipped" : false,
+                "status" : "FAILED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.TestFinderTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldNotExcludeAbstractInName",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.TestFinderTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldIncludeClassWithTestCases",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.TestFinderTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldExcludeAbstractClassType",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.TestFinderTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldIncludeDoubleCaseTest",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "packages.TestFinderTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldIncludeStaticNestedClass",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.025,
+            "id" : null,
+            "name" : "packages.TestFinderTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "represenation.xml.wrapper.SingletonCollectionWrapperTest",
+                "duration" : 0.024,
+                "failedSince" : 0,
+                "name" : "shouldConstructAndIterate",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "represenation.xml.wrapper.SingletonCollectionWrapperTest",
+                "duration" : 0.017,
+                "failedSince" : 0,
+                "name" : "shouldConstructAndRetrieveSingletons",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "represenation.xml.wrapper.SingletonCollectionWrapperTest",
+                "duration" : 0.002,
+                "failedSince" : 0,
+                "name" : "shouldAddAndIterate",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.043,
+            "id" : null,
+            "name" : "represenation.xml.wrapper.SingletonCollectionWrapperTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "represenation.xml.wrapper.XmlCollectionWrapperTest",
+                "duration" : 0.097,
+                "failedSince" : 0,
+                "name" : "shouldSerializeAndDeserialize",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "represenation.xml.wrapper.XmlCollectionWrapperTest",
+                "duration" : 0.008,
+                "failedSince" : 0,
+                "name" : "shouldProgressiveAdd",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "represenation.xml.wrapper.XmlCollectionWrapperTest",
+                "duration" : 0.003,
+                "failedSince" : 0,
+                "name" : "shouldIterate",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.108,
+            "id" : null,
+            "name" : "represenation.xml.wrapper.XmlCollectionWrapperTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "represenation.xml.wrapper.XmlSingletonWrapperTest",
+                "duration" : 0.367,
+                "failedSince" : 0,
+                "name" : "shouldSerializeAndDeserialize",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.367,
+            "id" : null,
+            "name" : "represenation.xml.wrapper.XmlSingletonWrapperTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "runnables.TaskUpdateProcessTest",
+                "duration" : 0.01,
+                "failedSince" : 0,
+                "name" : "shouldMoveThroughProcessUpdatingWorkAndMessage",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.01,
+            "id" : null,
+            "name" : "runnables.TaskUpdateProcessTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.TestCommonTest",
+                "duration" : 0.002,
+                "failedSince" : 0,
+                "name" : "shouldFailAssertIteratorsSize",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.TestCommonTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldFailAssertIteratorsEquality",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.TestCommonTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldAssertCollectionsSameOrderIndependent",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.TestCommonTest",
+                "duration" : 0.919,
+                "failedSince" : 0,
+                "name" : "shouldGenerateRandomWithinRange",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.TestCommonTest",
+                "duration" : 0.001,
+                "failedSince" : 0,
+                "name" : "shouldFailAssertCollectionsSameOrderIndependent",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.TestCommonTest",
+                "duration" : 0.005,
+                "failedSince" : 0,
+                "name" : "shouldAssertIteratorsCustomEquality",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.TestCommonTest",
+                "duration" : 0.0,
+                "failedSince" : 0,
+                "name" : "shouldAssertIteratorsEquality",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.929,
+            "id" : null,
+            "name" : "utility.TestCommonTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.ThreadWaiterTest",
+                "duration" : 0.01,
+                "failedSince" : 0,
+                "name" : "shouldInterruptWithoutWaiting",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.ThreadWaiterTest",
+                "duration" : 1.021,
+                "failedSince" : 0,
+                "name" : "shouldWaitForInterrupt",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.ThreadWaiterTest",
+                "duration" : 1.004,
+                "failedSince" : 0,
+                "name" : "shouldFailIfNotInterrupted",
+                "skipped" : false,
+                "status" : "PASSED"
+              },
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.ThreadWaiterTest",
+                "duration" : 0.51,
+                "failedSince" : 0,
+                "name" : "shouldRunAssertions",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 2.5449998,
+            "id" : null,
+            "name" : "utility.ThreadWaiterTest",
+            "timestamp" : null
+          },
+          {
+            "cases" : [
+              {
+                "testActions" : [
+                  
+                ],
+                "age" : 0,
+                "className" : "utility.protectedclasses.ProtectedClassesTest",
+                "duration" : 0.047,
+                "failedSince" : 0,
+                "name" : "shouldGenerateDragboard",
+                "skipped" : false,
+                "status" : "PASSED"
+              }
+            ],
+            "duration" : 0.047,
+            "id" : null,
+            "name" : "utility.protectedclasses.ProtectedClassesTest",
+            "timestamp" : null
+          }
+        ]
+      }
+    }
+  ]
+}
