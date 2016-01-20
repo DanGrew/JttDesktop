@@ -28,7 +28,7 @@ public class TimeKeeperTest {
    @Test public void shouldRecordSomeInteractionsWhenRunQuickly() throws InterruptedException{
       new TimeKeeper( fetcher, 1l );
       Thread.sleep( 10 );
-      Mockito.verify( fetcher, Mockito.atLeast( 8 ) ).fetchJobsAndUpdateDetails();
+      Mockito.verify( fetcher, Mockito.atLeast( 5 ) ).fetchJobsAndUpdateDetails();
    }//End Method
    
    @Test public void shouldRunTaskAtLeastOnceBeforeAndOnceOnInterval() throws InterruptedException{
@@ -57,7 +57,7 @@ public class TimeKeeperTest {
    }//End Method
    
    @Test public void setNullIntervalShouldCancelTimer() throws InterruptedException{
-      TimeKeeper time = new TimeKeeper( fetcher, 1l );
+      TimeKeeper time = new TimeKeeper( fetcher, 5l );
       Mockito.verify( fetcher, Mockito.atLeastOnce() ).fetchJobsAndUpdateDetails();
       time.setInterval( null );
       Thread.sleep( 10 );
