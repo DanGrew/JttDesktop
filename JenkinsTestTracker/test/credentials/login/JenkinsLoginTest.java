@@ -8,6 +8,7 @@
  */
 package credentials.login;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -33,10 +34,10 @@ public class JenkinsLoginTest {
    }//End Method
    
    @Ignore
-   @Test public void manualInspection() throws InterruptedException {
+   @Test public void manualInspection() {
       JavaFxInitializer.threadedLaunch( () -> { return new JenkinsLogin( null ); } );
       
-      Thread.sleep( 100000 );
+      while( true ){}//Avoid interruptions from graphics.
    }//End Method
    
    @Test public void shouldAttemptToConnect(){
@@ -125,6 +126,14 @@ public class JenkinsLoginTest {
       
       systemUnderTest.getLoginButton().fire();
       Mockito.verifyNoMoreInteractions( verifier );
+   }//End Method
+   
+   @Test public void shouldContainAllTextElementsInChildren(){
+      Assert.assertTrue( systemUnderTest.getChildren().contains( systemUnderTest.getJenkinsLocationField() ) );
+      Assert.assertTrue( systemUnderTest.getChildren().contains( systemUnderTest.getUserNameField() ) );
+      Assert.assertTrue( systemUnderTest.getChildren().contains( systemUnderTest.getPasswordField() ) );
+      Assert.assertTrue( systemUnderTest.getChildren().contains( systemUnderTest.getLoginButtonWrapper() ) );
+      Assert.assertTrue( systemUnderTest.getLoginButtonWrapper().getChildren().contains( systemUnderTest.getLoginButton() ) );
    }//End Method
 
 }//End Class
