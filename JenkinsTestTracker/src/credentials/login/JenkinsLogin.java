@@ -15,31 +15,30 @@ import org.controlsfx.validation.Validator;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.stage.Modality;
 
 /**
  * The {@link JenkinsLogin} provides a {@link GridPane} for a user logging into a
  * jenkins instance.
  */
-public class JenkinsLogin extends GridPane {
+public class JenkinsLogin extends Alert {
 
    private static final String VALIDATION_MESSAGE = "Text must be present";
 
    private static final int JENKINS_LOCATION_WIDTH = 300;
    
-   private final TextField jenkinsField;
-   private final TextField userNameField;
-   private final PasswordField passwordField;
-   private final HBox loginButtonWrapper;
-   private final Button loginButton;
+   private TextField jenkinsField;
+   private TextField userNameField;
+   private PasswordField passwordField;
+
+   private ButtonType login;
+   private ButtonType cancel;
    
    private final ValidationSupport validation;
    private final CredentialsVerifier credentialsVerifier;
@@ -61,46 +60,66 @@ public class JenkinsLogin extends GridPane {
     * @param verifier the {@link CredentialsVerifier} for logging in.
     */
    public JenkinsLogin( CredentialsVerifier verifier ) {
+      super( Alert.AlertType.INFORMATION );
       this.credentialsVerifier = verifier;
       this.validation = new ValidationSupport();
+      initialiseAlert();
+      initialiseContent();
+   }//End Constructor
+   
+   /**
+    * Method to initialise the {@link Alert} elements of the login.
+    */
+   private void initialiseAlert(){
+      setTitle( "Jenkins Test Tracker" );
       
-      setAlignment( Pos.CENTER );
-      setHgap( 10 );
-      setVgap( 10 );
-      setPadding( new Insets( 25, 25, 25, 25 ) );
+      setHeaderText( "Welcome! Please log in." );
+      initModality( Modality.NONE );
 
-      Text scenetitle = new Text( "Welcome!" );
-      scenetitle.setFont( Font.font( "Tahoma", FontWeight.NORMAL, 20 ) );
-      add( scenetitle, 0, 0, 2, 1 );
+      login = new ButtonType( "Login" );
+      cancel = new ButtonType( "Cancel" );
+      
+      getButtonTypes().setAll( login, cancel );
+      
+      setOnCloseRequest( event -> {
+         ButtonType type = getResult();
+         if ( type.equals( login ) ) prepareInputAndLogin();
+      } );
+   }//End Method
+   
+   /**
+    * Method to initialise the content of the {@link Alert}.
+    */
+   private void initialiseContent(){
+      GridPane content = new GridPane();
+      content.setAlignment( Pos.CENTER );
+      content.setHgap( 10 );
+      content.setVgap( 10 );
+      content.setPadding( new Insets( 25, 25, 25, 25 ) );
 
       Label jenkinsLocation = new Label( "Jenkins:" );
-      add( jenkinsLocation, 0, 1 );
+      content.add( jenkinsLocation, 0, 1 );
 
       jenkinsField = new TextField();
       jenkinsField.setPrefWidth( JENKINS_LOCATION_WIDTH );
-      add( jenkinsField, 1, 1 );
+      content.add( jenkinsField, 1, 1 );
 
       Label userName = new Label( "User Name:" );
-      add( userName, 0, 2 );
+      content.add( userName, 0, 2 );
 
       userNameField = new TextField();
-      add( userNameField, 1, 2 );
+      content.add( userNameField, 1, 2 );
 
       Label pw = new Label( "Password:" );
-      add( pw, 0, 3 );
+      content.add( pw, 0, 3 );
 
       passwordField = new PasswordField();
-      add( passwordField, 1, 3 );
-
-      loginButton = new Button( "Log in" );
-      loginButton.setOnAction( event -> prepareInputAndLogin() );
-      loginButtonWrapper = new HBox( 10 );
-      loginButtonWrapper.setAlignment( Pos.BOTTOM_RIGHT );
-      loginButtonWrapper.getChildren().add( loginButton );
-      add( loginButtonWrapper, 1, 4 );
+      content.add( passwordField, 1, 3 );
 
       applyValidation();
-   }//End Constructor
+      
+      getDialogPane().setContent( content );
+   }//End Method
    
    /**
     * Method to apply the validation to the {@link TextField}s.
@@ -118,10 +137,6 @@ public class JenkinsLogin extends GridPane {
                passwordField, 
                Validator.createPredicateValidator( new InputValidator(), VALIDATION_MESSAGE ) 
       );
-      
-      //Change value to trigger initial validation.
-      jenkinsField.setText( "anything" );
-      jenkinsField.setText( "" );
    }//End Method
    
    /**
@@ -160,21 +175,21 @@ public class JenkinsLogin extends GridPane {
    PasswordField getPasswordField() {
       return passwordField;
    }//End Method
-
-   /**
-    * Getter for the wrapper of the login {@link Button}.
-    * @return the wrapper.
-    */
-   HBox getLoginButtonWrapper(){
-      return loginButtonWrapper;
-   }//End Method
    
    /**
-    * Getter for the {@link Button} for logging in.
-    * @return the {@link Button}.
+    * Getter for the login {@link ButtonType}.
+    * @return the {@link ButtonType}.
     */
-   Button getLoginButton() {
-      return loginButton;
+   ButtonType loginButtonType(){
+      return login;
+   }//End Method
+
+   /**
+    * Getter for the cancel {@link ButtonType}.
+    * @return the {@link ButtonType}.
+    */
+   ButtonType cancelButtonType(){
+      return cancel;
    }//End Method
 
 }//End Class

@@ -14,7 +14,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import graphics.JavaFxInitializer;
+import javafx.scene.layout.GridPane;
 
 /**
  * {@link JenkinsLogin} test.
@@ -27,17 +30,17 @@ public class JenkinsLoginTest {
    /**
     * Method to initialise the system under test.
     */
-   @Before public void initialiseSystemUnderTest(){
+   @Before public void initialiseSystemUnderTest() {
       JavaFxInitializer.startPlatform();
       verifier = Mockito.mock( CredentialsVerifier.class );
-      systemUnderTest = new JenkinsLogin( verifier );
+      runOnFxThreadAndWait( () -> {
+         systemUnderTest = new JenkinsLogin( verifier );
+      }, 2000 );
    }//End Method
    
    @Ignore
    @Test public void manualInspection() {
-      JavaFxInitializer.threadedLaunch( () -> { return new JenkinsLogin( null ); } );
-      
-      while( true ){}//Avoid interruptions from graphics.
+      runOnFxThreadAndWait( () -> systemUnderTest.showAndWait(), 100000 );
    }//End Method
    
    @Test public void shouldAttemptToConnect(){
@@ -49,7 +52,7 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( password );
       
-      systemUnderTest.getLoginButton().fire();
+      login();
       Mockito.verify( verifier ).attemptLogin( jenkinsLocation, user, password );
    }//End Method
    
@@ -61,7 +64,7 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( password );
       
-      systemUnderTest.getLoginButton().fire();
+      login();
       Mockito.verifyNoMoreInteractions( verifier );
    }//End Method
    
@@ -73,7 +76,7 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( null );
       systemUnderTest.getPasswordField().setText( password );
       
-      systemUnderTest.getLoginButton().fire();
+      login();
       Mockito.verifyNoMoreInteractions( verifier );
    }//End Method
    
@@ -85,7 +88,7 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( null );
       
-      systemUnderTest.getLoginButton().fire();
+      login();
       Mockito.verifyNoMoreInteractions( verifier );
    }//End Method
    
@@ -98,7 +101,7 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( password );
       
-      systemUnderTest.getLoginButton().fire();
+      login();
       Mockito.verifyNoMoreInteractions( verifier );
    }//End Method
    
@@ -111,7 +114,7 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( password );
       
-      systemUnderTest.getLoginButton().fire();
+      login();
       Mockito.verifyNoMoreInteractions( verifier );
    }//End Method
    
@@ -124,16 +127,52 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( password );
       
-      systemUnderTest.getLoginButton().fire();
+      login();
+      Mockito.verifyNoMoreInteractions( verifier );
+   }//End Method
+   
+   @Test public void shouldNotAttemptWithInitialValues(){
+      login();
       Mockito.verifyNoMoreInteractions( verifier );
    }//End Method
    
    @Test public void shouldContainAllTextElementsInChildren(){
-      Assert.assertTrue( systemUnderTest.getChildren().contains( systemUnderTest.getJenkinsLocationField() ) );
-      Assert.assertTrue( systemUnderTest.getChildren().contains( systemUnderTest.getUserNameField() ) );
-      Assert.assertTrue( systemUnderTest.getChildren().contains( systemUnderTest.getPasswordField() ) );
-      Assert.assertTrue( systemUnderTest.getChildren().contains( systemUnderTest.getLoginButtonWrapper() ) );
-      Assert.assertTrue( systemUnderTest.getLoginButtonWrapper().getChildren().contains( systemUnderTest.getLoginButton() ) );
+      Assert.assertTrue( systemUnderTest.getButtonTypes().contains( systemUnderTest.loginButtonType() ) );
+      Assert.assertTrue( systemUnderTest.getButtonTypes().contains( systemUnderTest.cancelButtonType() ) );
+      
+      GridPane wrapper = ( GridPane )systemUnderTest.getDialogPane().getContent();
+      Assert.assertTrue( wrapper.getChildren().contains( systemUnderTest.getJenkinsLocationField() ) );
+      Assert.assertTrue( wrapper.getChildren().contains( systemUnderTest.getUserNameField() ) );
+      Assert.assertTrue( wrapper.getChildren().contains( systemUnderTest.getPasswordField() ) );
+   }//End Method
+   
+   /**
+    * Convenience method for performing a login on the fx thread.
+    */
+   private void login(){
+      runOnFxThreadAndWait( () -> {
+         systemUnderTest.resultProperty().setValue( systemUnderTest.loginButtonType() );
+      }, 2000 );
+   }//End Method
+   
+   /**
+    * Method to run the {@link Runnable} on the fx thread, and wait the time millis for it to complete,
+    * synchronising the threads.
+    * @param runnable the {@link Runnable} to run.
+    * @param time the milliseconds to wait for the {@link Runnable} to be executed.
+    */
+   private void runOnFxThreadAndWait( Runnable runnable, long time ) {
+      final Thread testThread = Thread.currentThread();
+      PlatformImpl.runLater( () -> {
+         runnable.run();
+         testThread.interrupt();
+      } );
+      try {
+         Thread.sleep( time );
+         Assert.fail( "JavaFx did not respond in time." );
+      } catch ( InterruptedException e ) {
+         //Carry on.
+      }
    }//End Method
 
 }//End Class
