@@ -35,7 +35,7 @@ public class JenkinsLoginTest {
       verifier = Mockito.mock( CredentialsVerifier.class );
       runOnFxThreadAndWait( () -> {
          systemUnderTest = new JenkinsLogin( verifier );
-      }, 5000 );
+      }, 10000 );
    }//End Method
    
    @Ignore
