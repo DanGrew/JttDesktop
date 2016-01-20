@@ -60,8 +60,8 @@ public class TimeKeeperTest {
       TimeKeeper time = new TimeKeeper( fetcher, 5l );
       Mockito.verify( fetcher, Mockito.atLeastOnce() ).fetchJobsAndUpdateDetails();
       time.setInterval( null );
-      Thread.sleep( 10 );
-      Mockito.verify( fetcher, Mockito.atMost( 5 ) ).fetchJobsAndUpdateDetails();
+      Thread.sleep( 100 );
+      Mockito.verify( fetcher, Mockito.atMost( 10 ) ).fetchJobsAndUpdateDetails();
    }//End Method
 
 }//End Class
