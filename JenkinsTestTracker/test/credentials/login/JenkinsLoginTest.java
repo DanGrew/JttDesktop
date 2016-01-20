@@ -152,7 +152,7 @@ public class JenkinsLoginTest {
    private void login(){
       runOnFxThreadAndWait( () -> {
          systemUnderTest.resultProperty().setValue( systemUnderTest.loginButtonType() );
-      }, 2000 );
+      }, 5000 );
    }//End Method
    
    /**
