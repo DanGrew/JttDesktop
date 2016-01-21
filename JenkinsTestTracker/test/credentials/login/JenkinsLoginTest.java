@@ -86,6 +86,21 @@ public class JenkinsLoginTest {
       Mockito.verify( verifier ).attemptLogin( jenkinsLocation, user, password );
    }//End Method
    
+   @Test public void shouldNotAttemptToConnectOnCancel(){
+      final String jenkinsLocation = "any location";
+      final String user = "any user";
+      final String password = "any password";
+      
+      systemUnderTest.getJenkinsLocationField().setText( jenkinsLocation );
+      systemUnderTest.getUserNameField().setText( user );
+      systemUnderTest.getPasswordField().setText( password );
+      
+      Assert.assertNotNull( onCloseHandler );
+      Mockito.when( alert.friendly_getResult() ).thenReturn( systemUnderTest.cancelButtonType() );
+      onCloseHandler.handle( null );
+      Mockito.verifyNoMoreInteractions( verifier );
+   }//End Method
+   
    @Test public void shouldNotAttemptWithNullLocation(){
       final String user = "any user";
       final String password = "any password";
