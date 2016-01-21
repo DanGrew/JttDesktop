@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 
+import friendly.controlsfx.FriendlyAlert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -27,24 +28,28 @@ import javafx.stage.Modality;
  * The {@link JenkinsLogin} provides a {@link GridPane} for a user logging into a
  * jenkins instance.
  */
-public class JenkinsLogin extends Alert {
+public class JenkinsLogin {
 
-   private static final String VALIDATION_MESSAGE = "Text must be present";
+   static final String HEADER = "Welcome! Please log in.";
+   static final String TITLE = "Jenkins Test Tracker";
+   static final String VALIDATION_MESSAGE = "Text must be present";
 
    private static final int JENKINS_LOCATION_WIDTH = 300;
    
    private TextField jenkinsField;
    private TextField userNameField;
    private PasswordField passwordField;
+   private GridPane content;
 
    private ButtonType login;
    private ButtonType cancel;
    
    private final ValidationSupport validation;
+   private InputValidator validator;
    private final CredentialsVerifier credentialsVerifier;
    
    /** Private class responsible for validating the text in the {@link TextField}s.**/
-   private static class InputValidator implements Predicate< String > {
+   static class InputValidator implements Predicate< String > {
 
       /**
        * {@inheritDoc}
@@ -60,38 +65,39 @@ public class JenkinsLogin extends Alert {
     * @param verifier the {@link CredentialsVerifier} for logging in.
     */
    public JenkinsLogin( CredentialsVerifier verifier ) {
-      super( Alert.AlertType.INFORMATION );
       this.credentialsVerifier = verifier;
       this.validation = new ValidationSupport();
-      initialiseAlert();
+      login = new ButtonType( "Login" );
+      cancel = new ButtonType( "Cancel" );
       initialiseContent();
    }//End Constructor
    
    /**
-    * Method to initialise the {@link Alert} elements of the login.
+    * Method to configure the {@link FriendlyAlert} to display the login screen.
+    * @param alert the {@link FriendlyAlert} to display the login.
     */
-   private void initialiseAlert(){
-      setTitle( "Jenkins Test Tracker" );
+   public void configureAlert( FriendlyAlert alert ) {
+      alert.friendly_setAlertType( Alert.AlertType.INFORMATION );
+      alert.friendly_setTitle( TITLE );
       
-      setHeaderText( "Welcome! Please log in." );
-      initModality( Modality.NONE );
+      alert.friendly_setHeaderText( HEADER );
+      alert.friendly_initModality( Modality.NONE );
 
-      login = new ButtonType( "Login" );
-      cancel = new ButtonType( "Cancel" );
+      alert.friendly_getButtonTypes().setAll( login, cancel );
       
-      getButtonTypes().setAll( login, cancel );
-      
-      setOnCloseRequest( event -> {
-         ButtonType type = getResult();
+      alert.friendly_setOnCloseRequest( event -> {
+         ButtonType type = alert.friendly_getResult();
          if ( type.equals( login ) ) prepareInputAndLogin();
       } );
+      
+      alert.friendly_dialogSetContent( content );
    }//End Method
    
    /**
     * Method to initialise the content of the {@link Alert}.
     */
    private void initialiseContent(){
-      GridPane content = new GridPane();
+      content = new GridPane();
       content.setAlignment( Pos.CENTER );
       content.setHgap( 10 );
       content.setVgap( 10 );
@@ -117,25 +123,24 @@ public class JenkinsLogin extends Alert {
       content.add( passwordField, 1, 3 );
 
       applyValidation();
-      
-      getDialogPane().setContent( content );
    }//End Method
    
    /**
     * Method to apply the validation to the {@link TextField}s.
     */
    private void applyValidation(){
+      validator = new InputValidator();
       validation.registerValidator(
                jenkinsField, 
-               Validator.createPredicateValidator( new InputValidator(), VALIDATION_MESSAGE ) 
+               Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
       );
       validation.registerValidator(
                userNameField, 
-               Validator.createPredicateValidator( new InputValidator(), VALIDATION_MESSAGE ) 
+               Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
       );
       validation.registerValidator(
                passwordField, 
-               Validator.createPredicateValidator( new InputValidator(), VALIDATION_MESSAGE ) 
+               Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
       );
    }//End Method
    
@@ -145,11 +150,13 @@ public class JenkinsLogin extends Alert {
     */
    private void prepareInputAndLogin(){
       String jenkinsLocation = jenkinsField.getText();
+      if ( !validator.test( jenkinsLocation ) ) return;
       String username = userNameField.getText();
+      if ( !validator.test( username ) ) return;
       String password = passwordField.getText();
-      if ( !validation.isInvalid() ) {
-         credentialsVerifier.attemptLogin( jenkinsLocation, username, password );
-      }
+      if ( !validator.test( password ) ) return;
+      
+      credentialsVerifier.attemptLogin( jenkinsLocation, username, password );
    }//End Method
 
    /**
@@ -190,6 +197,15 @@ public class JenkinsLogin extends Alert {
     */
    ButtonType cancelButtonType(){
       return cancel;
+   }//End Method
+   
+   /**
+    * Getter for the {@link ValidationSupport} used to display validation on the 
+    * login details.
+    * @return the {@link ValidationSupport} used.
+    */
+   ValidationSupport validationMechanism(){
+      return validation;
    }//End Method
 
 }//End Class

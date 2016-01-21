@@ -16,14 +16,28 @@ import org.mockito.Mockito;
 
 import com.sun.javafx.application.PlatformImpl;
 
+import credentials.login.JenkinsLogin.InputValidator;
+import friendly.controlsfx.FriendlyAlert;
 import graphics.JavaFxInitializer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 
 /**
  * {@link JenkinsLogin} test.
  */
 public class JenkinsLoginTest {
 
+   private FriendlyAlert alert;
+   private EventHandler< ? > onCloseHandler;
+   private Node content;
+   private ObservableList< ButtonType > buttonTypes;
    private CredentialsVerifier verifier;
    private JenkinsLogin systemUnderTest;
    
@@ -32,15 +46,31 @@ public class JenkinsLoginTest {
     */
    @Before public void initialiseSystemUnderTest() {
       JavaFxInitializer.startPlatform();
+      alert = Mockito.mock( FriendlyAlert.class );
+      
+      buttonTypes = FXCollections.observableArrayList();
+      Mockito.when( alert.friendly_getButtonTypes() ).thenReturn( buttonTypes );
+      
+      Mockito.doAnswer( invocation -> {
+         return onCloseHandler = ( EventHandler< ? > )invocation.getArguments()[ 0 ];
+      } ).when( alert ).friendly_setOnCloseRequest( Mockito.any() );
+      
+      Mockito.doAnswer( invocation -> {
+         return content = ( Node )invocation.getArguments()[ 0 ];
+      } ).when( alert ).friendly_dialogSetContent( Mockito.any() );
+      
       verifier = Mockito.mock( CredentialsVerifier.class );
-      runOnFxThreadAndWait( () -> {
-         systemUnderTest = new JenkinsLogin( verifier );
-      }, 10000 );
+      systemUnderTest = new JenkinsLogin( verifier );
+      systemUnderTest.configureAlert( alert );
    }//End Method
    
    @Ignore
    @Test public void manualInspection() {
-      runOnFxThreadAndWait( () -> systemUnderTest.showAndWait(), 100000 );
+      runOnFxThreadAndWait( () -> {
+         FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );
+         systemUnderTest.configureAlert( alert );
+         alert.showAndWait();
+      }, 100000 );
    }//End Method
    
    @Test public void shouldAttemptToConnect(){
@@ -137,22 +167,87 @@ public class JenkinsLoginTest {
    }//End Method
    
    @Test public void shouldContainAllTextElementsInChildren(){
-      Assert.assertTrue( systemUnderTest.getButtonTypes().contains( systemUnderTest.loginButtonType() ) );
-      Assert.assertTrue( systemUnderTest.getButtonTypes().contains( systemUnderTest.cancelButtonType() ) );
+      Assert.assertNotNull( content );
+      Assert.assertTrue( content instanceof GridPane );
+      GridPane gridPane = ( GridPane )content;
+      Assert.assertTrue( gridPane.getChildren().contains( systemUnderTest.getJenkinsLocationField() ) );
+      Assert.assertTrue( gridPane.getChildren().contains( systemUnderTest.getUserNameField() ) );
+      Assert.assertTrue( gridPane.getChildren().contains( systemUnderTest.getPasswordField() ) );
+   }//End Method
+   
+   @Test public void shouldValidateText(){
+      InputValidator validator = new InputValidator();
+      Assert.assertTrue( validator.test( "anything" ) );
+      Assert.assertTrue( validator.test( "anything with space" ) );
+      Assert.assertTrue( validator.test( "a" ) );
+   }//End Method
+   
+   @Test public void shouldNotValidateText(){
+      InputValidator validator = new InputValidator();
+      Assert.assertFalse( validator.test( null ) );
+      Assert.assertFalse( validator.test( "" ) );
+      Assert.assertFalse( validator.test( "    " ) );
+   }//End Method
+   
+   @Test public void shouldProvideVisualValidationForLocation(){
+      final String jenkinsLocation = null;
+      final String user = "any user";
+      final String password = "any password";
       
-      GridPane wrapper = ( GridPane )systemUnderTest.getDialogPane().getContent();
-      Assert.assertTrue( wrapper.getChildren().contains( systemUnderTest.getJenkinsLocationField() ) );
-      Assert.assertTrue( wrapper.getChildren().contains( systemUnderTest.getUserNameField() ) );
-      Assert.assertTrue( wrapper.getChildren().contains( systemUnderTest.getPasswordField() ) );
+      systemUnderTest.getJenkinsLocationField().setText( jenkinsLocation );
+      systemUnderTest.getUserNameField().setText( user );
+      systemUnderTest.getPasswordField().setText( password );
+      
+      runOnFxThreadAndWait( () -> {}, 2000 );
+      Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
+   }//End Method
+   
+   @Test public void shouldProvideVisualValidationForUsername(){
+      final String jenkinsLocation = "any location";
+      final String user = null;
+      final String password = "any password";
+      
+      systemUnderTest.getJenkinsLocationField().setText( jenkinsLocation );
+      systemUnderTest.getUserNameField().setText( user );
+      systemUnderTest.getPasswordField().setText( password );
+      
+      runOnFxThreadAndWait( () -> {}, 2000 );
+      Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
+   }//End Method
+   
+   @Test public void shouldProvideVisualValidationForPassword(){
+      final String jenkinsLocation = "any user";
+      final String user = "any user";
+      final String password = null;
+      
+      systemUnderTest.getJenkinsLocationField().setText( jenkinsLocation );
+      systemUnderTest.getUserNameField().setText( user );
+      systemUnderTest.getPasswordField().setText( password );
+      
+      runOnFxThreadAndWait( () -> {}, 2000 );
+      Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
+   }//End Method
+   
+   @Test public void shoudlConfigureAlert(){
+      Mockito.verify( alert ).friendly_setAlertType( Alert.AlertType.INFORMATION );
+      Mockito.verify( alert ).friendly_setTitle( JenkinsLogin.TITLE );
+      Mockito.verify( alert ).friendly_setHeaderText( JenkinsLogin.HEADER );
+      Mockito.verify( alert ).friendly_initModality( Modality.NONE );
+      
+      Assert.assertTrue( buttonTypes.contains( systemUnderTest.loginButtonType() ) );
+      Assert.assertTrue( buttonTypes.contains( systemUnderTest.cancelButtonType() ) );
+      Assert.assertNotNull( onCloseHandler );
+      
+      Mockito.verify( alert ).friendly_dialogSetContent( content );
    }//End Method
    
    /**
     * Convenience method for performing a login on the fx thread.
     */
    private void login(){
-      runOnFxThreadAndWait( () -> {
-         systemUnderTest.resultProperty().setValue( systemUnderTest.loginButtonType() );
-      }, 5000 );
+      Assert.assertNotNull( onCloseHandler );
+      Mockito.when( alert.friendly_getResult() ).thenReturn( systemUnderTest.loginButtonType() );
+      onCloseHandler.handle( null );
    }//End Method
    
    /**
