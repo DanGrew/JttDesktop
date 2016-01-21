@@ -189,6 +189,7 @@ public class JenkinsLoginTest {
       Assert.assertFalse( validator.test( "    " ) );
    }//End Method
    
+   @Ignore
    @Test public void shouldProvideVisualValidationForLocation(){
       final String jenkinsLocation = null;
       final String user = "any user";
@@ -202,6 +203,7 @@ public class JenkinsLoginTest {
       Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
    }//End Method
    
+   @Ignore
    @Test public void shouldProvideVisualValidationForUsername(){
       final String jenkinsLocation = "any location";
       final String user = null;
@@ -215,6 +217,7 @@ public class JenkinsLoginTest {
       Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
    }//End Method
    
+   @Ignore
    @Test public void shouldProvideVisualValidationForPassword(){
       final String jenkinsLocation = "any user";
       final String user = "any user";
@@ -226,6 +229,18 @@ public class JenkinsLoginTest {
       
       runOnFxThreadAndWait( () -> {}, 2000 );
       Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
+   }//End Method
+   
+   @Test public void shouldHaveControlsRegistered(){
+      Assert.assertTrue( systemUnderTest.validationMechanism().getRegisteredControls().contains( 
+               systemUnderTest.getJenkinsLocationField() ) 
+      );
+      Assert.assertTrue( systemUnderTest.validationMechanism().getRegisteredControls().contains( 
+               systemUnderTest.getUserNameField() ) 
+      );
+      Assert.assertTrue( systemUnderTest.validationMechanism().getRegisteredControls().contains( 
+               systemUnderTest.getPasswordField() ) 
+      );
    }//End Method
    
    @Test public void shoudlConfigureAlert(){
