@@ -13,6 +13,8 @@ import java.util.function.Predicate;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 
+import api.sources.ExternalApi;
+import api.sources.JenkinsApiImpl;
 import friendly.controlsfx.FriendlyAlert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -46,7 +48,7 @@ public class JenkinsLogin {
    
    private final ValidationSupport validation;
    private InputValidator validator;
-   private final CredentialsVerifier credentialsVerifier;
+   private final ExternalApi externalApi;
    
    /** Private class responsible for validating the text in the {@link TextField}s.**/
    static class InputValidator implements Predicate< String > {
@@ -62,10 +64,10 @@ public class JenkinsLogin {
 
    /**
     * Constructs a new {@link JenkinsLogin}.
-    * @param verifier the {@link CredentialsVerifier} for logging in.
+    * @param externalApi the {@link ExternalApi} for logging in.
     */
-   public JenkinsLogin( CredentialsVerifier verifier ) {
-      this.credentialsVerifier = verifier;
+   public JenkinsLogin( ExternalApi externalApi ) {
+      this.externalApi = externalApi;
       this.validation = new ValidationSupport();
       login = new ButtonType( "Login" );
       cancel = new ButtonType( "Cancel" );
@@ -156,7 +158,7 @@ public class JenkinsLogin {
       String password = passwordField.getText();
       if ( !validator.test( password ) ) return;
       
-      credentialsVerifier.attemptLogin( jenkinsLocation, username, password );
+      externalApi.attemptLogin( jenkinsLocation, username, password );
    }//End Method
 
    /**

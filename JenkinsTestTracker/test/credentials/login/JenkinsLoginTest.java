@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 
 import com.sun.javafx.application.PlatformImpl;
 
+import api.sources.ExternalApi;
 import credentials.login.JenkinsLogin.InputValidator;
 import friendly.controlsfx.FriendlyAlert;
 import graphics.JavaFxInitializer;
@@ -23,8 +24,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -38,7 +39,7 @@ public class JenkinsLoginTest {
    private EventHandler< ? > onCloseHandler;
    private Node content;
    private ObservableList< ButtonType > buttonTypes;
-   private CredentialsVerifier verifier;
+   private ExternalApi verifier;
    private JenkinsLogin systemUnderTest;
    
    /**
@@ -59,7 +60,7 @@ public class JenkinsLoginTest {
          return content = ( Node )invocation.getArguments()[ 0 ];
       } ).when( alert ).friendly_dialogSetContent( Mockito.any() );
       
-      verifier = Mockito.mock( CredentialsVerifier.class );
+      verifier = Mockito.mock( ExternalApi.class );
       systemUnderTest = new JenkinsLogin( verifier );
       systemUnderTest.configureAlert( alert );
    }//End Method

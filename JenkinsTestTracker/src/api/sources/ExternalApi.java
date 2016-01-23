@@ -8,6 +8,8 @@
  */
 package api.sources;
 
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import model.jobs.JenkinsJob;
 
 /**
@@ -16,6 +18,14 @@ import model.jobs.JenkinsJob;
  */
 public interface ExternalApi {
 
+   /**
+    * Method to attempt a login.
+    * @param jenkinsLocation the location of Jenkins.
+    * @param user the user name.
+    * @param password the password.
+    */
+   public DefaultHttpClient attemptLogin( String jenkinsLocation, String user, String password );
+   
    /**
     * Method to get the current build state as a json {@link String}.
     * @param jenkinsJob the {@link JenkinsJob} to get the state for.
