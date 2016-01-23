@@ -10,16 +10,17 @@ package credentials.login;
 
 import java.util.function.Predicate;
 
+import org.apache.http.client.HttpClient;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 
 import api.sources.ExternalApi;
-import api.sources.JenkinsApiImpl;
 import friendly.controlsfx.FriendlyAlert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -89,7 +90,7 @@ public class JenkinsLogin {
       
       alert.friendly_setOnCloseRequest( event -> {
          ButtonType type = alert.friendly_getResult();
-         if ( type.equals( login ) ) prepareInputAndLogin();
+         if ( type.equals( login ) ) prepareInputAndLogin( event );
       } );
       
       alert.friendly_dialogSetContent( content );
@@ -149,16 +150,27 @@ public class JenkinsLogin {
    /**
     * Method to prepare the input for logging in and to log in. Log in will not be performed
     * if input is not valid.
+    * @param event the {@link DialogEvent} fired when clicking buttons.
     */
-   private void prepareInputAndLogin(){
+   private void prepareInputAndLogin( DialogEvent event ){
       String jenkinsLocation = jenkinsField.getText();
-      if ( !validator.test( jenkinsLocation ) ) return;
+      if ( !validator.test( jenkinsLocation ) ) {
+         event.consume();
+         return;
+      }
       String username = userNameField.getText();
-      if ( !validator.test( username ) ) return;
+      if ( !validator.test( username ) ) {
+         event.consume();
+         return;
+      }
       String password = passwordField.getText();
-      if ( !validator.test( password ) ) return;
+      if ( !validator.test( password ) ) {
+         event.consume();
+         return;
+      }
       
-      externalApi.attemptLogin( jenkinsLocation, username, password );
+      HttpClient client = externalApi.attemptLogin( jenkinsLocation, username, password );
+      if ( client == null ) event.consume();
    }//End Method
 
    /**

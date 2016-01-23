@@ -8,6 +8,7 @@
  */
 package credentials.login;
 
+import org.apache.http.client.HttpClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -16,7 +17,9 @@ import org.mockito.Mockito;
 
 import com.sun.javafx.application.PlatformImpl;
 
+import api.sources.ClientHandler;
 import api.sources.ExternalApi;
+import api.sources.JenkinsApiImpl;
 import credentials.login.JenkinsLogin.InputValidator;
 import friendly.controlsfx.FriendlyAlert;
 import graphics.JavaFxInitializer;
@@ -27,6 +30,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 
@@ -36,15 +40,17 @@ import javafx.stage.Modality;
 public class JenkinsLoginTest {
 
    private FriendlyAlert alert;
-   private EventHandler< ? > onCloseHandler;
+   private EventHandler< DialogEvent > onCloseHandler;
+   private DialogEvent loginEvent;
    private Node content;
    private ObservableList< ButtonType > buttonTypes;
-   private ExternalApi verifier;
+   private ExternalApi handler;
    private JenkinsLogin systemUnderTest;
    
    /**
     * Method to initialise the system under test.
     */
+   @SuppressWarnings("unchecked") //Simply mocking genericized objects. 
    @Before public void initialiseSystemUnderTest() {
       JavaFxInitializer.startPlatform();
       alert = Mockito.mock( FriendlyAlert.class );
@@ -52,16 +58,17 @@ public class JenkinsLoginTest {
       buttonTypes = FXCollections.observableArrayList();
       Mockito.when( alert.friendly_getButtonTypes() ).thenReturn( buttonTypes );
       
+      loginEvent = Mockito.mock( DialogEvent.class );
       Mockito.doAnswer( invocation -> {
-         return onCloseHandler = ( EventHandler< ? > )invocation.getArguments()[ 0 ];
+         return onCloseHandler = ( EventHandler< DialogEvent > )invocation.getArguments()[ 0 ];
       } ).when( alert ).friendly_setOnCloseRequest( Mockito.any() );
       
       Mockito.doAnswer( invocation -> {
          return content = ( Node )invocation.getArguments()[ 0 ];
       } ).when( alert ).friendly_dialogSetContent( Mockito.any() );
       
-      verifier = Mockito.mock( ExternalApi.class );
-      systemUnderTest = new JenkinsLogin( verifier );
+      handler = Mockito.mock( ExternalApi.class );
+      systemUnderTest = new JenkinsLogin( handler );
       systemUnderTest.configureAlert( alert );
    }//End Method
    
@@ -69,6 +76,16 @@ public class JenkinsLoginTest {
    @Test public void manualInspection() {
       runOnFxThreadAndWait( () -> {
          FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );
+         systemUnderTest.configureAlert( alert );
+         alert.showAndWait();
+      }, 100000 );
+   }//End Method
+   
+   @Ignore
+   @Test public void manualConnectionTest() {
+      runOnFxThreadAndWait( () -> {
+         FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );
+         systemUnderTest = new JenkinsLogin( new JenkinsApiImpl( new ClientHandler() ) );
          systemUnderTest.configureAlert( alert );
          alert.showAndWait();
       }, 100000 );
@@ -84,7 +101,22 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( password );
       
       login();
-      Mockito.verify( verifier ).attemptLogin( jenkinsLocation, user, password );
+      Mockito.verify( handler ).attemptLogin( jenkinsLocation, user, password );
+      Mockito.verify( loginEvent ).consume();
+   }//End Method
+   
+   @Test public void shouldShutDownAlertWhenLoginAccepted(){
+      final String jenkinsLocation = "any location";
+      final String user = "any user";
+      final String password = "any password";
+      
+      systemUnderTest.getJenkinsLocationField().setText( jenkinsLocation );
+      systemUnderTest.getUserNameField().setText( user );
+      systemUnderTest.getPasswordField().setText( password );
+      
+      Mockito.when( handler.attemptLogin( jenkinsLocation, user, password ) ).thenReturn( Mockito.mock( HttpClient.class ) );
+      login();
+      Mockito.verify( handler ).attemptLogin( jenkinsLocation, user, password );
    }//End Method
    
    @Test public void shouldNotAttemptToConnectOnCancel(){
@@ -99,7 +131,7 @@ public class JenkinsLoginTest {
       Assert.assertNotNull( onCloseHandler );
       Mockito.when( alert.friendly_getResult() ).thenReturn( systemUnderTest.cancelButtonType() );
       onCloseHandler.handle( null );
-      Mockito.verifyNoMoreInteractions( verifier );
+      Mockito.verifyNoMoreInteractions( handler );
    }//End Method
    
    @Test public void shouldNotAttemptWithNullLocation(){
@@ -111,7 +143,8 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( password );
       
       login();
-      Mockito.verifyNoMoreInteractions( verifier );
+      Mockito.verifyNoMoreInteractions( handler );
+      Mockito.verify( loginEvent ).consume();
    }//End Method
    
    @Test public void shouldNotAttemptWithNullUsername(){
@@ -123,7 +156,8 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( password );
       
       login();
-      Mockito.verifyNoMoreInteractions( verifier );
+      Mockito.verifyNoMoreInteractions( handler );
+      Mockito.verify( loginEvent ).consume();
    }//End Method
    
    @Test public void shouldNotAttemptWithNullPassword(){
@@ -135,7 +169,8 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( null );
       
       login();
-      Mockito.verifyNoMoreInteractions( verifier );
+      Mockito.verifyNoMoreInteractions( handler );
+      Mockito.verify( loginEvent ).consume();
    }//End Method
    
    @Test public void shouldNotAttemptWithEmptyLocation(){
@@ -148,7 +183,8 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( password );
       
       login();
-      Mockito.verifyNoMoreInteractions( verifier );
+      Mockito.verifyNoMoreInteractions( handler );
+      Mockito.verify( loginEvent ).consume();
    }//End Method
    
    @Test public void shouldNotAttemptWithEmptyUsername(){
@@ -161,7 +197,8 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( password );
       
       login();
-      Mockito.verifyNoMoreInteractions( verifier );
+      Mockito.verifyNoMoreInteractions( handler );
+      Mockito.verify( loginEvent ).consume();
    }//End Method
    
    @Test public void shouldNotAttemptWithEmptyPassword(){
@@ -174,12 +211,14 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( password );
       
       login();
-      Mockito.verifyNoMoreInteractions( verifier );
+      Mockito.verifyNoMoreInteractions( handler );
+      Mockito.verify( loginEvent ).consume();
    }//End Method
    
    @Test public void shouldNotAttemptWithInitialValues(){
       login();
-      Mockito.verifyNoMoreInteractions( verifier );
+      Mockito.verifyNoMoreInteractions( handler );
+      Mockito.verify( loginEvent ).consume();
    }//End Method
    
    @Test public void shouldContainAllTextElementsInChildren(){
@@ -278,7 +317,7 @@ public class JenkinsLoginTest {
    private void login(){
       Assert.assertNotNull( onCloseHandler );
       Mockito.when( alert.friendly_getResult() ).thenReturn( systemUnderTest.loginButtonType() );
-      onCloseHandler.handle( null );
+      onCloseHandler.handle( loginEvent );
    }//End Method
    
    /**
