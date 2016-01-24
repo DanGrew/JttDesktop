@@ -1,0 +1,10 @@
+{
+  "jobs" : [
+    {
+      "name" : "TestProject"
+    },
+    {
+      "name" : "AnotherProject"
+    }
+  ]
+}
