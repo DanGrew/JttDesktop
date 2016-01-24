@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import org.junit.Assert;
+
 /**
  * Common test values and properties used.
  */
@@ -41,6 +43,26 @@ public final class TestCommon {
       String content = scanner.useDelimiter( "//Z" ).next();
       scanner.close();
       return content;
+   }//End Method
+   
+   /**
+    * Method to assert that all values of the enum map using {@link Enum#valueOf(Class, String)} to {@link Enum#name()}.
+    * @param enumClass the {@link Enum} {@link Class} to prove.
+    */
+   public static < E extends Enum< E > > void assertEnumNameWithValueOf( Class< E > enumClass ) {
+      for ( Enum< E > value : enumClass.getEnumConstants() ) {
+         Assert.assertEquals( value, Enum.valueOf( enumClass, value.name() ) );
+      }
+   }//End Method
+   
+   /**
+    * Method to assert that all values of the enum map using {@link Enum#valueOf(Class, String)} to {@link Enum#toString()}.
+    * @param enumClass the {@link Enum} {@link Class} to prove.
+    */
+   public static < E extends Enum< E > > void assertEnumToStringWithValueOf( Class< E > enumClass ) {
+      for ( Enum< E > value : enumClass.getEnumConstants() ) {
+         Assert.assertEquals( value, Enum.valueOf( enumClass, value.toString() ) );
+      }
    }//End Method
 
 }//End Class
