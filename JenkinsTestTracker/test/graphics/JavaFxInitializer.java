@@ -8,6 +8,7 @@
  */
 package graphics;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Supplier;
 
 import org.junit.Assert;
@@ -44,40 +45,36 @@ public class JavaFxInitializer extends Application {
     * been launched.
     */
    private static void launch( Supplier< Node > runnable ){
-      final Thread current = Thread.currentThread();
-      
       if ( !hasLaunched() ) {
+         CountDownLatch launchLatch = new CountDownLatch( 1 );
          content = new BorderPane();
          /* Run on separate thread because this will not return while the scene is open.*/
          new Thread( () -> Application.launch() ).start();
          
          //Get feedback as soon as the center is set, continue current thread.
          content.sceneProperty().addListener( ( source, old, updated ) -> {
-            current.interrupt();
+            launchLatch.countDown();
          } );
          
-         //Wait a maximum of 2 seconds for application to launch.
          try {
-            Thread.sleep( 2000 );
-            Assert.fail( "Application has not launched." );
+            launchLatch.await();
          } catch ( InterruptedException e ) {
-            Assert.assertTrue( hasLaunched() );
-            //continue having proved it has launched.
+            Assert.fail( "CountDownLatch interrupted when launching." );
          }
+         Assert.assertTrue( hasLaunched() );
       }
       
+      CountDownLatch contentLatch = new CountDownLatch( 1 );
       //Must synchronise call through to launch with the run later so that the center is set.
       PlatformImpl.runLater( () -> {
          content.setCenter( runnable.get() );
-         current.interrupt();
+         contentLatch.countDown();
       } );
       
-      //Wait a maximum of 2 seconds for PlatformImpl to respond.
       try {
-         Thread.sleep( 20000 );
-         Assert.fail( "JavaFxInitializer took too long." );
+         contentLatch.await();
       } catch ( InterruptedException e ) {
-         //return as the set has completed.
+         Assert.fail( "CountDownLatch interrupted when applying content." );
       }
    }//End Method
    
