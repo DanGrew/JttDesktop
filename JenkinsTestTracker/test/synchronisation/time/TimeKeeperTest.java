@@ -27,7 +27,7 @@ public class TimeKeeperTest {
    
    @Test public void shouldRecordSomeInteractionsWhenRunQuickly() throws InterruptedException{
       new TimeKeeper( fetcher, 1l );
-      Thread.sleep( 10 );
+      Thread.sleep( 20 );
       Mockito.verify( fetcher, Mockito.atLeast( 5 ) ).fetchJobsAndUpdateDetails();
    }//End Method
    
@@ -41,7 +41,7 @@ public class TimeKeeperTest {
       TimeKeeper systemUnderTest = new TimeKeeper( fetcher, 1000l );
       systemUnderTest.setInterval( 2000l );
       systemUnderTest.setInterval( 1l );
-      Thread.sleep( 10 );
+      Thread.sleep( 20 );
       Mockito.verify( fetcher, Mockito.atLeast( 5 ) ).fetchJobsAndUpdateDetails();
    }//End Method
    
