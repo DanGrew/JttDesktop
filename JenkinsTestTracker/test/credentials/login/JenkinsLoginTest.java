@@ -8,6 +8,8 @@
  */
 package credentials.login;
 
+import java.util.concurrent.CountDownLatch;
+
 import org.apache.http.client.HttpClient;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,6 +25,8 @@ import api.sources.JenkinsApiImpl;
 import credentials.login.JenkinsLogin.InputValidator;
 import friendly.controlsfx.FriendlyAlert;
 import graphics.JavaFxInitializer;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -244,7 +248,6 @@ public class JenkinsLoginTest {
       Assert.assertFalse( validator.test( "    " ) );
    }//End Method
    
-   @Ignore
    @Test public void shouldProvideVisualValidationForLocation(){
       final String jenkinsLocation = null;
       final String user = "any user";
@@ -258,7 +261,6 @@ public class JenkinsLoginTest {
       Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
    }//End Method
    
-   @Ignore
    @Test public void shouldProvideVisualValidationForUsername(){
       final String jenkinsLocation = "any location";
       final String user = null;
@@ -272,7 +274,6 @@ public class JenkinsLoginTest {
       Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
    }//End Method
    
-   @Ignore
    @Test public void shouldProvideVisualValidationForPassword(){
       final String jenkinsLocation = "any user";
       final String user = "any user";
@@ -333,16 +334,18 @@ public class JenkinsLoginTest {
     * @param time the milliseconds to wait for the {@link Runnable} to be executed.
     */
    private void runOnFxThreadAndWait( Runnable runnable, long time ) {
-      final Thread testThread = Thread.currentThread();
+      CountDownLatch latch = new CountDownLatch( 1 );
+      BooleanProperty result = new SimpleBooleanProperty( false );
       PlatformImpl.runLater( () -> {
          runnable.run();
-         testThread.interrupt();
+         result.set( true );
+         latch.countDown();  
       } );
       try {
-         Thread.sleep( time );
-         Assert.fail( "JavaFx did not respond in time." );
+         latch.await();
+         Assert.assertTrue( result.get() );
       } catch ( InterruptedException e ) {
-         //Carry on.
+         Assert.fail( "CountDownLatch failed." );
       }
    }//End Method
 
