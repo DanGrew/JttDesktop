@@ -162,6 +162,7 @@ public class JenkinsFetcherImplTest {
 
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullApiInConstructor(){
       systemUnderTest = new JenkinsFetcherImpl( database, null );
+      Assert.fail();
    }//End Method
    
 }//End Class
