@@ -8,6 +8,7 @@
  */
 package graphics;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -16,6 +17,10 @@ import org.mockito.Mockito;
  */
 public class DecoupledPlatformImplTest {
 
+   @Before public void initialiseSystemUnderTest(){
+      DecoupledPlatformImpl.setInstance( null );
+   }//End Method
+   
    @Test public void shouldInvokeSetInstance() {
       PlatformDecoupler decoupler = Mockito.mock( PlatformDecoupler.class );
       DecoupledPlatformImpl.setInstance( decoupler );
