@@ -154,7 +154,6 @@ public class JenkinsFetcherImplTest {
       Mockito.verify( spy ).updateBuildState( builtJob2 );
       Mockito.verify( spy ).updateJobDetails( builtJob1 );
       Mockito.verify( spy ).updateJobDetails( builtJob2 );
-      Assert.fail();
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullDatabaseInConstructor(){
