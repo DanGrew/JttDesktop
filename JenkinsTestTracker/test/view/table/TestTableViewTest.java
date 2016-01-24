@@ -10,12 +10,15 @@ package view.table;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import data.JsonTestResultsImporter;
 import data.json.tests.JsonTestResultsImporterImpl;
+import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
+import graphics.TestPlatformDecouplerImpl;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
@@ -38,6 +41,10 @@ public class TestTableViewTest {
    private JenkinsDatabase database;
    private TestTableView systemUnderTest;
    private TreeTableView< TestTableItem > treeTableView;
+   
+   @BeforeClass public static void initialisePlatform(){
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
+   }//End Method
    
    @Before public void initialiseSystemUnderTest(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );

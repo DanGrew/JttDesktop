@@ -155,7 +155,7 @@ public class JenkinsApiImpl implements ExternalApi {
     * @return the path to the job.
     */
    static String extractAndPrefixJob( JenkinsJob jenkinsJob ) {
-      return JOB + jenkinsJob.nameProperty().get();
+      return JOB + jenkinsJob.nameProperty().get().replaceAll( " ", "%20" );
    }//End Method
 
    /**

@@ -29,7 +29,7 @@ public class JenkinsTestTrackerCoreImpl {
     * Constructs a new {@link JenkinsTestTrackerCoreImpl}.
     * @param api the {@link ExternalApi} to connect to.
     */
-   JenkinsTestTrackerCoreImpl( ExternalApi api ) {
+   public JenkinsTestTrackerCoreImpl( ExternalApi api ) {
       database = new JenkinsDatabaseImpl();
       JenkinsFetcher fetcher = new JenkinsFetcherImpl( database, api );
       timeKeeper = new TimeKeeper( fetcher, 1000l );
@@ -40,7 +40,7 @@ public class JenkinsTestTrackerCoreImpl {
     * Getter for the {@link JenkinsDatabase}.
     * @return the {@link JenkinsDatabase}.
     */
-   JenkinsDatabase getDatabase() {
+   public JenkinsDatabase getDatabase() {
       return database;
    }//End Method
 

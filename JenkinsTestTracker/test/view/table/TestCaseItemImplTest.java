@@ -138,19 +138,25 @@ public class TestCaseItemImplTest {
    }//End Method
    
    @Test public void statusGraphicShouldReflectPassStatus(){
-      assertStatusGraphicColour( testCase1Item, TestCaseItemImpl.DEFAULT_PASS_COLOUR );
+      assertStatusGraphicColour( testCase1Item, TestResultStatus.PASSED.colour() );
    }//End Method
    
    @Test public void statusGraphicShouldReflectFailStatus(){
-      assertStatusGraphicColour( testCase2Item, TestCaseItemImpl.DEFAULT_FAIL_COLOUR );
+      assertStatusGraphicColour( testCase2Item, TestResultStatus.FAILED.colour() );
    }//End Method
    
    @Test public void statusGraphicShouldUpdateWithStatusChange(){
-      assertStatusGraphicColour( testCase1Item, TestCaseItemImpl.DEFAULT_PASS_COLOUR );
+      assertStatusGraphicColour( testCase1Item, TestResultStatus.PASSED.colour() );
+      testCase1.statusProperty().set( TestResultStatus.FIXED );
+      assertStatusGraphicColour( testCase1Item, TestResultStatus.FIXED.colour() );
+      testCase1.statusProperty().set( TestResultStatus.SKIPPED );
+      assertStatusGraphicColour( testCase1Item, TestResultStatus.SKIPPED.colour() );
+      testCase1.statusProperty().set( TestResultStatus.REGRESSION );
+      assertStatusGraphicColour( testCase1Item, TestResultStatus.REGRESSION.colour() );
       testCase1.statusProperty().set( TestResultStatus.FAILED );
-      assertStatusGraphicColour( testCase1Item, TestCaseItemImpl.DEFAULT_FAIL_COLOUR );
+      assertStatusGraphicColour( testCase1Item, TestResultStatus.FAILED.colour() );
       testCase1.statusProperty().set( TestResultStatus.UNKNOWN );
-      assertStatusGraphicColour( testCase1Item, TestCaseItemImpl.DEFAULT_UNKNOWN_COLOUR );
+      assertStatusGraphicColour( testCase1Item, TestResultStatus.UNKNOWN.colour() );
    }//End Method
    
    /**

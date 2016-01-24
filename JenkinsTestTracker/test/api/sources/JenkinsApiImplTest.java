@@ -238,4 +238,9 @@ public class JenkinsApiImplTest {
       Mockito.when( clientHandler.handleResponse( Mockito.any() ) ).thenThrow( HttpResponseException.class );
       Assert.assertNull( systemUnderTest.executeRequestAndUnpack( Mockito.mock( HttpGet.class ) ) );
    }//End Method
+   
+   @Test public void shouldSubstituteSpacesInJenkinsJobs(){
+      JenkinsJob jobWithSpaces = new JenkinsJobImpl( "anything with spaces" );
+      Assert.assertEquals( "/job/anything%20with%20spaces", JenkinsApiImpl.extractAndPrefixJob( jobWithSpaces ) );
+   }//End Method
 }//End Class

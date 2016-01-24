@@ -172,7 +172,17 @@ public class JenkinsLogin {
       HttpClient client = externalApi.attemptLogin( jenkinsLocation, username, password );
       if ( client == null ) event.consume();
    }//End Method
-
+   
+   /**
+    * Method to determine if the given {@link ButtonType} corresponds to logging in.
+    * @param loginButtonType the {@link ButtonType} observed.
+    * @return true if logging in result.
+    */
+   public boolean isLoginResult( ButtonType loginButtonType ) {
+      if ( loginButtonType == null ) return false;
+      return loginButtonType.equals( this.login );
+   }//End Method
+   
    /**
     * Getter for the {@link TextField} for the Jenkins location.
     * @return the {@link TextField}.

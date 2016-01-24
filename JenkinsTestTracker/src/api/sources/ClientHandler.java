@@ -29,6 +29,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 
 /**
  * The {@link ClientHandler} handles the interaction with jenkins using apache http library.
@@ -72,7 +73,15 @@ public class ClientHandler implements ResponseHandler< String > {
     * {@inheritDoc}
     */
    @Override public String handleResponse( HttpResponse response ) throws ClientProtocolException, IOException {
-      return responseHandler.handleResponse( response );
+      try {
+         String stringResponse = responseHandler.handleResponse( response );
+         return stringResponse;
+      } finally {
+         if ( response.getEntity() != null ) {
+            EntityUtils.consume( response.getEntity() );
+            response.getEntity().getContent().close();
+         }
+      }
    }//End Method
 
    /**

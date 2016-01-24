@@ -23,9 +23,6 @@ import model.tests.TestCase;
 public class TestCaseItemImpl implements TestTableItem {
 
    static final double DEFAULT_STATUS_GRAPHIC_RADIUS = 5;
-   static final Color DEFAULT_PASS_COLOUR = Color.GREEN.brighter();
-   static final Color DEFAULT_FAIL_COLOUR = Color.RED;
-   static final Color DEFAULT_UNKNOWN_COLOUR = Color.GRAY;
    private TestCase subject;
    private StringProperty name;
    private StringProperty status;
@@ -66,20 +63,8 @@ public class TestCaseItemImpl implements TestTableItem {
     * Method to update the {@link Color} of the {@link Circle} status graphic.
     */
    private void updateStatusGraphic() {
-      switch ( subject.statusProperty().get() ) {
-         case FAILED:
-            statusGraphic.strokeProperty().set( DEFAULT_FAIL_COLOUR );
-            statusGraphic.fillProperty().set( DEFAULT_FAIL_COLOUR );
-            break;
-         case PASSED:
-            statusGraphic.strokeProperty().set( DEFAULT_PASS_COLOUR );
-            statusGraphic.fillProperty().set( DEFAULT_PASS_COLOUR );
-            break;
-         default:
-            statusGraphic.strokeProperty().set( DEFAULT_UNKNOWN_COLOUR );
-            statusGraphic.fillProperty().set( DEFAULT_UNKNOWN_COLOUR );
-            break;
-      }
+      statusGraphic.strokeProperty().set( subject.statusProperty().get().colour() );
+      statusGraphic.fillProperty().set( subject.statusProperty().get().colour() );
    }//End Method
 
    /**

@@ -8,6 +8,7 @@
  */
 package utility.observable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -38,7 +39,7 @@ public class FunctionListChangeListenerImpl< TypeT > implements ListChangeListen
    @Override public void onChanged( Change< ? extends TypeT > change ) {
       while ( change.next() ) {
          if ( change.wasAdded() ) {
-            change.getAddedSubList().forEach( object -> addFunction.accept( object ) );
+            new ArrayList<>( change.getAddedSubList() ).forEach( object -> addFunction.accept( object ) );
          }
          if ( change.wasRemoved() ) {
             change.getRemoved().forEach( object -> removeFunction.accept( object ) );

@@ -13,7 +13,11 @@ package model.jobs;
  */
 public enum BuildResultStatus {
 
+   ABORTED,
    SUCCESS,
    FAILURE,
+   NOT_BUILT,
+   UNSTABLE,
    UNKNOWN
+   
 }//End Enum

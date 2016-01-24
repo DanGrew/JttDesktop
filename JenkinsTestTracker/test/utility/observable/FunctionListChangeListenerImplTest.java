@@ -10,6 +10,7 @@ package utility.observable;
 
 import java.util.function.Consumer;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -27,15 +28,16 @@ import javafx.collections.ObservableList;
  */
 public class FunctionListChangeListenerImplTest {
 
-   private static final ObservableList< String > testList = FXCollections.observableArrayList( 
-            "something", "in", "this", "list", "for", "testing", "purposes" 
-   );
+   private ObservableList< String > testList;
    private Consumer< String > addFunction;
    private Consumer< String > removeFunction;
    private ListChangeListener< String > systemUnderTest;
    
    @SuppressWarnings("unchecked") //Mocking, safe. 
    @Before public void initialiseSystemUnderTest(){
+      testList = FXCollections.observableArrayList( 
+               "something", "in", "this", "list", "for", "testing", "purposes" 
+      );
       addFunction = Mockito.mock( Consumer.class );
       removeFunction = Mockito.mock( Consumer.class );
       systemUnderTest = new FunctionListChangeListenerImpl<>( addFunction, removeFunction );
@@ -66,4 +68,18 @@ public class FunctionListChangeListenerImplTest {
       Mockito.verify( removeFunction ).accept( testList.get( 3 ) );
       Mockito.verifyNoMoreInteractions( addFunction, removeFunction );
    }//End Method
+   
+   @Test public void shouldAvoidAddConcurrencyException(){
+      systemUnderTest = new FunctionListChangeListenerImpl<>( item -> testList.add( item ), removeFunction );
+      Change< String > change = new SimpleRemovedChange<>( 0, 3, testList.get( 3 ), testList );
+      systemUnderTest.onChanged( change );
+      Assert.assertEquals( 10, testList.size() );
+   }
+   
+   @Test public void shouldAvoidRemoveConcurrencyException(){
+      systemUnderTest = new FunctionListChangeListenerImpl<>( addFunction, item -> testList.remove( item ) );
+      Change< String > change = new SimpleRemovedChange<>( 0, 0, testList.get( 3 ), testList );
+      systemUnderTest.onChanged( change );
+      Assert.assertEquals( 6, testList.size() );
+   }
 }//End Class

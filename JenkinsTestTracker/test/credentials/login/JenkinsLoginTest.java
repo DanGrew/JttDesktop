@@ -311,6 +311,12 @@ public class JenkinsLoginTest {
       Mockito.verify( alert ).friendly_dialogSetContent( content );
    }//End Method
    
+   @Test public void shouldDetermineLoginAccepted(){
+      Assert.assertTrue( systemUnderTest.isLoginResult( systemUnderTest.loginButtonType() ) );
+      Assert.assertFalse( systemUnderTest.isLoginResult( systemUnderTest.cancelButtonType() ) );
+      Assert.assertFalse( systemUnderTest.isLoginResult( null ) );
+   }//End Method
+   
    /**
     * Convenience method for performing a login on the fx thread.
     */

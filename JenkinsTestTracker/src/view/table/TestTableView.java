@@ -11,6 +11,7 @@ package view.table;
 import java.util.HashMap;
 import java.util.Map;
 
+import graphics.DecoupledPlatformImpl;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
@@ -154,7 +155,9 @@ public class TestTableView extends BorderPane {
       } );
       addTestCasesSubscription( testClass );
       
-      parent.getChildren().add( branch );
+      DecoupledPlatformImpl.runLater( () -> {
+         parent.getChildren().add( branch );
+      } );
       testClassTreeItems.put( testClass, branch );
       return branch;
    }// End Method
@@ -167,7 +170,9 @@ public class TestTableView extends BorderPane {
    private void createTestCaseItem( TreeItem< TestTableItem > branch, TestCase testCase ){
       TestTableItem caseDescriber = new TestCaseItemImpl( testCase );
       TreeItem< TestTableItem > caseItem = new TreeItem<>( caseDescriber, caseDescriber.getStatusGraphic() );
-      branch.getChildren().add( caseItem );
+      DecoupledPlatformImpl.runLater( () -> {
+         branch.getChildren().add( caseItem );
+      } );
       testCaseTreeItems.put( testCase, caseItem );
    }//End Method
    
