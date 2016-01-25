@@ -236,12 +236,15 @@ public class JsonJobImporterImplTest {
    }//End Method
    
    @Test public void shouldIgnoreNullDatabaseInJobList(){
-      JenkinsDatabase database = Mockito.mock( JenkinsDatabase.class );
-      systemUnderTest.importJobs( null );
-      Mockito.verifyNoMoreInteractions( database );
+      systemUnderTest = new JsonJobImporterImpl( null );
+      systemUnderTest.importJobs( "anything" );
    }//End Method
    
    @Test public void shouldIgnoreNullResponseInJobList(){
-      systemUnderTest.importJobs( "anything" );
+      systemUnderTest.importJobs( null );
+   }//End Method
+   
+   @Test public void shouldIgnoreMissingButValidData(){
+      systemUnderTest.importJobs( "{ }" );
    }//End Method
 }//End Class

@@ -42,9 +42,17 @@ public class ClientHandler implements ResponseHandler< String > {
     * Constructs a new {@link ClientHandler}.
     */
    public ClientHandler() {
-      responseHandler = new BasicResponseHandler();
+      this( new BasicResponseHandler() );
    }//End Constructor
-
+   
+   /**
+    * Constructs a new {@link ClientHandler}.
+    * @param handler the {@link BasicResponseHandler}.
+    */
+   ClientHandler( BasicResponseHandler handler ) {
+      responseHandler = handler;
+   }//End Constructor
+   
    /**
     * Method to construct a reusable {@link HttpClient} for the given jenkins location and credentials.
     * @param jenkinsLocation the location of jenkins.

@@ -29,8 +29,8 @@ public class JenkinsApiImpl implements ExternalApi {
    static final String LOCATION_PREFIX = "http://";
    static final String BASE_REQUEST = "/api/json?tree=jobs[name]&pretty=true";
    static final String LAST_BUILD_BUILDING = "/lastBuild/api/json?tree=building";
-   static final String LAST_BUILD_DETAILS = "/lastBuild/api/json?tree=number,result";
-   static final String LAST_BUILD_TEST_RESULTS = "/lastBuild/testReport/api/json?pretty=true";
+   static final String LAST_BUILD_DETAILS = "/lastCompletedBuild/api/json?tree=number,result";
+   static final String LAST_BUILD_TEST_RESULTS = "/lastCompletedBuild/testReport/api/json?pretty=true";
    static final String JOBS_LIST = "/api/json?tree=jobs[name]&pretty=true";
    static final String JOB = "/job/";
    
@@ -82,12 +82,15 @@ public class JenkinsApiImpl implements ExternalApi {
          return responseString;
       } catch ( HttpResponseException exception ) {
          System.out.println( "Providing StackTrace for refusal, not necessarily a problem (HttpResponseException):" );
+         if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
          exception.printStackTrace();
       } catch ( ClientProtocolException exception ) {
          System.out.println( "Providing StackTrace for refusal, not necessarily a problem (ClientProtocolException):" );
+         if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
          exception.printStackTrace();
       } catch ( IOException exception ) {
          System.out.println( "Providing StackTrace for refusal, not necessarily a problem (IOException):" );
+         if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
          exception.printStackTrace();
       }
       return null;

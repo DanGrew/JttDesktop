@@ -80,6 +80,12 @@ public class JenkinsApiImplTest {
       Mockito.verifyNoMoreInteractions( client, clientHandler );
    }//End Method
    
+   @Test public void shouldResetClientConnectionAndHandleNullResponse() throws ClientProtocolException, IOException{
+      Mockito.when( clientHandler.handleResponse( Mockito.any() ) ).thenReturn( null );
+      Assert.assertNull( systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD ) );
+      Assert.assertFalse( systemUnderTest.isLoggedIn() );
+   }//End Method
+   
    @Test public void shouldNotBeLoggedInUntilAttemptedAndSucceeded() throws ClientProtocolException, IOException{
       Assert.assertFalse( systemUnderTest.isLoggedIn() );
       shouldAttemptLogin();
@@ -203,7 +209,7 @@ public class JenkinsApiImplTest {
    }//End Method
    
    @Test public void shouldConstructLastBuildJobDetailsRequest(){
-      final String expectedRequest = "http://some-location/job/SomeJenkinsProject/lastBuild/api/json?tree=number,result";
+      final String expectedRequest = "http://some-location/job/SomeJenkinsProject/lastCompletedBuild/api/json?tree=number,result";
       Assert.assertEquals( 
                expectedRequest, 
                JenkinsApiImpl.constructLastBuildJobDetailsRequest( "http://some-location", jenkinsJob ).getURI().toString() 
@@ -211,7 +217,7 @@ public class JenkinsApiImplTest {
    }//End Method
    
    @Test public void shouldConstructLastBuildTestResultsRequest(){
-      final String expectedRequest = "http://some-location/job/SomeJenkinsProject/lastBuild/testReport/api/json?pretty=true";
+      final String expectedRequest = "http://some-location/job/SomeJenkinsProject/lastCompletedBuild/testReport/api/json?pretty=true";
       Assert.assertEquals( 
                expectedRequest, 
                JenkinsApiImpl.constructLastBuildTestResultsRequest( "http://some-location", jenkinsJob ).getURI().toString() 

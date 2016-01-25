@@ -1,0 +1,33 @@
+{
+  "testActions" : [
+    
+  ],
+  "duration" : 18.603,
+  "empty" : false,
+  "failCount" : 0,
+  "passCount" : 113,
+  "skipCount" : 0,
+  "suites" : [
+    {
+      "cases" : [
+        {
+          "testActions" : [
+            
+          ],
+          "age" : 1,
+          "className" : "architecture.data.DataManagerTest",
+          "duration" : 0.053,
+          "failedSince" : 0,
+          "name" : "shouldStoreObjectsAndRemoveAllMatches",
+          "skipped" : false,
+          "status" : "PASSED"
+        }
+      ],
+      "duration" : 0.071,
+      "id" : null,
+      "name" : "architecture.data.DataManagerTest",
+      "timestamp" : null
+    }          
+  ]
+}
+

@@ -94,10 +94,15 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
     */
    private JSONArray extractTestClasses( JSONObject jsonRoot ) {
       try {
-         JSONArray childReports = jsonRoot.getJSONArray( CHILD_REPORTS );
-         JSONObject firstChild = childReports.getJSONObject( 0 );
-         JSONObject result = firstChild.getJSONObject( RESULT );
-         JSONArray suites = result.getJSONArray( SUITES );
+         JSONArray suites = null;
+         if ( jsonRoot.has( SUITES ) ) {
+            suites = jsonRoot.getJSONArray( SUITES );
+         } else {
+            JSONArray childReports = jsonRoot.getJSONArray( CHILD_REPORTS );
+            JSONObject firstChild = childReports.getJSONObject( 0 );
+            JSONObject result = firstChild.getJSONObject( RESULT );
+            suites = result.getJSONArray( SUITES );
+         }
          return suites;
       } catch ( JSONException exception ) {
          return null;
