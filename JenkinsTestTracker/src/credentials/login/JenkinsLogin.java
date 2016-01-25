@@ -16,6 +16,7 @@ import org.controlsfx.validation.Validator;
 
 import api.sources.ExternalApi;
 import friendly.controlsfx.FriendlyAlert;
+import graphics.DecoupledPlatformImpl;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -133,18 +134,20 @@ public class JenkinsLogin {
     */
    private void applyValidation(){
       validator = new InputValidator();
-      validation.registerValidator(
-               jenkinsField, 
-               Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
-      );
-      validation.registerValidator(
-               userNameField, 
-               Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
-      );
-      validation.registerValidator(
-               passwordField, 
-               Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
-      );
+      DecoupledPlatformImpl.runLater( () -> {
+         validation.registerValidator(
+                  jenkinsField, 
+                  Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
+         );
+         validation.registerValidator(
+                  userNameField, 
+                  Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
+         );
+         validation.registerValidator(
+                  passwordField, 
+                  Validator.createPredicateValidator( validator, VALIDATION_MESSAGE ) 
+         );
+      } );
    }//End Method
    
    /**

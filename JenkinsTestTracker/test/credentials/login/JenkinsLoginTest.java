@@ -13,6 +13,7 @@ import java.util.concurrent.CountDownLatch;
 import org.apache.http.client.HttpClient;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -24,7 +25,9 @@ import api.sources.ExternalApi;
 import api.sources.JenkinsApiImpl;
 import credentials.login.JenkinsLogin.InputValidator;
 import friendly.controlsfx.FriendlyAlert;
+import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
+import graphics.PlatformDecouplerImpl;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -50,6 +53,10 @@ public class JenkinsLoginTest {
    private ObservableList< ButtonType > buttonTypes;
    private ExternalApi handler;
    private JenkinsLogin systemUnderTest;
+   
+   @BeforeClass public static void initialisePlatform(){
+      DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
+   }//End Method
    
    /**
     * Method to initialise the system under test.
@@ -82,7 +89,7 @@ public class JenkinsLoginTest {
          FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );
          systemUnderTest.configureAlert( alert );
          alert.showAndWait();
-      }, 100000 );
+      } );
    }//End Method
    
    @Ignore
@@ -92,7 +99,7 @@ public class JenkinsLoginTest {
          systemUnderTest = new JenkinsLogin( new JenkinsApiImpl( new ClientHandler() ) );
          systemUnderTest.configureAlert( alert );
          alert.showAndWait();
-      }, 100000 );
+      } );
    }//End Method
    
    @Test public void shouldAttemptToConnect(){
@@ -249,6 +256,8 @@ public class JenkinsLoginTest {
    }//End Method
    
    @Test public void shouldProvideVisualValidationForLocation(){
+      runOnFxThreadAndWait( () -> {} );
+      
       final String jenkinsLocation = null;
       final String user = "any user";
       final String password = "any password";
@@ -257,11 +266,13 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( password );
       
-      runOnFxThreadAndWait( () -> {}, 2000 );
+      runOnFxThreadAndWait( () -> {} );
       Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
    }//End Method
    
    @Test public void shouldProvideVisualValidationForUsername(){
+      runOnFxThreadAndWait( () -> {} );
+      
       final String jenkinsLocation = "any location";
       final String user = null;
       final String password = "any password";
@@ -270,11 +281,13 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( password );
       
-      runOnFxThreadAndWait( () -> {}, 2000 );
+      runOnFxThreadAndWait( () -> {} );
       Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
    }//End Method
    
    @Test public void shouldProvideVisualValidationForPassword(){
+      runOnFxThreadAndWait( () -> {} );
+      
       final String jenkinsLocation = "any user";
       final String user = "any user";
       final String password = null;
@@ -283,11 +296,12 @@ public class JenkinsLoginTest {
       systemUnderTest.getUserNameField().setText( user );
       systemUnderTest.getPasswordField().setText( password );
       
-      runOnFxThreadAndWait( () -> {}, 2000 );
+      runOnFxThreadAndWait( () -> {} );
       Assert.assertTrue( systemUnderTest.validationMechanism().isInvalid() );
    }//End Method
    
    @Test public void shouldHaveControlsRegistered(){
+      runOnFxThreadAndWait( () -> {} );
       Assert.assertTrue( systemUnderTest.validationMechanism().getRegisteredControls().contains( 
                systemUnderTest.getJenkinsLocationField() ) 
       );
@@ -331,9 +345,8 @@ public class JenkinsLoginTest {
     * Method to run the {@link Runnable} on the fx thread, and wait the time millis for it to complete,
     * synchronising the threads.
     * @param runnable the {@link Runnable} to run.
-    * @param time the milliseconds to wait for the {@link Runnable} to be executed.
     */
-   private void runOnFxThreadAndWait( Runnable runnable, long time ) {
+   private void runOnFxThreadAndWait( Runnable runnable ) {
       CountDownLatch latch = new CountDownLatch( 1 );
       BooleanProperty result = new SimpleBooleanProperty( false );
       PlatformImpl.runLater( () -> {
