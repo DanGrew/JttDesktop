@@ -32,6 +32,7 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
    private static final String SUITES = "suites";
    private static final String DURATION = "duration";
    private static final String CASES = "cases";
+   private static final String CLASS_NAME = "className";
    private static final String NAME = "name";
    private static final String AGE = "age";
    private static final String SKIPPED = "skipped";
@@ -68,7 +69,7 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
       }
       
       for ( int i = 0; i < jsonTestClasses.length(); i++ ) {
-         constructTestClass( jsonTestClasses.getJSONObject( i ) );
+         constructTestCases( jsonTestClasses.getJSONObject( i ) );
       }
    }//End Method
    
@@ -113,29 +114,12 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
     * Method to consruct a {@link TestClass} from json data.
     * @param jsonTestClass the {@link JSONObject} representing the {@link TestClass}.
     */
-   private void constructTestClass( JSONObject jsonTestClass ) {
+   private void constructTestCases( JSONObject jsonTestClass ) {
       try {
-         if ( !jsonTestClass.has( NAME ) ) return;
-         String fullName = jsonTestClass.getString( NAME );
-         
-         TestClassKey key = new TestClassKeyImpl( 
-                  TestClassImpl.identifyName( fullName ), TestClassImpl.identifyLocation( fullName ) 
-         );
-         if ( !database.hasTestClass( key ) ){
-            database.store( new TestClassImpl( fullName ) );
-         }
-         
-         TestClass testClass = database.getTestClass( key );
-         
-         if ( jsonTestClass.has( DURATION ) ) {
-            Double duration = extractDouble( jsonTestClass, DURATION );
-            if ( duration != null ) testClass.durationProperty().set( duration );
-         }
-         
          if ( !jsonTestClass.has( CASES ) ) return;
          JSONArray jsonTestCases = jsonTestClass.getJSONArray( CASES );
          for ( int i = 0; i < jsonTestCases.length(); i++ ) {
-            constructTestCase( testClass, jsonTestCases.getJSONObject( i ) );
+            constructTestCase( jsonTestCases.getJSONObject( i ) );
          }
       } catch ( JSONException exception ) {
          System.out.println( exception.getMessage() );
@@ -144,13 +128,34 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
    }//End Method
    
    /**
-    * Method to construct the {@link TestCase} from the given {@link JSONObject} test case, in the given
-    * {@link TestClass}.
-    * @param testClass the {@link TestClass} the {@link TestCase} is for.
+    * Method to construct a {@link TestClass} if it doesn't already exist from the name given in the
+    * test case.
+    * @param jsonTestCase the {@link JSONObject} for the test case.
+    * @return the {@link TestClass} to use.
+    */
+   private TestClass constructTestClass( JSONObject jsonTestCase ){
+      if ( !jsonTestCase.has( CLASS_NAME ) ) return null;
+      String className = jsonTestCase.getString( CLASS_NAME );
+      
+      TestClassKey key = new TestClassKeyImpl( 
+               TestClassImpl.identifyName( className ), TestClassImpl.identifyLocation( className ) 
+      );
+      if ( !database.hasTestClass( key ) ){
+         database.store( new TestClassImpl( className ) );
+      }
+      
+      TestClass testClass = database.getTestClass( key );
+      return testClass;
+   }//End Method
+   
+   /**
+    * Method to construct the {@link TestCase} from the given {@link JSONObject} test case.
     * @param jsonTestCase the {@link JSONObject} representing the {@link TestCase}.
     */
-   private void constructTestCase( TestClass testClass, JSONObject jsonTestCase ) {
+   private void constructTestCase( JSONObject jsonTestCase ) {
       try {
+         TestClass testClass = constructTestClass( jsonTestCase );
+         
          if ( !jsonTestCase.has( NAME ) ) return;
          String name = jsonTestCase.getString( NAME );
          
