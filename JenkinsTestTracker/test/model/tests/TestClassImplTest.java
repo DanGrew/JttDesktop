@@ -142,6 +142,14 @@ public class TestClassImplTest {
       Assert.assertEquals( "name", TestClassImpl.identifyName( ".name" ) );
    }//End Method
    
+   @Test( expected = IllegalArgumentException.class ) public void shouldNotIdentifyNameWithNullInput(){
+      Assert.assertNull( TestClassImpl.identifyName( null ) );
+   }//End Method
+   
+   @Test( expected = IllegalArgumentException.class ) public void shouldNotIdentifyNameWithEmptyInput(){
+      Assert.assertNull( TestClassImpl.identifyName( "   " ) );
+   }//End Method
+   
    /**
     * Prove that the location of the {@link TestClass} can be extracted from the full name.
     */
@@ -150,6 +158,14 @@ public class TestClassImplTest {
       Assert.assertEquals( "location", TestClassImpl.identifyLocation( "location.name" ) );
       Assert.assertEquals( "", TestClassImpl.identifyLocation( "name" ) );
       Assert.assertEquals( "", TestClassImpl.identifyLocation( ".name" ) );
+   }//End Method
+   
+   @Test( expected = IllegalArgumentException.class ) public void shouldNotIdentifyLocationWithNullInput(){
+      Assert.assertNull( TestClassImpl.identifyLocation( null ) );
+   }//End Method
+   
+   @Test( expected = IllegalArgumentException.class ) public void shouldNotIdentifyLocationWithEmptyInput(){
+      Assert.assertNull( TestClassImpl.identifyLocation( "   " ) );
    }//End Method
    
    @Test public void shouldProvideDescription(){

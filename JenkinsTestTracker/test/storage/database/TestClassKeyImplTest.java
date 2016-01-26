@@ -53,9 +53,9 @@ public class TestClassKeyImplTest {
       TestClassKey key1 = new TestClassKeyImpl( name, location );
       TestClassKey key2 = new TestClassKeyImpl( name, location );
       TestClassKey key3 = new TestClassKeyImpl( "something", "else" );
-      Assert.assertEquals( key1, key2 );
-      Assert.assertNotEquals( key1, key3 );
-      Assert.assertNotEquals( key2, key3 );
+      Assert.assertTrue( key1.equals( key2 ) );
+      Assert.assertFalse( key1.equals( key3 ) );
+      Assert.assertFalse( key2.equals( key3 ) );
    }//End Method
    
    /**
@@ -68,6 +68,24 @@ public class TestClassKeyImplTest {
       
       Assert.assertEquals( name, key.getName() );
       Assert.assertEquals( location, key.getLocation() );
+   }//End Method
+   
+   @Test public void shouldBeEqual(){
+      final String name = "anything";
+      final String location = "anywhere";
+      TestClassKey key1 = new TestClassKeyImpl( name, location );
+      
+      Assert.assertTrue( key1.equals( key1 ) );
+   }//End Method
+   
+   @Test public void shouldNotBeEqual(){
+      final String name = "anything";
+      final String location = "anywhere";
+      TestClassKey key1 = new TestClassKeyImpl( name, location );
+      
+      Assert.assertFalse( key1.equals( null ) );
+      Assert.assertFalse( key1.equals( "anything" ) );
+      Assert.assertFalse( key1.equals( new TestClassKeyImpl( "another", location ) ) );
    }//End Method
 
 }//End Class

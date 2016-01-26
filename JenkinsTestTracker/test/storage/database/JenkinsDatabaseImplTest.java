@@ -130,6 +130,11 @@ public class JenkinsDatabaseImplTest {
       Assert.assertEquals( 0, systemUnderTest.testClasses().size() );
    }//End Method
    
+   @Test public void shouldNotRemoveTestClassUsingInstance(){
+      Assert.assertFalse( systemUnderTest.hasTestClass( new TestClassKeyImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION ) ) );
+      Assert.assertFalse( systemUnderTest.removeTestClass( testClass ) );
+   }//End Method
+   
    /**
     * Prove that nothing happens when there is nothing to remove.
     */
@@ -231,6 +236,11 @@ public class JenkinsDatabaseImplTest {
       Assert.assertTrue( systemUnderTest.removeJenkinsJob( jenkinsJob ) );
       Assert.assertFalse( systemUnderTest.hasJenkinsJob( JENKINS_JOB_NAME ) );
       Assert.assertEquals( 0, systemUnderTest.jenkinsJobs().size() );
+   }//End Method
+   
+   @Test public void shouldNotRemoveJenkinsJobUsinginstance(){
+      Assert.assertFalse( systemUnderTest.removeJenkinsJob( jenkinsJob ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsJob( JENKINS_JOB_NAME ) );
    }//End Method
    
    @Test public void shouldNotRemoveJenkinsJobIfNonePresent(){
