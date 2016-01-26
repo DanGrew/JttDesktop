@@ -122,10 +122,21 @@ public class JenkinsFetcherImplTest {
       Mockito.verifyZeroInteractions( externalApi );
    }//End Method
    
-   @Test public void shouldFetchTestResultsJob(){
+   @Test public void shouldFetchTestResultsWrapped(){
       String response = TestCommon.readFileIntoString( getClass(), "single-test-case.json" );
       Assert.assertNotNull( response );
-      Mockito.when( externalApi.getLatestTestResults( jenkinsJob ) ).thenReturn( response );
+      Mockito.when( externalApi.getLatestTestResultsWrapped( jenkinsJob ) ).thenReturn( response );
+      
+      systemUnderTest.updateTestResults( jenkinsJob );
+      Assert.assertEquals( 1, database.testClasses().size() );
+      Assert.assertEquals( 1, database.testClasses().get( 0 ).testCasesList().size() );
+   }//End Method
+   
+   @Test public void shouldFetchTestResultsUnwrapped(){
+      String response = TestCommon.readFileIntoString( getClass(), "single-test-case-suites-only.json" );
+      Assert.assertNotNull( response );
+      Mockito.when( externalApi.getLatestTestResultsWrapped( jenkinsJob ) ).thenReturn( "{ }" );
+      Mockito.when( externalApi.getLatestTestResultsUnwrapped( jenkinsJob ) ).thenReturn( response );
       
       systemUnderTest.updateTestResults( jenkinsJob );
       Assert.assertEquals( 1, database.testClasses().size() );

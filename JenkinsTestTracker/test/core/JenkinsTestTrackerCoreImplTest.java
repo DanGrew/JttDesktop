@@ -47,28 +47,28 @@ public class JenkinsTestTrackerCoreImplTest {
          convenienceWait( 1000 );
          
          response = TestCommon.readFileIntoString( getClass(), "all-passing-tests.json" );
-         Mockito.when( api.getLatestTestResults( Mockito.any() ) ).thenReturn( response );
+         Mockito.when( api.getLatestTestResultsWrapped( Mockito.any() ) ).thenReturn( response );
          response = TestCommon.readFileIntoString( getClass(), "job-details-22.json" );
          Mockito.when( api.getLastBuildJobDetails( Mockito.any() ) ).thenReturn( response );
          
          convenienceWait( 5000 );
          
          response = TestCommon.readFileIntoString( getClass(), "some-failures-tests.json" );
-         Mockito.when( api.getLatestTestResults( Mockito.any() ) ).thenReturn( response );
+         Mockito.when( api.getLatestTestResultsWrapped( Mockito.any() ) ).thenReturn( response );
          response = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
          Mockito.when( api.getLastBuildJobDetails( Mockito.any() ) ).thenReturn( response );
          
          convenienceWait( 5000 );
          
          response = TestCommon.readFileIntoString( getClass(), "all-passing-tests.json" );
-         Mockito.when( api.getLatestTestResults( Mockito.any() ) ).thenReturn( response );
+         Mockito.when( api.getLatestTestResultsWrapped( Mockito.any() ) ).thenReturn( response );
          response = TestCommon.readFileIntoString( getClass(), "job-details-24.json" );
          Mockito.when( api.getLastBuildJobDetails( Mockito.any() ) ).thenReturn( response );
          
          convenienceWait( 5000 );
          
          response = TestCommon.readFileIntoString( getClass(), "large-failures-tests.json" );
-         Mockito.when( api.getLatestTestResults( Mockito.any() ) ).thenReturn( response );
+         Mockito.when( api.getLatestTestResultsWrapped( Mockito.any() ) ).thenReturn( response );
          response = TestCommon.readFileIntoString( getClass(), "job-details-25.json" );
          Mockito.when( api.getLastBuildJobDetails( Mockito.any() ) ).thenReturn( response );
          
@@ -136,7 +136,7 @@ public class JenkinsTestTrackerCoreImplTest {
       response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
       Mockito.when( api.getLastBuildBuildingState( Mockito.any() ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "all-passing-tests.json" );
-      Mockito.when( api.getLatestTestResults( Mockito.any() ) ).thenReturn( response );
+      Mockito.when( api.getLatestTestResultsWrapped( Mockito.any() ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "job-details-22.json" );
       Mockito.when( api.getLastBuildJobDetails( Mockito.any() ) ).thenReturn( response );
       timeKeeper.poll();
@@ -151,7 +151,7 @@ public class JenkinsTestTrackerCoreImplTest {
       
       //...then provide a new build with some failures...
       response = TestCommon.readFileIntoString( getClass(), "some-failures-tests.json" );
-      Mockito.when( api.getLatestTestResults( Mockito.any() ) ).thenReturn( response );
+      Mockito.when( api.getLatestTestResultsWrapped( Mockito.any() ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
       Mockito.when( api.getLastBuildJobDetails( Mockito.any() ) ).thenReturn( response );
       timeKeeper.poll();
@@ -165,7 +165,7 @@ public class JenkinsTestTrackerCoreImplTest {
       
       //...then pass all the tests in a further build...
       response = TestCommon.readFileIntoString( getClass(), "all-passing-tests.json" );
-      Mockito.when( api.getLatestTestResults( Mockito.any() ) ).thenReturn( response );
+      Mockito.when( api.getLatestTestResultsWrapped( Mockito.any() ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "job-details-24.json" );
       Mockito.when( api.getLastBuildJobDetails( Mockito.any() ) ).thenReturn( response );
       timeKeeper.poll();
@@ -179,7 +179,7 @@ public class JenkinsTestTrackerCoreImplTest {
       
       //...finally fail a large number of tests...
       response = TestCommon.readFileIntoString( getClass(), "large-failures-tests.json" );
-      Mockito.when( api.getLatestTestResults( Mockito.any() ) ).thenReturn( response );
+      Mockito.when( api.getLatestTestResultsWrapped( Mockito.any() ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "job-details-25.json" );
       Mockito.when( api.getLastBuildJobDetails( Mockito.any() ) ).thenReturn( response );
       timeKeeper.poll();
@@ -230,7 +230,7 @@ public class JenkinsTestTrackerCoreImplTest {
       response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
       Mockito.when( api.getLastBuildBuildingState( first ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "all-passing-tests.json" );
-      Mockito.when( api.getLatestTestResults( first ) ).thenReturn( response );
+      Mockito.when( api.getLatestTestResultsWrapped( first ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "job-details-22.json" );
       Mockito.when( api.getLastBuildJobDetails( first ) ).thenReturn( response );
       timeKeeper.poll();
@@ -245,7 +245,7 @@ public class JenkinsTestTrackerCoreImplTest {
       
       //...then provide a new build with some failures...
       response = TestCommon.readFileIntoString( getClass(), "some-failures-tests.json" );
-      Mockito.when( api.getLatestTestResults( second ) ).thenReturn( response );
+      Mockito.when( api.getLatestTestResultsWrapped( second ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
       Mockito.when( api.getLastBuildJobDetails( second ) ).thenReturn( response );
       timeKeeper.poll();
@@ -259,7 +259,7 @@ public class JenkinsTestTrackerCoreImplTest {
       
       //...then pass all the tests in a further build...
       response = TestCommon.readFileIntoString( getClass(), "all-passing-tests.json" );
-      Mockito.when( api.getLatestTestResults( first ) ).thenReturn( response );
+      Mockito.when( api.getLatestTestResultsWrapped( first ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "job-details-24.json" );
       Mockito.when( api.getLastBuildJobDetails( first ) ).thenReturn( response );
       timeKeeper.poll();
@@ -273,7 +273,7 @@ public class JenkinsTestTrackerCoreImplTest {
       
       //...finally fail a large number of tests...
       response = TestCommon.readFileIntoString( getClass(), "large-failures-tests.json" );
-      Mockito.when( api.getLatestTestResults( second ) ).thenReturn( response );
+      Mockito.when( api.getLatestTestResultsWrapped( second ) ).thenReturn( response );
       response = TestCommon.readFileIntoString( getClass(), "job-details-25.json" );
       Mockito.when( api.getLastBuildJobDetails( second ) ).thenReturn( response );
       timeKeeper.poll();

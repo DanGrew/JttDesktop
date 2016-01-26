@@ -83,7 +83,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     */
    @Override public void updateTestResults( JenkinsJob jenkinsJob ) {
       if ( jenkinsJob == null ) return;
-      String response = externalApi.getLatestTestResults( jenkinsJob );
+      String response = externalApi.getLatestTestResultsWrapped( jenkinsJob );
+      testsImporter.updateTestResults( response );
+      response = externalApi.getLatestTestResultsUnwrapped( jenkinsJob );
       testsImporter.updateTestResults( response );
    }//End Method
 

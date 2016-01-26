@@ -30,7 +30,15 @@ public class JenkinsApiImpl implements ExternalApi {
    static final String BASE_REQUEST = "/api/json?tree=jobs[name]&pretty=true";
    static final String LAST_BUILD_BUILDING = "/lastBuild/api/json?tree=building";
    static final String LAST_BUILD_DETAILS = "/lastCompletedBuild/api/json?tree=number,result";
-   static final String LAST_BUILD_TEST_RESULTS = "/lastCompletedBuild/testReport/api/json?pretty=true";
+   
+   static final String TEST_CASES_PROPERTIES = "duration,name,className,failedSince,skipped,status,age";
+   static final String TEST_CLASS_PROPERTIES = "duration,name,cases[" + TEST_CASES_PROPERTIES +"]";
+   static final String TEST_SUITES = "suites[" + TEST_CLASS_PROPERTIES + "]";
+   static final String TEST_RESULTS_WRAPPING_ELEMENTS = "childReports[result[" + TEST_SUITES + "]]";
+   static final String TEST_RESULTS_PATH = "/lastCompletedBuild/testReport/api/json?pretty=true&tree=";
+   static final String LAST_BUILD_TEST_RESULTS_WRAPPED = TEST_RESULTS_PATH + TEST_RESULTS_WRAPPING_ELEMENTS;
+   static final String LAST_BUILD_TEST_RESULTS_UNWRAPPED = TEST_RESULTS_PATH + TEST_SUITES;
+   
    static final String JOBS_LIST = "/api/json?tree=jobs[name]&pretty=true";
    static final String JOB = "/job/";
    
@@ -133,9 +141,18 @@ public class JenkinsApiImpl implements ExternalApi {
    /**
     * {@inheritDoc}
     */
-   @Override public String getLatestTestResults( JenkinsJob jenkinsJob ) {
+   @Override public String getLatestTestResultsWrapped( JenkinsJob jenkinsJob ) {
       if ( !isLoggedIn() ) return null;
-      HttpGet get = constructLastBuildTestResultsRequest( jenkinsLocation, jenkinsJob );
+      HttpGet get = constructLastBuildTestResultsWrappedRequest( jenkinsLocation, jenkinsJob );
+      return executeRequestAndUnpack( get );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String getLatestTestResultsUnwrapped( JenkinsJob jenkinsJob ) {
+      if ( !isLoggedIn() ) return null;
+      HttpGet get = constructLastBuildTestResultsUnwrappedRequest( jenkinsLocation, jenkinsJob );
       return executeRequestAndUnpack( get );
    }//End Method
    
@@ -200,13 +217,23 @@ public class JenkinsApiImpl implements ExternalApi {
    }//End Method
 
    /**
-    * Method to construct the request for getting the last build test results.
+    * Method to construct the request for getting the last build test results using the wrapped api request.
     * @param jenkinsLocation the location.
     * @param jenkinsJob the {@link JenkinsJob} in question.
     * @return the {@link HttpGet} to execute.
     */
-   public static HttpGet constructLastBuildTestResultsRequest( String jenkinsLocation, JenkinsJob jenkinsJob ) {
-      return new HttpGet( jenkinsLocation + extractAndPrefixJob( jenkinsJob ) + LAST_BUILD_TEST_RESULTS );
+   public static HttpGet constructLastBuildTestResultsWrappedRequest( String jenkinsLocation, JenkinsJob jenkinsJob ) {
+      return new HttpGet( jenkinsLocation + extractAndPrefixJob( jenkinsJob ) + LAST_BUILD_TEST_RESULTS_WRAPPED );
+   }//End Method
+   
+   /**
+    * Method to construct the request for getting the last build test results using the unwrapped api request.
+    * @param jenkinsLocation the location.
+    * @param jenkinsJob the {@link JenkinsJob} in question.
+    * @return the {@link HttpGet} to execute.
+    */
+   public static HttpGet constructLastBuildTestResultsUnwrappedRequest( String jenkinsLocation, JenkinsJob jenkinsJob ) {
+      return new HttpGet( jenkinsLocation + extractAndPrefixJob( jenkinsJob ) + LAST_BUILD_TEST_RESULTS_UNWRAPPED );
    }//End Method
 
 }//End Class
