@@ -6,7 +6,7 @@
 	<name>JenkinsTestTracker</name>
 	<description>Tracker for individual tests across an entire Jenkins instance.</description>
 	<scm>
-        <developerConnection>https://github.com/DanGrew/JenkinsTestTracker</developerConnection>
+        <developerConnection>scm:git:https://github.com/DanGrew/JenkinsTestTracker</developerConnection>
 	  <tag>HEAD</tag>
   </scm>
 	<distributionManagement>
