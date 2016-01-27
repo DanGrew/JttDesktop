@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>JenkinsTestTracker</groupId>
 	<artifactId>JenkinsTestTracker</artifactId>
-	<version>1.0.7</version>
+	<version>1.0.8-SNAPSHOT</version>
 	<name>JenkinsTestTracker</name>
 	<description>Tracker for individual tests across an entire Jenkins instance.</description>
 	<scm>
         <developerConnection>scm:git:https://github.com/DanGrew/JenkinsTestTracker</developerConnection>
-	  <tag>JenkinsTestTracker-1.0.7</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<distributionManagement>
 		<repository>
