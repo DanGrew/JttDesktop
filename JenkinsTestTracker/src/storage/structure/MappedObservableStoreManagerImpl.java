@@ -18,6 +18,8 @@ import utility.observable.PrivatelyModifiableObservableListImpl;
 /**
  * The {@link MappedObservableStoreManagerImpl} provides an implementation of the {@link ObjectStoreManager} that
  * provides a mapping for quick look up and an {@link ObservableList} for event management.
+ * @param <KeyTypeT> the key type.
+ * @param <ObjectTypeT> the object type.
  */
 public class MappedObservableStoreManagerImpl< KeyTypeT, ObjectTypeT > implements ObjectStoreManager< KeyTypeT, ObjectTypeT > {
 

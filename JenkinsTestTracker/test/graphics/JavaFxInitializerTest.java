@@ -24,7 +24,7 @@ public class JavaFxInitializerTest {
    /**
     * Proves {@link JavaFxInitializer} should have launched and recorded that fact.
     */
-   @Test public void shouldHaveLaunched() throws InterruptedException {
+   @Test public void shouldHaveLaunched(){
       JavaFxInitializer.threadedLaunchWithDefaultScene();
       Assert.assertTrue( JavaFxInitializer.hasLaunched() );
    }//End Method
@@ -42,7 +42,6 @@ public class JavaFxInitializerTest {
    
    /**
     * Proves that when already launched the center of the {@link Application} can be swapped.
-    * @throws InterruptedException 
     */
    @Test public void shouldSwapCenter() {
       JavaFxInitializer.startPlatform();

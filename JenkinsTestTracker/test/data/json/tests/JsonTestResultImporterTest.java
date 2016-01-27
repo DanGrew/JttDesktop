@@ -8,7 +8,6 @@
  */
 package data.json.tests;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import data.JsonTestResultsImporter;
-import data.json.tests.JsonTestResultsImporterImpl;
 import model.tests.TestCase;
 import model.tests.TestClass;
 import model.tests.TestResultStatus;
@@ -53,7 +51,7 @@ public class JsonTestResultImporterTest {
    /**
     * Method to initialise the {@link JsonTestResultsImporterImpl} being tested.
     */
-   @Before public void initialiseSystemUnderTest() throws IOException{
+   @Before public void initialiseSystemUnderTest(){
       database = new JenkinsDatabaseImpl();
       systemUnderTest = new JsonTestResultsImporterImpl( database );
    }//End Method

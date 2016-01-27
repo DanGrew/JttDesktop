@@ -33,7 +33,6 @@ public interface JenkinsFetcher {
    /**
     * Method to fetch the current jobs from the {@link ExternalApi} and populate them
     * in the {@link JenkinsDatabase}.
-    * @param database the {@link JenkinsDatabase} to populate.
     */
    public void fetchJobs();
 

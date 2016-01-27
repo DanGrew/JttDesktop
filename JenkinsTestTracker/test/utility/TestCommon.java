@@ -48,6 +48,7 @@ public final class TestCommon {
    /**
     * Method to assert that all values of the enum map using {@link Enum#valueOf(Class, String)} to {@link Enum#name()}.
     * @param enumClass the {@link Enum} {@link Class} to prove.
+    * @param <E> the enum type. 
     */
    public static < E extends Enum< E > > void assertEnumNameWithValueOf( Class< E > enumClass ) {
       for ( Enum< E > value : enumClass.getEnumConstants() ) {
@@ -58,6 +59,7 @@ public final class TestCommon {
    /**
     * Method to assert that all values of the enum map using {@link Enum#valueOf(Class, String)} to {@link Enum#toString()}.
     * @param enumClass the {@link Enum} {@link Class} to prove.
+    * @param <E> the enum type.
     */
    public static < E extends Enum< E > > void assertEnumToStringWithValueOf( Class< E > enumClass ) {
       for ( Enum< E > value : enumClass.getEnumConstants() ) {

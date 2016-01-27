@@ -48,7 +48,7 @@ public interface JenkinsDatabase {
    
    /**
     * Method to determine whether the {@link JenkinsDatabase} has the given {@link JenkinsJob}.
-    * @param testClass the {@link JenkinsJob} in question.
+    * @param jenkinsJob the {@link JenkinsJob} in question.
     * @return true if contained.
     */
    public boolean containsJenkinsJob( JenkinsJob jenkinsJob );
@@ -112,7 +112,7 @@ public interface JenkinsDatabase {
    
    /**
     * Method to remove the given {@link JenkinsJob} from the {@link JenkinsDatabase}.
-    * @param testClass the {@link JenkinsJob} to remove.
+    * @param jenkinsJob the {@link JenkinsJob} to remove.
     * @return true if removed.
     */
    public boolean removeJenkinsJob( JenkinsJob jenkinsJob );

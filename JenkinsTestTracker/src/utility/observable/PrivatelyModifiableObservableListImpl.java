@@ -21,6 +21,7 @@ import javafx.collections.ObservableList;
  * Implementation of {@link ObservableList} with a backing {@link ObservableList} that restricts modification of the 
  * {@link ObservableList} directly. This allows a large part of the interface to function, and correctly, and have
  * this interacted with as if it were a full {@link ObservableList}.
+ * @param <ObjectTypeT> the type in the list.
  */
 public class PrivatelyModifiableObservableListImpl< ObjectTypeT > implements ObservableList< ObjectTypeT >{
 
@@ -112,6 +113,7 @@ public class PrivatelyModifiableObservableListImpl< ObjectTypeT > implements Obs
    /**
     * {@inheritDoc}
     */
+   @SuppressWarnings("unchecked") //Overriding only to throw.
    @Override public boolean addAll( ObjectTypeT... elements ) {
       throw new UnsupportedOperationException( UNSAFE );
    }//End Method
@@ -119,6 +121,7 @@ public class PrivatelyModifiableObservableListImpl< ObjectTypeT > implements Obs
    /**
     * {@inheritDoc}
     */
+   @SuppressWarnings("unchecked") //Overriding only to throw.
    @Override public boolean setAll( ObjectTypeT... elements ) {
       throw new UnsupportedOperationException( UNSAFE );
    }//End Method
@@ -133,6 +136,7 @@ public class PrivatelyModifiableObservableListImpl< ObjectTypeT > implements Obs
    /**
     * {@inheritDoc}
     */
+   @SuppressWarnings("unchecked") //Overriding only to throw.
    @Override public boolean removeAll( ObjectTypeT... elements ) {
       throw new UnsupportedOperationException( UNSAFE );
    }//End Method
@@ -140,6 +144,7 @@ public class PrivatelyModifiableObservableListImpl< ObjectTypeT > implements Obs
    /**
     * {@inheritDoc}
     */
+   @SuppressWarnings("unchecked") //Overriding only to throw.
    @Override public boolean retainAll( ObjectTypeT... elements ) {
       throw new UnsupportedOperationException( UNSAFE );
    }//End Method

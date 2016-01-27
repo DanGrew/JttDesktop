@@ -26,7 +26,7 @@ public class FriendlyAlert extends Alert {
 
    /**
     * Constructs a new {@link FriendlyAlert}.
-    * @param alertType the {@link AlertType}.
+    * @param alertType the {@link javafx.scene.control.Alert.AlertType}.
     */
    public FriendlyAlert( AlertType alertType ) {
       super( alertType );
@@ -34,6 +34,7 @@ public class FriendlyAlert extends Alert {
    
    /**
     * {@link Alert#setAlertType(AlertType)}.
+    * @param type the {@link javafx.scene.control.Alert.AlertType}.
     */
    public void friendly_setAlertType( AlertType type ){
       setAlertType( type );
@@ -41,13 +42,15 @@ public class FriendlyAlert extends Alert {
 
    /**
     * {@link Alert#getButtonTypes()}.
+    * @return the {@link ObservableList}.
     */
    public ObservableList< ButtonType > friendly_getButtonTypes() {
       return getButtonTypes();
    }//End Method
 
    /**
-    * {@link Alert#getDialogPane()}{@link DialogPane#setContent()}.
+    * {@link Alert#getDialogPane()}{@link DialogPane#setContent(Node)}.
+    * @param content the {@link Node}.
     */
    public void friendly_dialogSetContent( Node content ) {
       getDialogPane().setContent( content );
@@ -55,6 +58,7 @@ public class FriendlyAlert extends Alert {
    
    /**
     * {@link Alert#setOnCloseRequest(EventHandler)}.
+    * @param handler the {@link EventHandler}.
     */
    public void friendly_setOnCloseRequest( EventHandler< DialogEvent > handler ) {
       setOnCloseRequest( handler );
@@ -62,6 +66,7 @@ public class FriendlyAlert extends Alert {
 
    /**
     * {@link Alert#setTitle(String)}.
+    * @param title the title.
     */
    public void friendly_setTitle( String title ) {
       setTitle( title );
@@ -69,6 +74,7 @@ public class FriendlyAlert extends Alert {
 
    /**
     * {@link Alert#setHeaderText(String)}.
+    * @param headerText the header text.
     */
    public void friendly_setHeaderText( String headerText ) {
       setHeaderText( headerText );
@@ -76,6 +82,7 @@ public class FriendlyAlert extends Alert {
 
    /**
     * {@link Alert#initModality(Modality)}.
+    * @param modality the {@link Modality}
     */
    public void friendly_initModality( Modality modality ) {
       initModality( modality );
@@ -83,6 +90,7 @@ public class FriendlyAlert extends Alert {
 
    /**
     * {@link Alert#getResult()}.
+    * @return the {@link ButtonType}.
     */
    public ButtonType friendly_getResult() {
       return getResult();
