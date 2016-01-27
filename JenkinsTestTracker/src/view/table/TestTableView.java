@@ -24,7 +24,7 @@ import storage.database.JenkinsDatabase;
 import utility.observable.FunctionListChangeListenerImpl;
 
 /**
- * The {@link TestTableViewTest} provides a collapsable tree view of {@link TestClass}es 
+ * The {@link TestTableView} provides a collapsable tree view of {@link TestClass}es 
  * and {@link TestCase}s.
  */
 public class TestTableView extends BorderPane {
@@ -48,7 +48,7 @@ public class TestTableView extends BorderPane {
    private Map< TestClass, ListChangeListener< TestCase > > testCaseSubscriptions;
 
    /**
-    * Constructs a new {@link TestTableViewTest}.
+    * Constructs a new {@link TestTableView}.
     * @param database the {@link JenkinsDatabase} providing the {@link TestClass}es.
     */
    public TestTableView( JenkinsDatabase database ) {
