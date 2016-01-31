@@ -8,6 +8,8 @@
  */
 package buildwall.panel;
 
+import buildwall.layout.BuildWall;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -41,4 +43,10 @@ public interface BuildWallConfiguration {
     * @return the jobNameColour the {@link ObjectProperty}.
     */
    public ObjectProperty< Color > jobNameColour();
+
+   /**
+    * Property for the number of columns in the {@link BuildWall}.
+    * @return the number of columns {@link IntegerProperty}.
+    */
+   public IntegerProperty numberOfColumns();
 }//End Interface

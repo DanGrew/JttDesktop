@@ -29,6 +29,8 @@ public class BuildWallConfigurationImplTest {
       
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_PROPERTIES_FONT, systemUnderTest.propertiesFont().get() );
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.propertiesColour().get() );
+      
+      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_NUMBER_OF_COLUMNS, systemUnderTest.numberOfColumns().get() );
    }//End Method
    
 }//End Class

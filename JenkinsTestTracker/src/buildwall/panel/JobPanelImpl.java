@@ -18,14 +18,26 @@ import model.jobs.JenkinsJob;
  */
 public class JobPanelImpl extends StackPane {
 
+   private JenkinsJob job;
+   
    /**
     * Constructs a new {@link JobPanelImpl}.
     * @param configuration the {@link BuildWallConfiguration}.
     * @param job the {@link JenkinsJob}.
     */
    public JobPanelImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
+      this.job = job;
+      
       getChildren().add( new JobProgressImpl( job ) );
       getChildren().add( new JobPanelDescriptionImpl( configuration, job ) );
+   }//End Method
+
+   /**
+    * Method to get the {@link JenkinsJob} being displayed.
+    * @return the {@link JenkinsJob}.
+    */
+   public JenkinsJob getJenkinsJob() {
+      return job;
    }//End Method
 
 }//End Class
