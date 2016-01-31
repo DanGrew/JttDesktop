@@ -1,0 +1,95 @@
+.progress-bar-success {
+    -fx-background-color: black;
+}
+ 
+.progress-bar-success .track{
+    -fx-background-color: #008000;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+ 
+.progress-bar-success .bar { 
+    -fx-background-color: #1eeb04;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+
+.progress-bar-failed {
+    -fx-background-color: black;
+}
+ 
+.progress-bar-failed .track{
+    -fx-background-color: #800000;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+ 
+.progress-bar-failed .bar { 
+    -fx-background-color: #ff0000;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+
+.progress-bar-unstable {
+    -fx-background-color: black;
+}
+ 
+.progress-bar-unstable .track{
+    -fx-background-color: #ec7600;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+ 
+.progress-bar-unstable .bar { 
+    -fx-background-color: #f9b42b;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+
+.progress-bar-aborted {
+    -fx-background-color: black;
+}
+ 
+.progress-bar-aborted .track{
+    -fx-background-color: #808080;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+ 
+.progress-bar-aborted .bar { 
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+
+.progress-bar-not-built {
+    -fx-background-color: black;
+}
+ 
+.progress-bar-not-built .track{
+    -fx-background-color: #808080;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+ 
+.progress-bar-not-built .bar { 
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+
+.progress-bar-unknown {
+    -fx-background-color: black;
+}
+ 
+.progress-bar-unknown .track{
+    -fx-background-color: #808080;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}
+ 
+.progress-bar-unknown .bar { 
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 6, 6, 6, 6;
+    -fx-background-insets: 8;
+}

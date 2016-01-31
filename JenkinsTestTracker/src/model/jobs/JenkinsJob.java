@@ -10,6 +10,7 @@ package model.jobs;
 
 import api.handling.BuildState;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 
@@ -22,6 +23,8 @@ public interface JenkinsJob {
    public static final int DEFAULT_LAST_BUILD_NUMBER = 0;
    public static final BuildResultStatus DEFAULT_LAST_BUILD_STATUS = BuildResultStatus.FAILURE;
    public static final BuildState DEFAULT_BUILD_STATE = BuildState.Built;
+   public static final long DEFAULT_CURRENT_BUILD_TIME = 0;
+   public static final long DEFAULT_EXPECTED_BUILD_TIME = 0;
 
    /**
     * Provides the name {@link StringProperty} of the {@link JenkinsJob}.
@@ -46,5 +49,17 @@ public interface JenkinsJob {
     * @return the {@link ObjectProperty} for the {@link BuildState}.
     */
    public ObjectProperty< BuildState > buildStateProperty();
+
+   /**
+    * Provides the expected completion time of the current build.
+    * @return the {@link LongProperty}.
+    */
+   public LongProperty expectedBuildTimeProperty();
+
+   /**
+    * Provides the current build time of the current build.
+    * @return the {@link LongProperty}.
+    */
+   public LongProperty currentBuildTimeProperty();
    
 }//End Interface
