@@ -17,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import model.jobs.JenkinsJob;
 
 /**
@@ -32,6 +34,7 @@ public class JobPanelDescriptionImpl extends BorderPane {
    static final double BUILD_PROPERTY_PERCENTAGE = 20;
    static final double COMPLETION_ESTIMATE_PERCENTAGE = 80;
    
+   private BuildWallConfiguration configuration;
    private Label jobName;
    private Label buildNumber;
    private Label completionEstimate;
@@ -43,9 +46,13 @@ public class JobPanelDescriptionImpl extends BorderPane {
     * @param job the {@link JenkinsJob} being described.
     */
    public JobPanelDescriptionImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
+      this.configuration = configuration;
+      
       jobName = new Label( job.nameProperty().get() );
-      jobName.fontProperty().bind( configuration.jobNameFont() );
-      jobName.textFillProperty().bind( configuration.jobNameColour() );
+      updateJobNameFont();
+      configuration.jobNameFont().addListener( ( source, old, updated ) -> updateJobNameFont() );
+      updateJobNameColour();
+      configuration.jobNameColour().addListener( ( source, old, updated ) -> updateJobNameColour() );
       job.nameProperty().addListener( ( source, old, updated ) -> jobName.setText( job.nameProperty().get() ) );
       setCenter( jobName );
 
@@ -81,6 +88,20 @@ public class JobPanelDescriptionImpl extends BorderPane {
 
       properties.setPadding( new Insets( PROPERTIES_INSET ) );
    }//End Class
+   
+   /**
+    * Method to update the job name {@link Font} in line with the {@link BuildWallConfiguration}.
+    */
+   private void updateJobNameFont(){
+      jobName.fontProperty().set( configuration.jobNameFont().get() );
+   }//End Method
+   
+   /**
+    * Method to update the job name {@link Color} in line with the {@link BuildWallConfiguration}.
+    */
+   private void updateJobNameColour(){
+      jobName.textFillProperty().set( configuration.jobNameColour().get() );
+   }//End Method
    
    /**
     * Method to update the complete estimate for the given associated {@link JenkinsJob}.

@@ -26,6 +26,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
@@ -68,6 +69,19 @@ public class GridWallImplTest {
    @Test public void manualInspection() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.threadedLaunch( () -> { return new BorderPane( systemUnderTest ); } );
+      
+      Thread.sleep( 2000 );
+      configuration.jobNameFont().set( new Font( 20 ) );
+      Thread.sleep( 2000 );
+      configuration.jobNameFont().set( new Font( 25 ) );
+      Thread.sleep( 2000 );
+      configuration.jobNameFont().set( new Font( 30 ) );
+      Thread.sleep( 2000 );
+      configuration.jobNameFont().set( new Font( 35 ) );
+      Thread.sleep( 2000 );
+      configuration.jobNameFont().set( new Font( 40 ) );
+      Thread.sleep( 2000 );
+      configuration.jobNameFont().set( new Font( 45 ) );
       
       JobBuildSimulator.simulateConcurrentBuilding( database.jenkinsJobs().get( 0 ), BuildResultStatus.FAILURE, 233, 300000, 300 );
       JobBuildSimulator.simulateConcurrentBuilding( database.jenkinsJobs().get( 1 ), BuildResultStatus.SUCCESS, 1002, 600000, 300 );

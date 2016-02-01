@@ -221,8 +221,39 @@ public class JobPanelDescriptionImplTest {
       Assert.assertEquals( "0m 0s", JobPanelDescriptionImpl.formatMillisecondsIntoMintuesAndSeconds( 0 ) );
    }//End Method
    
-   @Ignore
-   @Test public void shouldUpdateDescriptionFromConfiguration(){
-      Assert.fail();
+   @Test public void shouldConfigureJobNameFontAndUpdate(){
+      Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobName().getFont() );
+      configuration.jobNameFont().set( new Font( 100 ) );
+      Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobName().getFont() );
+   }//End Method
+   
+   @Test public void shouldConfigureJobNameColourAndUpdate(){
+      Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobName().getTextFill() );
+      configuration.jobNameColour().set( Color.ANTIQUEWHITE );
+      Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobName().getTextFill() );
+   }//End Method
+   
+   @Test public void shouldConfigureBuildNumberFontAndUpdate(){
+      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
+      configuration.propertiesFont().set( new Font( 100 ) );
+      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
+   }//End Method
+   
+   @Test public void shouldConfigureBuildNumberColourAndUpdate(){
+      Assert.assertEquals( configuration.propertiesColour().get(), systemUnderTest.buildNumber().getTextFill() );
+      configuration.propertiesColour().set( Color.ANTIQUEWHITE );
+      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
+   }//End Method
+   
+   @Test public void shouldConfigureBuildTimeFontAndUpdate(){
+      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
+      configuration.propertiesFont().set( new Font( 100 ) );
+      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
+   }//End Method
+   
+   @Test public void shouldConfigureBuildTimeColourAndUpdate(){
+      Assert.assertEquals( configuration.propertiesColour().get(), systemUnderTest.completionEstimate().getTextFill() );
+      configuration.propertiesColour().set( Color.ANTIQUEWHITE );
+      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.completionEstimate().getFont() );
    }//End Method
 }//End Class
