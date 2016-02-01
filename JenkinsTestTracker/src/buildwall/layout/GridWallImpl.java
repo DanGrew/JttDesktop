@@ -11,7 +11,7 @@ package buildwall.layout;
 import java.util.HashMap;
 import java.util.Map;
 
-import buildwall.panel.BuildWallConfiguration;
+import buildwall.configuration.BuildWallConfiguration;
 import buildwall.panel.JobPanelImpl;
 import graphics.DecoupledPlatformImpl;
 import javafx.collections.ListChangeListener.Change;

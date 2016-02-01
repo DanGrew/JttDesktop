@@ -10,6 +10,7 @@ package buildwall.panel;
 
 import java.util.concurrent.TimeUnit;
 
+import buildwall.configuration.BuildWallConfiguration;
 import graphics.DecoupledPlatformImpl;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

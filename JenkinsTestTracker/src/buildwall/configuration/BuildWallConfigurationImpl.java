@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package buildwall.panel;
+package buildwall.configuration;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;

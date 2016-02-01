@@ -8,6 +8,7 @@
  */
 package buildwall.panel;
 
+import buildwall.configuration.BuildWallConfiguration;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import model.jobs.JenkinsJob;

@@ -6,11 +6,14 @@
  *                 2016
  * ----------------------------------------
  */
-package buildwall.panel;
+package buildwall.configuration;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import buildwall.configuration.BuildWallConfiguration;
+import buildwall.configuration.BuildWallConfigurationImpl;
 
 /**
  * {@link BuildWallConfigurationImpl} test.

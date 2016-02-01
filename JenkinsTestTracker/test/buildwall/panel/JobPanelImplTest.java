@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import buildwall.configuration.BuildWallConfigurationImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;

@@ -14,8 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import buildwall.panel.BuildWallConfiguration;
-import buildwall.panel.BuildWallConfigurationImpl;
+import buildwall.configuration.BuildWallConfiguration;
+import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.panel.JobBuildSimulator;
 import buildwall.panel.JobPanelImpl;
 import graphics.DecoupledPlatformImpl;
