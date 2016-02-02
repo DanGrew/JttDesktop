@@ -60,7 +60,8 @@ public class GridWallImpl extends GridPane implements BuildWall {
       jobPanels.clear();
       
       int numberOfColumns = configuration.numberOfColumns().get();
-      if ( numberOfColumns <= 0 ) numberOfColumns = 1;
+      numberOfColumns = Math.max( numberOfColumns, 1 );
+      numberOfColumns = Math.min( database.jenkinsJobs().size(), numberOfColumns );
       
       int columnCount = 0;
       int rowCount = 0;

@@ -204,7 +204,11 @@ public class GridWallImplTest {
       for ( int i = 0; i < children.size() - 1; i++ ) {
          Assert.assertNull( GridPane.getColumnSpan( children.get( i ) ) );
       }
-      Assert.assertEquals( expectedSpan, GridPane.getColumnSpan( children.get( children.size() - 1 ) ).intValue() );
+      if ( expectedSpan == 1 ) {
+         Assert.assertNull( GridPane.getColumnSpan( children.get( children.size() - 1 ) ) );
+      } else {
+         Assert.assertEquals( expectedSpan, GridPane.getColumnSpan( children.get( children.size() - 1 ) ).intValue() );
+      }
    }//End Method
    
    @Test public void shouldExpandLastAcrossAllColumnsOnMultipleRows(){
@@ -213,10 +217,11 @@ public class GridWallImplTest {
       assertLastElementSpans( 4 );
    }//End Method
    
-   @Test public void shouldExpandLastAcrossAllColumnsOnSingleRow(){
+   @Test public void shouldNotExpandLastWhenMoreColumnsThanJobs(){
       configuration.numberOfColumns().set( 7 );
       systemUnderTest = new GridWallImpl( configuration, database );
-      assertLastElementSpans( 3 );
+      assertLastElementSpans( 1 );
+      assertIndexConstraints( 5, 1 );
    }//End Method
 
    @Test public void shouldCalculateProportionsAccountingForRounding(){
