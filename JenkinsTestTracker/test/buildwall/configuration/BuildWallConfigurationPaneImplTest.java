@@ -8,6 +8,7 @@
  */
 package buildwall.configuration;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.controlsfx.dialog.FontSelectorDialog;
@@ -51,7 +52,11 @@ public class BuildWallConfigurationPaneImplTest {
       JavaFxInitializer.threadedLaunch( () -> { 
          return new BuildWallConfigurationPanelImpl(
                configuration, 
-               () -> { return new FontSelectorDialog( configuration.jobNameFont().get() ).showAndWait().get(); } 
+               () -> { 
+                  Optional< Font > result = new FontSelectorDialog( configuration.jobNameFont().get() ).showAndWait();
+                  if ( result.isPresent() ) return result.get();
+                  else return null;
+               } 
          ); 
       } );
       

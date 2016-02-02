@@ -115,8 +115,8 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
                completionEstimateQuickFoxLabel, 
                configuration.completionEstimateFont() 
       );
-      fontContent.add( completionEstimateFontButton, 1, 2 );
-      fontContent.add( completionEstimateQuickFoxLabel, 0, 3 );
+      fontContent.add( completionEstimateFontButton, 1, 4 );
+      fontContent.add( completionEstimateQuickFoxLabel, 0, 5 );
       
       configureColumnConstraints( fontContent );
       
