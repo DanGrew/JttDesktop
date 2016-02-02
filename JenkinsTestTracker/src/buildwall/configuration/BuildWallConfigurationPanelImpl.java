@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -34,18 +36,24 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    static final String QUICK_FOX = "\"The quick brown fox jumps over the lazy dog\"";
    static final double LABEL_PERCENTAGE_WIDTH = 40;
    static final double CONTROLS_PERCENTAGE_WIDTH = 60;
+   static final int MINIMUM_COLUMNS = 1;
+   static final int MAXIMUM_COLUMNS = 1000;
    private BuildWallConfiguration configuration;
    private Supplier< Font > fontSupplier;
    
+   private TitledPane dimensionsPane;
    private TitledPane fontPane;
    private TitledPane colourPane;
    
+   private Label columnsLabel;
    private Label jobNameFontLabel;
    private Label jobNameColourLabel;
    private Label buildNumberFontLabel;
    private Label buildNumberColourLabel;
    private Label completionEstimateFontLabel;
    private Label completionEstimateColourLabel;
+
+   private Spinner< Integer > columnsSpinner;
    
    private Button jobNameFontButton;
    private Label jobNameQuickFoxLabel;
@@ -67,6 +75,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       this.configuration = configuration;
       this.fontSupplier = fontSupplier;
       
+      constructDimensions();
       constructFontItemPane();
       constructColourItemPane();
       
@@ -75,6 +84,28 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       width.setHgrow( Priority.ALWAYS );
       getColumnConstraints().addAll( width );
    }//End Constructor
+   
+   /**
+    * Method to construct the dimensions configurables.
+    */
+   private void constructDimensions(){ 
+      GridPane dimensionsContent = new GridPane();
+      
+      columnsLabel = createBoldLabel( "Columns" );
+      dimensionsContent.add( columnsLabel, 0, 0 );
+      
+      columnsSpinner = new Spinner<>();
+      columnsSpinner.setMaxWidth( Double.MAX_VALUE );
+      columnsSpinner.setValueFactory( new SpinnerValueFactory.IntegerSpinnerValueFactory( 1, 1000, configuration.numberOfColumns().get() ) );
+      columnsSpinner.valueProperty().addListener( ( source, old, updated ) -> configuration.numberOfColumns().set( updated ) );
+      configuration.numberOfColumns().addListener( ( source, old, updated ) -> columnsSpinner.getValueFactory().setValue( updated.intValue() ) );
+      dimensionsContent.add( columnsSpinner, 1, 0 );
+
+      configureColumnConstraints( dimensionsContent );
+      
+      dimensionsPane = new TitledPane( "Dimensions", dimensionsContent );
+      add( dimensionsPane, 0, 0 );
+   }//End Method
    
    /**
     * Method to construct a {@link TitledPane} for the {@link Font}s.
@@ -121,7 +152,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColumnConstraints( fontContent );
       
       fontPane = new TitledPane( "Fonts", fontContent );
-      add( fontPane, 0, 0 );
+      add( fontPane, 0, 1 );
    }//End Method
    
    /**
@@ -182,7 +213,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColumnConstraints( content );
       
       colourPane = new TitledPane( "Colours", content );
-      add( colourPane, 0, 1 );
+      add( colourPane, 0, 2 );
    }//End Method
    
    /**
@@ -290,6 +321,18 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
 
    Labeled completionEstimateColourLabel() {
       return completionEstimateColourLabel;
+   }//End Method
+
+   TitledPane dimensionsPane() {
+      return dimensionsPane;
+   }//End Method
+
+   Spinner< Integer > columnsSpinner() {
+      return columnsSpinner;
+   }//End Method
+
+   Label columnsSpinnerLabel() {
+      return columnsLabel;
    }//End Method
 
 }//End Class

@@ -19,7 +19,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import graphics.JavaFxInitializer;
+import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -64,6 +66,12 @@ public class BuildWallConfigurationPaneImplTest {
    }//End Method
    
    @Test public void shouldContainNecessaryElements(){
+      TitledPane dimensionsPane = systemUnderTest.dimensionsPane();
+      Assert.assertTrue( systemUnderTest.getChildren().contains( dimensionsPane ) );
+      
+      GridPane dimensionsContent = ( GridPane )dimensionsPane.getContent();
+      Assert.assertTrue( dimensionsContent.getChildren().contains( systemUnderTest.columnsSpinner() ) );
+      
       TitledPane fontPane = systemUnderTest.fontPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( fontPane ) );
       
@@ -85,6 +93,8 @@ public class BuildWallConfigurationPaneImplTest {
    }//End Method
    
    @Test public void shouldUseInitialConfiguration(){
+      Assert.assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
+      
       Assert.assertEquals( configuration.jobNameFont().get().getName(), systemUnderTest.jobNameFontButton().getText() );
       Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobNameQuickFoxLabel().getFont() );
       Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobNameColourPicker().valueProperty().get() );
@@ -96,6 +106,30 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertEquals( configuration.completionEstimateFont().get().getName(), systemUnderTest.completionEstimateFontButton().getText() );
       Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimateQuickFoxLabel().getFont() );
       Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void shouldUpdateColumnsSpinnerWhenConfigurationChanges(){
+      Assert.assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
+      configuration.numberOfColumns().set( 100 );
+      Assert.assertEquals( 100, systemUnderTest.columnsSpinner().getValue().intValue() );
+   }//End Method
+   
+   @Test public void shouldUpdateConfigurationWhenColumnsSpinnerChanges(){
+      Assert.assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
+      systemUnderTest.columnsSpinner().getValueFactory().setValue( 100 );
+      Assert.assertEquals( 100, configuration.numberOfColumns().get() );
+   }//End Method
+   
+   @Test public void columnsSpinnerShouldBeBound(){
+      IntegerSpinnerValueFactory factory = ( IntegerSpinnerValueFactory )systemUnderTest.columnsSpinner().getValueFactory();
+      Assert.assertEquals( 
+               BuildWallConfigurationPanelImpl.MINIMUM_COLUMNS, 
+               factory.getMin() 
+      );
+      Assert.assertEquals( 
+               BuildWallConfigurationPanelImpl.MAXIMUM_COLUMNS, 
+               factory.getMax() 
+      );
    }//End Method
    
    @Test public void shouldProvideJobNameFontNameOnChooserButton() {
@@ -285,6 +319,7 @@ public class BuildWallConfigurationPaneImplTest {
    }//End Method
    
    @Test public void shouldUseBoldLabels(){
+      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.columnsSpinnerLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.jobNameFontLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.jobNameColourLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.buildNumberFontLabel().getFont().getStyle() ) );
@@ -300,25 +335,26 @@ public class BuildWallConfigurationPaneImplTest {
    }//End Method
    
    @Test public void eachPaneShouldShareWidthAmongstColumns() {
-      GridPane fontGrid = ( GridPane )systemUnderTest.fontPane().getContent();
-      Assert.assertEquals( 
-               BuildWallConfigurationPanelImpl.LABEL_PERCENTAGE_WIDTH, 
-               fontGrid.getColumnConstraints().get( 0 ).getPercentWidth(),
-               TestCommon.precision()
-      );
-      Assert.assertEquals( Priority.ALWAYS, fontGrid.getColumnConstraints().get( 0 ).getHgrow() );
-      
-      GridPane colourGrid = ( GridPane )systemUnderTest.colourPane().getContent();
+      assertColumnConstraints( ( GridPane )systemUnderTest.dimensionsPane().getContent() );
+      assertColumnConstraints( ( GridPane )systemUnderTest.fontPane().getContent() );
+      assertColumnConstraints( ( GridPane )systemUnderTest.colourPane().getContent() );
+   }//End Method
+   
+   /**
+    * Method to assert that the {@link ColumnConstraints} are present in the given {@link GridPane}.
+    * @param grid the {@link GridPane} to check.
+    */
+   private void assertColumnConstraints( GridPane grid ){
       Assert.assertEquals( 
                BuildWallConfigurationPanelImpl.CONTROLS_PERCENTAGE_WIDTH, 
-               colourGrid.getColumnConstraints().get( 1 ).getPercentWidth(),
+               grid.getColumnConstraints().get( 1 ).getPercentWidth(),
                TestCommon.precision()
       );
-      Assert.assertEquals( Priority.ALWAYS, colourGrid.getColumnConstraints().get( 1 ).getHgrow() );
+      Assert.assertEquals( Priority.ALWAYS, grid.getColumnConstraints().get( 1 ).getHgrow() );
       
       Assert.assertTrue( 
-               colourGrid.getColumnConstraints().get( 0 ).getPercentWidth() +
-               colourGrid.getColumnConstraints().get( 1 ).getPercentWidth() 
+               grid.getColumnConstraints().get( 0 ).getPercentWidth() +
+               grid.getColumnConstraints().get( 1 ).getPercentWidth() 
                >= 100
       );
    }//End Method
