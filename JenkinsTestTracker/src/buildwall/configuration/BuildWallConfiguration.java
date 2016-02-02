@@ -21,16 +21,28 @@ import javafx.scene.text.Font;
 public interface BuildWallConfiguration {
 
    /**
-    * Property for the {@link Font} in the properties of the description.
-    * @return the propertiesFont the {@link ObjectProperty}.
+    * Property for the {@link Font} for the build number.
+    * @return the {@link ObjectProperty}.
     */
-   public ObjectProperty< Font > propertiesFont();
+   public ObjectProperty< Font > buildNumberFont();
    
    /**
-    * Property for the {@link Color} in the properties of the description.
-    * @return the propertiesColour the {@link ObjectProperty}. 
+    * Property for the {@link Color} for the build number.
+    * @return the {@link ObjectProperty}. 
     */
-   public ObjectProperty< Color > propertiesColour(); 
+   public ObjectProperty< Color > buildNumberColour(); 
+
+   /**
+    * Property for the {@link Font} for the completion estimate.
+    * @return the {@link ObjectProperty}.
+    */
+   public ObjectProperty< Font > completionEstimateFont();
+   
+   /**
+    * Property for the {@link Color} for the completion estimate.
+    * @return the {@link ObjectProperty}. 
+    */
+   public ObjectProperty< Color > completionEstimateColour(); 
    
    /**
     * Property for the job name {@link Font}.

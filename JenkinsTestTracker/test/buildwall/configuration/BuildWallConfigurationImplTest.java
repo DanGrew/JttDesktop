@@ -30,8 +30,11 @@ public class BuildWallConfigurationImplTest {
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_JOB_NAME_FONT, systemUnderTest.jobNameFont().get() );
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.jobNameColour().get() );
       
-      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_PROPERTIES_FONT, systemUnderTest.propertiesFont().get() );
-      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.propertiesColour().get() );
+      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_PROPERTIES_FONT, systemUnderTest.buildNumberFont().get() );
+      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.buildNumberColour().get() );
+      
+      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_PROPERTIES_FONT, systemUnderTest.completionEstimateFont().get() );
+      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.completionEstimateColour().get() );
       
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_NUMBER_OF_COLUMNS, systemUnderTest.numberOfColumns().get() );
    }//End Method

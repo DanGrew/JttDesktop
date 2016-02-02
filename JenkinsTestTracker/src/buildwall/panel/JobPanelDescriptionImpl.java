@@ -59,8 +59,8 @@ public class JobPanelDescriptionImpl extends BorderPane {
 
       properties = new GridPane();
       buildNumber = new Label( formatBuildNumber( job.lastBuildNumberProperty().get() ) );
-      buildNumber.fontProperty().bind( configuration.propertiesFont() );
-      buildNumber.textFillProperty().bind( configuration.propertiesColour() );
+      buildNumber.fontProperty().bind( configuration.buildNumberFont() );
+      buildNumber.textFillProperty().bind( configuration.buildNumberColour() );
       buildNumber.setOpacity( DEFAULT_PROPERTY_OPACITY );
       job.lastBuildNumberProperty().addListener( ( source, old, updated ) -> 
             DecoupledPlatformImpl.runLater( () -> {
@@ -71,8 +71,8 @@ public class JobPanelDescriptionImpl extends BorderPane {
 
       completionEstimate = new Label();
       updateCompletionEstimate( job );
-      completionEstimate.fontProperty().bind( configuration.propertiesFont() );
-      completionEstimate.textFillProperty().bind( configuration.propertiesColour() );
+      completionEstimate.fontProperty().bind( configuration.completionEstimateFont() );
+      completionEstimate.textFillProperty().bind( configuration.completionEstimateColour() );
       completionEstimate.setOpacity( DEFAULT_PROPERTY_OPACITY );
       job.currentBuildTimeProperty().addListener( ( source, old, updated ) -> updateCompletionEstimate( job ) );
       job.expectedBuildTimeProperty().addListener( ( source, old, updated ) -> updateCompletionEstimate( job ) );

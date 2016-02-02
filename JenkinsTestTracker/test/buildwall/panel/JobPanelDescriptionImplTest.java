@@ -57,12 +57,14 @@ public class JobPanelDescriptionImplTest {
       Thread.sleep( 100000 );
    }//End Method
    
-   @Test public void shouldUsePropertyConfigurations() {
-      Assert.assertEquals( configuration.propertiesColour().get(), systemUnderTest.buildNumber().textFillProperty().get() );
-      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().fontProperty().get() );
-      
-      Assert.assertEquals( configuration.propertiesColour().get(), systemUnderTest.completionEstimate().textFillProperty().get() );
-      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.completionEstimate().fontProperty().get() );
+   @Test public void shouldUseBuildNumberConfigurations() {
+      Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumber().textFillProperty().get() );
+      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumber().fontProperty().get() );
+   }//End Method
+   
+   @Test public void shouldUseCompletionEstimateConfigurations() {
+      Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().textFillProperty().get() );
+      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimate().fontProperty().get() );
    }//End Method
    
    @Test public void shouldUseJobNameConfigurations() {
@@ -70,15 +72,23 @@ public class JobPanelDescriptionImplTest {
       Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobName().fontProperty().get() );
    }//End Method
    
-   @Test public void shouldUpdatePropertyConfigurations() {
+   @Test public void shouldUpdateBuildNumberConfigurations() {
       final Font testFont = new Font( 100 );
       
-      configuration.propertiesColour().set( Color.BLACK );
+      configuration.buildNumberColour().set( Color.BLACK );
       Assert.assertEquals( Color.BLACK, systemUnderTest.buildNumber().textFillProperty().get() );
+      
+      configuration.buildNumberFont().set( testFont );
+      Assert.assertEquals( testFont, systemUnderTest.buildNumber().fontProperty().get() );
+   }//End Method
+   
+   @Test public void shouldUpdateCompletionEstimateConfigurations() {
+      final Font testFont = new Font( 100 );
+      
+      configuration.completionEstimateColour().set( Color.BLACK );
       Assert.assertEquals( Color.BLACK, systemUnderTest.completionEstimate().textFillProperty().get() );
       
-      configuration.propertiesFont().set( testFont );
-      Assert.assertEquals( testFont, systemUnderTest.buildNumber().fontProperty().get() );
+      configuration.completionEstimateFont().set( testFont );
       Assert.assertEquals( testFont, systemUnderTest.completionEstimate().fontProperty().get() );
    }//End Method
    
@@ -236,26 +246,26 @@ public class JobPanelDescriptionImplTest {
    }//End Method
    
    @Test public void shouldConfigureBuildNumberFontAndUpdate(){
-      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
-      configuration.propertiesFont().set( new Font( 100 ) );
-      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
+      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumber().getFont() );
+      configuration.buildNumberFont().set( new Font( 100 ) );
+      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumber().getFont() );
    }//End Method
    
    @Test public void shouldConfigureBuildNumberColourAndUpdate(){
-      Assert.assertEquals( configuration.propertiesColour().get(), systemUnderTest.buildNumber().getTextFill() );
-      configuration.propertiesColour().set( Color.ANTIQUEWHITE );
-      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
+      Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumber().getTextFill() );
+      configuration.buildNumberColour().set( Color.ANTIQUEWHITE );
+      Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumber().getFont() );
    }//End Method
    
    @Test public void shouldConfigureBuildTimeFontAndUpdate(){
-      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
-      configuration.propertiesFont().set( new Font( 100 ) );
-      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.buildNumber().getFont() );
+      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.buildNumber().getFont() );
+      configuration.completionEstimateFont().set( new Font( 100 ) );
+      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.buildNumber().getFont() );
    }//End Method
    
    @Test public void shouldConfigureBuildTimeColourAndUpdate(){
-      Assert.assertEquals( configuration.propertiesColour().get(), systemUnderTest.completionEstimate().getTextFill() );
-      configuration.propertiesColour().set( Color.ANTIQUEWHITE );
-      Assert.assertEquals( configuration.propertiesFont().get(), systemUnderTest.completionEstimate().getFont() );
+      Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().getTextFill() );
+      configuration.completionEstimateColour().set( Color.ANTIQUEWHITE );
+      Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().getFont() );
    }//End Method
 }//End Class
