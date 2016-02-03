@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 /**
  * {@link JavaFxInitializer} test.
  */
+@Ignore
 public class JavaFxInitializerTest {
 
    /**
