@@ -41,7 +41,6 @@ public class GridWallImpl extends GridPane implements BuildWall {
       jobPanels = new HashMap<>();
       this.database = database;
       this.configuration = configuration;
-      
       constructLayout();
       database.jenkinsJobs().addListener( ( Change< ? extends JenkinsJob > change ) -> constructLayout() );
       configuration.numberOfColumns().addListener( ( source, old, updated ) -> constructLayout() );
@@ -52,11 +51,9 @@ public class GridWallImpl extends GridPane implements BuildWall {
     */
    void constructLayout() {
       getChildren().forEach( node -> GridPane.clearConstraints( node ) );
-      DecoupledPlatformImpl.runLater( () -> {
-         getChildren().clear();
-         getRowConstraints().clear();
-         getColumnConstraints().clear();
-      } );
+      getChildren().clear();
+      getRowConstraints().clear();
+      getColumnConstraints().clear();
       jobPanels.clear();
       
       int numberOfColumns = configuration.numberOfColumns().get();
@@ -83,7 +80,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
       
       expandLastPanelIfNeeded( database.jenkinsJobs().size(), numberOfColumns, columnCount, rowCount );
       fixColumnWidths( numberOfColumns );
-      fixRowHeights( rowCount + 1 ); //accounting for indices. 
+      fixRowHeights( rowCount + 1 ); //accounting for indices.
    }//End Method
 
    /**

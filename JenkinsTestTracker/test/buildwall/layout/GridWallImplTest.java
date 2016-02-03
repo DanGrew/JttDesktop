@@ -243,4 +243,5 @@ public class GridWallImplTest {
    private void assertProportionScales( int numberOfItems ) {
       Assert.assertTrue( GridWallImpl.calculateProportion( numberOfItems ) * numberOfItems > 100 );
    }//End Method
+   
 }//End Class

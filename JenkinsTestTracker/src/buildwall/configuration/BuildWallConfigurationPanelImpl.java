@@ -8,10 +8,9 @@
  */
 package buildwall.configuration;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
@@ -33,13 +32,12 @@ import javafx.scene.text.FontWeight;
  */
 public class BuildWallConfigurationPanelImpl extends GridPane {
    
-   static final String QUICK_FOX = "\"The quick brown fox jumps over the lazy dog\"";
    static final double LABEL_PERCENTAGE_WIDTH = 40;
    static final double CONTROLS_PERCENTAGE_WIDTH = 60;
    static final int MINIMUM_COLUMNS = 1;
    static final int MAXIMUM_COLUMNS = 1000;
    private BuildWallConfiguration configuration;
-   private Supplier< Font > fontSupplier;
+   private Function< Font, Font > fontSupplier;
    
    private TitledPane dimensionsPane;
    private TitledPane fontPane;
@@ -56,11 +54,8 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private Spinner< Integer > columnsSpinner;
    
    private Button jobNameFontButton;
-   private Label jobNameQuickFoxLabel;
    private Button buildNumberFontButton;
-   private Label buildNumberQuickFoxLabel;
    private Button completionEstimateFontButton;
-   private Label completionEstimateQuickFoxLabel;
    
    private ColorPicker jobNameColourPicker;
    private ColorPicker buildNumberColourPicker;
@@ -71,7 +66,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} to configure.
     * @param fontSupplier the method of inputting a different {@link Font}.
     */
-   public BuildWallConfigurationPanelImpl( BuildWallConfiguration configuration, Supplier< Font > fontSupplier ) {
+   public BuildWallConfigurationPanelImpl( BuildWallConfiguration configuration, Function< Font, Font > fontSupplier ) {
       this.configuration = configuration;
       this.fontSupplier = fontSupplier;
       
@@ -116,38 +111,29 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       jobNameFontLabel = createBoldLabel( "Job Name" );
       fontContent.add( jobNameFontLabel, 0, 0 );
       jobNameFontButton = new Button( configuration.jobNameFont().get().getName() );
-      jobNameQuickFoxLabel = new Label( QUICK_FOX );
       configureFontButtonAndExample( 
                jobNameFontButton, 
-               jobNameQuickFoxLabel, 
                configuration.jobNameFont() 
       );
       fontContent.add( jobNameFontButton, 1, 0 );
-      fontContent.add( jobNameQuickFoxLabel, 0, 1 );
 
       buildNumberFontLabel = createBoldLabel( "Build Number" );
       fontContent.add( buildNumberFontLabel, 0, 2 );
       buildNumberFontButton = new Button( configuration.buildNumberFont().get().getName() );
-      buildNumberQuickFoxLabel = new Label( QUICK_FOX );
       configureFontButtonAndExample( 
                buildNumberFontButton, 
-               buildNumberQuickFoxLabel, 
                configuration.buildNumberFont() 
       );
       fontContent.add( buildNumberFontButton, 1, 2 );
-      fontContent.add( buildNumberQuickFoxLabel, 0, 3 );
 
       completionEstimateFontLabel = createBoldLabel( "Build Time" );
       fontContent.add( completionEstimateFontLabel, 0, 4 );
       completionEstimateFontButton = new Button( configuration.completionEstimateFont().get().getName() );
-      completionEstimateQuickFoxLabel = new Label( QUICK_FOX );
       configureFontButtonAndExample( 
                completionEstimateFontButton, 
-               completionEstimateQuickFoxLabel, 
                configuration.completionEstimateFont() 
       );
       fontContent.add( completionEstimateFontButton, 1, 4 );
-      fontContent.add( completionEstimateQuickFoxLabel, 0, 5 );
       
       configureColumnConstraints( fontContent );
       
@@ -161,14 +147,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     * @param quickFox the {@link Label} to update.
     * @param configProperty the property associated.
     */
-   private void configureFontButtonAndExample( Button button, Label quickFox, ObjectProperty< Font > configProperty ){
+   private void configureFontButtonAndExample( Button button, ObjectProperty< Font > configProperty ){
       button.setMaxWidth( Double.MAX_VALUE );
-      button.setOnAction( event -> configProperty.set( fontSupplier.get() ) );
-      configProperty.addListener( ( source, old, updated ) -> updateFont( button, quickFox, updated ) );
-      
-      quickFox.setFont( configProperty.get() );
-      quickFox.setPadding( new Insets( 10, 0, 10, 0 ) );
-      GridPane.setColumnSpan( quickFox, 2 );
+      button.setOnAction( event -> configProperty.set( fontSupplier.apply( configProperty.get() ) ) );
+      configProperty.addListener( ( source, old, updated ) -> updateFont( button, updated ) );
    }//End Method
    
    /**
@@ -234,11 +216,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     * @param quickFox the {@link Label} with the example text to update.
     * @param newFont the new {@link Font}.
     */
-   private void updateFont( Button button, Label quickFox, Font newFont ) {
+   private void updateFont( Button button, Font newFont ) {
       if ( newFont == null ) return;
       
       button.setText( newFont.getName() );
-      quickFox.setFont( newFont );
    }//End Method
    
    /**
@@ -259,24 +240,12 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       return jobNameFontButton;
    }//End Method
 
-   Label jobNameQuickFoxLabel() {
-      return jobNameQuickFoxLabel;
-   }//End Method
-
    Button buildNumberFontButton() {
       return buildNumberFontButton;
    }//End Method
    
-   Label buildNumberQuickFoxLabel() {
-      return buildNumberQuickFoxLabel;
-   }//End Method
-
    Button completionEstimateFontButton() {
       return completionEstimateFontButton;
-   }//End Method
-
-   Label completionEstimateQuickFoxLabel() {
-      return completionEstimateQuickFoxLabel;
    }//End Method
 
    TitledPane fontPane() {

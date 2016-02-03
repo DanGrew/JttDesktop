@@ -9,7 +9,7 @@
 package buildwall.configuration;
 
 import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import org.controlsfx.dialog.FontSelectorDialog;
 import org.junit.Assert;
@@ -37,14 +37,14 @@ public class BuildWallConfigurationPaneImplTest {
    private static final Font TEST_FONT_A = new Font( "anything", 14 );
    private static final Font TEST_FONT_B = new Font( "anything", 20 );
    private static final Font TEST_FONT_C = new Font( "anything", 8 );
-   private Supplier< Font > fontSupplier;
+   private Function< Font, Font > fontSupplier;
    private BuildWallConfiguration configuration;
    private BuildWallConfigurationPanelImpl systemUnderTest;
    
    @SuppressWarnings("unchecked") //Simply mocking genericized objects.
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
-      fontSupplier = Mockito.mock( Supplier.class );
+      fontSupplier = Mockito.mock( Function.class );
       configuration = new BuildWallConfigurationImpl();
       systemUnderTest = new BuildWallConfigurationPanelImpl( configuration, fontSupplier );
    }//End Method
@@ -54,8 +54,8 @@ public class BuildWallConfigurationPaneImplTest {
       JavaFxInitializer.threadedLaunch( () -> { 
          return new BuildWallConfigurationPanelImpl(
                configuration, 
-               () -> { 
-                  Optional< Font > result = new FontSelectorDialog( configuration.jobNameFont().get() ).showAndWait();
+               initial -> { 
+                  Optional< Font > result = new FontSelectorDialog( initial ).showAndWait();
                   if ( result.isPresent() ) return result.get();
                   else return null;
                } 
@@ -79,9 +79,6 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontButton() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontButton() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontButton() ) );
-      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameQuickFoxLabel() ) );
-      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberQuickFoxLabel() ) );
-      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateQuickFoxLabel() ) );
       
       TitledPane colourPane = systemUnderTest.colourPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( colourPane ) );
@@ -96,15 +93,12 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
       
       Assert.assertEquals( configuration.jobNameFont().get().getName(), systemUnderTest.jobNameFontButton().getText() );
-      Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobNameQuickFoxLabel().getFont() );
       Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobNameColourPicker().valueProperty().get() );
       
       Assert.assertEquals( configuration.buildNumberFont().get().getName(), systemUnderTest.buildNumberFontButton().getText() );
-      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumberQuickFoxLabel().getFont() );
       Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumberColourPicker().valueProperty().get() );
       
       Assert.assertEquals( configuration.completionEstimateFont().get().getName(), systemUnderTest.completionEstimateFontButton().getText() );
-      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimateQuickFoxLabel().getFont() );
       Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
    }//End Method
    
@@ -137,19 +131,9 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertEquals( configuration.jobNameFont().get().getName(), systemUnderTest.jobNameFontButton().getText() );
       Assert.assertEquals( TEST_FONT_A, configuration.jobNameFont().get() );
       
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
+      Mockito.when( fontSupplier.apply( TEST_FONT_A ) ).thenReturn( TEST_FONT_B );
       systemUnderTest.jobNameFontButton().fire();
       Assert.assertEquals( TEST_FONT_B.getName(), systemUnderTest.jobNameFontButton().getText() );
-   }//End Method
-   
-   @Test public void shouldProvideJobNameQuickBrownFoxWithChosenFont() {
-      configuration.jobNameFont().set( TEST_FONT_A );
-      Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobNameQuickFoxLabel().getFont() );
-      Assert.assertEquals( TEST_FONT_A, configuration.jobNameFont().get() );
-      
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
-      systemUnderTest.jobNameFontButton().fire();
-      Assert.assertEquals( TEST_FONT_B, systemUnderTest.jobNameQuickFoxLabel().getFont() );
    }//End Method
    
    @Test public void shouldProvideBuildNumberFontNameOnChooserButton() {
@@ -157,19 +141,9 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertEquals( configuration.buildNumberFont().get().getName(), systemUnderTest.buildNumberFontButton().getText() );
       Assert.assertEquals( TEST_FONT_A, configuration.buildNumberFont().get() );
       
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
+      Mockito.when( fontSupplier.apply( TEST_FONT_A ) ).thenReturn( TEST_FONT_B );
       systemUnderTest.buildNumberFontButton().fire();
       Assert.assertEquals( TEST_FONT_B.getName(), systemUnderTest.buildNumberFontButton().getText() );
-   }//End Method
-   
-   @Test public void shouldProvideBuildNumberQuickBrownFoxWithChosenFont() {
-      configuration.buildNumberFont().set( TEST_FONT_A );
-      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumberQuickFoxLabel().getFont() );
-      Assert.assertEquals( TEST_FONT_A, configuration.buildNumberFont().get() );
-      
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
-      systemUnderTest.buildNumberFontButton().fire();
-      Assert.assertEquals( TEST_FONT_B, systemUnderTest.buildNumberQuickFoxLabel().getFont() );
    }//End Method
    
    @Test public void shouldProvideCompletionEstimateFontNameOnChooserButton() {
@@ -177,42 +151,29 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertEquals( configuration.completionEstimateFont().get().getName(), systemUnderTest.completionEstimateFontButton().getText() );
       Assert.assertEquals( TEST_FONT_A, configuration.completionEstimateFont().get() );
       
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
+      Mockito.when( fontSupplier.apply( TEST_FONT_A ) ).thenReturn( TEST_FONT_B );
       systemUnderTest.completionEstimateFontButton().fire();
       Assert.assertEquals( TEST_FONT_B.getName(), systemUnderTest.completionEstimateFontButton().getText() );
-   }//End Method
-   
-   @Test public void shouldProvideCompletionEstimateQuickBrownFoxWithChosenFont() {
-      configuration.completionEstimateFont().set( TEST_FONT_A );
-      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimateQuickFoxLabel().getFont() );
-      Assert.assertEquals( TEST_FONT_A, configuration.completionEstimateFont().get() );
-      
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
-      systemUnderTest.completionEstimateFontButton().fire();
-      Assert.assertEquals( TEST_FONT_B, systemUnderTest.completionEstimateQuickFoxLabel().getFont() );
    }//End Method
    
    @Test public void shouldUpdateJobNameFontFromConfiguration(){
       configuration.jobNameFont().set( TEST_FONT_A );
       Assert.assertEquals( configuration.jobNameFont().get().getName(), systemUnderTest.jobNameFontButton().getText() );
-      Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobNameQuickFoxLabel().getFont() );
       
       configuration.jobNameFont().set( TEST_FONT_B );
       
       Assert.assertEquals( configuration.jobNameFont().get().getName(), systemUnderTest.jobNameFontButton().getText() );
-      Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobNameQuickFoxLabel().getFont() );
 
       configuration.jobNameFont().set( TEST_FONT_C );
       
       Assert.assertEquals( configuration.jobNameFont().get().getName(), systemUnderTest.jobNameFontButton().getText() );
-      Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobNameQuickFoxLabel().getFont() );
    }//End Method
    
    @Test public void shouldSetJobNameFontInConfiguration(){
       configuration.jobNameFont().set( TEST_FONT_A );
       Assert.assertEquals( TEST_FONT_A, configuration.jobNameFont().get() );
       
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
+      Mockito.when( fontSupplier.apply( TEST_FONT_A ) ).thenReturn( TEST_FONT_B );
       systemUnderTest.jobNameFontButton().fire();
       Assert.assertEquals( TEST_FONT_B, configuration.jobNameFont().get() );
    }//End Method
@@ -237,24 +198,21 @@ public class BuildWallConfigurationPaneImplTest {
    @Test public void shouldUpdateBuildNumberFontFromConfiguration(){
       configuration.buildNumberFont().set( TEST_FONT_A );
       Assert.assertEquals( configuration.buildNumberFont().get().getName(), systemUnderTest.buildNumberFontButton().getText() );
-      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumberQuickFoxLabel().getFont() );
       
       configuration.buildNumberFont().set( TEST_FONT_B );
       
       Assert.assertEquals( configuration.buildNumberFont().get().getName(), systemUnderTest.buildNumberFontButton().getText() );
-      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumberQuickFoxLabel().getFont() );
 
       configuration.buildNumberFont().set( TEST_FONT_C );
       
       Assert.assertEquals( configuration.buildNumberFont().get().getName(), systemUnderTest.buildNumberFontButton().getText() );
-      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumberQuickFoxLabel().getFont() );
    }//End Method
    
    @Test public void shouldSetBuildNumberFontInConfiguration(){
       configuration.buildNumberFont().set( TEST_FONT_A );
       Assert.assertEquals( TEST_FONT_A, configuration.buildNumberFont().get() );
       
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
+      Mockito.when( fontSupplier.apply( TEST_FONT_A ) ).thenReturn( TEST_FONT_B );
       systemUnderTest.buildNumberFontButton().fire();
       Assert.assertEquals( TEST_FONT_B, configuration.buildNumberFont().get() );
    }//End Method
@@ -279,24 +237,19 @@ public class BuildWallConfigurationPaneImplTest {
    @Test public void shouldUpdateCompletionEstimateFontFromConfiguration(){
       configuration.completionEstimateFont().set( TEST_FONT_A );
       Assert.assertEquals( configuration.completionEstimateFont().get().getName(), systemUnderTest.completionEstimateFontButton().getText() );
-      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimateQuickFoxLabel().getFont() );
       
       configuration.completionEstimateFont().set( TEST_FONT_B );
-      
       Assert.assertEquals( configuration.completionEstimateFont().get().getName(), systemUnderTest.completionEstimateFontButton().getText() );
-      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimateQuickFoxLabel().getFont() );
 
       configuration.completionEstimateFont().set( TEST_FONT_C );
-      
       Assert.assertEquals( configuration.completionEstimateFont().get().getName(), systemUnderTest.completionEstimateFontButton().getText() );
-      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimateQuickFoxLabel().getFont() );
    }//End Method
    
    @Test public void shouldSetCompletionEstimateFontInConfiguration(){
       configuration.completionEstimateFont().set( TEST_FONT_A );
       Assert.assertEquals( TEST_FONT_A, configuration.completionEstimateFont().get() );
       
-      Mockito.when( fontSupplier.get() ).thenReturn( TEST_FONT_B );
+      Mockito.when( fontSupplier.apply( TEST_FONT_A ) ).thenReturn( TEST_FONT_B );
       systemUnderTest.completionEstimateFontButton().fire();
       Assert.assertEquals( TEST_FONT_B, configuration.completionEstimateFont().get() );
    }//End Method
