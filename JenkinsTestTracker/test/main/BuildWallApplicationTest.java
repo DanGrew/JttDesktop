@@ -19,6 +19,7 @@ import com.sun.javafx.application.PlatformImpl;
 
 import buildwall.layout.BuildWallDisplayImpl;
 import graphics.DecoupledPlatformImpl;
+import graphics.JavaFxInitializer;
 import javafx.scene.Group;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -32,11 +33,20 @@ public class BuildWallApplicationTest {
    
    private static Stage applicationStage;
    
-   @BeforeClass public static void initialseApplication() throws InterruptedException{
+   @BeforeClass public static void initialseApplication() throws InterruptedException {
       CountDownLatch latch = new CountDownLatch( 1 );
       BuildWallApplication.launchedStageProperty.addListener( ( source, old, updated ) -> latch.countDown() );
-      new Thread( () -> BuildWallApplication.main( new String[ 0 ] ) ).start();
+      
+      JavaFxInitializer.startPlatform();
+      PlatformImpl.runLater( () -> {
+         try {
+            new BuildWallApplication().start( new Stage() );
+         } catch ( Exception e ) {
+            e.printStackTrace();
+         }
+      } );
       latch.await();
+      
       applicationStage = BuildWallApplication.launchedStageProperty.get();
    }//End Method
 

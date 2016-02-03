@@ -34,8 +34,6 @@ public class BuildWallApplication extends Application {
    static ObjectProperty< Stage > launchedStageProperty = new SimpleObjectProperty< Stage >( null );
 
    public static void main( String[] args ) {
-      SystemStyling.initialise();
-      DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       BuildWallApplication.launch();
    }// End Method
    
@@ -43,6 +41,9 @@ public class BuildWallApplication extends Application {
     * {@inheritDoc}
     */
    @Override public void start( Stage stage ) throws Exception {
+      SystemStyling.initialise();
+      DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
+      
       JenkinsDatabase database = new JenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "Project Build" ) );
       database.store( new JenkinsJobImpl( "Subset A" ) );
