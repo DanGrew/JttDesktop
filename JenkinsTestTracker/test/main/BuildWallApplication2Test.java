@@ -29,7 +29,7 @@ import styling.SystemStyling;
 /**
  * {@link BuildWallApplication} test.
  */
-public class BuildWallApplicationTest2 {
+public class BuildWallApplication2Test {
    
    private static Stage applicationStage;
    
