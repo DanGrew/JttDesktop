@@ -49,7 +49,13 @@ public class JavaFxInitializer extends Application {
          CountDownLatch launchLatch = new CountDownLatch( 1 );
          content = new BorderPane();
          /* Run on separate thread because this will not return while the scene is open.*/
-         new Thread( () -> Application.launch() ).start();
+         PlatformImpl.runLater( () -> {
+            try {
+               new JavaFxInitializer().start( new Stage() );
+            } catch ( Exception exception ) {
+               exception.printStackTrace();
+            }
+         } );
          
          //Get feedback as soon as the center is set, continue current thread.
          content.sceneProperty().addListener( ( source, old, updated ) -> {
