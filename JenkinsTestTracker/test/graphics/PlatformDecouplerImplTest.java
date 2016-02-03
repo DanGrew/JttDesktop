@@ -24,7 +24,7 @@ import javafx.beans.property.SimpleBooleanProperty;
  */
 public class PlatformDecouplerImplTest {
    
-   @Rule public Timeout timeout = new Timeout( 10000, TimeUnit.MILLISECONDS );
+   @Rule public Timeout timeout = new Timeout( 50000, TimeUnit.MILLISECONDS );
 
    @Test public void shouldRunRunnableInDueCourse() throws InterruptedException {
       JavaFxInitializer.startPlatform();
