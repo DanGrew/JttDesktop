@@ -8,6 +8,7 @@
  */
 package graphics;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.sun.javafx.application.PlatformImpl;
@@ -19,6 +20,7 @@ import javafx.scene.control.Label;
 /**
  * {@link JavaFxInitializer} test.
  */
+@Ignore
 public class JavaFxInitializerTest {
 
    /**
