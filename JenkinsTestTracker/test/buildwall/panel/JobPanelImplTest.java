@@ -48,7 +48,7 @@ public class JobPanelImplTest {
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       job.expectedBuildTimeProperty().set( 1000000 );
-      JavaFxInitializer.threadedLaunch( () -> { return new JobPanelImpl( new BuildWallConfigurationImpl(), job ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new JobPanelImpl( new BuildWallConfigurationImpl(), job ); } );
       
       JobBuildSimulator.simulateBuilding( job, BuildResultStatus.FAILURE, 1001, 300000, 100 );
       JobBuildSimulator.simulateBuilding( job, BuildResultStatus.SUCCESS, 1002, 600000, 100 );

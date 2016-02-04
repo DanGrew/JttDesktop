@@ -8,53 +8,45 @@
  */
 package graphics;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.sun.javafx.application.PlatformImpl;
 
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * {@link JavaFxInitializer} test.
  */
-@Ignore
 public class JavaFxInitializerTest {
-
-   /**
-    * Proves {@link JavaFxInitializer} should have launched and recorded that fact.
-    */
-   @Test public void shouldHaveLaunched(){
-      JavaFxInitializer.threadedLaunchWithDefaultScene();
-      Assert.assertTrue( JavaFxInitializer.hasLaunched() );
+   
+   @Test public void shouldLaunchAndShutdown(){
+      JavaFxInitializer.launchInWindow( () -> { return new BorderPane(); } );
+      
+      Assert.assertNotNull( JavaFxInitializer.stage );
+      Assert.assertNotNull( JavaFxInitializer.content );
    }//End Method
    
-   /**
-    * Proves that the {@link JavaFxInitializer} should not launch again, if already launched. 
-    */
-   @Test public void shouldNotRelaunch() {
-      JavaFxInitializer.threadedLaunchWithDefaultScene();
-      Node firstCenter = JavaFxInitializer.content.getCenter();
-      JavaFxInitializer.threadedLaunchWithDefaultScene();
-      Node secondCenter = JavaFxInitializer.content.getCenter();
-      Assert.assertEquals( firstCenter, secondCenter );
+   @Test public void shouldSpamLaunch() {
+      for ( int i = 0; i < 20; i++ ) {
+         JavaFxInitializer.launchInWindow( () -> { return new BorderPane(); } );
+      }
    }//End Method
    
-   /**
-    * Proves that when already launched the center of the {@link Application} can be swapped.
-    */
-   @Test public void shouldSwapCenter() {
-      JavaFxInitializer.startPlatform();
-      Node first = new Label( "anything" );
-      JavaFxInitializer.threadedLaunch( () -> { return first; } );
-      Assert.assertTrue( JavaFxInitializer.hasLaunched() );
-      Assert.assertEquals( first, JavaFxInitializer.content.getCenter() );
-      Node second = new Label( "something else" );
-      JavaFxInitializer.threadedLaunch( () -> { return second; } );
-      Assert.assertTrue( JavaFxInitializer.hasLaunched() );
-      Assert.assertEquals( second, JavaFxInitializer.content.getCenter() );
+   @Test public void shouldShutdownIfAlreadyLaunched(){
+      JavaFxInitializer.launchInWindow( () -> { return new BorderPane(); } );
+      Stage firstStage = JavaFxInitializer.stage;
+      
+      BooleanProperty shutdown = new SimpleBooleanProperty( false );
+      firstStage.addEventHandler( WindowEvent.ANY, ( event ) -> shutdown.set( true ) );
+      
+      JavaFxInitializer.launchInWindow( () -> { return new BorderPane(); } );
+      Assert.assertNotNull( JavaFxInitializer.stage );
+      Assert.assertNotNull( JavaFxInitializer.content );
+      Assert.assertTrue( shutdown.get() );
    }//End Method
    
    /**
@@ -64,5 +56,5 @@ public class JavaFxInitializerTest {
       JavaFxInitializer.startPlatform();
       PlatformImpl.runLater( () -> {} );
    }//End Method
-
+   
 }//End Class

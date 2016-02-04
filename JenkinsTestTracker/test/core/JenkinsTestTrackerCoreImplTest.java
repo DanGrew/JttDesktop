@@ -77,7 +77,7 @@ public class JenkinsTestTrackerCoreImplTest {
       } ).start();
       
       JenkinsTestTrackerCoreImpl core = new JenkinsTestTrackerCoreImpl( api );
-      JavaFxInitializer.threadedLaunch( () -> { return new TestTableView( core.getDatabase() ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new TestTableView( core.getDatabase() ); } );
       Thread.sleep( 100000 );
    }//End Method
    

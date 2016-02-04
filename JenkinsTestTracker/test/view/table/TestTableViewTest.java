@@ -61,7 +61,7 @@ public class TestTableViewTest {
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.threadedLaunch( () -> { return new TestTableView( database ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new TestTableView( database ); } );
       Thread.sleep( 100000 );
    }//End Method
    

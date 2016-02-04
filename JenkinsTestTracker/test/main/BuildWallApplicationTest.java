@@ -50,7 +50,8 @@ public class BuildWallApplicationTest {
       applicationStage = BuildWallApplication.launchedStageProperty.get();
    }//End Method
 
-   @AfterClass public static void shutdown(){
+   @AfterClass public static void shutdown() throws InterruptedException{
+      CountDownLatch shutdownLatch = new CountDownLatch( 1 );
       PlatformImpl.runLater( () -> {
          applicationStage.fireEvent(
             new WindowEvent(
@@ -58,7 +59,9 @@ public class BuildWallApplicationTest {
                 WindowEvent.WINDOW_CLOSE_REQUEST
             )
          );
+         shutdownLatch.countDown();
       } );
+      shutdownLatch.await();
    }//End Method
    
    @Test public void shouldHaveInitialisedSystemStylings() {

@@ -51,7 +51,7 @@ public class BuildWallConfigurationPaneImplTest {
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.threadedLaunch( () -> { 
+      JavaFxInitializer.launchInWindow( () -> { 
          return new BuildWallConfigurationPanelImpl(
                configuration, 
                initial -> { 

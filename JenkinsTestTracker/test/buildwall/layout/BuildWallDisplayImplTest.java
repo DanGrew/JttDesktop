@@ -64,7 +64,7 @@ public class BuildWallDisplayImplTest {
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
-      JavaFxInitializer.threadedLaunch( () -> {
+      JavaFxInitializer.launchInWindow( () -> {
          systemUnderTest.toggleConfiguration();
          return systemUnderTest; 
       } );

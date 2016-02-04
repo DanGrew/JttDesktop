@@ -68,7 +68,7 @@ public class GridWallImplTest {
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
-      JavaFxInitializer.threadedLaunch( () -> { return new BorderPane( systemUnderTest ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new BorderPane( systemUnderTest ); } );
       
       Thread.sleep( 2000 );
       configuration.jobNameFont().set( new Font( 20 ) );

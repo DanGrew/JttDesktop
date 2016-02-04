@@ -18,7 +18,6 @@ import com.sun.javafx.application.PlatformImpl;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -28,7 +27,7 @@ import javafx.stage.Stage;
  */
 public class JavaFxInitializer extends Application {
    
-   /** {@link BorderPane} at center of default {@link Scene}.**/
+   static Stage stage;
    static BorderPane content;
 
    /**
@@ -38,82 +37,63 @@ public class JavaFxInitializer extends Application {
       Scene scene = new Scene( content );
       stage.setScene( scene );
       stage.show();
+      JavaFxInitializer.stage = stage;
    }//End Method
       
    /**
-    * Private method to launch the {@link Application}, checking that it has not already
-    * been launched.
+    * Method to launch the given {@link Node} {@link Supplier} in a separate {@link javafx.stage.Window}.
+    * @param runnable the {@link Supplier} for the {@link Node}.
     */
-   private static void launch( Supplier< Node > runnable ){
-      if ( !hasLaunched() ) {
-         CountDownLatch launchLatch = new CountDownLatch( 1 );
-         content = new BorderPane();
-         /* Run on separate thread because this will not return while the scene is open.*/
-         PlatformImpl.runLater( () -> {
-            try {
-               new JavaFxInitializer().start( new Stage() );
-            } catch ( Exception exception ) {
-               exception.printStackTrace();
-            }
-         } );
-         
-         //Get feedback as soon as the center is set, continue current thread.
-         content.sceneProperty().addListener( ( source, old, updated ) -> {
-            launchLatch.countDown();
-         } );
-         
-         try {
-            launchLatch.await();
-         } catch ( InterruptedException e ) {
-            Assert.fail( "CountDownLatch interrupted when launching." );
-         }
-         Assert.assertTrue( hasLaunched() );
-      }
+   public static void launchInWindow( Supplier< Node > runnable ) {
+      JavaFxInitializer.startPlatform();
       
-      CountDownLatch contentLatch = new CountDownLatch( 1 );
-      //Must synchronise call through to launch with the run later so that the center is set.
+      final Stage previousStage = stage;
+      
+      CountDownLatch latch = new CountDownLatch( 1 );
       PlatformImpl.runLater( () -> {
-         content.setCenter( runnable.get() );
-         contentLatch.countDown();
+         try {
+            JavaFxInitializer.content = new BorderPane( runnable.get() );
+            new JavaFxInitializer().start( new Stage() );
+            latch.countDown();
+         } catch ( Exception e ) {
+            Assert.fail( "Unable to launch window." );
+         }
       } );
-      
       try {
-         contentLatch.await();
+         latch.await();
       } catch ( InterruptedException e ) {
-         Assert.fail( "CountDownLatch interrupted when applying content." );
+         Assert.fail( "Failed to wait for launch." );
       }
+      
+      shutdown( previousStage );
    }//End Method
    
    /**
-    * Method to determine whether the {@link JavaFxInitializer} has initialised.
-    * @return true if already launched, false otherwise.
+    * Method to shutdown the {@link JavaFxInitializer}. Note that this can cause the JavaFx {@link Thread}
+    * to terminate in the current test. Call in @AfterClass.
     */
-   public static boolean hasLaunched(){
-      if ( content == null ) {
-         return false;
-      }
-      return content.getScene() != null;
+   public static void shutdown() {
+      shutdown( stage );
+      JavaFxInitializer.stage = null;
+      JavaFxInitializer.content = null;
    }//End Method
    
    /**
-    * Method to initialise JavaFx with the given {@link Supplier} of a {@link Node} to display.
-    * This is mainly used for manual tests where a test item can be supplied. If nothing is supplied
-    * we get a quick boot and a shutdown of JavaFx.
-    * @param runnable the {@link Supplier} for the {@link Node} to display.
+    * Method to shutdown the given {@link Stage}.
+    * @param stage the {@link Stage} to shutdown.
     */
-   public static void threadedLaunch( Supplier< Node > runnable ){
-      startPlatform();
-      launch( runnable );
-   }//End Method
-   
-   /**
-    * Method to initialise JavaFx using a default {@link Scene} containing a message. The expectation is that
-    * this {@link Scene} will be present for the entirety of the testing. This is expected to be used for 
-    * running with popups or dialog type items.
-    */
-   public static void threadedLaunchWithDefaultScene(){
-      if ( !hasLaunched() ) {
-         threadedLaunch( () -> { return new Label( "Testing, should stay open!" ); } );
+   private static void shutdown( Stage stage ) {
+      if ( stage == null ) return;
+      
+      CountDownLatch shutdownLatch = new CountDownLatch( 1 );
+      PlatformImpl.runLater( () -> {
+         stage.close();
+         shutdownLatch.countDown();
+      } );
+      try {
+         shutdownLatch.await();
+      } catch ( InterruptedException e ) {
+         Assert.fail( "Failed to wait for shutdown." );
       }
    }//End Method
    

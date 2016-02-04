@@ -53,7 +53,7 @@ public class JobPanelDescriptionImplTest {
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.threadedLaunch( () -> { return new JobPanelDescriptionImpl( configuration, job ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new JobPanelDescriptionImpl( configuration, job ); } );
       Thread.sleep( 100000 );
    }//End Method
    

@@ -50,7 +50,7 @@ public class JobProgressImplTest {
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.threadedLaunch( () -> { return new JobProgressImpl( job ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new JobProgressImpl( job ); } );
       Thread.sleep( 100000 );
    }//End Method
    
