@@ -14,10 +14,12 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.sun.javafx.application.PlatformImpl;
 
 import buildwall.layout.BuildWallDisplayImpl;
+import categories.IntegrationTest;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import javafx.scene.Group;
@@ -29,6 +31,7 @@ import styling.SystemStyling;
 /**
  * {@link BuildWallApplication} test.
  */
+@Category( IntegrationTest.class )
 public class BuildWallApplicationTest {
    
    private static Stage applicationStage;

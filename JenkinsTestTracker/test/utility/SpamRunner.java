@@ -8,6 +8,7 @@
  */
 package utility;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.AllTests;
 import org.junit.runners.Suite.SuiteClasses;
@@ -19,6 +20,7 @@ import junit.framework.TestSuite;
 /**
  * The {@link SpamRunner} is responsible for running the same test repeatedly.
  */
+@Ignore
 @RunWith(AllTests.class) 
 @SuiteClasses({}) public class SpamRunner {
 

@@ -1,14 +1,24 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>JenkinsTestTracker</groupId>
 	<artifactId>JenkinsTestTracker</artifactId>
 	<version>1.1.0-SNAPSHOT</version>
 	<name>JenkinsTestTracker</name>
 	<description>Tracker for individual tests across an entire Jenkins instance.</description>
+	
+	<!-- define custom property for disabling unit tests during failsafe build -->
+	<properties>
+		<skip.surefire.tests>${skipTests}</skip.surefire.tests>
+	</properties>
+	
+	<!-- configure github for maven release committing branches and changes -->
 	<scm>
-        <developerConnection>scm:git:git@github.com:DanGrew/JenkinsTestTracker</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<developerConnection>scm:git:git@github.com:DanGrew/JenkinsTestTracker</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+	
+	<!-- configure the repository to publish to on build -->
 	<distributionManagement>
 		<repository>
 			<id>jenkins-test-tracker</id>
@@ -16,6 +26,7 @@
 			<url>http://192.168.0.15:14445/repository/jenkins-test-tracker/</url>
 		</repository>
 	</distributionManagement>
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
@@ -42,10 +53,49 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<!-- enable some features for analysis and metrics -->
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<!-- skips surefire tests without skipping failsafe tests. Property 
+						value seems to magically default to false -->
+					<skipTests>${skip.surefire.tests}</skipTests>
+					<excludedGroups>categories.IntegrationTest</excludedGroups>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<!-- only categorised integration tests -->
+					<groups>categories.IntegrationTest</groups>
+					
+					<!-- naming conventions for IT not followed, consider all -->
+					<includes><include>**/*.java</include></includes>
+					
+					<!-- for some reason, this jar is missed when forked -->
+					<additionalClasspathElements>
+						<additionalClasspathElement>${java.home}/lib/ext/jfxrt.jar</additionalClasspathElement>
+					</additionalClasspathElements>
+					
+					<!-- fork to avoid knocking on -->
+					<reuseForks>false</reuseForks>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>

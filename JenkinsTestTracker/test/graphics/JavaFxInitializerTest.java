@@ -9,9 +9,11 @@
 package graphics;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.sun.javafx.application.PlatformImpl;
 
+import categories.IntegrationTest;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.BorderPane;
@@ -21,6 +23,7 @@ import javafx.stage.WindowEvent;
 /**
  * {@link JavaFxInitializer} test.
  */
+@Category( IntegrationTest.class )
 public class JavaFxInitializerTest {
    
    @Test public void shouldLaunchAndShutdown(){
