@@ -24,7 +24,7 @@ import javafx.stage.WindowEvent;
  * {@link JavaFxInitializer} test.
  */
 @Category( IntegrationTest.class )
-public class JavaFxInitializerTest {
+public class JavaFxInitializerIT {
    
    @Test public void shouldLaunchAndShutdown(){
       JavaFxInitializer.launchInWindow( () -> { return new BorderPane(); } );

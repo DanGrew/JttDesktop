@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.AllTests;
 import org.junit.runners.Suite.SuiteClasses;
 
-import graphics.JavaFxInitializerTest;
+import graphics.JavaFxInitializerIT;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.TestSuite;
 
@@ -31,7 +31,7 @@ import junit.framework.TestSuite;
    public static TestSuite suite(){
       TestSuite suite = new TestSuite();
       for ( int i = 0; i < 1000; i++ ) {
-         suite.addTest( new JUnit4TestAdapter( JavaFxInitializerTest.class ) );
+         suite.addTest( new JUnit4TestAdapter( JavaFxInitializerIT.class ) );
       }
       return suite;
    }//End Method

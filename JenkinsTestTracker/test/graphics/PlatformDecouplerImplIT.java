@@ -24,8 +24,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 /**
  * {@link PlatformDecouplerImpl} test.
  */
-@Category( IntegrationTest.class )
-public class PlatformDecouplerImplTest {
+public class PlatformDecouplerImplIT {
    
    @Rule public Timeout timeout = new Timeout( 50000, TimeUnit.MILLISECONDS );
 

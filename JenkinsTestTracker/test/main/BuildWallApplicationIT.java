@@ -32,7 +32,7 @@ import styling.SystemStyling;
  * {@link BuildWallApplication} test.
  */
 @Category( IntegrationTest.class )
-public class BuildWallApplicationTest {
+public class BuildWallApplicationIT {
    
    private static Stage applicationStage;
    
