@@ -26,6 +26,7 @@ import storage.database.JenkinsDatabase;
 public class JsonJobImporterImpl implements JsonJobImporter {
    
    private static final String BUILDING_KEY = "building";
+   private static final String ESTIMATED_DURATION_KEY = "estimatedDuration";
    private static final String NUMBER_KEY = "number";
    private static final String RESULT_KEY = "result";
    private static final String JOBS_KEY = "jobs";
@@ -58,6 +59,10 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          } else {
             jenkinsJob.buildStateProperty().set( BuildState.Built );
          }
+         
+         if ( !object.has( ESTIMATED_DURATION_KEY ) ) return;
+         int estimatedDurection = object.getInt( ESTIMATED_DURATION_KEY );
+         jenkinsJob.expectedBuildTimeProperty().set( estimatedDurection );
       } catch ( JSONException exception ) {
          return;
       }

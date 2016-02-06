@@ -40,11 +40,28 @@ public class JsonJobImporterImplTest {
       systemUnderTest = new JsonJobImporterImpl( database );
    }//End Method
 
+   @Test public void shouldParseBuildingStateMissingExpectedCompletion() {
+      String response = TestCommon.readFileIntoString( getClass(), "building-state-missing-expected-completion.json" );
+      Assert.assertNotNull( response );
+      systemUnderTest.updateBuildState( jenkinsJob, response );
+      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME, jenkinsJob.expectedBuildTimeProperty().get() );
+   }//End Method
+   
+   @Test public void shouldParseBuildingStateInvalidExpectedCompletion() {
+      String response = TestCommon.readFileIntoString( getClass(), "building-state-invalid-expected-completion.json" );
+      Assert.assertNotNull( response );
+      systemUnderTest.updateBuildState( jenkinsJob, response );
+      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME, jenkinsJob.expectedBuildTimeProperty().get() );
+   }//End Method
+   
    @Test public void shouldParseBuildingState() {
       String response = TestCommon.readFileIntoString( getClass(), "building-state.json" );
       Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
+      Assert.assertEquals( 100000, jenkinsJob.expectedBuildTimeProperty().get() );
    }//End Method
    
    @Test public void shouldParseBuiltState() {
