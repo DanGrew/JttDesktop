@@ -48,7 +48,7 @@ public class JenkinsTestTrackerCoreImpl {
     * Getter for the {@link TimeKeeper}.
     * @return the {@link TimeKeeper}.
     */
-   TimeKeeper getTimeKeeper() {
+   public TimeKeeper getTimeKeeper() {
       return timeKeeper;
    }//End Method
 

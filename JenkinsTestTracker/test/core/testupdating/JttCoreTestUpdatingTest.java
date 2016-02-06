@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package core;
+package core.testupdating;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 
 import api.handling.BuildState;
 import api.sources.ExternalApi;
+import core.JenkinsTestTrackerCoreImpl;
 import graphics.JavaFxInitializer;
 import model.jobs.JenkinsJob;
 import model.tests.TestResultStatus;
@@ -25,7 +26,7 @@ import view.table.TestTableView;
 /**
  * {@link JenkinsTestTrackerCoreImpl} test.
  */
-public class JenkinsTestTrackerCoreImplTest {
+public class JttCoreTestUpdatingTest {
 
    @Ignore
    @Test public void manualInspection() throws InterruptedException {
