@@ -106,6 +106,10 @@ public class GridWallImplTest {
       Thread.sleep( 10000000 );
    }//End Method
    
+   @Test public void shouldConstructSafelyWithNoJobs(){
+      systemUnderTest = new GridWallImpl( configuration, new JenkinsDatabaseImpl() );
+   }//End Method
+   
    @Test public void shouldUpdateWithConfiguration() {
       configuration.numberOfColumns().set( 7 );
       assertIndexConstraints( 5, 1 );

@@ -8,6 +8,7 @@
  */
 package buildwall.layout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,11 +51,21 @@ public class GridWallImpl extends GridPane implements BuildWall {
     * Method to construct the layout for the current {@link JenkinsJob}s and {@link BuildWallConfiguration}.
     */
    void constructLayout() {
+      DecoupledPlatformImpl.runLater( () -> fxConstruction() ); 
+   }//End Method
+   
+   /**
+    * Separation of accessible method and actual construction. Note this must be completed on
+    * the java fx thread.
+    */
+   private void fxConstruction(){
       getChildren().forEach( node -> GridPane.clearConstraints( node ) );
       getChildren().clear();
       getRowConstraints().clear();
       getColumnConstraints().clear();
       jobPanels.clear();
+      
+      if ( database.jenkinsJobs().isEmpty() ) return;
       
       int numberOfColumns = configuration.numberOfColumns().get();
       numberOfColumns = Math.max( numberOfColumns, 1 );
@@ -62,7 +73,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
       
       int columnCount = 0;
       int rowCount = 0;
-      for ( JenkinsJob job : database.jenkinsJobs() ) {
+      for ( JenkinsJob job : new ArrayList<>( database.jenkinsJobs() ) ) {
          if ( columnCount == numberOfColumns ) {
             columnCount = 0;
             rowCount++;
