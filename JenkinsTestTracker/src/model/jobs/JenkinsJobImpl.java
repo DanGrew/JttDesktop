@@ -29,6 +29,7 @@ public class JenkinsJobImpl implements JenkinsJob {
    private ObjectProperty< BuildState > buildState;
    private LongProperty expectedBuildTime;
    private LongProperty currentBuildTime;
+   private LongProperty lastBuildTimestamp;
    
    /**
     * Constructs a new {@link JenkinsJobImpl}.
@@ -44,6 +45,7 @@ public class JenkinsJobImpl implements JenkinsJob {
       buildState = new SimpleObjectProperty< BuildState >( DEFAULT_BUILD_STATE );
       expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
       currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
+      lastBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
    }//End Constructor
 
    /**
@@ -86,6 +88,13 @@ public class JenkinsJobImpl implements JenkinsJob {
     */
    @Override public LongProperty currentBuildTimeProperty() {
       return currentBuildTime;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public LongProperty lastBuildTimestampProperty() {
+      return lastBuildTimestamp;
    }//End Method
 
 }//End Class

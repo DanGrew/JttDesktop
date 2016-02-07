@@ -25,6 +25,7 @@ public interface JenkinsJob {
    public static final BuildState DEFAULT_BUILD_STATE = BuildState.Built;
    public static final long DEFAULT_CURRENT_BUILD_TIME = 0;
    public static final long DEFAULT_EXPECTED_BUILD_TIME = 0;
+   public static final long DEFAULT_BUILD_TIMESTAMP = 0;
 
    /**
     * Provides the name {@link StringProperty} of the {@link JenkinsJob}.
@@ -61,5 +62,12 @@ public interface JenkinsJob {
     * @return the {@link LongProperty}.
     */
    public LongProperty currentBuildTimeProperty();
+   
+   /**
+    * Provides the last build's timestamp. This is defined as the point at which
+    * the build was started.
+    * @return the {@link LongProperty}.
+    */
+   public LongProperty lastBuildTimestampProperty();
    
 }//End Interface

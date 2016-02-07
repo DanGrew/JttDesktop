@@ -99,10 +99,16 @@ public class JenkinsJobImplTest {
       Assert.assertEquals( value, systemUnderTest.currentBuildTimeProperty().get() );
    }//End Method
    
-   @Ignore
-   @Test public void shouldHaveBuildTimeUpdated(){
-      //expected and current
-      Assert.fail();
+   @Test public void shouldProvideLastBuildTimestampProperty() {
+      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, systemUnderTest.lastBuildTimestampProperty().get() );
+   }//End Method
+   
+   @Test public void shouldUpdateLastBuildTimestampProperty() {
+      shouldProvideLastBuildTimestampProperty();
+      
+      final int value = 1000;
+      systemUnderTest.lastBuildTimestampProperty().set( value );
+      Assert.assertEquals( value, systemUnderTest.lastBuildTimestampProperty().get() );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullNameInConstructor(){
