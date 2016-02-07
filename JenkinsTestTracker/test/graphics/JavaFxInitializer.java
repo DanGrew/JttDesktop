@@ -56,6 +56,7 @@ public class JavaFxInitializer extends Application {
             new JavaFxInitializer().start( new Stage() );
             latch.countDown();
          } catch ( Exception e ) {
+            e.printStackTrace();
             Assert.fail( "Unable to launch window." );
          }
       } );
