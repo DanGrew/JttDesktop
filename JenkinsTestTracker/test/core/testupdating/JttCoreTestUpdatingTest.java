@@ -19,7 +19,7 @@ import graphics.JavaFxInitializer;
 import model.jobs.JenkinsJob;
 import model.tests.TestResultStatus;
 import storage.database.JenkinsDatabase;
-import synchronisation.time.TimeKeeper;
+import synchronisation.model.TimeKeeper;
 import utility.TestCommon;
 import view.table.TestTableView;
 
