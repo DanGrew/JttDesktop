@@ -8,13 +8,16 @@
  */
 package core;
 
+import java.util.Timer;
+
 import api.handling.JenkinsFetcher;
 import api.handling.JenkinsFetcherImpl;
 import api.sources.ExternalApi;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
+import synchronisation.model.TimeKeeper;
 import synchronisation.testresults.JobMonitorImpl;
-import synchronisation.time.TimeKeeper;
+import synchronisation.time.JobUpdater;
 
 /**
  * The {@link JenkinsTestTrackerCoreImpl} provides the core structure for maintaining a 
@@ -32,7 +35,7 @@ public class JenkinsTestTrackerCoreImpl {
    public JenkinsTestTrackerCoreImpl( ExternalApi api ) {
       database = new JenkinsDatabaseImpl();
       JenkinsFetcher fetcher = new JenkinsFetcherImpl( database, api );
-      timeKeeper = new TimeKeeper( fetcher, 1000l );
+      timeKeeper = new JobUpdater( new Timer(), fetcher, 1000l );
       new JobMonitorImpl( database, fetcher );
    }//End Constructor
    
