@@ -11,8 +11,6 @@ package synchronisation.model;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import api.handling.JenkinsFetcher;
-
 /**
  * The {@link TimeKeeper} is responsible for polling for new jobs at regular
  * intervals.
@@ -59,5 +57,5 @@ public class TimeKeeper {
    public void poll() {
       runnable.run();
    }//End Method
-
+   
 }//End Class
