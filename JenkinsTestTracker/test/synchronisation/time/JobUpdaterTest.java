@@ -69,4 +69,11 @@ public class JobUpdaterTest {
       Mockito.verify( fetcher ).fetchJobsAndUpdateDetails();
    }//End Method
 
+   @Test public void manualConstructorPollShouldRunRunnable(){
+      Mockito.verifyZeroInteractions( fetcher );
+      systemUnderTest = new JobUpdater( fetcher );
+      systemUnderTest.poll();
+      Mockito.verify( fetcher ).fetchJobsAndUpdateDetails();
+   }//End Method
+
 }//End Class

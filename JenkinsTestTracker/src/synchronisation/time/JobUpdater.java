@@ -36,5 +36,13 @@ public class JobUpdater extends TimeKeeper {
                interval
       );
    }//End Constructor
+   
+   /**
+    * Constructs a new {@link JobUpdater}.
+    * @param fetcher the {@link JenkinsFetcher} to request job updates on.
+    */
+   public JobUpdater( JenkinsFetcher fetcher ) {
+      super( () -> fetcher.fetchJobsAndUpdateDetails() );
+   }//End Constructor
 
 }//End Class

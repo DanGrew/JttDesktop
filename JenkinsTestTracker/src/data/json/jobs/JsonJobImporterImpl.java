@@ -57,6 +57,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          if ( isBuilding ) {
             jenkinsJob.buildStateProperty().set( BuildState.Building );
          } else {
+            jenkinsJob.currentBuildTimeProperty().set( 0 );
             jenkinsJob.buildStateProperty().set( BuildState.Built );
          }
          

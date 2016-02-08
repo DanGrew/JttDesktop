@@ -14,10 +14,13 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import api.handling.BuildState;
 import api.sources.ExternalApi;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
@@ -56,6 +59,21 @@ public class JsonJobImporterImplTest {
       Assert.assertEquals( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME, jenkinsJob.expectedBuildTimeProperty().get() );
    }//End Method
    
+   @Ignore
+   @Test public void shouldParseMissingTimestamp(){
+      Assert.fail();
+   }
+   
+   @Ignore
+   @Test public void shouldParseInvalidTimestamp(){
+      Assert.fail();
+   }
+   
+   @Ignore
+   @Test public void ineedtoupdatetheotherteststohavethisdatainthem(){
+      Assert.fail();
+   }
+   
    @Test public void shouldParseBuildingState() {
       String response = TestCommon.readFileIntoString( getClass(), "building-state.json" );
       Assert.assertNotNull( response );
@@ -68,6 +86,27 @@ public class JsonJobImporterImplTest {
       String response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
       Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
+      Assert.assertEquals( BuildState.Built, jenkinsJob.buildStateProperty().get() );
+   }//End Method
+   
+   @Test public void shouldRestProgressWhenParseBuiltState() {
+      jenkinsJob.currentBuildTimeProperty().set( 1000 );
+      jenkinsJob.buildStateProperty().set( BuildState.Building );
+      Assert.assertEquals( 1000, jenkinsJob.currentBuildTimeProperty().get() );
+      
+      BooleanProperty builtStateHasChanged = new SimpleBooleanProperty( false );
+      jenkinsJob.buildStateProperty().addListener( ( source, old, updated ) -> 
+         builtStateHasChanged.set( true ) 
+      );
+      jenkinsJob.currentBuildTimeProperty().addListener( ( source, old, updated ) -> 
+         Assert.assertFalse( builtStateHasChanged.get() ) 
+      );
+      
+      String response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
+      Assert.assertNotNull( response );
+      systemUnderTest.updateBuildState( jenkinsJob, response );
+      
+      Assert.assertEquals( 0, jenkinsJob.currentBuildTimeProperty().get() );
       Assert.assertEquals( BuildState.Built, jenkinsJob.buildStateProperty().get() );
    }//End Method
    

@@ -50,6 +50,10 @@ public class TimeKeeperTest {
       new TimeKeeper( timer, null, interval );
    }//End Method
    
+   @Test( expected = IllegalArgumentException.class ) public void constructorShouldRejectNullRunnableIndependently(){
+      new TimeKeeper( null );
+   }//End Method
+   
    @Test( expected = IllegalArgumentException.class ) public void constructorShouldRejectNullInterval(){
       new TimeKeeper( timer, runnable, null );
    }//End Method
@@ -80,4 +84,5 @@ public class TimeKeeperTest {
       systemUnderTest.poll();
       Mockito.verify( runnable ).run();
    }//End Method
+   
 }//End Class

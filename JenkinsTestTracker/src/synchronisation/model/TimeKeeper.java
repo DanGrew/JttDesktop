@@ -40,6 +40,15 @@ public class TimeKeeper {
    }//End Constructor
    
    /**
+    * Constructs a new {@link TimeKeeper}.
+    * @param runnable the {@link Runnable} to manually poll.
+    */
+   protected TimeKeeper( Runnable runnable ) {
+      if ( runnable == null ) throw new IllegalArgumentException( "Null runnable provided." );
+      this.runnable = runnable;
+   }//End Constructor
+   
+   /**
     * Method to schedule the repeating {@link TimerTask}.
     */
    private void schedule(){
