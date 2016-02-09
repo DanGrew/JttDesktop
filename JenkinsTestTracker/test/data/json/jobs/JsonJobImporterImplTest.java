@@ -45,7 +45,6 @@ public class JsonJobImporterImplTest {
 
    @Test public void shouldParseBuildingStateMissingExpectedCompletion() {
       String response = TestCommon.readFileIntoString( getClass(), "building-state-missing-expected-completion.json" );
-      Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
       Assert.assertEquals( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME, jenkinsJob.expectedBuildTimeProperty().get() );
@@ -53,43 +52,40 @@ public class JsonJobImporterImplTest {
    
    @Test public void shouldParseBuildingStateInvalidExpectedCompletion() {
       String response = TestCommon.readFileIntoString( getClass(), "building-state-invalid-expected-completion.json" );
-      Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
       Assert.assertEquals( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME, jenkinsJob.expectedBuildTimeProperty().get() );
    }//End Method
    
-   @Ignore
    @Test public void shouldParseMissingTimestamp(){
-      Assert.fail();
-   }
+      String response = TestCommon.readFileIntoString( getClass(), "building-state-missing-timestamp.json" );
+      systemUnderTest.updateBuildState( jenkinsJob, response );
+      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, jenkinsJob.lastBuildTimestampProperty().get() );
+   }//End Method
    
-   @Ignore
    @Test public void shouldParseInvalidTimestamp(){
-      Assert.fail();
-   }
-   
-   @Ignore
-   @Test public void ineedtoupdatetheotherteststohavethisdatainthem(){
-      Assert.fail();
-   }
+      String response = TestCommon.readFileIntoString( getClass(), "building-state-invalid-timestamp.json" );
+      systemUnderTest.updateBuildState( jenkinsJob, response );
+      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, jenkinsJob.lastBuildTimestampProperty().get() );
+   }//End Method
    
    @Test public void shouldParseBuildingState() {
       String response = TestCommon.readFileIntoString( getClass(), "building-state.json" );
-      Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
       Assert.assertEquals( 100000, jenkinsJob.expectedBuildTimeProperty().get() );
+      Assert.assertEquals( 123456, jenkinsJob.lastBuildTimestampProperty().get() );
    }//End Method
    
    @Test public void shouldParseBuiltState() {
       String response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
-      Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Built, jenkinsJob.buildStateProperty().get() );
    }//End Method
    
-   @Test public void shouldRestProgressWhenParseBuiltState() {
+   @Test public void shouldResetProgressWhenParseBuiltState() {
       jenkinsJob.currentBuildTimeProperty().set( 1000 );
       jenkinsJob.buildStateProperty().set( BuildState.Building );
       Assert.assertEquals( 1000, jenkinsJob.currentBuildTimeProperty().get() );
@@ -103,7 +99,6 @@ public class JsonJobImporterImplTest {
       );
       
       String response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
-      Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       
       Assert.assertEquals( 0, jenkinsJob.currentBuildTimeProperty().get() );
@@ -124,19 +119,16 @@ public class JsonJobImporterImplTest {
 
    @Test public void shouldIgnoreInvalidBuiltStateKey() {
       String response = TestCommon.readFileIntoString( getClass(), "invalid-key.json" );
-      Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
    }//End Method
    
    @Test public void shouldIgnoreInvalidBuiltStateValue() {
       String response = TestCommon.readFileIntoString( getClass(), "invalid-value.json" );
-      Assert.assertNotNull( response );
       systemUnderTest.updateBuildState( jenkinsJob, response );
    }//End Method
    
    @Test public void shouldParseJobDetails() {
       String response = TestCommon.readFileIntoString( getClass(), "job-details.json" );
-      Assert.assertNotNull( response );
       Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
       Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
       systemUnderTest.updateJobDetails( jenkinsJob, response );
@@ -146,25 +138,21 @@ public class JsonJobImporterImplTest {
    
    @Test public void shouldIgnoreJobDetailsMissingNumber() {
       String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-number.json" );
-      Assert.assertNotNull( response );
       assertJobUnchanged( response );
    }//End Method
    
    @Test public void shouldIgnoreJobDetailsMissingResult() {
       String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-result.json" );
-      Assert.assertNotNull( response );
       assertJobUnchanged( response );
    }//End Method
    
    @Test public void shouldIgnoreJobDetailsInvalidNumber() {
       String response = TestCommon.readFileIntoString( getClass(), "job-details-invalid-number.json" );
-      Assert.assertNotNull( response );
       assertJobUnchanged( response );
    }//End Method
    
    @Test public void shouldIgnoreJobDetailsInvalidResult() {
       String response = TestCommon.readFileIntoString( getClass(), "job-details-invalid-results.json" );
-      Assert.assertNotNull( response );
       assertJobUnchanged( response );
    }//End Method
    
@@ -197,14 +185,12 @@ public class JsonJobImporterImplTest {
    
    @Test public void shouldParseJobsList(){
       String response = TestCommon.readFileIntoString( getClass(), "jobs-list.json" );
-      Assert.assertNotNull( response );
       
       assertJobsImported( response, new ArrayList<>() );
    }//End Method
    
    @Test public void shouldIgnoreEmptyJobsList(){
       String response = TestCommon.readFileIntoString( getClass(), "jobs-list-empty-jobs.json" );
-      Assert.assertNotNull( response );
       
       JenkinsDatabase database = new JenkinsDatabaseImpl();
       systemUnderTest.importJobs( response );
@@ -214,14 +200,12 @@ public class JsonJobImporterImplTest {
    
    @Test public void shouldIgnoreInvalidJobNameInJobList(){
       String response = TestCommon.readFileIntoString( getClass(), "jobs-list-invalid-name-value.json" );
-      Assert.assertNotNull( response );
       
       assertJobsImported( response, Arrays.asList( 0 ) );
    }//End Method
    
    @Test public void shouldIgnoreMissingJobsInJobList(){
       String response = TestCommon.readFileIntoString( getClass(), "jobs-list-missing-jobs.json" );
-      Assert.assertNotNull( response );
       
       JenkinsDatabase database = new JenkinsDatabaseImpl();
       systemUnderTest.importJobs( response );
@@ -231,14 +215,12 @@ public class JsonJobImporterImplTest {
    
    @Test public void shouldIgnoreMissingNameKeyInJobList(){
       String response = TestCommon.readFileIntoString( getClass(), "jobs-list-missing-name-key.json" );
-      Assert.assertNotNull( response );
       
       assertJobsImported( response, Arrays.asList( 2 ) );
    }//End Method
    
    @Test public void shouldIgnoreMissingNameValueInJobList(){
       String response = TestCommon.readFileIntoString( getClass(), "jobs-list-missing-name-value.json" );
-      Assert.assertNotNull( response );
       
       assertJobsImported( response, Arrays.asList( 5 ) );
    }//End Method
@@ -249,7 +231,6 @@ public class JsonJobImporterImplTest {
       database.store( new JenkinsJobImpl( "JenkinsTestTracker" ) );
       
       String response = TestCommon.readFileIntoString( getClass(), "jobs-list.json" );
-      Assert.assertNotNull( response );
       
       assertJobsImported( response, new ArrayList<>() );
    }//End Method

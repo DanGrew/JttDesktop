@@ -37,7 +37,7 @@ public final class TestCommon {
     */
    public static final String readFileIntoString( Class< ? > locationClass, String filename ) {
       InputStream stream = locationClass.getResourceAsStream( filename );
-      if ( stream == null ) return null;
+      Assert.assertNotNull( stream );
       
       Scanner scanner = new Scanner( stream );
       String content = scanner.useDelimiter( "//Z" ).next();

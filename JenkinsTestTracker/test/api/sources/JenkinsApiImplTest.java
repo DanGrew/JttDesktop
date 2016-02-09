@@ -215,7 +215,7 @@ public class JenkinsApiImplTest {
    }//End Method
    
    @Test public void shouldConstructLastBuildBuildingStateRequest(){
-      final String expectedBaseRequest = "http://some-location/job/SomeJenkinsProject/lastBuild/api/json?tree=building,estimatedDuration";
+      final String expectedBaseRequest = "http://some-location/job/SomeJenkinsProject/lastBuild/api/json?tree=building,estimatedDuration,timestamp";
       Assert.assertEquals( 
                expectedBaseRequest, 
                JenkinsApiImpl.constructLastBuildBuildingStateRequest( "http://some-location", jenkinsJob ).getURI().toString() 

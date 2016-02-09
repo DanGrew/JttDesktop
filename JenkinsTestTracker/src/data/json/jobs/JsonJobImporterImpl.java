@@ -27,6 +27,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
    
    private static final String BUILDING_KEY = "building";
    private static final String ESTIMATED_DURATION_KEY = "estimatedDuration";
+   private static final String TIMESTAMP_KEY = "timestamp";
    private static final String NUMBER_KEY = "number";
    private static final String RESULT_KEY = "result";
    private static final String JOBS_KEY = "jobs";
@@ -62,8 +63,12 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          }
          
          if ( !object.has( ESTIMATED_DURATION_KEY ) ) return;
-         int estimatedDurection = object.getInt( ESTIMATED_DURATION_KEY );
+         long estimatedDurection = object.optLong( ESTIMATED_DURATION_KEY );
          jenkinsJob.expectedBuildTimeProperty().set( estimatedDurection );
+         
+         if ( !object.has( TIMESTAMP_KEY ) ) return;
+         long timestamp = object.optLong( TIMESTAMP_KEY );
+         jenkinsJob.lastBuildTimestampProperty().set( timestamp );
       } catch ( JSONException exception ) {
          return;
       }
