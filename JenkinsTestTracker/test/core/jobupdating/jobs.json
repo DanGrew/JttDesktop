@@ -1,0 +1,25 @@
+{
+  "jobs" : [
+    {
+      "name" : "Test Project"
+    },
+    {
+      "name" : "Core Project"
+    },
+    {
+      "name" : "First Extension"
+    },
+    {
+      "name" : "1.0.1-build"
+    },
+    {
+      "name" : "1.0.2-build"
+    },
+    {
+      "name" : "Second Extension"
+    },
+    {
+      "name" : "Utilites (Legacy :))"
+    }
+  ]
+}

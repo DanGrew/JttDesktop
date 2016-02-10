@@ -15,7 +15,11 @@ import org.mockito.Mockito;
 import api.handling.BuildState;
 import api.sources.ExternalApi;
 import core.JenkinsTestTrackerCoreImpl;
+import core.JttSystemCoreImpl;
+import core.JttTestCoreImpl;
+import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
+import graphics.PlatformDecouplerImpl;
 import model.jobs.JenkinsJob;
 import model.tests.TestResultStatus;
 import storage.database.JenkinsDatabase;
@@ -77,8 +81,9 @@ public class JttCoreTestUpdatingTest {
          
       } ).start();
       
-      JenkinsTestTrackerCoreImpl core = new JenkinsTestTrackerCoreImpl( api );
-      JavaFxInitializer.launchInWindow( () -> { return new TestTableView( core.getDatabase() ); } );
+      DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
+      JenkinsTestTrackerCoreImpl core = new JttSystemCoreImpl( api );
+      JavaFxInitializer.launchInWindow( () -> { return new TestTableView( core.getJenkinsDatabase() ); } );
       Thread.sleep( 100000 );
    }//End Method
    
@@ -95,18 +100,18 @@ public class JttCoreTestUpdatingTest {
    }//End Method
    
    @Test public void shouldHaveDatabase(){
-      Assert.assertNotNull( new JenkinsTestTrackerCoreImpl( Mockito.mock( ExternalApi.class ) ).getDatabase() );
+      Assert.assertNotNull( new JttTestCoreImpl( Mockito.mock( ExternalApi.class ) ).getJenkinsDatabase() );
    }//End Method
    
    @Test public void shouldHaveTimeKeeper(){
-      Assert.assertNotNull( new JenkinsTestTrackerCoreImpl( Mockito.mock( ExternalApi.class ) ).getTimeKeeper() );
+      Assert.assertNotNull( new JttTestCoreImpl( Mockito.mock( ExternalApi.class ) ).getJobUpdater() );
    }//End Method
    
    @Test public void shouldPullInChangesFromExternalApiAndUpdateDatabase(){
       final ExternalApi api = Mockito.mock( ExternalApi.class );
-      JenkinsTestTrackerCoreImpl core = new JenkinsTestTrackerCoreImpl( api );
-      JenkinsDatabase database = core.getDatabase();
-      TimeKeeper timeKeeper = core.getTimeKeeper();
+      JenkinsTestTrackerCoreImpl core = new JttTestCoreImpl( api );
+      JenkinsDatabase database = core.getJenkinsDatabase();
+      TimeKeeper timeKeeper = core.getJobUpdater();
       
       Assert.assertTrue( database.hasNoJenkinsJobs() );
       Assert.assertTrue( database.hasNoTestClasses() );
@@ -195,9 +200,9 @@ public class JttCoreTestUpdatingTest {
    
    @Test public void shouldBringInMultipleJobsAndKeepThemUpdated(){
       final ExternalApi api = Mockito.mock( ExternalApi.class );
-      JenkinsTestTrackerCoreImpl core = new JenkinsTestTrackerCoreImpl( api );
-      JenkinsDatabase database = core.getDatabase();
-      TimeKeeper timeKeeper = core.getTimeKeeper();
+      JenkinsTestTrackerCoreImpl core = new JttTestCoreImpl( api );
+      JenkinsDatabase database = core.getJenkinsDatabase();
+      TimeKeeper timeKeeper = core.getJobUpdater();
       
       Assert.assertTrue( database.hasNoJenkinsJobs() );
       Assert.assertTrue( database.hasNoTestClasses() );

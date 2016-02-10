@@ -27,4 +27,13 @@ public class BuildProgressor extends TimeKeeper {
       super( timer, new BuildProgressCalculator( database, Clock.systemUTC() ), interval );
    }//End Constructor
    
+   /**
+    * Constructs a new {@link BuildProgressor} that will be manually driven.
+    * @param database the {@link JenkinsDatabase} for accessing {@link JenkinsJob}s.
+    * @param clock the {@link Clock} providing the system time.
+    */
+   public BuildProgressor( JenkinsDatabase database, Clock clock ) {
+      super( new BuildProgressCalculator( database, clock ) );
+   }//End Constructor
+   
 }//End Class
