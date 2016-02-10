@@ -85,4 +85,12 @@ public class TimeKeeperTest {
       Mockito.verify( runnable ).run();
    }//End Method
    
+   @Test public void shouldHaveTimer(){
+      Assert.assertTrue( systemUnderTest.hasTimer() );
+   }//End Method
+   
+   @Test public void shouldNotHaveTimer(){
+      Assert.assertFalse( new TimeKeeper( Mockito.mock( Runnable.class ) ).hasTimer() );
+   }//End Method
+   
 }//End Class

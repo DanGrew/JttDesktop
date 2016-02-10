@@ -51,4 +51,12 @@ public class JttTestCoreImpl extends JenkinsTestTrackerCoreImpl {
       getBuildProgressor().poll();
    }//End Method
 
+   /**
+    * Getter for the {@link Clock} simulating the time.
+    * @return the {@link Clock}.
+    */
+   Clock getClock() {
+      return simulationClock;
+   }//End Method
+
 }//End Class

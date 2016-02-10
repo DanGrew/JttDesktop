@@ -66,5 +66,13 @@ public class TimeKeeper {
    public void poll() {
       runnable.run();
    }//End Method
+
+   /**
+    * Method to determine whether the {@link TimeKeeper} has a {@link Timer}.
+    * @return true if automatically running, false if requires manual interaction.
+    */
+   public boolean hasTimer() {
+      return timer != null;
+   }//End Method
    
 }//End Class
