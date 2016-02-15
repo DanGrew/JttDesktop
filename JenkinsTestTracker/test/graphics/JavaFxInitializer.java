@@ -107,4 +107,22 @@ public class JavaFxInitializer extends Application {
       //Should be safe to call if already launched.
       PlatformImpl.startup( () -> {} );
    }//End Method
+   
+   /**
+    * Method to run the given {@link Runnable} and wait for it to complete.
+    * @param runnable the {@link Runnable} to run.
+    */
+   public static void runAndWait( Runnable runnable ) {
+      CountDownLatch latch = new CountDownLatch( 1 );
+      startPlatform();
+      PlatformImpl.runLater( () -> {
+         runnable.run();
+         latch.countDown();
+      } );
+      try {
+         latch.await();
+      } catch ( InterruptedException e ) {
+         Assert.fail( "Runnable timed out." );
+      }
+   }//End Method
 }//End Class
