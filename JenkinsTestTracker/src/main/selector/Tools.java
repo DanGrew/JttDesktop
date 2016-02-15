@@ -13,24 +13,7 @@ package main.selector;
  */
 public enum Tools {
 
-   TestTable( "Tracker Table" ),
-   BuildWall( "Build Wall" );
+   TestTable,
+   BuildWall;
    
-   private String displayName;
-   
-   /**
-    * Constructs a new {@link Tools}.
-    * @param displayName the display name of the tool.
-    */
-   private Tools( String displayName ) {
-      this.displayName = displayName;
-   }//End Constructor
-   
-   /**
-    * Getter for the display name.
-    * @return the display name of the tool.
-    */
-   public String displayName() {
-      return displayName;
-   }//End Method
 }//End Enum

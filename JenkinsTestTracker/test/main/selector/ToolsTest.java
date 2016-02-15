@@ -8,7 +8,6 @@
  */
 package main.selector;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import utility.TestCommon;
@@ -24,13 +23,6 @@ public class ToolsTest {
    
    @Test public void shouldValueOfWithToString() {
       TestCommon.assertEnumToStringWithValueOf( Tools.class );
-   }//End Method
-   
-   @Test public void shouldHaveDisplayNames(){
-      for ( Tools tool : Tools.values() ) {
-         Assert.assertNotNull( tool.displayName() );
-         Assert.assertFalse( tool.displayName().trim().isEmpty() );
-      }
    }//End Method
 
 }//End Class
