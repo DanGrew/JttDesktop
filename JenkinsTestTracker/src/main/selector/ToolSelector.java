@@ -76,6 +76,25 @@ public class ToolSelector {
    }//End Method
 
    /**
+    * Method to determine whether the given {@link ButtonType} indicates the launching
+    * of the application.
+    * @param button the {@link ButtonType} in question.
+    * @return true if it is the launch button.
+    */
+   public boolean isLaunchResult( ButtonType button ) {
+      if ( button == null ) return false;
+      return button.equals( launch );
+   }//End Method
+   
+   /**
+    * Method to select the given {@link Tools} programmatically.
+    * @param choice the {@link Tools} chosen.
+    */
+   public void select( Tools choice ) {
+      toolsChoices.getSelectionModel().select( choice );
+   }//End Method
+   
+   /**
     * Getter for the {@link ButtonType} for the launch button.
     * @return the {@link ButtonType}.
     */
@@ -98,5 +117,5 @@ public class ToolSelector {
    GridPane content() {
       return content;
    }//End Method
-   
+
 }//End Class

@@ -8,6 +8,8 @@
  */
 package friendly.controlsfx;
 
+import java.util.Optional;
+
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -94,6 +96,14 @@ public class FriendlyAlert extends Alert {
     */
    public ButtonType friendly_getResult() {
       return getResult();
+   }//End Method
+
+   /**
+    * {@link Alert#showAndWait()}.
+    * @return the {@link Optional} {@link ButtonType}.
+    */
+   public Optional< ButtonType > friendly_showAndWait() {
+      return showAndWait();
    }//End Method
 
 }//End Class

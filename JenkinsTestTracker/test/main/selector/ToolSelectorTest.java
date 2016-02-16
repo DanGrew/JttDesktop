@@ -111,5 +111,19 @@ public class ToolSelectorTest {
       systemUnderTest.toolsChoices().getSelectionModel().select( Tools.TestTable );
       assertThat( systemUnderTest.getSelectedTool(), is( systemUnderTest.toolsChoices().getSelectionModel().getSelectedItem() ) );
    }//End Method
+   
+   @Test public void shouldOnlyLaunchWithCorrctResult(){
+      assertThat( systemUnderTest.isLaunchResult( null ), is( false ) );
+      assertThat( systemUnderTest.isLaunchResult( new ButtonType( "anything" ) ), is( false ) );
+      assertThat( systemUnderTest.isLaunchResult( systemUnderTest.launchButton() ), is( true ) );
+   }//End Method
+   
+   @Test public void shouldSelectTool(){
+      assertThat( systemUnderTest.getSelectedTool(), is( Tools.BuildWall ) );
+      systemUnderTest.select( Tools.TestTable );
+      assertThat( systemUnderTest.getSelectedTool(), is( Tools.TestTable ) );
+      systemUnderTest.select( Tools.BuildWall );
+      assertThat( systemUnderTest.getSelectedTool(), is( Tools.BuildWall ) );
+   }//End Method
 
 }//End Class

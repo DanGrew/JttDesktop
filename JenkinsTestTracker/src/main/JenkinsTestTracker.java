@@ -1,52 +1,59 @@
 package main;
-/*
- * ----------------------------------------
- *          Jenkins Test Tracker
- * ----------------------------------------
- *          Produced by Dan Grew
- *                 2016
- * ----------------------------------------
- */
-import java.util.Optional;
-
 import api.sources.ClientHandler;
 import api.sources.ExternalApi;
 import api.sources.JenkinsApiImpl;
 import core.JenkinsTestTrackerCoreImpl;
 import core.JttSystemCoreImpl;
 import credentials.login.JenkinsLogin;
-import friendly.controlsfx.FriendlyAlert;
 import graphics.DecoupledPlatformImpl;
 import graphics.PlatformDecouplerImpl;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import main.selector.ToolSelector;
 import styling.SystemStyling;
-import view.table.TestTableView;
 
 /**
  * The {@link JenkinsTestTracker} is the launcher for the application.
  */
 public class JenkinsTestTracker extends Application {
-
+   
+   private JttApplicationController controller;
+   
+   /**
+    * Constructs a new {@link JenkinsTestTracker}.
+    */
+   public JenkinsTestTracker() {
+      this( new JttApplicationController() );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link JenkinsTestTracker}.
+    * @param controller the {@link JttApplicationController} to support the launching
+    * of the {@link JenkinsTestTracker}.
+    */
+   public JenkinsTestTracker( JttApplicationController controller ) {
+      this.controller = controller;
+   }//End Constructor
+   
    /**
     * {@inheritDoc}
     */
    @Override public void start(Stage stage) throws Exception {
       ExternalApi api = new JenkinsApiImpl( new ClientHandler() );
-      JenkinsLogin login = new JenkinsLogin( api );
-      FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );
-      login.configureAlert( alert );
-      Optional< ButtonType > result = alert.showAndWait();
-      if ( !login.isLoginResult( result.get() ) ) {
+      
+      if ( !controller.login( new JenkinsLogin( api ) ) ) {
+         return;
+      }
+      
+      ToolSelector selector = new ToolSelector();
+      if ( !controller.selectTool( selector ) ) {
          return;
       }
       
       JenkinsTestTrackerCoreImpl core = new JttSystemCoreImpl( api );
-      Scene scene = new Scene( new TestTableView( core.getJenkinsDatabase() ) );
-//      Scene scene = new Scene( new BuildWallDisplayImpl( core.getJenkinsDatabase() ) );
+      Scene scene = selector.getSelectedTool().construct( core.getJenkinsDatabase() );
+      
       stage.setScene( scene );
       stage.show();
    }//End Method

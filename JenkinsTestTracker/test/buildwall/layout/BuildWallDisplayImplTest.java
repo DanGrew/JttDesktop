@@ -8,6 +8,9 @@
  */
 package buildwall.layout;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -86,12 +89,15 @@ public class BuildWallDisplayImplTest {
       
       Node configuration = systemUnderTest.getRight();
       Assert.assertNotNull( configuration );
+      assertThat( systemUnderTest.hasConfigurationTurnedOn(), is( true ) );
       
       systemUnderTest.toggleConfiguration();
       Assert.assertNull( systemUnderTest.getRight() );
+      assertThat( systemUnderTest.hasConfigurationTurnedOn(), is( false ) );
       
       systemUnderTest.toggleConfiguration();
       Assert.assertEquals( configuration, systemUnderTest.getRight() );
+      assertThat( systemUnderTest.hasConfigurationTurnedOn(), is( true ) );
    }//End Method
-
+   
 }//End Class

@@ -47,11 +47,19 @@ public class BuildWallDisplayImpl extends BorderPane {
     * Method to turn the configuration panel on an off.
     */
    public void toggleConfiguration(){
-      if ( getRight() == null ) {
+      if ( !hasConfigurationTurnedOn() ) {
          setRight( configurationPanel );
       } else {
          setRight( null );
       }
+   }//End Method
+   
+   /**
+    * Method to determine whether the configuration is currently showing.
+    * @return true if on, false otherwise.
+    */
+   public boolean hasConfigurationTurnedOn(){
+      return getRight() != null;
    }//End Method
 
 }//End Class
