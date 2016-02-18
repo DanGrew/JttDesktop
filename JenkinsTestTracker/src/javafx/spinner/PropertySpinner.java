@@ -6,25 +6,27 @@
  *                 2016
  * ----------------------------------------
  */
-package javafx.combobox;
+package javafx.spinner;
 
 import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.binding.NodeBinder;
+import javafx.combobox.PropertyBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Spinner;
 
 /**
- * The {@link PropertyBox} provides a {@link ComboBox} that binds to an {@link ObjectProperty}
- * converting to an from the property value.
- * @param <BoxItemTypeT> the type in the {@link ComboBox}.
- * @param <PropertyTypeT> the type of the {@link ObjectProperty}.
+ * The {@link PropertySpinner} is responsible for binding a property to a {@link Spinner}
+ * keeping values in sync.
+ * @param <SpinnerTypeT> the {@link Spinner} type.
+ * @param <PropertyTypeT> the property type.
  */
-public class PropertyBox< BoxItemTypeT, PropertyTypeT > extends ComboBox< BoxItemTypeT > {
+public class PropertySpinner< SpinnerTypeT, PropertyTypeT > extends Spinner< SpinnerTypeT > {
 
    static final String ILLEGAL_BINDING = "Property already bound.";
-   
-   private NodeBinder< BoxItemTypeT, PropertyTypeT > binder;
+
+   private NodeBinder< SpinnerTypeT, PropertyTypeT > binder;
 
    /**
     * Method to bind the given {@link ObjectProperty} to the {@link PropertyBox}, updating the property
@@ -37,13 +39,13 @@ public class PropertyBox< BoxItemTypeT, PropertyTypeT > extends ComboBox< BoxIte
     */
    protected void bindProperty(
             ObjectProperty< PropertyTypeT > property, 
-            Function< BoxItemTypeT, PropertyTypeT > boxToPropertyFunction,
-            Function< PropertyTypeT, BoxItemTypeT > propertyToBoxFunction
+            Function< SpinnerTypeT, PropertyTypeT > boxToPropertyFunction,
+            Function< PropertyTypeT, SpinnerTypeT > propertyToBoxFunction
    ) {
       if ( binder != null ) throw new IllegalStateException( ILLEGAL_BINDING );
       binder = new NodeBinder<>( 
-               getSelectionModel().selectedItemProperty(),
-               item -> getSelectionModel().select( item ),
+               getValueFactory().valueProperty(),
+               item -> { if ( item != null ) getValueFactory().setValue( item ); },
                property,
                boxToPropertyFunction, 
                propertyToBoxFunction 

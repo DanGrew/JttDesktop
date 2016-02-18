@@ -6,10 +6,9 @@
  *                 2016
  * ----------------------------------------
  */
-package javafx.combobox;
+package javafx.spinner;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.function.Function;
@@ -22,35 +21,33 @@ import org.junit.rules.ExpectedException;
 import graphics.JavaFxInitializer;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.control.SpinnerValueFactory;
 
 /**
- * {@link PropertyBox} test.
+ * {@link PropertySpinner} test.
  */
-public class PropertyBoxTest {
+public class PropertySpinnerTest {
    
-   private enum TestItem {
-      First, Second, Third, Fourth;
-   }
    private ObjectProperty< String > property;
-   private Function< TestItem, String > boxToPropertyFunction;
-   private Function< String, TestItem > propertyToBoxFunction;
-   private PropertyBox< TestItem, String > systemUnderTest;
+   private Function< Integer, String > boxToPropertyFunction;
+   private Function< String, Integer > propertyToBoxFunction;
+   private PropertySpinner< Integer, String > systemUnderTest;
    
    @Rule public final ExpectedException exception = ExpectedException.none();
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.runAndWait( () -> {
-         systemUnderTest = new PropertyBox<>();
+         systemUnderTest = new PropertySpinner<>();
+         systemUnderTest.setValueFactory( new SpinnerValueFactory.IntegerSpinnerValueFactory( 1, 1000, 1 ) );
       } );
-      systemUnderTest.getItems().addAll( TestItem.values() );
       
       property = new SimpleObjectProperty<>();
-      boxToPropertyFunction = object -> { return object.name(); };
-      propertyToBoxFunction = object -> { return object == null ? null : TestItem.valueOf( object ); };
+      boxToPropertyFunction = object -> { return object.toString(); };
+      propertyToBoxFunction = object -> { return object == null ? null : Integer.valueOf( object ); };
    }//End Method
    
    @Test public void shouldInitiallySelectPropertyValue() {
-      property.set( TestItem.Third.name() );
+      property.set( "100" );
       
       systemUnderTest.bindProperty( 
                property, 
@@ -58,7 +55,7 @@ public class PropertyBoxTest {
                propertyToBoxFunction
       );
       
-      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( TestItem.Third ) );
+      assertThat( systemUnderTest.getValue(), is( 100 ) );
    }//End Method
    
    @Test public void shouldInitiallySelectNothing() {
@@ -70,11 +67,11 @@ public class PropertyBoxTest {
                propertyToBoxFunction
       );
       
-      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), nullValue() );
+      assertThat( systemUnderTest.getValue(), is( 1 ) );
    }//End Method
    
    @Test public void shouldChangeSelectionWhenPropertyChanges() {
-      property.set( TestItem.Third.name() );
+      property.set( "100" );
       
       systemUnderTest.bindProperty( 
                property, 
@@ -82,14 +79,14 @@ public class PropertyBoxTest {
                propertyToBoxFunction
       );
       
-      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( TestItem.Third ) );
+      assertThat( systemUnderTest.getValue(), is( 100 ) );
       
-      property.set( TestItem.First.name() );
-      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( TestItem.First ) );
+      property.set( "789" );
+      assertThat( systemUnderTest.getValue(), is( 789 ) );
    }//End Method
    
    @Test public void shouldChangePropertyWhenSelectionChanges() {
-      property.set( TestItem.Third.name() );
+      property.set( "100" );
       
       systemUnderTest.bindProperty( 
                property, 
@@ -97,30 +94,16 @@ public class PropertyBoxTest {
                propertyToBoxFunction
       );
       
-      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( TestItem.Third ) );
+      assertThat( systemUnderTest.getValue(), is( 100 ) );
       
-      systemUnderTest.getSelectionModel().select( TestItem.Second );
-      assertThat( property.get(), is( TestItem.Second.name() ) );
-   }//End Method
-   
-   @Test public void shouldResetPropertyIfSelectedRemovedFromBox() {
-      property.set( TestItem.Third.name() );
-      
-      systemUnderTest.bindProperty( 
-               property, 
-               boxToPropertyFunction, 
-               propertyToBoxFunction
-      );
-      
-      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( TestItem.Third ) );
-      systemUnderTest.getItems().remove( TestItem.Third );
-      assertThat( property.get(), is( TestItem.Second.name() ) );
+      systemUnderTest.getValueFactory().setValue( 34 );
+      assertThat( property.get(), is( "34" ) );
    }//End Method
    
    @Test public void shouldNotAllowRebindingOfProperty() {
       systemUnderTest.bindProperty( property, boxToPropertyFunction, propertyToBoxFunction );
       exception.expect( IllegalStateException.class );
-      exception.expectMessage( PropertyBox.ILLEGAL_BINDING );
+      exception.expectMessage( PropertySpinner.ILLEGAL_BINDING );
       systemUnderTest.bindProperty( property, boxToPropertyFunction, propertyToBoxFunction );
    }//End Method
 
