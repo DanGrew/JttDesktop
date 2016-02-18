@@ -14,10 +14,8 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.rules.Timeout;
 
-import categories.IntegrationTest;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 

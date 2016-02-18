@@ -8,15 +8,10 @@
  */
 package buildwall.layout;
 
-import java.util.Optional;
-
-import org.controlsfx.dialog.FontSelectorDialog;
-
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Font;
 import storage.database.JenkinsDatabase;
 
 /**
@@ -34,13 +29,7 @@ public class BuildWallDisplayImpl extends BorderPane {
    public BuildWallDisplayImpl( JenkinsDatabase database ) {
       BuildWallConfiguration configuration = new BuildWallConfigurationImpl();
       setCenter( new GridWallImpl( configuration, database ) );
-      configurationPanel = new BuildWallConfigurationPanelImpl( 
-            configuration, initial -> {
-                  Optional< Font > result = new FontSelectorDialog( initial ).showAndWait();
-                  if ( result.isPresent() ) return result.get();
-                  else return null;
-            }
-      );
+      configurationPanel = new BuildWallConfigurationPanelImpl( configuration );
    }//End Constructor
    
    /**

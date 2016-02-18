@@ -8,11 +8,10 @@
  */
 package buildwall.configuration;
 
-import java.util.function.Function;
-
 import javafx.beans.property.ObjectProperty;
-import javafx.scene.control.Button;
+import javafx.combobox.FontFamilyPropertyBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Spinner;
@@ -37,7 +36,6 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    static final int MINIMUM_COLUMNS = 1;
    static final int MAXIMUM_COLUMNS = 1000;
    private BuildWallConfiguration configuration;
-   private Function< Font, Font > fontSupplier;
    
    private TitledPane dimensionsPane;
    private TitledPane fontPane;
@@ -53,9 +51,9 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
 
    private Spinner< Integer > columnsSpinner;
    
-   private Button jobNameFontButton;
-   private Button buildNumberFontButton;
-   private Button completionEstimateFontButton;
+   private FontFamilyPropertyBox jobNameFontBox;
+   private FontFamilyPropertyBox buildNumberFontBox;
+   private FontFamilyPropertyBox completionEstimateFontBox;
    
    private ColorPicker jobNameColourPicker;
    private ColorPicker buildNumberColourPicker;
@@ -64,11 +62,9 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    /**
     * Constructs a new {@link BuildWallConfigurationPanelImpl}.
     * @param configuration the {@link BuildWallConfiguration} to configure.
-    * @param fontSupplier the method of inputting a different {@link Font}.
     */
-   public BuildWallConfigurationPanelImpl( BuildWallConfiguration configuration, Function< Font, Font > fontSupplier ) {
+   public BuildWallConfigurationPanelImpl( BuildWallConfiguration configuration ) {
       this.configuration = configuration;
-      this.fontSupplier = fontSupplier;
       
       constructDimensions();
       constructFontItemPane();
@@ -110,47 +106,26 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       
       jobNameFontLabel = createBoldLabel( "Job Name" );
       fontContent.add( jobNameFontLabel, 0, 0 );
-      jobNameFontButton = new Button( configuration.jobNameFont().get().getName() );
-      configureFontButtonAndExample( 
-               jobNameFontButton, 
-               configuration.jobNameFont() 
-      );
-      fontContent.add( jobNameFontButton, 1, 0 );
+      jobNameFontBox = new FontFamilyPropertyBox( configuration.jobNameFont() );
+      jobNameFontBox.setMaxWidth( Double.MAX_VALUE );
+      fontContent.add( jobNameFontBox, 1, 0 );
 
       buildNumberFontLabel = createBoldLabel( "Build Number" );
       fontContent.add( buildNumberFontLabel, 0, 2 );
-      buildNumberFontButton = new Button( configuration.buildNumberFont().get().getName() );
-      configureFontButtonAndExample( 
-               buildNumberFontButton, 
-               configuration.buildNumberFont() 
-      );
-      fontContent.add( buildNumberFontButton, 1, 2 );
+      buildNumberFontBox = new FontFamilyPropertyBox( configuration.buildNumberFont() );
+      buildNumberFontBox.setMaxWidth( Double.MAX_VALUE );
+      fontContent.add( buildNumberFontBox, 1, 2 );
 
       completionEstimateFontLabel = createBoldLabel( "Build Time" );
       fontContent.add( completionEstimateFontLabel, 0, 4 );
-      completionEstimateFontButton = new Button( configuration.completionEstimateFont().get().getName() );
-      configureFontButtonAndExample( 
-               completionEstimateFontButton, 
-               configuration.completionEstimateFont() 
-      );
-      fontContent.add( completionEstimateFontButton, 1, 4 );
+      completionEstimateFontBox = new FontFamilyPropertyBox( configuration.completionEstimateFont() );
+      completionEstimateFontBox.setMaxWidth( Double.MAX_VALUE );
+      fontContent.add( completionEstimateFontBox, 1, 4 );
       
       configureColumnConstraints( fontContent );
       
       fontPane = new TitledPane( "Fonts", fontContent );
       add( fontPane, 0, 1 );
-   }//End Method
-   
-   /**
-    * Method to configure a {@link Font} configuring {@link Button}.
-    * @param button the {@link Button} to configure.
-    * @param quickFox the {@link Label} to update.
-    * @param configProperty the property associated.
-    */
-   private void configureFontButtonAndExample( Button button, ObjectProperty< Font > configProperty ){
-      button.setMaxWidth( Double.MAX_VALUE );
-      button.setOnAction( event -> configProperty.set( fontSupplier.apply( configProperty.get() ) ) );
-      configProperty.addListener( ( source, old, updated ) -> updateFont( button, updated ) );
    }//End Method
    
    /**
@@ -211,18 +186,6 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    }//End Method
    
    /**
-    * Method to update the {@link Font} property, updating the {@link Button} and text example.
-    * @param button the {@link Button} to change the text on.
-    * @param quickFox the {@link Label} with the example text to update.
-    * @param newFont the new {@link Font}.
-    */
-   private void updateFont( Button button, Font newFont ) {
-      if ( newFont == null ) return;
-      
-      button.setText( newFont.getName() );
-   }//End Method
-   
-   /**
     * Method to configure the {@link ColumnConstraints} on the given {@link GridPane}.
     * @param grid the {@link GridPane} to apply constraints to.
     */
@@ -236,16 +199,16 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       grid.getColumnConstraints().addAll( labels, controls );  
    }//End Method
    
-   Button jobNameFontButton() {
-      return jobNameFontButton;
+   ComboBox< String > jobNameFontBox() {
+      return jobNameFontBox;
    }//End Method
 
-   Button buildNumberFontButton() {
-      return buildNumberFontButton;
+   ComboBox< String > buildNumberFontBox() {
+      return buildNumberFontBox;
    }//End Method
    
-   Button completionEstimateFontButton() {
-      return completionEstimateFontButton;
+   ComboBox< String > completionEstimateFontBox() {
+      return completionEstimateFontBox;
    }//End Method
 
    TitledPane fontPane() {
