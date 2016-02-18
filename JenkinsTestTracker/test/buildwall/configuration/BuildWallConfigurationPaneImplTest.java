@@ -22,6 +22,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import styling.FontFamilies;
 import utility.TestCommon;
 
 /**
@@ -29,9 +30,9 @@ import utility.TestCommon;
  */
 public class BuildWallConfigurationPaneImplTest {
 
-   private static final String TEST_FONT_FAMILY_A = Font.getFamilies().get( 3 );
-   private static final String TEST_FONT_FAMILY_B = Font.getFamilies().get( 10 );
-   private static final String TEST_FONT_FAMILY_C = Font.getFamilies().get( 5 );
+   private static final String TEST_FONT_FAMILY_A = FontFamilies.getUsableFontFamilies().get( 3 );
+   private static final String TEST_FONT_FAMILY_B = FontFamilies.getUsableFontFamilies().get( 10 );
+   private static final String TEST_FONT_FAMILY_C = FontFamilies.getUsableFontFamilies().get( 5 );
    private BuildWallConfiguration configuration;
    private BuildWallConfigurationPanelImpl systemUnderTest;
    
