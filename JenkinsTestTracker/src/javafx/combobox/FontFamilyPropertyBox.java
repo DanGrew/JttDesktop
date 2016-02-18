@@ -13,6 +13,7 @@ import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.text.Font;
+import styling.FontFamilies;
 
 /**
  * {@link FontFamilyPropertyBox} provides a {@link PropertyBox} that configures the
@@ -37,7 +38,7 @@ public class FontFamilyPropertyBox extends PropertyBox< String, Font >{
     * @param property the {@link ObjectProperty} containing the {@link Font}.
     */
    public FontFamilyPropertyBox( ObjectProperty< Font > property ) {
-      getItems().addAll( Font.getFamilies() );
+      getItems().addAll( FontFamilies.getUsableFontFamilies() );
       
       bindProperty( 
                property, 

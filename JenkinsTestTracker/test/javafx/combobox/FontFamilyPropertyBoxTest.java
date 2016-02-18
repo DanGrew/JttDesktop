@@ -21,13 +21,14 @@ import graphics.JavaFxInitializer;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.text.Font;
+import styling.FontFamilies;
 
 /**
  * {@link FontFamilyPropertyBox} test.
  */
 public class FontFamilyPropertyBoxTest {
 
-   private static List< String > FONT_FAMILY_CHOICES = Font.getFamilies();
+   private static List< String > FONT_FAMILY_CHOICES = FontFamilies.getUsableFontFamilies();
    private ObjectProperty< Font > property;
    private FontFamilyPropertyBox systemUnderTest;
    
@@ -75,10 +76,6 @@ public class FontFamilyPropertyBoxTest {
    }//End Method
    
    @Test public void shouldHandleNoFontWhenFamilyIsSelected() {
-      for ( int i = 0; i < FONT_FAMILY_CHOICES.size(); i++ ) {
-         System.out.println( FONT_FAMILY_CHOICES.get( i ) );
-         System.out.println( Font.font( FONT_FAMILY_CHOICES.get( i ) ).getFamily() );
-   }
       property.set( Font.font( FONT_FAMILY_CHOICES.get( 5 ) ) );
       launchBox();
       systemUnderTest.getSelectionModel().select( 10 );
