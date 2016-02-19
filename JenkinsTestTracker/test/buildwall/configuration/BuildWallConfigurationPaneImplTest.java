@@ -10,6 +10,7 @@ package buildwall.configuration;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -35,6 +36,13 @@ public class BuildWallConfigurationPaneImplTest {
    private static final String TEST_FONT_FAMILY_C = FontFamilies.getUsableFontFamilies().get( 5 );
    private BuildWallConfiguration configuration;
    private BuildWallConfigurationPanelImpl systemUnderTest;
+   
+   @BeforeClass public void debugFontFamilies(){
+      for ( String family : FontFamilies.getUsableFontFamilies() ) {
+         System.out.println( family );
+         System.out.println( Font.font( family ).getFamily() );
+      }
+   }
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
