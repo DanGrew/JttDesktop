@@ -37,7 +37,7 @@ public class BuildWallConfigurationPaneImplTest {
    private BuildWallConfiguration configuration;
    private BuildWallConfigurationPanelImpl systemUnderTest;
    
-   @BeforeClass public void debugFontFamilies(){
+   @BeforeClass public static void debugFontFamilies(){
       for ( String family : FontFamilies.getUsableFontFamilies() ) {
          System.out.println( family );
          System.out.println( Font.font( family ).getFamily() );
