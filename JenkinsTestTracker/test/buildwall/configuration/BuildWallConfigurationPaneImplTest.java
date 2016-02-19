@@ -31,7 +31,7 @@ import utility.TestCommon;
  */
 public class BuildWallConfigurationPaneImplTest {
 
-   private static final String TEST_FONT_FAMILY_A = FontFamilies.getUsableFontFamilies().get( 3 );
+   private static final String TEST_FONT_FAMILY_A = FontFamilies.getUsableFontFamilies().get( 2 );
    private static final String TEST_FONT_FAMILY_B = FontFamilies.getUsableFontFamilies().get( 10 );
    private static final String TEST_FONT_FAMILY_C = FontFamilies.getUsableFontFamilies().get( 5 );
    private BuildWallConfiguration configuration;
