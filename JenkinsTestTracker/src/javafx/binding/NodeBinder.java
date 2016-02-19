@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.combobox.PropertyBox;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
@@ -31,7 +31,7 @@ public class NodeBinder< NodeItemTypeT, PropertyTypeT > {
    static final String ILLEGAL_ITEM_TO_PROPERTY_FUNCTION = "Null item to property function provided.";
    static final String ILLEGAL_PROPERTY_TO_ITEM_FUNCTION = "Null property to item function provided.";
    
-   private ReadOnlyObjectProperty< NodeItemTypeT > nodeItemProperty;
+   private ObservableValue< NodeItemTypeT > nodeItemProperty;
    private Consumer< NodeItemTypeT > nodeItemPropertySetter;
    private ObjectProperty< PropertyTypeT > property;
    private Function< NodeItemTypeT, PropertyTypeT > boxToPropertyFunction;
@@ -40,7 +40,7 @@ public class NodeBinder< NodeItemTypeT, PropertyTypeT > {
    /**
     * Method to bind the given {@link ObjectProperty} to the {@link PropertyBox}, updating the property
     * when the selection changes, and updating the selection when the property changes.
-    * @param nodeItemProperty the {@link ObjectProperty} for the value associated with the {@link Node}.
+    * @param nodeItemProperty the {@link ObservableValue} for the value associated with the {@link Node}.
     * @param nodeItemPropertySetter the {@link Consumer} to set the value on the {@link Node}.
     * @param property the {@link ObjectProperty} to bind with.
     * @param boxToPropertyFunction the {@link Function} to convert from the {@link ComboBox} item
@@ -49,7 +49,7 @@ public class NodeBinder< NodeItemTypeT, PropertyTypeT > {
     * to the {@link ComboBox} item.
     */
    public NodeBinder(
-            ReadOnlyObjectProperty< NodeItemTypeT > nodeItemProperty,
+            ObservableValue< NodeItemTypeT > nodeItemProperty,
             Consumer< NodeItemTypeT > nodeItemPropertySetter,
             ObjectProperty< PropertyTypeT > property, 
             Function< NodeItemTypeT, PropertyTypeT > boxToPropertyFunction,

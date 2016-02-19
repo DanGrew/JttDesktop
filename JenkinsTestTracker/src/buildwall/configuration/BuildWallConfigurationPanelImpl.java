@@ -8,6 +8,7 @@
  */
 package buildwall.configuration;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.combobox.FontFamilyPropertyBox;
 import javafx.scene.control.ColorPicker;
@@ -24,6 +25,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.spinner.IntegerPropertySpinner;
+import javafx.spinner.PropertySpinner;
 
 /**
  * The {@link BuildWallConfigurationPanelImpl} provides a {@link GridPane} for configuring
@@ -31,6 +34,8 @@ import javafx.scene.text.FontWeight;
  */
 public class BuildWallConfigurationPanelImpl extends GridPane {
    
+   static final int MAXIMUM_FONT_SIZE = 500;
+   static final int MINIMUM_FONT_SIZE = 1;
    static final double LABEL_PERCENTAGE_WIDTH = 40;
    static final double CONTROLS_PERCENTAGE_WIDTH = 60;
    static final int MINIMUM_COLUMNS = 1;
@@ -42,18 +47,27 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private TitledPane colourPane;
    
    private Label columnsLabel;
+   private IntegerPropertySpinner columnsSpinner;
+   
    private Label jobNameFontLabel;
-   private Label jobNameColourLabel;
    private Label buildNumberFontLabel;
-   private Label buildNumberColourLabel;
    private Label completionEstimateFontLabel;
+   
+   private Label jobNameColourLabel;
+   private Label buildNumberColourLabel;
    private Label completionEstimateColourLabel;
-
-   private Spinner< Integer > columnsSpinner;
+   
+   private Label jobNameFontSizeLabel;
+   private Label buildNumberFontSizeLabel;
+   private Label completionEstimateFontSizeLabel;
    
    private FontFamilyPropertyBox jobNameFontBox;
    private FontFamilyPropertyBox buildNumberFontBox;
    private FontFamilyPropertyBox completionEstimateFontBox;
+   
+   private PropertySpinner< Integer, Font > jobNameFontSizeSpinner;
+   private PropertySpinner< Integer, Font > buildNumberFontSizeSpinner;
+   private PropertySpinner< Integer, Font > completionEstimateFontSizeSpinner;
    
    private ColorPicker jobNameColourPicker;
    private ColorPicker buildNumberColourPicker;
@@ -85,11 +99,8 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       columnsLabel = createBoldLabel( "Columns" );
       dimensionsContent.add( columnsLabel, 0, 0 );
       
-      columnsSpinner = new Spinner<>();
-      columnsSpinner.setMaxWidth( Double.MAX_VALUE );
-      columnsSpinner.setValueFactory( new SpinnerValueFactory.IntegerSpinnerValueFactory( 1, 1000, configuration.numberOfColumns().get() ) );
-      columnsSpinner.valueProperty().addListener( ( source, old, updated ) -> configuration.numberOfColumns().set( updated ) );
-      configuration.numberOfColumns().addListener( ( source, old, updated ) -> columnsSpinner.getValueFactory().setValue( updated.intValue() ) );
+      columnsSpinner = new IntegerPropertySpinner();  
+      configureIntegerSpinner( columnsSpinner, configuration.numberOfColumns(), 1, 1000 );
       dimensionsContent.add( columnsSpinner, 1, 0 );
 
       configureColumnConstraints( dimensionsContent );
@@ -104,23 +115,41 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private void constructFontItemPane(){
       GridPane fontContent = new GridPane();
       
-      jobNameFontLabel = createBoldLabel( "Job Name" );
+      jobNameFontLabel = createBoldLabel( "Job Name Font" );
       fontContent.add( jobNameFontLabel, 0, 0 );
       jobNameFontBox = new FontFamilyPropertyBox( configuration.jobNameFont() );
       jobNameFontBox.setMaxWidth( Double.MAX_VALUE );
       fontContent.add( jobNameFontBox, 1, 0 );
+      
+      jobNameFontSizeLabel = createBoldLabel( "Job Name Size" );
+      fontContent.add( jobNameFontSizeLabel, 0, 2 );
+      jobNameFontSizeSpinner = new PropertySpinner<>();  
+      configureFontSizeSpinner( jobNameFontSizeSpinner, configuration.jobNameFont() );
+      fontContent.add( jobNameFontSizeSpinner, 1, 2 );
 
-      buildNumberFontLabel = createBoldLabel( "Build Number" );
-      fontContent.add( buildNumberFontLabel, 0, 2 );
+      buildNumberFontLabel = createBoldLabel( "Build Number Font" );
+      fontContent.add( buildNumberFontLabel, 0, 4 );
       buildNumberFontBox = new FontFamilyPropertyBox( configuration.buildNumberFont() );
       buildNumberFontBox.setMaxWidth( Double.MAX_VALUE );
-      fontContent.add( buildNumberFontBox, 1, 2 );
+      fontContent.add( buildNumberFontBox, 1, 4 );
+      
+      buildNumberFontSizeLabel = createBoldLabel( "Build Number Size" );
+      fontContent.add( buildNumberFontSizeLabel, 0, 6 );
+      buildNumberFontSizeSpinner = new PropertySpinner<>();  
+      configureFontSizeSpinner( buildNumberFontSizeSpinner, configuration.buildNumberFont() );
+      fontContent.add( buildNumberFontSizeSpinner, 1, 6 );
 
-      completionEstimateFontLabel = createBoldLabel( "Build Time" );
-      fontContent.add( completionEstimateFontLabel, 0, 4 );
+      completionEstimateFontLabel = createBoldLabel( "Build Time Font" );
+      fontContent.add( completionEstimateFontLabel, 0, 8 );
       completionEstimateFontBox = new FontFamilyPropertyBox( configuration.completionEstimateFont() );
       completionEstimateFontBox.setMaxWidth( Double.MAX_VALUE );
-      fontContent.add( completionEstimateFontBox, 1, 4 );
+      fontContent.add( completionEstimateFontBox, 1, 8 );
+      
+      completionEstimateFontSizeLabel = createBoldLabel( "Build Time Size" );
+      fontContent.add( completionEstimateFontSizeLabel, 0, 10 );
+      completionEstimateFontSizeSpinner = new PropertySpinner<>();  
+      configureFontSizeSpinner( completionEstimateFontSizeSpinner, configuration.completionEstimateFont() );
+      fontContent.add( completionEstimateFontSizeSpinner, 1, 10 );
       
       configureColumnConstraints( fontContent );
       
@@ -199,6 +228,34 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       grid.getColumnConstraints().addAll( labels, controls );  
    }//End Method
    
+   /**
+    * Method to configure an {@link IntegerPropertySpinner} for the given property and range.
+    * @param spinner the {@link IntegerPropertySpinner} to configure.
+    * @param property the {@link IntegerProperty} to bind to.
+    * @param min the min range.
+    * @param max the max range.
+    */
+   private void configureIntegerSpinner( IntegerPropertySpinner spinner, IntegerProperty property, int min, int max ){
+      spinner.setValueFactory( new SpinnerValueFactory.IntegerSpinnerValueFactory( min, max, property.get() ) );
+      spinner.bindProperty( property );
+      spinner.setMaxWidth( Double.MAX_VALUE );
+   }//End Method
+   
+   /**
+    * Method to configure a {@link Font} {@link PropertySpinner}.
+    * @param spinner the {@link PropertySpinner} to configure.
+    * @param property the {@link ObjectProperty} to bind to.
+    */
+   private void configureFontSizeSpinner( PropertySpinner< Integer, Font> spinner, ObjectProperty< Font > property ){
+      spinner.setValueFactory( new SpinnerValueFactory.IntegerSpinnerValueFactory( MINIMUM_FONT_SIZE, MAXIMUM_FONT_SIZE, 13 ) );
+      spinner.bindProperty( 
+               property,
+               size -> { return Font.font( property.get().getFamily(), size ); },
+               font -> { return ( int )font.getSize(); }
+      );
+      spinner.setMaxWidth( Double.MAX_VALUE );
+   }//End Method
+   
    ComboBox< String > jobNameFontBox() {
       return jobNameFontBox;
    }//End Method
@@ -265,6 +322,30 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
 
    Label columnsSpinnerLabel() {
       return columnsLabel;
+   }//End Method
+
+   PropertySpinner< Integer, Font > jobNameFontSizeSpinner() {
+      return jobNameFontSizeSpinner;
+   }//End Method
+   
+   PropertySpinner< Integer, Font > buildNumberFontSizeSpinner() {
+      return buildNumberFontSizeSpinner;
+   }//End Method
+   
+   PropertySpinner< Integer, Font > completionEstimateFontSizeSpinner() {
+      return completionEstimateFontSizeSpinner;
+   }//End Method
+
+   Label jobNameFontSizeLabel() {
+      return jobNameFontSizeLabel;
+   }//End Method
+   
+   Label buildNumberFontSizeLabel() {
+      return buildNumberFontSizeLabel;
+   }//End Method
+   
+   Label completionEstimateFontSizeLabel() {
+      return completionEstimateFontSizeLabel;
    }//End Method
 
 }//End Class

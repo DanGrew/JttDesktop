@@ -37,7 +37,7 @@ public class PropertySpinner< SpinnerTypeT, PropertyTypeT > extends Spinner< Spi
     * @param propertyToBoxFunction the {@link Function} to convert from the {@link ObjectProperty} value
     * to the {@link ComboBox} item.
     */
-   protected void bindProperty(
+   public void bindProperty(
             ObjectProperty< PropertyTypeT > property, 
             Function< SpinnerTypeT, PropertyTypeT > boxToPropertyFunction,
             Function< PropertyTypeT, SpinnerTypeT > propertyToBoxFunction
@@ -51,5 +51,5 @@ public class PropertySpinner< SpinnerTypeT, PropertyTypeT > extends Spinner< Spi
                propertyToBoxFunction 
       );
    }//End Method
-
+   
 }//End Class
