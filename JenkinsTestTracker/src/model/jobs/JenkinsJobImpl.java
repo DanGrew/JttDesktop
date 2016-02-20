@@ -9,9 +9,11 @@
 package model.jobs;
 
 import api.handling.BuildState;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -30,6 +32,7 @@ public class JenkinsJobImpl implements JenkinsJob {
    private LongProperty expectedBuildTime;
    private LongProperty currentBuildTime;
    private LongProperty lastBuildTimestamp;
+   private BooleanProperty testResultsAreSynchronized;
    
    /**
     * Constructs a new {@link JenkinsJobImpl}.
@@ -46,6 +49,7 @@ public class JenkinsJobImpl implements JenkinsJob {
       expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
       currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
       lastBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
+      testResultsAreSynchronized = new SimpleBooleanProperty( DEFAULT_TEST_RESULTS_ARE_SYNC );
    }//End Constructor
 
    /**
@@ -95,6 +99,13 @@ public class JenkinsJobImpl implements JenkinsJob {
     */
    @Override public LongProperty lastBuildTimestampProperty() {
       return lastBuildTimestamp;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public BooleanProperty testResultsAreSynchronizedProperty() {
+      return testResultsAreSynchronized;
    }//End Method
 
 }//End Class

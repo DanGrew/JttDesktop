@@ -9,6 +9,7 @@
 package model.jobs;
 
 import api.handling.BuildState;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -26,6 +27,7 @@ public interface JenkinsJob {
    public static final long DEFAULT_CURRENT_BUILD_TIME = 0;
    public static final long DEFAULT_EXPECTED_BUILD_TIME = 0;
    public static final long DEFAULT_BUILD_TIMESTAMP = 0;
+   public static final boolean DEFAULT_TEST_RESULTS_ARE_SYNC = false;
 
    /**
     * Provides the name {@link StringProperty} of the {@link JenkinsJob}.
@@ -69,5 +71,11 @@ public interface JenkinsJob {
     * @return the {@link LongProperty}.
     */
    public LongProperty lastBuildTimestampProperty();
+   
+   /**
+    * Provides whether the test results are being synchronised for this job.
+    * @return the {@link BooleanProperty}.
+    */
+   public BooleanProperty testResultsAreSynchronizedProperty();
    
 }//End Interface

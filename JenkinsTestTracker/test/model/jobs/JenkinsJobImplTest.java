@@ -8,6 +8,9 @@
  */
 package model.jobs;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,6 +111,18 @@ public class JenkinsJobImplTest {
       final int value = 1000;
       systemUnderTest.lastBuildTimestampProperty().set( value );
       Assert.assertEquals( value, systemUnderTest.lastBuildTimestampProperty().get() );
+   }//End Method
+   
+   @Test public void shouldProvideTestResultsAreSynchronizedProperty() {
+      assertThat( systemUnderTest.testResultsAreSynchronizedProperty().get(), is( JenkinsJob.DEFAULT_TEST_RESULTS_ARE_SYNC ) );
+   }//End Method
+   
+   @Test public void shouldUpdateTestResultsAreSynchronizedProperty() {
+      shouldProvideTestResultsAreSynchronizedProperty();
+      
+      final boolean value = !JenkinsJob.DEFAULT_TEST_RESULTS_ARE_SYNC;
+      systemUnderTest.testResultsAreSynchronizedProperty().set( value );
+      assertThat( systemUnderTest.testResultsAreSynchronizedProperty().get(), is( value ) );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullNameInConstructor(){
