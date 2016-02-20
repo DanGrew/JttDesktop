@@ -310,6 +310,32 @@ public class BuildWallConfigurationPaneImplTest {
       assertThat( factory.getMax(), is( BuildWallConfigurationPanelImpl.MAXIMUM_FONT_SIZE ) );
    }//End Method
    
+   @Test public void eachSpinnerShouldBeEditable(){
+      assertThat( systemUnderTest.columnsSpinner().isEditable(), is( true ) );
+      assertThat( systemUnderTest.jobNameFontSizeSpinner().isEditable(), is( true ) );
+      assertThat( systemUnderTest.buildNumberFontSizeSpinner().isEditable(), is( true ) );
+      assertThat( systemUnderTest.completionEstimateFontSizeSpinner().isEditable(), is( true ) );
+   }//End Method
+   
+   @Test public void eachSpinnerShouldAcceptInvalidInput(){
+      assertThat( 
+               systemUnderTest.columnsSpinner().getValueFactory().getConverter().fromString( "anything" ), 
+               is( systemUnderTest.columnsSpinner().getValue() ) 
+      );
+      assertThat( 
+               systemUnderTest.jobNameFontSizeSpinner().getValueFactory().getConverter().fromString( "anything" ), 
+               is( systemUnderTest.jobNameFontSizeSpinner().getValue() ) 
+      );
+      assertThat( 
+               systemUnderTest.buildNumberFontSizeSpinner().getValueFactory().getConverter().fromString( "anything" ), 
+               is( systemUnderTest.buildNumberFontSizeSpinner().getValue() ) 
+      );
+      assertThat( 
+               systemUnderTest.completionEstimateFontSizeSpinner().getValueFactory().getConverter().fromString( "anything" ), 
+               is( systemUnderTest.completionEstimateFontSizeSpinner().getValue() ) 
+      );
+   }//End Method
+   
    @Test public void shouldUseBoldLabels(){
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.columnsSpinnerLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.jobNameFontLabel().getFont().getStyle() ) );

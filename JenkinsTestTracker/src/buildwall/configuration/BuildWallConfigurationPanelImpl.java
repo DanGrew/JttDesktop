@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import javafx.spinner.IntegerPropertySpinner;
 import javafx.spinner.PropertySpinner;
 
@@ -236,9 +237,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     * @param max the max range.
     */
    private void configureIntegerSpinner( IntegerPropertySpinner spinner, IntegerProperty property, int min, int max ){
-      spinner.setValueFactory( new SpinnerValueFactory.IntegerSpinnerValueFactory( min, max, property.get() ) );
+      spinner.setValueFactory( new DefensiveIntegerSpinnerValueFactory( min, max ) );
       spinner.bindProperty( property );
       spinner.setMaxWidth( Double.MAX_VALUE );
+      spinner.setEditable( true );
    }//End Method
    
    /**
@@ -247,13 +249,14 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     * @param property the {@link ObjectProperty} to bind to.
     */
    private void configureFontSizeSpinner( PropertySpinner< Integer, Font> spinner, ObjectProperty< Font > property ){
-      spinner.setValueFactory( new SpinnerValueFactory.IntegerSpinnerValueFactory( MINIMUM_FONT_SIZE, MAXIMUM_FONT_SIZE, 13 ) );
+      spinner.setValueFactory( new DefensiveIntegerSpinnerValueFactory( MINIMUM_FONT_SIZE, MAXIMUM_FONT_SIZE ) );
       spinner.bindProperty( 
                property,
                size -> { return Font.font( property.get().getFamily(), size ); },
                font -> { return ( int )font.getSize(); }
       );
       spinner.setMaxWidth( Double.MAX_VALUE );
+      spinner.setEditable( true );
    }//End Method
    
    ComboBox< String > jobNameFontBox() {
