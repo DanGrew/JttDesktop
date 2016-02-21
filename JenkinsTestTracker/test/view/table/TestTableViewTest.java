@@ -8,6 +8,9 @@
  */
 package view.table;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,6 +27,8 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import model.jobs.JenkinsJob;
+import model.jobs.JenkinsJobImpl;
 import model.tests.TestCase;
 import model.tests.TestCaseImpl;
 import model.tests.TestClass;
@@ -49,6 +54,7 @@ public class TestTableViewTest {
    @Before public void initialiseSystemUnderTest(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
       database = new JenkinsDatabaseImpl();
+      database.store( new JenkinsJobImpl( "anything" ) );
       JsonTestResultsImporter importer = new JsonTestResultsImporterImpl( database );
       importer.updateTestResults( input );
       JavaFxInitializer.startPlatform();
@@ -350,6 +356,17 @@ public class TestTableViewTest {
       TestClass unassociatedClass = new TestClassImpl( "anyClass" );
       TestCase newCase = new TestCaseImpl( "anything", unassociatedClass );
       systemUnderTest.removeTestCase( newCase );
+   }//End Method
+   
+   @Test public void shouldEnableTestResultsSynchronizing(){
+      database.jenkinsJobs().forEach( job -> assertThat( job.testResultsAreSynchronizedProperty().get(), is( true ) ) );
+   }//End Method
+   
+   @Test public void shouldEnableTestResultsAsJobsAreCreated(){
+      JenkinsJob newJob = new JenkinsJobImpl( "anotherJob" );
+      assertThat( newJob.testResultsAreSynchronizedProperty().get(), is( false ) );
+      database.store( newJob );
+      assertThat( newJob.testResultsAreSynchronizedProperty().get(), is( true ) );
    }//End Method
 
 }//End Class

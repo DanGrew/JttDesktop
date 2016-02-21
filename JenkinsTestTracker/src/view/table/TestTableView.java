@@ -57,6 +57,11 @@ public class TestTableView extends BorderPane {
       testCaseSubscriptions = new HashMap<>();
       constructLayout( database );
       
+      database.jenkinsJobs().forEach( job -> job.testResultsAreSynchronizedProperty().set( true ) );
+      database.jenkinsJobs().addListener( new FunctionListChangeListenerImpl<>( 
+               object -> object.testResultsAreSynchronizedProperty().set( true ), object -> {} 
+      ) );
+      
       database.testClasses().addListener( new FunctionListChangeListenerImpl< TestClass >( 
                object -> addTestClass( object ), object -> removeTestClass( object ) 
       ) );

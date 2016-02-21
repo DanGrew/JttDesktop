@@ -110,6 +110,7 @@ public class JttCoreTestUpdatingTest {
    @Test public void shouldPullInChangesFromExternalApiAndUpdateDatabase(){
       final ExternalApi api = Mockito.mock( ExternalApi.class );
       JenkinsTestTrackerCoreImpl core = new JttTestCoreImpl( api );
+      
       JenkinsDatabase database = core.getJenkinsDatabase();
       TimeKeeper timeKeeper = core.getJobUpdater();
       
@@ -120,6 +121,7 @@ public class JttCoreTestUpdatingTest {
       String response = TestCommon.readFileIntoString( getClass(), "job.json" );
       Mockito.when( api.getJobsList() ).thenReturn( response );
       timeKeeper.poll();
+      database.jenkinsJobs().forEach( job -> job.testResultsAreSynchronizedProperty().set( true ) );
       
       //...and prove that nothing else changes, and the job is initially built...
       Assert.assertFalse( database.hasNoJenkinsJobs() );
@@ -211,6 +213,7 @@ public class JttCoreTestUpdatingTest {
       String response = TestCommon.readFileIntoString( getClass(), "multiple-jobs.json" );
       Mockito.when( api.getJobsList() ).thenReturn( response );
       timeKeeper.poll();
+      database.jenkinsJobs().forEach( job -> job.testResultsAreSynchronizedProperty().set( true ) );
       
       //...and prove that nothing else changes, and the job is initially built...
       Assert.assertFalse( database.hasNoJenkinsJobs() );
