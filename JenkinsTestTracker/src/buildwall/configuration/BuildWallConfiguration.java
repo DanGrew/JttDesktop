@@ -11,8 +11,10 @@ package buildwall.configuration;
 import buildwall.layout.BuildWall;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import model.jobs.JenkinsJob;
 
 /**
  * The {@link BuildWallConfiguration} provides a mechanism for configuring the appearance
@@ -61,4 +63,10 @@ public interface BuildWallConfiguration {
     * @return the number of columns {@link IntegerProperty}.
     */
    public IntegerProperty numberOfColumns();
+
+   /**
+    * {@link ObservableMap} for the {@link JenkinsJob}s to their {@link BuildWallJobPolicy}.
+    * @return the {@link ObservableMap}.
+    */
+   public ObservableMap< JenkinsJob, BuildWallJobPolicy > jobPolicies();
 }//End Interface

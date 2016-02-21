@@ -8,12 +8,12 @@
  */
 package buildwall.configuration;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import buildwall.configuration.BuildWallConfiguration;
-import buildwall.configuration.BuildWallConfigurationImpl;
 
 /**
  * {@link BuildWallConfigurationImpl} test.
@@ -37,6 +37,8 @@ public class BuildWallConfigurationImplTest {
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.completionEstimateColour().get() );
       
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_NUMBER_OF_COLUMNS, systemUnderTest.numberOfColumns().get() );
+      
+      assertThat( systemUnderTest.jobPolicies().isEmpty(), is( true ) );
    }//End Method
    
 }//End Class
