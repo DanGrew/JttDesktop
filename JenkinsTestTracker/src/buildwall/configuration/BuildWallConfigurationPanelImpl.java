@@ -8,6 +8,8 @@
  */
 package buildwall.configuration;
 
+import buildwall.configuration.components.JobPolicyPanel;
+import buildwall.configuration.style.BuildWallConfigurationStyle;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.combobox.FontFamilyPropertyBox;
@@ -16,15 +18,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import javafx.spinner.IntegerPropertySpinner;
 import javafx.spinner.PropertySpinner;
@@ -41,9 +40,12 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    static final double CONTROLS_PERCENTAGE_WIDTH = 60;
    static final int MINIMUM_COLUMNS = 1;
    static final int MAXIMUM_COLUMNS = 1000;
+   
+   private BuildWallConfigurationStyle styling;
    private BuildWallConfiguration configuration;
    
    private TitledPane dimensionsPane;
+   private TitledPane jobPoliciesPane;
    private TitledPane fontPane;
    private TitledPane colourPane;
    
@@ -80,8 +82,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     */
    public BuildWallConfigurationPanelImpl( BuildWallConfiguration configuration ) {
       this.configuration = configuration;
+      this.styling = new BuildWallConfigurationStyle();
       
       constructDimensions();
+      constructJobPoliciesPane();
       constructFontItemPane();
       constructColourItemPane();
       
@@ -97,7 +101,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private void constructDimensions(){ 
       GridPane dimensionsContent = new GridPane();
       
-      columnsLabel = createBoldLabel( "Columns" );
+      columnsLabel = styling.createBoldLabel( "Columns" );
       dimensionsContent.add( columnsLabel, 0, 0 );
       
       columnsSpinner = new IntegerPropertySpinner();  
@@ -111,42 +115,53 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    }//End Method
    
    /**
+    * Method to construct the {@link JobPolicyPanel} and add it to this {@link GridPane}.
+    */
+   private void constructJobPoliciesPane(){
+      GridPane policiesContent = new JobPolicyPanel( configuration );
+      configureColumnConstraints( policiesContent );
+      
+      jobPoliciesPane = new TitledPane( "Job Policies", policiesContent );
+      add( jobPoliciesPane, 0, 1 );
+   }//End Method
+   
+   /**
     * Method to construct a {@link TitledPane} for the {@link Font}s.
     */
    private void constructFontItemPane(){
       GridPane fontContent = new GridPane();
       
-      jobNameFontLabel = createBoldLabel( "Job Name Font" );
+      jobNameFontLabel = styling.createBoldLabel( "Job Name Font" );
       fontContent.add( jobNameFontLabel, 0, 0 );
       jobNameFontBox = new FontFamilyPropertyBox( configuration.jobNameFont() );
       jobNameFontBox.setMaxWidth( Double.MAX_VALUE );
       fontContent.add( jobNameFontBox, 1, 0 );
       
-      jobNameFontSizeLabel = createBoldLabel( "Job Name Size" );
+      jobNameFontSizeLabel = styling.createBoldLabel( "Job Name Size" );
       fontContent.add( jobNameFontSizeLabel, 0, 2 );
       jobNameFontSizeSpinner = new PropertySpinner<>();  
       configureFontSizeSpinner( jobNameFontSizeSpinner, configuration.jobNameFont() );
       fontContent.add( jobNameFontSizeSpinner, 1, 2 );
 
-      buildNumberFontLabel = createBoldLabel( "Build Number Font" );
+      buildNumberFontLabel = styling.createBoldLabel( "Build Number Font" );
       fontContent.add( buildNumberFontLabel, 0, 4 );
       buildNumberFontBox = new FontFamilyPropertyBox( configuration.buildNumberFont() );
       buildNumberFontBox.setMaxWidth( Double.MAX_VALUE );
       fontContent.add( buildNumberFontBox, 1, 4 );
       
-      buildNumberFontSizeLabel = createBoldLabel( "Build Number Size" );
+      buildNumberFontSizeLabel = styling.createBoldLabel( "Build Number Size" );
       fontContent.add( buildNumberFontSizeLabel, 0, 6 );
       buildNumberFontSizeSpinner = new PropertySpinner<>();  
       configureFontSizeSpinner( buildNumberFontSizeSpinner, configuration.buildNumberFont() );
       fontContent.add( buildNumberFontSizeSpinner, 1, 6 );
 
-      completionEstimateFontLabel = createBoldLabel( "Build Time Font" );
+      completionEstimateFontLabel = styling.createBoldLabel( "Build Time Font" );
       fontContent.add( completionEstimateFontLabel, 0, 8 );
       completionEstimateFontBox = new FontFamilyPropertyBox( configuration.completionEstimateFont() );
       completionEstimateFontBox.setMaxWidth( Double.MAX_VALUE );
       fontContent.add( completionEstimateFontBox, 1, 8 );
       
-      completionEstimateFontSizeLabel = createBoldLabel( "Build Time Size" );
+      completionEstimateFontSizeLabel = styling.createBoldLabel( "Build Time Size" );
       fontContent.add( completionEstimateFontSizeLabel, 0, 10 );
       completionEstimateFontSizeSpinner = new PropertySpinner<>();  
       configureFontSizeSpinner( completionEstimateFontSizeSpinner, configuration.completionEstimateFont() );
@@ -155,19 +170,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColumnConstraints( fontContent );
       
       fontPane = new TitledPane( "Fonts", fontContent );
-      add( fontPane, 0, 1 );
-   }//End Method
-   
-   /**
-    * Method to create a bold {@link Label}.
-    * @param title the text in the {@link Label}.
-    * @return the constructed {@link Label}.
-    */
-   private Label createBoldLabel( String title ) {
-      Label label = new Label( title );
-      Font existingFont = label.getFont();
-      label.setFont( Font.font( existingFont.getFamily(), FontWeight.BOLD, FontPosture.REGULAR, existingFont.getSize() ) );
-      return label;
+      add( fontPane, 0, 2 );
    }//End Method
    
    /**
@@ -176,21 +179,21 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private void constructColourItemPane() {
       GridPane content = new GridPane();
       
-      jobNameColourLabel = createBoldLabel( "Job Name" );
+      jobNameColourLabel = styling.createBoldLabel( "Job Name" );
       content.add( jobNameColourLabel, 0, 0 );
       
       jobNameColourPicker = new ColorPicker();
       configureColorPicker( jobNameColourPicker, configuration.jobNameColour() );
       content.add( jobNameColourPicker, 1, 0 );
       
-      buildNumberColourLabel = createBoldLabel( "Build Number" );
+      buildNumberColourLabel = styling.createBoldLabel( "Build Number" );
       content.add( buildNumberColourLabel, 0, 1 );
       
       buildNumberColourPicker = new ColorPicker();
       configureColorPicker( buildNumberColourPicker, configuration.buildNumberColour() );
       content.add( buildNumberColourPicker, 1, 1 );
       
-      completionEstimateColourLabel = createBoldLabel( "Build Time" );
+      completionEstimateColourLabel = styling.createBoldLabel( "Build Time" );
       content.add( completionEstimateColourLabel, 0, 2 );
       
       completionEstimateColourPicker = new ColorPicker();
@@ -200,7 +203,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColumnConstraints( content );
       
       colourPane = new TitledPane( "Colours", content );
-      add( colourPane, 0, 2 );
+      add( colourPane, 0, 3 );
    }//End Method
    
    /**
@@ -349,6 +352,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    
    Label completionEstimateFontSizeLabel() {
       return completionEstimateFontSizeLabel;
+   }//End Method
+
+   TitledPane jobPoliciesPane() {
+      return jobPoliciesPane;
    }//End Method
 
 }//End Class

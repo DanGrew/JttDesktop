@@ -26,6 +26,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import model.jobs.JenkinsJobImpl;
 import styling.FontFamilies;
 import utility.TestCommon;
 
@@ -56,6 +57,9 @@ public class BuildWallConfigurationPaneImplTest {
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       JavaFxInitializer.launchInWindow( () -> { 
+         for ( int i = 0; i < 10; i++ ) {
+            configuration.jobPolicies().put( new JenkinsJobImpl( "job " + i ), BuildWallJobPolicy.values()[ i % 3 ] );
+         }
          return new BuildWallConfigurationPanelImpl( configuration ); 
       } );
       
@@ -72,7 +76,10 @@ public class BuildWallConfigurationPaneImplTest {
       TitledPane fontPane = systemUnderTest.fontPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( fontPane ) );
       
-      GridPane fontContent = ( GridPane )fontPane.getContent();
+      TitledPane policiesPane = systemUnderTest.jobPoliciesPane();
+      Assert.assertTrue( systemUnderTest.getChildren().contains( policiesPane ) );
+      
+      GridPane fontContent = ( GridPane )policiesPane.getContent();
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontBox() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontBox() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontBox() ) );
@@ -357,6 +364,7 @@ public class BuildWallConfigurationPaneImplTest {
    
    @Test public void eachPaneShouldShareWidthAmongstColumns() {
       assertColumnConstraints( ( GridPane )systemUnderTest.dimensionsPane().getContent() );
+      assertColumnConstraints( ( GridPane )systemUnderTest.jobPoliciesPane().getContent() );
       assertColumnConstraints( ( GridPane )systemUnderTest.fontPane().getContent() );
       assertColumnConstraints( ( GridPane )systemUnderTest.colourPane().getContent() );
    }//End Method

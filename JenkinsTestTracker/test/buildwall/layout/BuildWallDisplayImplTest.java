@@ -21,6 +21,7 @@ import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
 import javafx.scene.Node;
+import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
@@ -98,6 +99,15 @@ public class BuildWallDisplayImplTest {
       systemUnderTest.toggleConfiguration();
       Assert.assertEquals( configuration, systemUnderTest.getRight() );
       assertThat( systemUnderTest.hasConfigurationTurnedOn(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldEnsureConfigurationIsUpdatedInitiallyAndWhenDatabaseIsUpdated(){
+      assertThat( database.jenkinsJobs().size(), is( 15 ) );
+      assertThat( systemUnderTest.configuration().jobPolicies().size(), is( 15 ) );
+      
+      JenkinsJob job = new JenkinsJobImpl( "something-else" );
+      database.store( job );
+      assertThat( systemUnderTest.configuration().jobPolicies().containsKey( job ), is( true ) );
    }//End Method
    
 }//End Class

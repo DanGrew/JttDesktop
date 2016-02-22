@@ -13,9 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import buildwall.configuration.BuildWallConfiguration;
+import buildwall.configuration.BuildWallJobPolicy;
 import buildwall.panel.JobPanelImpl;
 import graphics.DecoupledPlatformImpl;
 import javafx.collections.ListChangeListener.Change;
+import javafx.collections.MapChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -45,6 +47,9 @@ public class GridWallImpl extends GridPane implements BuildWall {
       constructLayout();
       database.jenkinsJobs().addListener( ( Change< ? extends JenkinsJob > change ) -> constructLayout() );
       configuration.numberOfColumns().addListener( ( source, old, updated ) -> constructLayout() );
+      configuration.jobPolicies().addListener( ( MapChangeListener.Change< ? extends JenkinsJob, ? extends BuildWallJobPolicy > change ) -> {
+         constructLayout();
+      } );
    }//End Constructor
 
    /**
@@ -74,6 +79,10 @@ public class GridWallImpl extends GridPane implements BuildWall {
       int columnCount = 0;
       int rowCount = 0;
       for ( JenkinsJob job : new ArrayList<>( database.jenkinsJobs() ) ) {
+         BuildWallJobPolicy policy = configuration.jobPolicies().get( job );
+         boolean displayJob = policy == null ? true : policy.shouldShow( job );
+         if ( !displayJob ) continue;
+         
          if ( columnCount == numberOfColumns ) {
             columnCount = 0;
             rowCount++;
@@ -107,6 +116,9 @@ public class GridWallImpl extends GridPane implements BuildWall {
       if ( columnsToSpan == numberOfColumns ) return;
       
       DecoupledPlatformImpl.runLater( () -> { 
+            //handle multiple redraws in quick succession.
+            if ( getChildren().isEmpty() ) return;
+            
             Node child = getChildren().get( getChildren().size() - 1 );
             GridPane.setConstraints( 
                   child, 

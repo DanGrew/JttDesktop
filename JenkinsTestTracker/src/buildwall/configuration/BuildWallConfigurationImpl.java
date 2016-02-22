@@ -12,8 +12,11 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import model.jobs.JenkinsJob;
 
 /**
  * The {@link BuildWallConfigurationImpl} provides an implementation of the {@link BuildWallConfiguration}.
@@ -37,6 +40,8 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
    
    private IntegerProperty numberOfColumns;
    
+   private ObservableMap< JenkinsJob, BuildWallJobPolicy > jobPolicies;
+   
    /**
     * Constructs a new {@link BuildWallConfigurationImpl}.
     */
@@ -51,6 +56,8 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
       jobNameFont = new SimpleObjectProperty< Font >( DEFAULT_JOB_NAME_FONT );
       
       numberOfColumns = new SimpleIntegerProperty( DEFAULT_NUMBER_OF_COLUMNS );
+      
+      jobPolicies = FXCollections.observableHashMap();
    }//End Constructor
    
    /**
@@ -100,6 +107,13 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
     */
    @Override public ObjectProperty< Color > completionEstimateColour() {
       return completionEstimateColour;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObservableMap< JenkinsJob, BuildWallJobPolicy > jobPolicies() {
+      return jobPolicies;
    }//End Method
 
 }//End Class

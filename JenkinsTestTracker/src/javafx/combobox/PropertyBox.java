@@ -35,7 +35,7 @@ public class PropertyBox< BoxItemTypeT, PropertyTypeT > extends ComboBox< BoxIte
     * @param propertyToBoxFunction the {@link Function} to convert from the {@link ObjectProperty} value
     * to the {@link ComboBox} item.
     */
-   protected void bindProperty(
+   public void bindProperty(
             ObjectProperty< PropertyTypeT > property, 
             Function< BoxItemTypeT, PropertyTypeT > boxToPropertyFunction,
             Function< PropertyTypeT, BoxItemTypeT > propertyToBoxFunction

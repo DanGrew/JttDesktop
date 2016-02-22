@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
+import buildwall.configuration.BuildWallJobPolicy;
 import buildwall.panel.JobBuildSimulator;
 import buildwall.panel.JobPanelImpl;
 import graphics.DecoupledPlatformImpl;
@@ -61,6 +62,8 @@ public class GridWallImplTest {
       database.store( new JenkinsJobImpl( "The Odd One Out..." ) );
       
       configuration = new BuildWallConfigurationImpl();
+      database.jenkinsJobs().forEach( job -> configuration.jobPolicies().put( job, BuildWallJobPolicy.AlwaysShow ) );
+      
       JavaFxInitializer.startPlatform();
       systemUnderTest = new GridWallImpl( configuration, database );
    }//End Method
@@ -126,7 +129,9 @@ public class GridWallImplTest {
    
    @Test public void shouldDisplayJobsWhenAdded() {
       shouldDisplayAllJobsInDatabase();
-      database.store( new JenkinsJobImpl( "Late Addition : )" ) );
+      JenkinsJob newJob = new JenkinsJobImpl( "Late Addition : )" );
+      database.store( newJob );
+      configuration.jobPolicies().put( newJob, BuildWallJobPolicy.AlwaysShow );
       shouldDisplayAllJobsInDatabase();
    }//End Method
    
@@ -246,6 +251,14 @@ public class GridWallImplTest {
     */
    private void assertProportionScales( int numberOfItems ) {
       Assert.assertTrue( GridWallImpl.calculateProportion( numberOfItems ) * numberOfItems > 100 );
+   }//End Method
+   
+   @Test public void shouldIgnoreJobsThatAreConfiguredToNotShow(){
+      shouldDisplayAllJobsInDatabase();
+      configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      for ( JenkinsJob job : database.jenkinsJobs() ) {
+         Assert.assertNull( systemUnderTest.getPanelFor( job ) );
+      }
    }//End Method
    
 }//End Class

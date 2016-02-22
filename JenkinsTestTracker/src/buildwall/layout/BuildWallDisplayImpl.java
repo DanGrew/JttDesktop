@@ -11,6 +11,7 @@ package buildwall.layout;
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.configuration.BuildWallConfigurationPanelImpl;
+import buildwall.configuration.updating.JobPolicyUpdater;
 import javafx.scene.layout.BorderPane;
 import storage.database.JenkinsDatabase;
 
@@ -20,6 +21,7 @@ import storage.database.JenkinsDatabase;
  */
 public class BuildWallDisplayImpl extends BorderPane {
    
+   private BuildWallConfiguration configuration;
    private BuildWallConfigurationPanelImpl configurationPanel;
    
    /**
@@ -27,7 +29,9 @@ public class BuildWallDisplayImpl extends BorderPane {
     * @param database the {@link JenkinsDatabase} associated.
     */
    public BuildWallDisplayImpl( JenkinsDatabase database ) {
-      BuildWallConfiguration configuration = new BuildWallConfigurationImpl();
+      this.configuration = new BuildWallConfigurationImpl();
+      new JobPolicyUpdater( database, configuration );
+      
       setCenter( new GridWallImpl( configuration, database ) );
       configurationPanel = new BuildWallConfigurationPanelImpl( configuration );
    }//End Constructor
@@ -49,6 +53,10 @@ public class BuildWallDisplayImpl extends BorderPane {
     */
    public boolean hasConfigurationTurnedOn(){
       return getRight() != null;
+   }//End Method
+   
+   BuildWallConfiguration configuration(){
+      return configuration;
    }//End Method
 
 }//End Class
