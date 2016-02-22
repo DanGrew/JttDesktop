@@ -76,10 +76,7 @@ public class BuildWallConfigurationPaneImplTest {
       TitledPane fontPane = systemUnderTest.fontPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( fontPane ) );
       
-      TitledPane policiesPane = systemUnderTest.jobPoliciesPane();
-      Assert.assertTrue( systemUnderTest.getChildren().contains( policiesPane ) );
-      
-      GridPane fontContent = ( GridPane )policiesPane.getContent();
+      GridPane fontContent = ( GridPane )fontPane.getContent();
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontBox() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontBox() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontBox() ) );
@@ -87,6 +84,9 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontSizeSpinner() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontSizeSpinner() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontSizeSpinner() ) );
+      
+      TitledPane policiesPane = systemUnderTest.jobPoliciesPane();
+      Assert.assertTrue( systemUnderTest.getChildren().contains( policiesPane ) );
       
       TitledPane colourPane = systemUnderTest.colourPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( colourPane ) );
