@@ -86,11 +86,16 @@ public class GridWallImplTest {
       Thread.sleep( 2000 );
       configuration.jobNameFont().set( new Font( 45 ) );
       
-      JobBuildSimulator.simulateConcurrentBuilding( database.jenkinsJobs().get( 0 ), BuildResultStatus.FAILURE, 233, 300000, 300 );
-      JobBuildSimulator.simulateConcurrentBuilding( database.jenkinsJobs().get( 1 ), BuildResultStatus.SUCCESS, 1002, 600000, 300 );
-      JobBuildSimulator.simulateConcurrentBuilding( database.jenkinsJobs().get( 2 ), BuildResultStatus.UNSTABLE, 111, 20000, 300 );
-      JobBuildSimulator.simulateConcurrentBuilding( database.jenkinsJobs().get( 3 ), BuildResultStatus.ABORTED, 3463456, 234768, 300 );
-      JobBuildSimulator.simulateConcurrentBuilding( database.jenkinsJobs().get( 4 ), BuildResultStatus.SUCCESS, 34, 90000, 300 );
+      JobBuildSimulator.simulateConcurrentBuilding( 
+               database.jenkinsJobs().get( 0 ), BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS, 233, 300000, 300 );
+      JobBuildSimulator.simulateConcurrentBuilding( 
+               database.jenkinsJobs().get( 1 ), BuildResultStatus.SUCCESS, BuildResultStatus.SUCCESS, 1002, 600000, 300 );
+      JobBuildSimulator.simulateConcurrentBuilding( 
+               database.jenkinsJobs().get( 2 ), BuildResultStatus.UNSTABLE, BuildResultStatus.SUCCESS, 111, 20000, 300 );
+      JobBuildSimulator.simulateConcurrentBuilding( 
+               database.jenkinsJobs().get( 3 ), BuildResultStatus.ABORTED, BuildResultStatus.SUCCESS, 3463456, 234768, 300 );
+      JobBuildSimulator.simulateConcurrentBuilding( 
+               database.jenkinsJobs().get( 4 ), BuildResultStatus.SUCCESS, BuildResultStatus.SUCCESS, 34, 90000, 300 );
       
       Thread.sleep( 4000 );
       configuration.numberOfColumns().set( 1 );
@@ -224,6 +229,13 @@ public class GridWallImplTest {
       configuration.numberOfColumns().set( 4 );
       systemUnderTest = new GridWallImpl( configuration, database );
       assertLastElementSpans( 4 );
+   }//End Method
+   
+   @Test public void shouldExpandLastAcrossAllColumnsWhenJobsAreDisabled(){
+      configuration.numberOfColumns().set( 3 );
+      configuration.jobPolicies().put( database.jenkinsJobs().get( 4 ), BuildWallJobPolicy.NeverShow );
+      systemUnderTest = new GridWallImpl( configuration, database );
+      assertLastElementSpans( 3 );
    }//End Method
    
    @Test public void shouldNotExpandLastWhenMoreColumnsThanJobs(){

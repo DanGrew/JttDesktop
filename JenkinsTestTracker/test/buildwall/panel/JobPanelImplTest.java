@@ -50,10 +50,10 @@ public class JobPanelImplTest {
       job.expectedBuildTimeProperty().set( 1000000 );
       JavaFxInitializer.launchInWindow( () -> { return new JobPanelImpl( new BuildWallConfigurationImpl(), job ); } );
       
-      JobBuildSimulator.simulateBuilding( job, BuildResultStatus.FAILURE, 1001, 300000, 100 );
-      JobBuildSimulator.simulateBuilding( job, BuildResultStatus.SUCCESS, 1002, 600000, 100 );
-      JobBuildSimulator.simulateBuilding( job, BuildResultStatus.UNSTABLE, 1003, 20000, 100 );
-      JobBuildSimulator.simulateBuilding( job, BuildResultStatus.ABORTED, 1004, 234768, 100 );
+      JobBuildSimulator.simulateBuilding( job, BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS, 1001, 300000, 100 );
+      JobBuildSimulator.simulateBuilding( job, BuildResultStatus.SUCCESS, BuildResultStatus.SUCCESS, 1002, 600000, 100 );
+      JobBuildSimulator.simulateBuilding( job, BuildResultStatus.UNSTABLE, BuildResultStatus.SUCCESS, 1003, 20000, 100 );
+      JobBuildSimulator.simulateBuilding( job, BuildResultStatus.ABORTED, BuildResultStatus.SUCCESS, 1004, 234768, 100 );
 
       Thread.sleep( 10000000 );
    }//End Method

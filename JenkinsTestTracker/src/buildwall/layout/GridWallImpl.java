@@ -99,7 +99,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
          columnCount++;
       }
       
-      expandLastPanelIfNeeded( database.jenkinsJobs().size(), numberOfColumns, columnCount, rowCount );
+      expandLastPanelIfNeeded( jobsToShow.size(), numberOfColumns, columnCount, rowCount );
       fixColumnWidths( numberOfColumns );
       fixRowHeights( rowCount + 1 ); //accounting for indices.
    }//End Method
