@@ -142,6 +142,13 @@ public class JsonTestResultImporterTest {
       Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
+   @Test public void shouldHandleMissingCases(){
+      String input = TestCommon.readFileIntoString( getClass(), "single-test-case-cases-missing.json" );
+      Assert.assertNotNull( input );
+      systemUnderTest.updateTestResults( input );
+      Assert.assertTrue( database.hasNoTestClasses() );
+   }//End Method
+   
    @Test public void shouldHandleMissingClassDuration(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-duration-missing.json" );
       Assert.assertNotNull( input );
@@ -167,7 +174,7 @@ public class JsonTestResultImporterTest {
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-name-missing.json" );
       Assert.assertNotNull( input );
       systemUnderTest.updateTestResults( input );
-      assertTestClassAndTestCasePresent( new ArrayList<>() );
+      Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingCaseName(){
@@ -402,5 +409,5 @@ public class JsonTestResultImporterTest {
          Assert.assertEquals( testClass, testCase.testClassProperty().get() );
       }
    }//End Method
-
+   
 }//End Class

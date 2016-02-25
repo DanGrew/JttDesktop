@@ -54,7 +54,7 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
     * {@inheritDoc}
     */
    @Override public void updateTestResults( String input ) {
-      if ( input == null || database == null ) {
+      if ( input == null ) {
          return;
       }
       
@@ -155,6 +155,7 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
    private void constructTestCase( JSONObject jsonTestCase ) {
       try {
          TestClass testClass = constructTestClass( jsonTestCase );
+         if ( testClass == null ) return;
          
          if ( !jsonTestCase.has( NAME ) ) return;
          String name = jsonTestCase.getString( NAME );
