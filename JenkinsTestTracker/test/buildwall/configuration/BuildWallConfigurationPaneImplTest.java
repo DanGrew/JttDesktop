@@ -8,6 +8,7 @@
  */
 package buildwall.configuration;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -18,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import graphics.JavaFxInitializer;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -57,7 +59,7 @@ public class BuildWallConfigurationPaneImplTest {
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       JavaFxInitializer.launchInWindow( () -> { 
-         for ( int i = 0; i < 10; i++ ) {
+         for ( int i = 0; i < 100; i++ ) {
             configuration.jobPolicies().put( new JenkinsJobImpl( "job " + i ), BuildWallJobPolicy.values()[ i % 3 ] );
          }
          return new BuildWallConfigurationPanelImpl( configuration ); 
@@ -364,7 +366,8 @@ public class BuildWallConfigurationPaneImplTest {
    
    @Test public void eachPaneShouldShareWidthAmongstColumns() {
       assertColumnConstraints( ( GridPane )systemUnderTest.dimensionsPane().getContent() );
-      assertColumnConstraints( ( GridPane )systemUnderTest.jobPoliciesPane().getContent() );
+      ScrollPane policiesScroller = ( ScrollPane ) systemUnderTest.jobPoliciesPane().getContent();
+      assertColumnConstraints( ( GridPane )policiesScroller.getContent() );
       assertColumnConstraints( ( GridPane )systemUnderTest.fontPane().getContent() );
       assertColumnConstraints( ( GridPane )systemUnderTest.colourPane().getContent() );
    }//End Method
@@ -386,6 +389,10 @@ public class BuildWallConfigurationPaneImplTest {
                grid.getColumnConstraints().get( 1 ).getPercentWidth() 
                >= 100
       );
+   }//End Method
+   
+   @Test public void shouldProvidePoliciesInAScrollPaneToSupportLargeNumbers(){
+      assertThat( systemUnderTest.jobPoliciesPane().contentProperty().get(), instanceOf( ScrollPane.class ) );
    }//End Method
 
 }//End Class
