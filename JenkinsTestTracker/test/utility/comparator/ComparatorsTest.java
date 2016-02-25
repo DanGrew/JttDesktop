@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package utility.comparators;
+package utility.comparator;
 
 import java.util.Comparator;
 
