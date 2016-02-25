@@ -57,6 +57,14 @@ public class FontFamilyPropertyBoxTest {
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( FONT_FAMILY_CHOICES.get( 5 ) ) );
    }//End Method
    
+   @Test public void shouldHandleNoFontPreviously(){
+      property.set( null );
+      launchBox();
+      systemUnderTest.getSelectionModel().select( FONT_FAMILY_CHOICES.get( 5 ) );
+      assertThat( property.get(), notNullValue() );
+      assertThat( property.get().getFamily(), is( FONT_FAMILY_CHOICES.get( 5 ) ) );
+   }//End Method
+   
    @Test public void shouldUpdatePropertyWhenSelectionIsChangedAndKeepSize() {
       property.set( Font.font( FONT_FAMILY_CHOICES.get( 3 ), 40 ) );
       launchBox();
