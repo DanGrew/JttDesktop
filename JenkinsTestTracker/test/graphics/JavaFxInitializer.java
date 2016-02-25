@@ -70,16 +70,6 @@ public class JavaFxInitializer extends Application {
    }//End Method
    
    /**
-    * Method to shutdown the {@link JavaFxInitializer}. Note that this can cause the JavaFx {@link Thread}
-    * to terminate in the current test. Call in @AfterClass.
-    */
-   public static void shutdown() {
-      shutdown( stage );
-      JavaFxInitializer.stage = null;
-      JavaFxInitializer.content = null;
-   }//End Method
-   
-   /**
     * Method to shutdown the given {@link Stage}.
     * @param stage the {@link Stage} to shutdown.
     */
