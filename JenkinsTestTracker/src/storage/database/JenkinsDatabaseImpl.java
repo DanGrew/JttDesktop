@@ -11,6 +11,7 @@ package storage.database;
 import javafx.collections.ObservableList;
 import model.jobs.JenkinsJob;
 import model.tests.TestClass;
+import storage.database.events.JenkinsJobPropertyListener;
 import storage.structure.MappedObservableStoreManagerImpl;
 import storage.structure.ObjectStoreManager;
 
@@ -21,6 +22,7 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
 
    private ObjectStoreManager< TestClassKey, TestClass > testClasses;
    private ObjectStoreManager< String, JenkinsJob > jenkinsJobs;
+   private JenkinsJobPropertyListener jenkinsJobProperties;
 
    /**
     * Constructs a new {@link JenkinsDatabaseImpl}.
@@ -28,6 +30,7 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
    public JenkinsDatabaseImpl() {
       testClasses = new MappedObservableStoreManagerImpl<>();
       jenkinsJobs = new MappedObservableStoreManagerImpl<>();
+      jenkinsJobProperties = new JenkinsJobPropertyListener( this );
    }//End Constructor
    
    /**
@@ -155,6 +158,13 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
     */
    @Override public ObservableList< JenkinsJob > jenkinsJobs() {
       return jenkinsJobs.objectList();
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public JenkinsJobPropertyListener jenkinsJobProperties() {
+      return jenkinsJobProperties;
    }//End Method
 
 }//End Class

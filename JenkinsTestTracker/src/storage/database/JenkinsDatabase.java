@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import model.jobs.JenkinsJob;
 import model.tests.TestCase;
 import model.tests.TestClass;
+import storage.database.events.JenkinsJobPropertyListener;
 
 /**
  * {@link JenkinsDatabase} defines the interface for storing Jenkins data such
@@ -128,5 +129,11 @@ public interface JenkinsDatabase {
     * @return the {@link ObservableList} of {@link JenkinsJob}s.
     */
    public ObservableList< JenkinsJob > jenkinsJobs();
+
+   /**
+    * Getter for access to the {@link JenkinsJobPropertyListener} allowing global registrations.
+    * @return the {@link JenkinsJobPropertyListener}.
+    */
+   public JenkinsJobPropertyListener jenkinsJobProperties();
 
 }//End Interface

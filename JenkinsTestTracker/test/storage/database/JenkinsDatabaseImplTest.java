@@ -8,10 +8,18 @@
  */
 package storage.database;
 
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.util.function.BiConsumer;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
 import model.tests.TestClass;
@@ -285,5 +293,18 @@ public class JenkinsDatabaseImplTest {
    @Test public void shouldContainJenkinsJob(){
       systemUnderTest.store( jenkinsJob );
       Assert.assertTrue( systemUnderTest.containsJenkinsJob( jenkinsJob ) );
+   }//End Method
+   
+   @Test public void shouldProvideJenkinsJobPropertyListener(){
+      assertThat( systemUnderTest.jenkinsJobProperties(), notNullValue() );
+      
+      @SuppressWarnings("unchecked") //simply mocking genericized objects. 
+      BiConsumer< JenkinsJob, BuildResultStatus > listener = mock( BiConsumer.class );
+      
+      systemUnderTest.store( jenkinsJob );
+      systemUnderTest.jenkinsJobProperties().addBuildResultStatusListener( listener );
+      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      
+      verify( listener ).accept( jenkinsJob, BuildResultStatus.SUCCESS );
    }//End Method
 }//End Class
