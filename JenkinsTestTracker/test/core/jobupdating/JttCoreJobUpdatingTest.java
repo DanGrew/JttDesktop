@@ -18,7 +18,6 @@ import api.handling.BuildState;
 import api.sources.ExternalApi;
 import buildwall.layout.BuildWallDisplayImpl;
 import core.JenkinsTestTrackerCoreImpl;
-import core.JttSystemCoreImpl;
 import core.JttTestCoreImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
@@ -41,7 +40,7 @@ public class JttCoreJobUpdatingTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       final ExternalApi api = Mockito.mock( ExternalApi.class );
-      final JttSystemCoreImpl core = new JttSystemCoreImpl( api );
+      final JttTestCoreImpl core = new JttTestCoreImpl( api );
       
       new Thread( () -> {
          
@@ -54,14 +53,12 @@ public class JttCoreJobUpdatingTest {
          convenienceWait( 1000, core.getJobUpdater() );
          
          JenkinsJob second = core.getJenkinsDatabase().jenkinsJobs().get( 1 );
-         second.lastBuildTimestampProperty().set( System.currentTimeMillis() );
          response = TestCommon.readFileIntoString( getClass(), "building-state-10.json" );
          Mockito.when( api.getLastBuildBuildingState( second ) ).thenReturn( response );
          
          convenienceWait( 2000, core.getJobUpdater() );
          
          JenkinsJob fifth = core.getJenkinsDatabase().jenkinsJobs().get( 4 );
-         fifth.lastBuildTimestampProperty().set( System.currentTimeMillis() );
          response = TestCommon.readFileIntoString( getClass(), "building-state-10.json" );
          Mockito.when( api.getLastBuildBuildingState( fifth ) ).thenReturn( response );
          
