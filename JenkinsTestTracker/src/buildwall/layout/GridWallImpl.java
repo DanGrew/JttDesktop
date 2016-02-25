@@ -10,6 +10,7 @@ package buildwall.layout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import buildwall.configuration.BuildWallConfiguration;
@@ -71,18 +72,15 @@ public class GridWallImpl extends GridPane implements BuildWall {
       jobPanels.clear();
       
       if ( database.jenkinsJobs().isEmpty() ) return;
+      List< JenkinsJob > jobsToShow = identifyDisplayedJobs();
       
       int numberOfColumns = configuration.numberOfColumns().get();
+      numberOfColumns = Math.min( jobsToShow.size(), numberOfColumns );
       numberOfColumns = Math.max( numberOfColumns, 1 );
-      numberOfColumns = Math.min( database.jenkinsJobs().size(), numberOfColumns );
-      
+
       int columnCount = 0;
       int rowCount = 0;
-      for ( JenkinsJob job : new ArrayList<>( database.jenkinsJobs() ) ) {
-         BuildWallJobPolicy policy = configuration.jobPolicies().get( job );
-         boolean displayJob = policy == null ? true : policy.shouldShow( job );
-         if ( !displayJob ) continue;
-         
+      for ( JenkinsJob job : jobsToShow ) {
          if ( columnCount == numberOfColumns ) {
             columnCount = 0;
             rowCount++;
@@ -101,6 +99,20 @@ public class GridWallImpl extends GridPane implements BuildWall {
       expandLastPanelIfNeeded( database.jenkinsJobs().size(), numberOfColumns, columnCount, rowCount );
       fixColumnWidths( numberOfColumns );
       fixRowHeights( rowCount + 1 ); //accounting for indices.
+   }//End Method
+   
+   /**
+    * Method to identify the {@link JenkinsJob}s that will be displayed on the {@link GridWallImpl}.
+    * @return the {@link JenkinsJob}s to display.
+    */
+   private List< JenkinsJob > identifyDisplayedJobs(){
+      List<  JenkinsJob > jobsToShow = new ArrayList<>();
+      for ( JenkinsJob job : new ArrayList<>( database.jenkinsJobs() ) ) {
+         BuildWallJobPolicy policy = configuration.jobPolicies().get( job );
+         boolean displayJob = policy == null ? true : policy.shouldShow( job );
+         if ( displayJob ) jobsToShow.add( job );
+      }
+      return jobsToShow;
    }//End Method
 
    /**

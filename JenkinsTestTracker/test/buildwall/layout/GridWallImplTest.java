@@ -259,6 +259,18 @@ public class GridWallImplTest {
       for ( JenkinsJob job : database.jenkinsJobs() ) {
          Assert.assertNull( systemUnderTest.getPanelFor( job ) );
       }
+      assertIndexConstraints( 1, 1 );
+   }//End Method
+   
+   @Test public void shouldUseTheCorrectNumberOfColumnsWhenJobsAreIgnored(){
+      assertIndexConstraints( 2, 3 );
+      configuration.jobPolicies().put( database.jenkinsJobs().get( 0 ), BuildWallJobPolicy.NeverShow );
+      configuration.jobPolicies().put( database.jenkinsJobs().get( 1 ), BuildWallJobPolicy.NeverShow );
+      assertIndexConstraints( 2, 2 );
+      
+      configuration.jobPolicies().put( database.jenkinsJobs().get( 2 ), BuildWallJobPolicy.NeverShow );
+      configuration.jobPolicies().put( database.jenkinsJobs().get( 3 ), BuildWallJobPolicy.NeverShow );
+      assertIndexConstraints( 1, 1 );
    }//End Method
    
 }//End Class
