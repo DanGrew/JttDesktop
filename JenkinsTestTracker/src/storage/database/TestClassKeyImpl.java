@@ -51,8 +51,8 @@ public class TestClassKeyImpl implements TestClassKey {
    @Override public int hashCode() {
       final int prime = 31;
       int result = 1;
-      result = prime * result + ( ( location == null ) ? 0 : location.hashCode() );
-      result = prime * result + ( ( name == null ) ? 0 : name.hashCode() );
+      result = prime * result + location.hashCode();
+      result = prime * result + name.hashCode();
       return result;
    }//End Method
 
@@ -70,18 +70,10 @@ public class TestClassKeyImpl implements TestClassKey {
          return false;
       }
       TestClassKeyImpl other = ( TestClassKeyImpl ) obj;
-      if ( location == null ) {
-         if ( other.location != null ) {
-            return false;
-         }
-      } else if ( !location.equals( other.location ) ) {
+      if ( !location.equals( other.location ) ) {
          return false;
       }
-      if ( name == null ) {
-         if ( other.name != null ) {
-            return false;
-         }
-      } else if ( !name.equals( other.name ) ) {
+      if ( !name.equals( other.name ) ) {
          return false;
       }
       return true;

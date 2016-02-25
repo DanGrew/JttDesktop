@@ -8,6 +8,9 @@
  */
 package storage.database;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -76,6 +79,7 @@ public class TestClassKeyImplTest {
       TestClassKey key1 = new TestClassKeyImpl( name, location );
       
       Assert.assertTrue( key1.equals( key1 ) );
+      assertThat( key1.equals( key1 ), is( true ) );
    }//End Method
    
    @Test public void shouldNotBeEqual(){
@@ -86,6 +90,7 @@ public class TestClassKeyImplTest {
       Assert.assertFalse( key1.equals( null ) );
       Assert.assertFalse( key1.equals( "anything" ) );
       Assert.assertFalse( key1.equals( new TestClassKeyImpl( "another", location ) ) );
+      Assert.assertFalse( key1.equals( new TestClassKeyImpl( name, "somewhere else" ) ) );
    }//End Method
 
 }//End Class
