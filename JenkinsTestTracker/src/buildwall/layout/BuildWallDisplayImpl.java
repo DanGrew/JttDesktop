@@ -12,6 +12,7 @@ import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import buildwall.configuration.updating.JobPolicyUpdater;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import storage.database.JenkinsDatabase;
 
@@ -21,6 +22,7 @@ import storage.database.JenkinsDatabase;
  */
 public class BuildWallDisplayImpl extends BorderPane {
    
+   private ScrollPane configurationScroller;
    private BuildWallConfiguration configuration;
    private BuildWallConfigurationPanelImpl configurationPanel;
    
@@ -34,6 +36,7 @@ public class BuildWallDisplayImpl extends BorderPane {
       
       setCenter( new GridWallImpl( configuration, database ) );
       configurationPanel = new BuildWallConfigurationPanelImpl( configuration );
+      configurationScroller = new ScrollPane( configurationPanel );
    }//End Constructor
    
    /**
@@ -41,7 +44,7 @@ public class BuildWallDisplayImpl extends BorderPane {
     */
    public void toggleConfiguration(){
       if ( !hasConfigurationTurnedOn() ) {
-         setRight( configurationPanel );
+         setRight( configurationScroller );
       } else {
          setRight( null );
       }

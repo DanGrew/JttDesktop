@@ -8,6 +8,7 @@
  */
 package buildwall.layout;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -17,10 +18,12 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
 import storage.database.JenkinsDatabase;
@@ -67,6 +70,9 @@ public class BuildWallDisplayImplTest {
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
+      for ( int i = 0; i < 40; i++ ) {
+         database.store( new JenkinsJobImpl( "" + i ) );
+      }
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
          systemUnderTest.toggleConfiguration();
@@ -90,6 +96,9 @@ public class BuildWallDisplayImplTest {
       
       Node configuration = systemUnderTest.getRight();
       Assert.assertNotNull( configuration );
+      assertThat( configuration, instanceOf( ScrollPane.class ) );
+      ScrollPane scrollPane = ( ScrollPane ) configuration;
+      assertThat( scrollPane.getContent(), instanceOf( BuildWallConfigurationPanelImpl.class ) );
       assertThat( systemUnderTest.hasConfigurationTurnedOn(), is( true ) );
       
       systemUnderTest.toggleConfiguration();
@@ -97,7 +106,7 @@ public class BuildWallDisplayImplTest {
       assertThat( systemUnderTest.hasConfigurationTurnedOn(), is( false ) );
       
       systemUnderTest.toggleConfiguration();
-      Assert.assertEquals( configuration, systemUnderTest.getRight() );
+      Assert.assertEquals( scrollPane, systemUnderTest.getRight() );
       assertThat( systemUnderTest.hasConfigurationTurnedOn(), is( true ) );
    }//End Method
    

@@ -366,8 +366,7 @@ public class BuildWallConfigurationPaneImplTest {
    
    @Test public void eachPaneShouldShareWidthAmongstColumns() {
       assertColumnConstraints( ( GridPane )systemUnderTest.dimensionsPane().getContent() );
-      ScrollPane policiesScroller = ( ScrollPane ) systemUnderTest.jobPoliciesPane().getContent();
-      assertColumnConstraints( ( GridPane )policiesScroller.getContent() );
+      assertColumnConstraints( ( GridPane )systemUnderTest.jobPoliciesPane().getContent() );
       assertColumnConstraints( ( GridPane )systemUnderTest.fontPane().getContent() );
       assertColumnConstraints( ( GridPane )systemUnderTest.colourPane().getContent() );
    }//End Method
@@ -391,8 +390,4 @@ public class BuildWallConfigurationPaneImplTest {
       );
    }//End Method
    
-   @Test public void shouldProvidePoliciesInAScrollPaneToSupportLargeNumbers(){
-      assertThat( systemUnderTest.jobPoliciesPane().contentProperty().get(), instanceOf( ScrollPane.class ) );
-   }//End Method
-
 }//End Class

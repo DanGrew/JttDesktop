@@ -122,7 +122,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       GridPane policiesContent = new JobPolicyPanel( configuration );
       configureColumnConstraints( policiesContent );
       
-      jobPoliciesPane = new TitledPane( "Job Policies", new ScrollPane( policiesContent ) );
+      jobPoliciesPane = new TitledPane( "Job Policies", policiesContent );
       add( jobPoliciesPane, 0, 1 );
    }//End Method
    
