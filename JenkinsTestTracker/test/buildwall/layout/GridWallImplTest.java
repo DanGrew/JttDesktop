@@ -273,4 +273,16 @@ public class GridWallImplTest {
       assertIndexConstraints( 1, 1 );
    }//End Method
    
+   @Test public void shouldReconstructLayoutWhenJobBuildStatusChanges(){
+      configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.OnlyShowFailures ) );
+      assertIndexConstraints( 2, 3 );
+      database.jenkinsJobs().get( 0 ).lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      database.jenkinsJobs().get( 1 ).lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      assertIndexConstraints( 2, 2 );
+      
+      database.jenkinsJobs().get( 2 ).lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      database.jenkinsJobs().get( 3 ).lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      assertIndexConstraints( 1, 1 );
+   }//End Method
+   
 }//End Class
