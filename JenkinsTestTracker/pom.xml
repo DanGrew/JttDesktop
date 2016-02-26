@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>JenkinsTestTracker</groupId>
 	<artifactId>JenkinsTestTracker</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<name>JenkinsTestTracker</name>
 	<description>Tracker for individual tests across an entire Jenkins instance.</description>
 
@@ -15,7 +14,7 @@
 	<!-- configure github for maven release committing branches and changes -->
 	<scm>
 		<developerConnection>scm:git:git@github.com:DanGrew/JenkinsTestTracker</developerConnection>
-		<tag>HEAD</tag>
+		<tag>JenkinsTestTracker-1.1.0</tag>
 	</scm>
 
 	<!-- configure the repository to publish to on build -->
@@ -142,8 +141,7 @@
 							<shadedClassifierName>runnable</shadedClassifierName>
 							<transformers>
 								<!-- add Main-Class to manifest file -->
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
 										<Main-Class>main.JenkinsTestTracker</Main-Class>
 									</manifestEntries>
