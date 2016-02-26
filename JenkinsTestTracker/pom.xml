@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>JenkinsTestTracker</groupId>
 	<artifactId>JenkinsTestTracker</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.0</version>
 	<name>JenkinsTestTracker</name>
 	<description>Tracker for individual tests across an entire Jenkins instance.</description>
 
@@ -14,7 +14,7 @@
 	<!-- configure github for maven release committing branches and changes -->
 	<scm>
 		<developerConnection>scm:git:git@github.com:DanGrew/JenkinsTestTracker</developerConnection>
-		<tag>HEAD</tag>
+		<tag>JenkinsTestTracker-1.2.0</tag>
 	</scm>
 
 	<!-- configure the repository to publish to on build -->
