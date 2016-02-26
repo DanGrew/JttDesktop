@@ -21,8 +21,8 @@ public class DefensiveIntegerSpinnerValueFactory extends IntegerSpinnerValueFact
    /**
     * Constructs a new {@link DefensiveIntegerSpinnerValueFactory}, setting the {@link DefensiveIntegerStringConverter}
     * as the {@link StringConverter}.
-    * @param min @see {@link DefensiveIntegerSpinnerValueFactory#getMin()}.
-    * @param max @see {@link DefensiveIntegerSpinnerValueFactory#getMax()}.
+    * @param min see {@link DefensiveIntegerSpinnerValueFactory#getMin()}.
+    * @param max see {@link DefensiveIntegerSpinnerValueFactory#getMax()}.
     */
    public DefensiveIntegerSpinnerValueFactory( int min, int max ) {
       super( min, max );
