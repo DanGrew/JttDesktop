@@ -8,6 +8,9 @@
  */
 package buildwall.panel;
 
+import javafx.registrations.ChangeListenerRegistrationImpl;
+import javafx.registrations.RegistrationImpl;
+import javafx.registrations.RegistrationManager;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import model.jobs.JenkinsJob;
@@ -21,12 +24,15 @@ import styling.SystemStyling;
 public class JobProgressImpl extends BorderPane {
 
    private ProgressBar progress;
+   private RegistrationManager registrations;
    
    /**
     * Constructs a new {@link JobProgressImpl}.
     * @param job the {@link JenkinsJob}.
     */
    public JobProgressImpl( JenkinsJob job ) {
+      this.registrations = new RegistrationManager();
+      
       progress = new ProgressBar();
       setCenter( progress );
       
@@ -34,10 +40,15 @@ public class JobProgressImpl extends BorderPane {
       progress.prefHeightProperty().bind( heightProperty() );
       
       progress.setProgress( calculateProgress( job ) );
-      job.currentBuildTimeProperty().addListener( ( source, old, updated ) -> updateProgress( job ) );
-      job.expectedBuildTimeProperty().addListener( ( source, old, updated ) -> updateProgress( job ) );
-      
-      job.lastBuildStatusProperty().addListener( ( source, old, updated ) -> updateStyle( job ) );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               job.currentBuildTimeProperty(), ( source, old, updated ) -> updateProgress( job ) 
+      ) );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               job.expectedBuildTimeProperty(), ( source, old, updated ) -> updateProgress( job ) 
+      ) );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               job.lastBuildStatusProperty(), ( source, old, updated ) -> updateStyle( job ) 
+      ) );
       updateStyle( job );
    }//End Class
    
@@ -77,6 +88,14 @@ public class JobProgressImpl extends BorderPane {
     */
    private void updateProgress( JenkinsJob job ) {
       progress.setProgress( calculateProgress( job ) );
+   }//End Method
+   
+   /**
+    * Method to detach the {@link RegistrationImpl}s from the system as this object is 
+    * no longer needed.
+    */
+   public void detachFromSystem(){
+      registrations.shutdown();
    }//End Method
 
    /**

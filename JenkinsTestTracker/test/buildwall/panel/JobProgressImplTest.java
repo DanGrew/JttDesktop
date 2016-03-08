@@ -8,9 +8,10 @@
  */
 package buildwall.panel;
 
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -34,13 +35,11 @@ public class JobProgressImplTest {
    private JenkinsJob job;
    private JobProgressImpl systemUnderTest;
    
-   @BeforeClass public static void initialiseStylings(){
-      styles = Mockito.mock( SystemStyles.class );
-      SystemStyling.set( styles );
-   }//End Method
-   
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
+      styles = Mockito.mock( SystemStyles.class );
+      SystemStyling.set( styles );
+      
       job = new JenkinsJobImpl( "MyTestJob" );
       job.currentBuildTimeProperty().set( 1000 );
       job.expectedBuildTimeProperty().set( 3000 );
@@ -121,5 +120,31 @@ public class JobProgressImplTest {
       job.expectedBuildTimeProperty().set( 2000 );
       Assert.assertEquals( 1.5, JobProgressImpl.calculateProgress( job ), TestCommon.precision() );
    }//End Method
-
+   
+   @Test public void detachShouldNotUpdateProgressAccordingToJob() {
+      systemUnderTest.detachFromSystem();
+      assertProgressMatchesJob();
+      
+      job.currentBuildTimeProperty().set( 2000 );
+      Assert.assertNotEquals( 
+               JobProgressImpl.calculateProgress( job ), 
+               systemUnderTest.progressBar().getProgress(),
+               TestCommon.precision()
+      );
+      job.expectedBuildTimeProperty().set( 4000 );
+      Assert.assertNotEquals( 
+               JobProgressImpl.calculateProgress( job ), 
+               systemUnderTest.progressBar().getProgress(),
+               TestCommon.precision()
+      );
+   }//End Method
+   
+   @Test public void detachShouldNotUpdateStyleWhenJobStateUpdates() {
+      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
+      systemUnderTest.detachFromSystem();
+      
+      job.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
+      verifyNoMoreInteractions( styles );
+   }//End Method
+   
 }//End Class
