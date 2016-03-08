@@ -9,6 +9,7 @@
 package buildwall.panel;
 
 import buildwall.configuration.BuildWallConfiguration;
+import javafx.registrations.RegistrationImpl;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import model.jobs.JenkinsJob;
@@ -19,7 +20,9 @@ import model.jobs.JenkinsJob;
  */
 public class JobPanelImpl extends StackPane {
 
-   private JenkinsJob job;
+   private final JobProgressImpl progress;
+   private final JobPanelDescriptionImpl description;
+   private final JenkinsJob job;
    
    /**
     * Constructs a new {@link JobPanelImpl}.
@@ -29,8 +32,10 @@ public class JobPanelImpl extends StackPane {
    public JobPanelImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
       this.job = job;
       
-      getChildren().add( new JobProgressImpl( job ) );
-      getChildren().add( new JobPanelDescriptionImpl( configuration, job ) );
+      this.progress = new JobProgressImpl( job );
+      getChildren().add( progress );
+      this.description = new JobPanelDescriptionImpl( configuration, job );
+      getChildren().add( description );
    }//End Method
 
    /**
@@ -39,6 +44,24 @@ public class JobPanelImpl extends StackPane {
     */
    public JenkinsJob getJenkinsJob() {
       return job;
+   }//End Method
+   
+   /**
+    * Method to detach this object, its {@link RegistrationImpl}s and its childrens
+    * from the system.
+    */
+   public void detachFromSystem() {
+      getChildren().clear();
+      progress.detachFromSystem();
+      description.detachFromSystem();
+   }//End Method
+
+   JobProgressImpl progress() {
+      return progress;
+   }//End Method
+
+   JobPanelDescriptionImpl description() {
+      return description;
    }//End Method
 
 }//End Class

@@ -8,6 +8,10 @@
  */
 package buildwall.panel;
 
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -60,11 +64,24 @@ public class JobPanelImplTest {
    
    @Test public void shouldHaveProgressAndDescription() {
       Assert.assertTrue( systemUnderTest.getChildren().get( 0 ) instanceof JobProgressImpl );
+      assertThat( systemUnderTest.getChildren().get( 0 ), is( systemUnderTest.progress() ) );
       Assert.assertTrue( systemUnderTest.getChildren().get( 1 ) instanceof JobPanelDescriptionImpl );
+      assertThat( systemUnderTest.getChildren().get( 1 ), is( systemUnderTest.description() ) );
    }//End Method
    
    @Test public void shouldProvideJob(){
       Assert.assertEquals( job, systemUnderTest.getJenkinsJob() );
+   }//End Method
+   
+   @Test public void detachShouldDetachProgressAndDescription(){
+      assertThat( systemUnderTest.progress().isDetached(), is( false ) );
+      assertThat( systemUnderTest.description().isDetached(), is( false ) );
+      
+      systemUnderTest.detachFromSystem();
+      
+      assertThat( systemUnderTest.getChildren(), empty() );
+      assertThat( systemUnderTest.progress().isDetached(), is( true ) );
+      assertThat( systemUnderTest.description().isDetached(), is( true ) );
    }//End Method
 
 }//End Class

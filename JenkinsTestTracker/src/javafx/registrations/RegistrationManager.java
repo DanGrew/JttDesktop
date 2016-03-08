@@ -43,4 +43,12 @@ public class RegistrationManager {
       registrations.clear();
    }//End Method
 
+   /**
+    * Method to determine whether this {@link RegistrationManager} has any {@link RegistrationImpl}s held.
+    * @return true if none held.
+    */
+   public boolean isEmpty() {
+      return registrations.isEmpty();
+   }//End Method
+
 }//End Class

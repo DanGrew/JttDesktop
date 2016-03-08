@@ -8,6 +8,8 @@
  */
 package javafx.registrations;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -77,4 +79,12 @@ public class RegistrationManagerTest {
       verifyNoMoreInteractions( registrationA, registrationB, registrationC );
    }//End Method
 
+   @Test public void shouldProvideIsEmpty(){
+      assertThat( systemUnderTest.isEmpty(), is( true ) );
+      systemUnderTest.apply( registrationA );
+      assertThat( systemUnderTest.isEmpty(), is( false ) );
+      systemUnderTest.shutdown();
+      assertThat( systemUnderTest.isEmpty(), is( true ) );
+   }//End Method
+   
 }//End Class

@@ -8,6 +8,7 @@
  */
 package buildwall.panel;
 
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
@@ -422,5 +423,11 @@ public class JobPanelDescriptionImplTest {
       systemUnderTest.detachFromSystem();
       configuration.completionEstimateColour().set( Color.ANTIQUEWHITE );
       Assert.assertNotEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().getTextFill() );
+   }//End Method
+   
+   @Test public void shouldShowAsDetached(){
+      assertThat( systemUnderTest.isDetached(), is( false ) );
+      systemUnderTest.detachFromSystem();
+      assertThat( systemUnderTest.isDetached(), is( true ) );
    }//End Method
 }//End Class

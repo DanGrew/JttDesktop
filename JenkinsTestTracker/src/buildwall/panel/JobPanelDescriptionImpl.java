@@ -172,9 +172,21 @@ public class JobPanelDescriptionImpl extends BorderPane {
       } );
    }//End Method
    
+   /**
+    * Method to detach this object and its {@link RegistrationImpl}s from the system.
+    */
    public void detachFromSystem() {
       registrations.shutdown();
-   }
+   }//End Method
+   
+   /**
+    * Method to determine whether the {@link JobPanelDescriptionImpl} is detached and
+    * not registered with anything in the system.
+    * @return true if no registrations held.
+    */
+   boolean isDetached() {
+      return registrations.isEmpty();
+   }//End Method
 
    /**
     * Getter for the build number {@link Label}.

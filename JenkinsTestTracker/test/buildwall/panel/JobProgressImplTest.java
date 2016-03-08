@@ -8,6 +8,8 @@
  */
 package buildwall.panel;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.Assert;
@@ -145,6 +147,12 @@ public class JobProgressImplTest {
       
       job.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
       verifyNoMoreInteractions( styles );
+   }//End Method
+   
+   @Test public void shouldShowAsDetached(){
+      assertThat( systemUnderTest.isDetached(), is( false ) );
+      systemUnderTest.detachFromSystem();
+      assertThat( systemUnderTest.isDetached(), is( true ) );
    }//End Method
    
 }//End Class

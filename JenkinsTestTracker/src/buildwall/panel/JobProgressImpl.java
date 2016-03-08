@@ -97,7 +97,16 @@ public class JobProgressImpl extends BorderPane {
    public void detachFromSystem(){
       registrations.shutdown();
    }//End Method
-
+   
+   /**
+    * Method to determine whether the {@link JobProgressImpl} is detached and
+    * not registered with anything in the system.
+    * @return true if no registrations held.
+    */
+   boolean isDetached() {
+      return registrations.isEmpty();
+   }//End Method
+   
    /**
     * Getter for the {@link ProgressBar}.
     * @return the {@link ProgressBar}.
