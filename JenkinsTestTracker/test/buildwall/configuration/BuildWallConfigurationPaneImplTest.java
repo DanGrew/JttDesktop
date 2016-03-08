@@ -8,7 +8,6 @@
  */
 package buildwall.configuration;
 
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -19,7 +18,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import graphics.JavaFxInitializer;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;

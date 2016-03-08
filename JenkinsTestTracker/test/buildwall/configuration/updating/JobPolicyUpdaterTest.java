@@ -8,6 +8,7 @@
  */
 package buildwall.configuration.updating;
 
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -44,7 +45,7 @@ public class JobPolicyUpdaterTest {
       JenkinsJob job = new JenkinsJobImpl( "anything" );
       database.store( job );
       
-      assertThat( configuration.jobPolicies().containsKey( job ), is( true ) );
+      assertThat( configuration.jobPolicies(), hasKey( job ) );
       assertThat( configuration.jobPolicies().get( job ), is( BuildWallJobPolicy.AlwaysShow ) );
    }//End Method
    
