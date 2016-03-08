@@ -8,6 +8,9 @@
  */
 package buildwall.panel;
 
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -267,5 +270,157 @@ public class JobPanelDescriptionImplTest {
       Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().getTextFill() );
       configuration.completionEstimateColour().set( Color.ANTIQUEWHITE );
       Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().getTextFill() );
+   }//End Method
+   
+   @Test public void detachmentShouldNotUpdateBuildNumberConfigurations() {
+      systemUnderTest.detachFromSystem();
+      
+      configuration.buildNumberColour().set( Color.AQUA );
+      assertThat( systemUnderTest.buildNumber().textFillProperty().get(), not( Color.AQUA ) );
+      
+      final Font testFont = new Font( 100 );
+      configuration.buildNumberFont().set( testFont );
+      assertThat( systemUnderTest.buildNumber().fontProperty().get(), not( testFont ) );
+   }//End Method
+   
+   @Test public void detachmentShouldNotUpdateCompletionEstimateConfigurations() {
+      systemUnderTest.detachFromSystem();
+      
+      configuration.completionEstimateColour().set( Color.AQUA );
+      assertThat( systemUnderTest.completionEstimate().textFillProperty().get(), not( Color.AQUA ) );
+      
+      final Font testFont = new Font( 100 );
+      configuration.completionEstimateFont().set( testFont );
+      assertThat( systemUnderTest.completionEstimate().fontProperty().get(), not( testFont ) );
+   }//End Method
+   
+   @Test public void detachmentShouldNotUpdateJobNameConfigurations() {
+      systemUnderTest.detachFromSystem();
+      
+      configuration.jobNameColour().set( Color.ANTIQUEWHITE );
+      assertThat( systemUnderTest.jobName().textFillProperty().get(), not( Color.ANTIQUEWHITE ) );
+      
+      final Font testFont = new Font( 100 );
+      configuration.jobNameFont().set( testFont );
+      assertThat( systemUnderTest.jobName().fontProperty().get(), not( testFont ) );
+   }//End Method
+   
+   @Test public void detachmentShouldNotUseJobNameAndKeepUpdated(){
+      Assert.assertEquals( job.nameProperty().get(), systemUnderTest.jobName().getText() );
+      
+      systemUnderTest.detachFromSystem();
+      
+      final String value = "somethingElse";
+      job.nameProperty().set( value );
+      Assert.assertNotEquals( job.nameProperty().get(), systemUnderTest.jobName().getText() );
+      Assert.assertNotEquals( value, systemUnderTest.jobName().getText() );
+   }//End Method
+   
+   @Test public void detachmentShouldNotUseJobNumberAndKeepUpdated(){
+      Assert.assertEquals( 
+               JobPanelDescriptionImpl.formatBuildNumber( job.lastBuildNumberProperty().get() ), 
+               systemUnderTest.buildNumber().getText() 
+      );
+      
+      systemUnderTest.detachFromSystem();
+      
+      final Integer value = 799;
+      job.lastBuildNumberProperty().set( value );
+      Assert.assertNotEquals( 
+               JobPanelDescriptionImpl.formatBuildNumber( job.lastBuildNumberProperty().get() ), 
+               systemUnderTest.buildNumber().getText() 
+      );
+      Assert.assertNotEquals( 
+               JobPanelDescriptionImpl.formatBuildNumber( value ), 
+               systemUnderTest.buildNumber().getText() 
+      );
+   }//End Method
+
+   @Test public void detachmentShouldNotUseJobBuildTimeAndKeepUpdated(){
+      Assert.assertEquals( 
+               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+                        job.currentBuildTimeProperty().get(),
+                        job.expectedBuildTimeProperty().get()
+               ), 
+               systemUnderTest.completionEstimate().getText() 
+      );
+      
+      systemUnderTest.detachFromSystem();
+      
+      final Integer progress = 180;
+      job.currentBuildTimeProperty().set( progress );
+      Assert.assertNotEquals( 
+               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+                        job.currentBuildTimeProperty().get(),
+                        job.expectedBuildTimeProperty().get()
+               ), 
+               systemUnderTest.completionEstimate().getText()  
+      );
+      Assert.assertNotEquals( 
+               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+                        progress,
+                        job.expectedBuildTimeProperty().get()
+               ), 
+               systemUnderTest.completionEstimate().getText()  
+      );
+      
+      final Integer estimate = 180;
+      job.expectedBuildTimeProperty().set( estimate );
+      Assert.assertNotEquals( 
+               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+                        job.currentBuildTimeProperty().get(),
+                        job.expectedBuildTimeProperty().get()
+               ), 
+               systemUnderTest.completionEstimate().getText()  
+      );
+      Assert.assertNotEquals( 
+               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+                        progress,
+                        estimate
+               ), 
+               systemUnderTest.completionEstimate().getText()  
+      );
+   }//End Method
+   
+   @Test public void detachmentShouldNotConfigureJobNameFontAndUpdate(){
+      Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobName().getFont() );
+      systemUnderTest.detachFromSystem();
+      configuration.jobNameFont().set( new Font( 100 ) );
+      Assert.assertNotEquals( configuration.jobNameFont().get(), systemUnderTest.jobName().getFont() );
+   }//End Method
+   
+   @Test public void detachmentShouldNotConfigureJobNameColourAndUpdate(){
+      Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobName().getTextFill() );
+      systemUnderTest.detachFromSystem();
+      configuration.jobNameColour().set( Color.ANTIQUEWHITE );
+      Assert.assertNotEquals( configuration.jobNameColour().get(), systemUnderTest.jobName().getTextFill() );
+   }//End Method
+   
+   @Test public void detachmentShouldNotConfigureBuildNumberFontAndUpdate(){
+      Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumber().getFont() );
+      systemUnderTest.detachFromSystem();
+      configuration.buildNumberFont().set( new Font( 100 ) );
+      Assert.assertNotEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumber().getFont() );
+   }//End Method
+   
+   @Test public void detachmentShouldNotConfigureBuildNumberColourAndUpdate(){
+      Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumber().getTextFill() );
+      systemUnderTest.detachFromSystem();
+      configuration.buildNumberColour().set( Color.ANTIQUEWHITE );
+      Assert.assertNotEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumber().getTextFill() );
+   }//End Method
+   
+   @Test public void detachmentShouldNotConfigureBuildTimeFontAndUpdate(){
+      Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimate().getFont() );
+      systemUnderTest.detachFromSystem();
+      configuration.completionEstimateFont().set( new Font( 100 ) );
+      Assert.assertNotEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimate().getFont() );
+   }//End Method
+   
+   @Test public void detachmentShouldNotConfigureBuildTimeColourAndUpdate(){
+      Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().getTextFill() );
+      systemUnderTest.detachFromSystem();
+      configuration.completionEstimateColour().set( Color.ANTIQUEWHITE );
+      Assert.assertNotEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().getTextFill() );
    }//End Method
 }//End Class

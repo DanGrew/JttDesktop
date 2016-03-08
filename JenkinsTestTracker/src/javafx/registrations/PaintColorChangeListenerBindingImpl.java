@@ -11,6 +11,7 @@ package javafx.registrations;
 import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -29,8 +30,8 @@ public class PaintColorChangeListenerBindingImpl extends ChangeListenerMismatchB
     * @param propertyB the {@link Paint} property.
     */
    public PaintColorChangeListenerBindingImpl( 
-            ObjectProperty< Color > propertyA, 
-            ObjectProperty< Paint > propertyB 
+            Property< Color > propertyA, 
+            Property< Paint > propertyB 
    ) {
       super( propertyA, propertyB, toPropertyConverter, fromPropertyConverter );
    }//End Constructor

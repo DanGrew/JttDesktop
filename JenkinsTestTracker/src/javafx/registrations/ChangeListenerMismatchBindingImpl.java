@@ -10,7 +10,7 @@ package javafx.registrations;
 
 import java.util.function.Function;
 
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 
 /**
  * The {@link ChangeListenerMismatchBindingImpl} is responsible for providing a {@link RegistrationImpl}
@@ -20,8 +20,8 @@ import javafx.beans.property.ObjectProperty;
  */
 public class ChangeListenerMismatchBindingImpl< PropertyTypeT, ConversionTypeT > extends RegistrationImpl {
    
-   private final ObjectProperty< PropertyTypeT > propertyA;
-   private final ObjectProperty< ConversionTypeT > propertyB;
+   private final Property< PropertyTypeT > propertyA;
+   private final Property< ConversionTypeT > propertyB;
    private final Function< ConversionTypeT, PropertyTypeT > toPropertyConverter;
    private final Function< PropertyTypeT, ConversionTypeT > fromPropertyConverter; 
    private RegistrationImpl propertyARegistration;
@@ -35,8 +35,8 @@ public class ChangeListenerMismatchBindingImpl< PropertyTypeT, ConversionTypeT >
     * @param fromPropertyConverter the {@link Function} from second to first type.
     */
    public ChangeListenerMismatchBindingImpl( 
-            ObjectProperty< PropertyTypeT > propertyA, 
-            ObjectProperty< ConversionTypeT > propertyB,
+            Property< PropertyTypeT > propertyA, 
+            Property< ConversionTypeT > propertyB,
             Function< ConversionTypeT, PropertyTypeT > toPropertyConverter,
             Function< PropertyTypeT, ConversionTypeT > fromPropertyConverter
    ) {
@@ -54,15 +54,15 @@ public class ChangeListenerMismatchBindingImpl< PropertyTypeT, ConversionTypeT >
       
       propertyBRegistration = new ChangeListenerRegistrationImpl< ConversionTypeT >( 
                propertyB, 
-               fromPropertyConverter.apply( propertyA.get() ),
-               ( source, old, updated ) -> propertyA.set( toPropertyConverter.apply( updated ) ) 
+               fromPropertyConverter.apply( propertyA.getValue() ),
+               ( source, old, updated ) -> propertyA.setValue( toPropertyConverter.apply( updated ) ) 
       );
       propertyBRegistration.register();
       
       propertyARegistration = new ChangeListenerRegistrationImpl< PropertyTypeT >( 
                propertyA,
-               toPropertyConverter.apply( propertyB.get() ),
-               ( source, old, updated ) -> propertyB.set( fromPropertyConverter.apply( updated ) )  
+               toPropertyConverter.apply( propertyB.getValue() ),
+               ( source, old, updated ) -> propertyB.setValue( fromPropertyConverter.apply( updated ) )  
       );
       propertyARegistration.register();
    }//End Method

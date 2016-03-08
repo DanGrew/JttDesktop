@@ -8,7 +8,7 @@
  */
 package javafx.registrations;
 
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 
 /**
@@ -18,24 +18,36 @@ import javafx.beans.value.ChangeListener;
  */
 public class ChangeListenerRegistrationImpl< PropertyTypeT > extends RegistrationImpl {
    
-   private final ObjectProperty< PropertyTypeT > property;
+   private final Property< PropertyTypeT > property;
    private final ChangeListener< PropertyTypeT > action;
    private boolean registered = false;
    
    /**
     * Constructs a new {@link ChangeListenerRegistrationImpl}.
-    * @param property the {@link ObjectProperty} associated.
+    * @param property the {@link Property} associated.
+    * @param action the {@link ChangeListener} associated with the property.
+    */
+   public ChangeListenerRegistrationImpl( 
+            Property< PropertyTypeT > property, 
+            ChangeListener< PropertyTypeT > action 
+   ) {
+      this.property = property;
+      this.action = action;
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link ChangeListenerRegistrationImpl}.
+    * @param property the {@link Property} associated.
     * @param initialValue the initial value for the property.
     * @param action the {@link ChangeListener} associated with the property.
     */
    public ChangeListenerRegistrationImpl( 
-            ObjectProperty< PropertyTypeT > property, 
+            Property< PropertyTypeT > property, 
             PropertyTypeT initialValue,
             ChangeListener< PropertyTypeT > action 
    ) {
-      this.property = property;
-      property.set( initialValue );
-      this.action = action;
+      this( property, action );
+      property.setValue( initialValue );
    }//End Constructor
 
    /**

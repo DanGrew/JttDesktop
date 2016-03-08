@@ -14,6 +14,11 @@ import buildwall.configuration.BuildWallConfiguration;
 import graphics.DecoupledPlatformImpl;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.registrations.ChangeListenerBindingImpl;
+import javafx.registrations.ChangeListenerRegistrationImpl;
+import javafx.registrations.PaintColorChangeListenerBindingImpl;
+import javafx.registrations.RegistrationImpl;
+import javafx.registrations.RegistrationManager;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -35,11 +40,14 @@ public class JobPanelDescriptionImpl extends BorderPane {
    static final double BUILD_PROPERTY_PERCENTAGE = 20;
    static final double COMPLETION_ESTIMATE_PERCENTAGE = 80;
    
+   private JenkinsJob job;
    private BuildWallConfiguration configuration;
    private Label jobName;
    private Label buildNumber;
    private Label completionEstimate;
    private GridPane properties;
+   
+   private RegistrationManager registrations;
 
    /**
     * Constructs a new {@link JobPanelDescriptionImpl}.
@@ -48,37 +56,86 @@ public class JobPanelDescriptionImpl extends BorderPane {
     */
    public JobPanelDescriptionImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
       this.configuration = configuration;
+      this.job = job;
+      this.registrations = new RegistrationManager();
       
       jobName = new Label( job.nameProperty().get() );
       updateJobNameFont();
-      configuration.jobNameFont().addListener( ( source, old, updated ) -> updateJobNameFont() );
       updateJobNameColour();
-      configuration.jobNameColour().addListener( ( source, old, updated ) -> updateJobNameColour() );
-      job.nameProperty().addListener( ( source, old, updated ) -> jobName.setText( job.nameProperty().get() ) );
       setCenter( jobName );
-
+      
       properties = new GridPane();
       buildNumber = new Label( formatBuildNumber( job.lastBuildNumberProperty().get() ) );
-      buildNumber.fontProperty().bind( configuration.buildNumberFont() );
-      buildNumber.textFillProperty().bind( configuration.buildNumberColour() );
       buildNumber.setOpacity( DEFAULT_PROPERTY_OPACITY );
-      job.lastBuildNumberProperty().addListener( ( source, old, updated ) -> 
-            DecoupledPlatformImpl.runLater( () -> {
-               buildNumber.setText( formatBuildNumber( job.lastBuildNumberProperty().get() ) );
-            } 
-      ) );
       properties.add( buildNumber, 0, 0 );
 
       completionEstimate = new Label();
       updateCompletionEstimate( job );
-      completionEstimate.fontProperty().bind( configuration.completionEstimateFont() );
-      completionEstimate.textFillProperty().bind( configuration.completionEstimateColour() );
       completionEstimate.setOpacity( DEFAULT_PROPERTY_OPACITY );
-      job.currentBuildTimeProperty().addListener( ( source, old, updated ) -> updateCompletionEstimate( job ) );
-      job.expectedBuildTimeProperty().addListener( ( source, old, updated ) -> updateCompletionEstimate( job ) );
       properties.add( completionEstimate, 1, 0 );
+      properties.setPadding( new Insets( PROPERTIES_INSET ) );
+
       setBottom( properties );
 
+      applyRegistrations();
+      applyColumnConstraints();
+   }//End Class
+   
+   /**
+    * Method to apply the {@link RegistrationImpl}s needed to keep the panel up to date.
+    */
+   private void applyRegistrations(){
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               configuration.jobNameFont(), 
+               ( source, old, updated ) -> updateJobNameFont() 
+      ) );
+      
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               configuration.jobNameColour(), 
+               ( source, old, updated ) -> updateJobNameColour() 
+      ) );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               job.nameProperty(), 
+               ( source, old, updated ) -> jobName.setText( job.nameProperty().get() ) 
+      ) );
+      
+      registrations.apply( new PaintColorChangeListenerBindingImpl( 
+               configuration.buildNumberColour(), buildNumber.textFillProperty() ) 
+      );
+      registrations.apply( new ChangeListenerBindingImpl<>( 
+               configuration.buildNumberFont(), buildNumber.fontProperty() ) 
+      );
+      
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               job.lastBuildNumberProperty(), 
+               ( source, old, updated ) -> { 
+                  DecoupledPlatformImpl.runLater( () -> {
+                     buildNumber.setText( formatBuildNumber( job.lastBuildNumberProperty().get() ) );
+                  } );
+               }
+      ) );
+      
+      registrations.apply( new PaintColorChangeListenerBindingImpl( 
+               configuration.completionEstimateColour(), completionEstimate.textFillProperty() ) 
+      );
+      registrations.apply( new ChangeListenerBindingImpl<>( 
+               configuration.completionEstimateFont(), completionEstimate.fontProperty() ) 
+      );
+      
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               job.currentBuildTimeProperty(), 
+               ( source, old, updated ) -> updateCompletionEstimate( job ) 
+      ) );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               job.expectedBuildTimeProperty(), 
+               ( source, old, updated ) -> updateCompletionEstimate( job ) 
+      ) );
+   }//End Method
+
+   /**
+    * Method to apply the {@link ColumnConstraints}.
+    */
+   private void applyColumnConstraints() {
       ColumnConstraints buildNumberColumn = new ColumnConstraints();
       buildNumberColumn.setPercentWidth( BUILD_PROPERTY_PERCENTAGE );
       buildNumberColumn.setHalignment( HPos.LEFT );
@@ -86,9 +143,7 @@ public class JobPanelDescriptionImpl extends BorderPane {
       completionEstimateColumn.setPercentWidth( COMPLETION_ESTIMATE_PERCENTAGE );
       completionEstimateColumn.setHalignment( HPos.RIGHT );
       properties.getColumnConstraints().addAll( buildNumberColumn, completionEstimateColumn );
-
-      properties.setPadding( new Insets( PROPERTIES_INSET ) );
-   }//End Class
+   }//End Method
    
    /**
     * Method to update the job name {@link Font} in line with the {@link BuildWallConfiguration}.
@@ -116,6 +171,10 @@ public class JobPanelDescriptionImpl extends BorderPane {
          ) );
       } );
    }//End Method
+   
+   public void detachFromSystem() {
+      registrations.shutdown();
+   }
 
    /**
     * Getter for the build number {@link Label}.

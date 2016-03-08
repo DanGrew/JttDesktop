@@ -8,7 +8,7 @@
  */
 package javafx.registrations;
 
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 
 /**
  * The {@link ChangeListenerBindingImpl} provides a {@link RegistrationImpl} that uses two {@link ChangeListenerRegistrationImpl}s,
@@ -17,17 +17,17 @@ import javafx.beans.property.ObjectProperty;
  */
 public class ChangeListenerBindingImpl< PropertyTypeT > extends RegistrationImpl {
    
-   private final ObjectProperty< PropertyTypeT > propertyA;
-   private final ObjectProperty< PropertyTypeT > propertyB;
+   private final Property< PropertyTypeT > propertyA;
+   private final Property< PropertyTypeT > propertyB;
    private RegistrationImpl propertyARegistration;
    private RegistrationImpl propertyBRegistration;
 
    /**
     * Constructs a new {@link ChangeListenerBindingImpl}.
-    * @param propertyA the {@link ObjectProperty} providing initial value.
-    * @param propertyB the {@link ObjectProperty} to bind with.
+    * @param propertyA the {@link Property} providing initial value.
+    * @param propertyB the {@link Property} to bind with.
     */
-   public ChangeListenerBindingImpl( ObjectProperty< PropertyTypeT > propertyA, ObjectProperty< PropertyTypeT > propertyB ) {
+   public ChangeListenerBindingImpl( Property< PropertyTypeT > propertyA, Property< PropertyTypeT > propertyB ) {
       this.propertyA = propertyA;
       this.propertyB = propertyB;
    }//End Constructor
@@ -40,15 +40,15 @@ public class ChangeListenerBindingImpl< PropertyTypeT > extends RegistrationImpl
       
       propertyBRegistration = new ChangeListenerRegistrationImpl<>( 
                propertyB, 
-               propertyA.get(),
-               ( source, old, updated ) -> propertyA.set( updated ) 
+               propertyA.getValue(),
+               ( source, old, updated ) -> propertyA.setValue( updated ) 
       );
       propertyBRegistration.register();
       
       propertyARegistration = new ChangeListenerRegistrationImpl<>( 
                propertyA,
-               propertyB.get(),
-               ( source, old, updated ) -> propertyB.set( updated )  
+               propertyB.getValue(),
+               ( source, old, updated ) -> propertyB.setValue( updated )  
       );
       propertyARegistration.register();
    }//End Method
