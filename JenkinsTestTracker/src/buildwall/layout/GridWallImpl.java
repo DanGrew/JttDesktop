@@ -72,6 +72,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
       getChildren().clear();
       getRowConstraints().clear();
       getColumnConstraints().clear();
+      jobPanels.values().forEach( panel -> panel.detachFromSystem() );
       jobPanels.clear();
       
       if ( database.jenkinsJobs().isEmpty() ) return;

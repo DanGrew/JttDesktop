@@ -8,6 +8,12 @@
  */
 package buildwall.layout;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -295,6 +301,22 @@ public class GridWallImplTest {
       database.jenkinsJobs().get( 2 ).lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
       database.jenkinsJobs().get( 3 ).lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
       assertIndexConstraints( 1, 1 );
+   }//End Method
+   
+   @Test public void constructionShouldDetachChildrenPanels(){
+      Set< JobPanelImpl > firstPanels = new HashSet<>();
+      for ( JenkinsJob job : database.jenkinsJobs() ) {
+         JobPanelImpl panel = systemUnderTest.getPanelFor( job );
+         assertThat( panel.isDetached(), is( false ) );
+         firstPanels.add( panel );
+      }
+      systemUnderTest.constructLayout();
+      
+      for ( JenkinsJob job : database.jenkinsJobs() ) {
+         JobPanelImpl panel = systemUnderTest.getPanelFor( job );
+         assertThat( panel.isDetached(), is( false ) );
+      }
+      firstPanels.forEach( panel -> assertThat( panel.isDetached(), is( true ) ) );
    }//End Method
    
 }//End Class

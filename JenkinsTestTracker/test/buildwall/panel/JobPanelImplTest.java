@@ -83,5 +83,11 @@ public class JobPanelImplTest {
       assertThat( systemUnderTest.progress().isDetached(), is( true ) );
       assertThat( systemUnderTest.description().isDetached(), is( true ) );
    }//End Method
+   
+   @Test public void shouldShowAsDetached(){
+      assertThat( systemUnderTest.isDetached(), is( false ) );
+      systemUnderTest.detachFromSystem();
+      assertThat( systemUnderTest.isDetached(), is( true ) );
+   }//End Method
 
 }//End Class

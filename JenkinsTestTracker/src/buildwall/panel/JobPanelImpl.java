@@ -55,6 +55,15 @@ public class JobPanelImpl extends StackPane {
       progress.detachFromSystem();
       description.detachFromSystem();
    }//End Method
+   
+   /**
+    * Method to determine whether the {@link JobPanelDescriptionImpl} is detached and
+    * not registered with anything in the system.
+    * @return true if no registrations held.
+    */
+   public boolean isDetached() {
+      return progress.isDetached() && description.isDetached();
+   }//End Method
 
    JobProgressImpl progress() {
       return progress;
