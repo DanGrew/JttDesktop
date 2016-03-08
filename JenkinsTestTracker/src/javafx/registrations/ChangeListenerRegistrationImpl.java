@@ -25,13 +25,16 @@ public class ChangeListenerRegistrationImpl< PropertyTypeT > extends Registratio
    /**
     * Constructs a new {@link ChangeListenerRegistrationImpl}.
     * @param property the {@link ObjectProperty} associated.
+    * @param initialValue the initial value for the property.
     * @param action the {@link ChangeListener} associated with the property.
     */
    public ChangeListenerRegistrationImpl( 
             ObjectProperty< PropertyTypeT > property, 
+            PropertyTypeT initialValue,
             ChangeListener< PropertyTypeT > action 
    ) {
       this.property = property;
+      property.set( initialValue );
       this.action = action;
    }//End Constructor
 

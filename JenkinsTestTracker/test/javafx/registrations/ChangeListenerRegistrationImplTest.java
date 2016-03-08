@@ -24,8 +24,9 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class ChangeListenerRegistrationImplTest {
    
-   private ObjectProperty< String > assertion;
+   private static final String INITIAL_VALUE = "anything to start with";
    private ObjectProperty< String > property;
+   private ObjectProperty< String > assertion;
    private ChangeListenerRegistrationImpl< String > systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
@@ -34,10 +35,15 @@ public class ChangeListenerRegistrationImplTest {
       
       systemUnderTest = new ChangeListenerRegistrationImpl<>(
                property, 
+               INITIAL_VALUE,
                ( source, old, update ) -> assertion.set( update )
       );
    }//End Method
-
+   
+   @Test public void propertyShouldTakeInitialValue(){
+      assertThat( property.get(), is( INITIAL_VALUE ) );
+   }//End Method
+   
    @Test public void shouldAddListener() {
       systemUnderTest.register();
       
