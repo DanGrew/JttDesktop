@@ -8,6 +8,7 @@ import credentials.login.JenkinsLogin;
 import graphics.DecoupledPlatformImpl;
 import graphics.PlatformDecouplerImpl;
 import javafx.application.Application;
+import javafx.platform.PlatformLifecycle;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.selector.ToolSelector;
@@ -54,6 +55,7 @@ public class JenkinsTestTracker extends Application {
       JenkinsTestTrackerCoreImpl core = new JttSystemCoreImpl( api );
       Scene scene = selector.getSelectedTool().construct( core.getJenkinsDatabase() );
       
+      stage.setOnCloseRequest( event -> PlatformLifecycle.shutdown() );
       stage.setScene( scene );
       stage.show();
    }//End Method

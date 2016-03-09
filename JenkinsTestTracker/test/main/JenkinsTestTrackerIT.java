@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,8 +34,11 @@ import categories.IntegrationTest;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
+import javafx.platform.PlatformLifecycle;
+import javafx.platform.PlatformLifecycleImpl;
 import javafx.scene.Group;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import main.selector.ToolSelector;
 import main.selector.Tools;
 import styling.BuildWallStyles;
@@ -135,6 +139,21 @@ public class JenkinsTestTrackerIT {
       
       assertThat( stage.getScene().getRoot(), instanceOf( TestTableView.class ) );
       assertThat( stage.getScene().getAccelerators().isEmpty(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldShutdownPlatformOnExit(){
+      PlatformLifecycleImpl lifecycle = mock( PlatformLifecycleImpl.class );
+      PlatformLifecycle.setInstance( lifecycle );
+      
+      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      when( controller.selectTool( Mockito.any() ) ).thenReturn( true );
+      when( controller.selectTool( selectorCaptor.capture() ) ).then( invocation -> {
+         selectorCaptor.getValue().select( Tools.TestTable );
+         return true;
+      } );
+      launchApplication();
+      stage.getOnCloseRequest().handle( new WindowEvent( stage, WindowEvent.WINDOW_CLOSE_REQUEST ) );
+      verify( lifecycle ).shutdownPlatform();
    }//End Method
 
 }//End Class
