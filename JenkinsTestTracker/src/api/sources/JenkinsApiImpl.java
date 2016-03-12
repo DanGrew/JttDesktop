@@ -43,16 +43,28 @@ public class JenkinsApiImpl implements ExternalApi {
    static final String JOB = "/job/";
    
    private final ClientHandler clientHandler;
+   private final JenkinsApiDigest digest;
    private String jenkinsLocation;
    private HttpClient connectedClient;
    private HttpContext getContext;
-
+   
    /**
     * Constructs a new {@link JenkinsApiImpl}.
     * @param clientHandler the {@link ClientHandler} used to handle interactions with jenkins.
     */
    public JenkinsApiImpl( ClientHandler clientHandler ) {
+      this( clientHandler, new JenkinsApiDigest() );
+   }//End Constructor
+
+   /**
+    * Constructs a new {@link JenkinsApiImpl}.
+    * @param clientHandler the {@link ClientHandler} used to handle interactions with jenkins.
+    * @param digest the {@link JenkinsApiDigest} to use.
+    */
+   JenkinsApiImpl( ClientHandler clientHandler, JenkinsApiDigest digest ) {
       this.clientHandler = clientHandler;
+      this.digest = digest;
+      this.digest.attachSource( this );
       // Generate BASIC scheme object and stick it to the execution context
       BasicScheme basicAuth = new BasicScheme();
       getContext = new BasicHttpContext();
@@ -68,11 +80,14 @@ public class JenkinsApiImpl implements ExternalApi {
       this.jenkinsLocation = prefixJenkinsLocation( jenkinsLocation );
       
       HttpGet get = constructBaseRequest( jenkinsLocation );
+      digest.executingLoginRequest();
       String responseString = executeRequestAndUnpack( get );
       if ( responseString == null ) {
+         digest.connectionFailed();
          connectedClient = null;
          return null;
       } else {
+         digest.connectionSuccess();
          return connectedClient;
       }
    }//End Method
@@ -86,20 +101,25 @@ public class JenkinsApiImpl implements ExternalApi {
    String executeRequestAndUnpack( HttpGet getRequest ){
       try {
          HttpResponse response = connectedClient.execute( getRequest, getContext );
+         digest.handlingResponse();
          String responseString = clientHandler.handleResponse( response );
+         digest.responseReady();
          return responseString;
       } catch ( HttpResponseException exception ) {
          System.out.println( "Providing StackTrace for refusal, not necessarily a problem (HttpResponseException):" );
          if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
          exception.printStackTrace();
+         digest.connectionException( exception );
       } catch ( ClientProtocolException exception ) {
          System.out.println( "Providing StackTrace for refusal, not necessarily a problem (ClientProtocolException):" );
          if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
          exception.printStackTrace();
+         digest.connectionException( exception );
       } catch ( IOException exception ) {
          System.out.println( "Providing StackTrace for refusal, not necessarily a problem (IOException):" );
          if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
          exception.printStackTrace();
+         digest.connectionException( exception );
       }
       return null;
    }//End Method

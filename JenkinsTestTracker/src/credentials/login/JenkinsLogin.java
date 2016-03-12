@@ -14,9 +14,14 @@ import org.apache.http.client.HttpClient;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import api.sources.ExternalApi;
+import core.message.Messages;
+import core.progress.Progresses;
 import friendly.controlsfx.FriendlyAlert;
 import graphics.DecoupledPlatformImpl;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -25,8 +30,11 @@ import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
+import viewer.basic.DigestViewer;
 
 /**
  * The {@link JenkinsLogin} provides a {@link GridPane} for a user logging into a
@@ -34,20 +42,27 @@ import javafx.stage.Modality;
  */
 public class JenkinsLogin {
 
+   static final String LOGGING_IN = "Logging in";
+   static final String JENKINS_LOCATION_IS_NOT_VALID = "Jenkins Location is not valid";
+   static final String USER_NAME_IS_NOT_VALID = "User Name is not valid";
+   static final String PASSWORD_IS_NOT_VALID = "Password is not valid";
+   static final double LOGGIN_IN_PROGRESS = 5;
    static final String HEADER = "Welcome! Please log in.";
    static final String TITLE = "Jenkins Test Tracker";
    static final String VALIDATION_MESSAGE = "Text must be present";
+   static final EventHandler< DialogEvent > LOGIN_ACCEPTED_CLOSER = dialogEvent -> {};
 
    private static final int JENKINS_LOCATION_WIDTH = 300;
    
    private TextField jenkinsField;
    private TextField userNameField;
    private PasswordField passwordField;
-   private GridPane content;
+   private BorderPane content;
 
    private ButtonType login;
    private ButtonType cancel;
    
+   private JenkinsLoginDigest digest;
    private final ValidationSupport validation;
    private InputValidator validator;
    private final ExternalApi externalApi;
@@ -69,8 +84,19 @@ public class JenkinsLogin {
     * @param externalApi the {@link ExternalApi} for logging in.
     */
    public JenkinsLogin( ExternalApi externalApi ) {
+      this( externalApi, new JenkinsLoginDigest() );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link JenkinsLogin}.
+    * @param externalApi the {@link ExternalApi} for loggin in.
+    * @param digest the {@link JenkinsLoginDigest} to use.
+    */
+   JenkinsLogin( ExternalApi externalApi, JenkinsLoginDigest digest ) {
       this.externalApi = externalApi;
       this.validation = new ValidationSupport();
+      this.digest = digest;
+      this.digest.attachSource( this );
       login = new ButtonType( "Login" );
       cancel = new ButtonType( "Cancel" );
       initialiseContent();
@@ -91,7 +117,10 @@ public class JenkinsLogin {
       
       alert.friendly_setOnCloseRequest( event -> {
          ButtonType type = alert.friendly_getResult();
-         if ( type.equals( login ) ) prepareInputAndLogin( event );
+         if ( type.equals( login ) ) {
+            event.consume();
+            new Thread( () -> prepareInputAndLogin( event, alert ) ).start();
+         }
       } );
       
       alert.friendly_dialogSetContent( content );
@@ -101,31 +130,37 @@ public class JenkinsLogin {
     * Method to initialise the content of the {@link Alert}.
     */
    private void initialiseContent(){
-      content = new GridPane();
-      content.setAlignment( Pos.CENTER );
-      content.setHgap( 10 );
-      content.setVgap( 10 );
-      content.setPadding( new Insets( 25, 25, 25, 25 ) );
+      GridPane loginContent = new GridPane();
+      loginContent.setAlignment( Pos.CENTER );
+      loginContent.setHgap( 10 );
+      loginContent.setVgap( 10 );
+      loginContent.setPadding( new Insets( 25, 25, 25, 25 ) );
 
       Label jenkinsLocation = new Label( "Jenkins:" );
-      content.add( jenkinsLocation, 0, 1 );
+      loginContent.add( jenkinsLocation, 0, 1 );
 
       jenkinsField = new TextField();
       jenkinsField.setPrefWidth( JENKINS_LOCATION_WIDTH );
-      content.add( jenkinsField, 1, 1 );
+      loginContent.add( jenkinsField, 1, 1 );
 
       Label userName = new Label( "User Name:" );
-      content.add( userName, 0, 2 );
+      loginContent.add( userName, 0, 2 );
 
       userNameField = new TextField();
-      content.add( userNameField, 1, 2 );
+      loginContent.add( userNameField, 1, 2 );
 
       Label pw = new Label( "Password:" );
-      content.add( pw, 0, 3 );
+      loginContent.add( pw, 0, 3 );
 
       passwordField = new PasswordField();
-      content.add( passwordField, 1, 3 );
+      loginContent.add( passwordField, 1, 3 );
 
+      content = new BorderPane( loginContent );
+      TitledPane digestPane = new TitledPane( "System Digest", new DigestViewer( 600, 200 ) );
+      digestPane.setExpanded( false );
+      content.setBottom( digestPane );
+      digest.resetLoginProgress();
+      
       applyValidation();
    }//End Method
    
@@ -154,26 +189,35 @@ public class JenkinsLogin {
     * Method to prepare the input for logging in and to log in. Log in will not be performed
     * if input is not valid.
     * @param event the {@link DialogEvent} fired when clicking buttons.
+    * @param alert the {@link FriendlyAlert} that can be closed when needed.
     */
-   private void prepareInputAndLogin( DialogEvent event ){
+   private void prepareInputAndLogin( DialogEvent event, FriendlyAlert alert ){
+      digest.progress( Progresses.simpleProgress( LOGGIN_IN_PROGRESS ), Messages.simpleMessage( LOGGING_IN ) );
       String jenkinsLocation = jenkinsField.getText();
       if ( !validator.test( jenkinsLocation ) ) {
-         event.consume();
+         digest.validationError( JENKINS_LOCATION_IS_NOT_VALID );
          return;
       }
       String username = userNameField.getText();
       if ( !validator.test( username ) ) {
-         event.consume();
+         digest.validationError( USER_NAME_IS_NOT_VALID );
          return;
       }
       String password = passwordField.getText();
       if ( !validator.test( password ) ) {
-         event.consume();
+         digest.validationError( PASSWORD_IS_NOT_VALID );
          return;
       }
       
+      digest.acceptCredentials();
       HttpClient client = externalApi.attemptLogin( jenkinsLocation, username, password );
-      if ( client == null ) event.consume();
+      if ( client == null ) {
+         digest.loginFailed();
+      } else {
+         digest.loginSuccessful();
+         alert.friendly_setOnCloseRequest( LOGIN_ACCEPTED_CLOSER );
+         PlatformImpl.runLater( () -> alert.friendly_close() );
+      }
    }//End Method
    
    /**

@@ -105,5 +105,12 @@ public class FriendlyAlert extends Alert {
    public Optional< ButtonType > friendly_showAndWait() {
       return showAndWait();
    }//End Method
+   
+   /**
+    * {@link Alert#close()}.
+    */
+   public void friendly_close(){
+      close();
+   }//End Method
 
 }//End Class

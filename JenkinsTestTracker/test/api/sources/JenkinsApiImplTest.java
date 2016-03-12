@@ -8,6 +8,14 @@
  */
 package api.sources;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
@@ -20,7 +28,9 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -38,38 +48,43 @@ public class JenkinsApiImplTest {
    private static final String EXPECTED_RESPONSE = "anythingNotNull";
    
    private JenkinsApiImpl systemUnderTest;
+   @Mock private JenkinsApiDigest digest;
    private ObjectProperty< Object > request;
-   private ClientHandler clientHandler;
-   private HttpClient client;
+   @Mock private ClientHandler clientHandler;
+   @Mock private HttpClient client;
    private JenkinsJob jenkinsJob;
    
    @Before public void initialiseSystemUnderTest() throws ClientProtocolException, IOException{
-      client = Mockito.mock( HttpClient.class );
-      clientHandler = Mockito.mock( ClientHandler.class );
-      systemUnderTest = new JenkinsApiImpl( clientHandler );
+      MockitoAnnotations.initMocks( this );
+      systemUnderTest = new JenkinsApiImpl( clientHandler, digest );
       jenkinsJob = new JenkinsJobImpl( "SomeJenkinsProject" );
       
       request = new SimpleObjectProperty< Object >();
-      Mockito.when( client.execute( Mockito.< HttpGet >any(), Mockito.< BasicHttpContext >any() ) ).thenAnswer( 
+      when( client.execute( Mockito.< HttpGet >any(), Mockito.< BasicHttpContext >any() ) ).thenAnswer( 
                invocation -> {
                   request.set( invocation.getArguments()[ 0 ] );
                   return Mockito.mock( HttpResponse.class );
                } 
       );
       
-      Mockito.when( clientHandler.constructClient( JENKINS_LOACTION, USERNAME, PASSWORD ) ).thenReturn( client );
-      Mockito.when( clientHandler.handleResponse( Mockito.any() ) ).thenReturn( EXPECTED_RESPONSE );
+      when( clientHandler.constructClient( JENKINS_LOACTION, USERNAME, PASSWORD ) ).thenReturn( client );
+      when( clientHandler.handleResponse( Mockito.any() ) ).thenReturn( EXPECTED_RESPONSE );
+      
+      verify( digest ).attachSource( systemUnderTest );
    }//End Method
 
    @Test public void shouldAttemptLogin() throws ClientProtocolException, IOException {
       HttpClient actualClient = systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
-      Assert.assertEquals( client, actualClient );
+      assertEquals( client, actualClient );
       
-      Mockito.verify( clientHandler ).constructClient( JENKINS_LOACTION, USERNAME, PASSWORD );
-      Assert.assertNotNull( request.get() );
-      Assert.assertTrue( request.get() instanceof HttpGet );
+      verify( clientHandler ).constructClient( JENKINS_LOACTION, USERNAME, PASSWORD );
+      assertNotNull( request.get() );
+      assertTrue( request.get() instanceof HttpGet );
       HttpGet get = ( HttpGet )request.get();
-      Assert.assertEquals( JenkinsApiImpl.constructBaseRequest( JENKINS_LOACTION ).getURI().toString(), get.getURI().toString() );
+      assertEquals( JenkinsApiImpl.constructBaseRequest( JENKINS_LOACTION ).getURI().toString(), get.getURI().toString() );
+      
+      verify( digest ).executingLoginRequest();
+      verify( digest ).connectionSuccess();
    }//End Method
    
    @Test public void shouldNotAttemptLoginWhenClientIsNull() throws ClientProtocolException, IOException {
@@ -78,12 +93,17 @@ public class JenkinsApiImplTest {
       
       Mockito.verify( clientHandler ).constructClient( JENKINS_LOACTION, USERNAME, PASSWORD );
       Mockito.verifyNoMoreInteractions( client, clientHandler );
+      
+      verify( digest, times( 0 ) ).executingLoginRequest();
    }//End Method
    
    @Test public void shouldResetClientConnectionAndHandleNullResponse() throws ClientProtocolException, IOException{
       Mockito.when( clientHandler.handleResponse( Mockito.any() ) ).thenReturn( null );
       Assert.assertNull( systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD ) );
       Assert.assertFalse( systemUnderTest.isLoggedIn() );
+      
+      verify( digest ).executingLoginRequest();
+      verify( digest ).connectionFailed();
    }//End Method
    
    @Test public void shouldNotBeLoggedInUntilAttemptedAndSucceeded() throws ClientProtocolException, IOException{
@@ -257,22 +277,51 @@ public class JenkinsApiImplTest {
    @SuppressWarnings("unchecked") //Fail fast, manually verified. 
    @Test public void executeShouldHandleClientProtocolException() throws ClientProtocolException, IOException{
       systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
-      Mockito.when( client.execute( Mockito.< HttpGet >any(), Mockito.< HttpContext >any() ) ).thenThrow( ClientProtocolException.class );
-      Assert.assertNull( systemUnderTest.executeRequestAndUnpack( Mockito.mock( HttpGet.class ) ) );
+      verify( digest, times( 1 ) ).handlingResponse();
+      verify( digest, times( 1 ) ).responseReady();
+      
+      when( client.execute( Mockito.< HttpGet >any(), Mockito.< HttpContext >any() ) ).thenThrow( ClientProtocolException.class );
+      assertNull( systemUnderTest.executeRequestAndUnpack( Mockito.mock( HttpGet.class ) ) );
+      
+      verify( digest, times( 1 ) ).handlingResponse();
+      verify( digest, times( 1 ) ).responseReady();
    }//End Method
    
    @SuppressWarnings("unchecked") //Fail fast, manually verified.
    @Test public void executeShouldHandleIOException() throws ClientProtocolException, IOException{
       systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      verify( digest, times( 1 ) ).handlingResponse();
+      verify( digest, times( 1 ) ).responseReady();
+      
       Mockito.when( client.execute( Mockito.< HttpGet >any(), Mockito.< HttpContext >any() ) ).thenThrow( IOException.class );
       Assert.assertNull( systemUnderTest.executeRequestAndUnpack( Mockito.mock( HttpGet.class ) ) );
+      
+      verify( digest, times( 1 ) ).handlingResponse();
+      verify( digest, times( 1 ) ).responseReady();
    }//End Method
 
    @SuppressWarnings("unchecked") //Fail fast, manually verified.
    @Test public void executeShouldHandleHttpResponseException() throws ClientProtocolException, IOException{
       systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      verify( digest, times( 1 ) ).handlingResponse();
+      verify( digest, times( 1 ) ).responseReady();
+      
       Mockito.when( clientHandler.handleResponse( Mockito.any() ) ).thenThrow( HttpResponseException.class );
       Assert.assertNull( systemUnderTest.executeRequestAndUnpack( Mockito.mock( HttpGet.class ) ) );
+      
+      verify( digest, times( 2 ) ).handlingResponse();
+      verify( digest, times( 1 ) ).responseReady();
+   }//End Method
+   
+   @Test public void executeShouldDigetsFully() throws ClientProtocolException, IOException{
+      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      verify( digest, times( 1 ) ).handlingResponse();
+      verify( digest, times( 1 ) ).responseReady();
+      
+      assertEquals( systemUnderTest.executeRequestAndUnpack( Mockito.mock( HttpGet.class ) ), EXPECTED_RESPONSE );
+      
+      verify( digest, times( 2 ) ).handlingResponse();
+      verify( digest, times( 2 ) ).responseReady();
    }//End Method
    
    @Test public void shouldSubstituteSpacesInJenkinsJobs(){

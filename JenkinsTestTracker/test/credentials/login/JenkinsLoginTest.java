@@ -8,6 +8,15 @@
  */
 package credentials.login;
 
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.http.client.HttpClient;
@@ -16,13 +25,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.sun.javafx.application.PlatformImpl;
 
 import api.sources.ClientHandler;
 import api.sources.ExternalApi;
 import api.sources.JenkinsApiImpl;
+import core.message.Message;
+import core.progress.Progress;
 import credentials.login.JenkinsLogin.InputValidator;
 import friendly.controlsfx.FriendlyAlert;
 import graphics.DecoupledPlatformImpl;
@@ -38,20 +53,26 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogEvent;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
+import viewer.basic.DigestViewer;
 
 /**
  * {@link JenkinsLogin} test.
  */
 public class JenkinsLoginTest {
 
-   private FriendlyAlert alert;
+   @Mock private FriendlyAlert alert;
    private EventHandler< DialogEvent > onCloseHandler;
-   private DialogEvent loginEvent;
+   @Mock private DialogEvent loginEvent;
    private Node content;
    private ObservableList< ButtonType > buttonTypes;
-   private ExternalApi handler;
+   @Mock private ExternalApi handler;
+   @Mock private JenkinsLoginDigest digest;
+   @Captor private ArgumentCaptor< Progress > progressCaptor;
+   @Captor private ArgumentCaptor< Message > messageCaptor;
    private JenkinsLogin systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
@@ -63,13 +84,12 @@ public class JenkinsLoginTest {
     */
    @SuppressWarnings("unchecked") //Simply mocking genericized objects. 
    @Before public void initialiseSystemUnderTest() {
+      MockitoAnnotations.initMocks( this );
       JavaFxInitializer.startPlatform();
-      alert = Mockito.mock( FriendlyAlert.class );
       
       buttonTypes = FXCollections.observableArrayList();
       Mockito.when( alert.friendly_getButtonTypes() ).thenReturn( buttonTypes );
       
-      loginEvent = Mockito.mock( DialogEvent.class );
       Mockito.doAnswer( invocation -> {
          return onCloseHandler = ( EventHandler< DialogEvent > )invocation.getArguments()[ 0 ];
       } ).when( alert ).friendly_setOnCloseRequest( Mockito.any() );
@@ -78,8 +98,7 @@ public class JenkinsLoginTest {
          return content = ( Node )invocation.getArguments()[ 0 ];
       } ).when( alert ).friendly_dialogSetContent( Mockito.any() );
       
-      handler = Mockito.mock( ExternalApi.class );
-      systemUnderTest = new JenkinsLogin( handler );
+      systemUnderTest = new JenkinsLogin( handler, digest );
       systemUnderTest.configureAlert( alert );
    }//End Method
    
@@ -112,8 +131,27 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( password );
       
       login();
-      Mockito.verify( handler ).attemptLogin( jenkinsLocation, user, password );
-      Mockito.verify( loginEvent ).consume();
+      verify( handler ).attemptLogin( jenkinsLocation, user, password );
+      verify( digest ).acceptCredentials();
+   }//End Method
+   
+   @Test public void shouldDigestSuccess(){
+      when( handler.attemptLogin( anyString(), anyString(), anyString() ) ).thenReturn( mock( HttpClient.class ) );
+      shouldAttemptToConnect();
+      verify( digest ).loginSuccessful();
+   }//End Method
+   
+   @Test public void shouldDigestFailure(){
+      when( handler.attemptLogin( anyString(), anyString(), anyString() ) ).thenReturn( null );
+      shouldAttemptToConnect();
+      verify( digest ).loginFailed();
+   }//End Method
+   
+   @Test public void successfulLoginShouldReplaceCloseHandlerSoEventIsNotConsumedAndCloseDialog(){
+      shouldDigestSuccess();
+      verify( alert ).friendly_setOnCloseRequest( JenkinsLogin.LOGIN_ACCEPTED_CLOSER );
+      PlatformImpl.runAndWait( () -> {} );
+      verify( alert ).friendly_close();
    }//End Method
    
    @Test public void shouldShutDownAlertWhenLoginAccepted(){
@@ -194,8 +232,10 @@ public class JenkinsLoginTest {
       systemUnderTest.getPasswordField().setText( password );
       
       login();
-      Mockito.verifyNoMoreInteractions( handler );
-      Mockito.verify( loginEvent ).consume();
+      verifyNoMoreInteractions( handler );
+      verify( loginEvent ).consume();
+      
+      verify( digest ).validationError( JenkinsLogin.JENKINS_LOCATION_IS_NOT_VALID );
    }//End Method
    
    @Test public void shouldNotAttemptWithEmptyUsername(){
@@ -210,6 +250,8 @@ public class JenkinsLoginTest {
       login();
       Mockito.verifyNoMoreInteractions( handler );
       Mockito.verify( loginEvent ).consume();
+      
+      verify( digest ).validationError( JenkinsLogin.USER_NAME_IS_NOT_VALID );
    }//End Method
    
    @Test public void shouldNotAttemptWithEmptyPassword(){
@@ -224,6 +266,8 @@ public class JenkinsLoginTest {
       login();
       Mockito.verifyNoMoreInteractions( handler );
       Mockito.verify( loginEvent ).consume();
+      
+      verify( digest ).validationError( JenkinsLogin.PASSWORD_IS_NOT_VALID );
    }//End Method
    
    @Test public void shouldNotAttemptWithInitialValues(){
@@ -234,11 +278,25 @@ public class JenkinsLoginTest {
    
    @Test public void shouldContainAllTextElementsInChildren(){
       Assert.assertNotNull( content );
-      Assert.assertTrue( content instanceof GridPane );
-      GridPane gridPane = ( GridPane )content;
+      Assert.assertTrue( content instanceof BorderPane );
+      BorderPane borderPane = ( BorderPane )content;
+      Assert.assertTrue( borderPane.getCenter() instanceof GridPane );
+      GridPane gridPane = ( GridPane )borderPane.getCenter();
+      
       Assert.assertTrue( gridPane.getChildren().contains( systemUnderTest.getJenkinsLocationField() ) );
       Assert.assertTrue( gridPane.getChildren().contains( systemUnderTest.getUserNameField() ) );
       Assert.assertTrue( gridPane.getChildren().contains( systemUnderTest.getPasswordField() ) );
+   }//End Method
+   
+   @Test public void digestShouldBeProvidedInCollapsedPane(){
+      Assert.assertNotNull( content );
+      Assert.assertTrue( content instanceof BorderPane );
+      BorderPane borderPane = ( BorderPane )content;
+      
+      Assert.assertTrue( borderPane.getBottom() instanceof TitledPane );
+      TitledPane digestPane = ( TitledPane )borderPane.getBottom();
+      assertThat( digestPane.getContent(), instanceOf( DigestViewer.class ) );
+      assertThat( digestPane.isExpanded(), is( false ) );
    }//End Method
    
    @Test public void shouldValidateText(){
@@ -339,6 +397,12 @@ public class JenkinsLoginTest {
       Assert.assertNotNull( onCloseHandler );
       Mockito.when( alert.friendly_getResult() ).thenReturn( systemUnderTest.loginButtonType() );
       onCloseHandler.handle( loginEvent );
+      PlatformImpl.runAndWait( () -> {} );
+      
+      verify( loginEvent ).consume();
+      verify( digest ).progress( progressCaptor.capture(), messageCaptor.capture() );
+      assertThat( progressCaptor.getValue().getPercentage(), is( JenkinsLogin.LOGGIN_IN_PROGRESS ) );
+      assertThat( messageCaptor.getValue().getMessage(), is( JenkinsLogin.LOGGING_IN ) );
    }//End Method
    
    /**
@@ -360,6 +424,10 @@ public class JenkinsLoginTest {
       } catch ( InterruptedException e ) {
          Assert.fail( "CountDownLatch failed." );
       }
+   }//End Method
+   
+   @Test public void shouldHaveResetProgressOnStartUp() {
+      verify( digest ).resetLoginProgress();
    }//End Method
 
 }//End Class
