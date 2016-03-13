@@ -34,7 +34,7 @@ public class JavaFxInitializer extends Application {
     * {@inheritDoc}
     */
    @Override public void start(Stage stage) throws Exception {
-      Scene scene = new Scene( content );
+      Scene scene = new Scene( content, 400, 400 );
       stage.setScene( scene );
       stage.show();
       JavaFxInitializer.stage = stage;

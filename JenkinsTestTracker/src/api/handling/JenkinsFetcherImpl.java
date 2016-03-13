@@ -96,7 +96,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     */
    @Override public void fetchJobsAndUpdateDetails() {
       fetchJobs();
-      database.jenkinsJobs().forEach( job -> updateJobDetails( job ) );
+      database.jenkinsJobs().forEach( this::updateJobDetails );
    }//End Method
 
 }//End Class

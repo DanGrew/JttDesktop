@@ -31,7 +31,7 @@ public class JobPolicyUpdater {
       );
       database.jenkinsJobs().addListener( new FunctionListChangeListenerImpl<>( 
                job -> putInitialPolicy( configuration, job ),
-               job -> {} 
+               job -> { /* Do nothing on remove. */ } 
       ) );
    }//End Constructor
    
