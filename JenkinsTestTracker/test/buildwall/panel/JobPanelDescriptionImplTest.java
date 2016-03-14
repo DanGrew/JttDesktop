@@ -12,6 +12,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
+import java.sql.Timestamp;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -156,18 +158,29 @@ public class JobPanelDescriptionImplTest {
    
    @Test public void shouldUseJobNumberAndKeepUpdated(){
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumber( job.lastBuildNumberProperty().get() ), 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       
       final Integer value = 799;
       job.lastBuildNumberProperty().set( value );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumber( job.lastBuildNumberProperty().get() ), 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumber( value ), 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( value, job.lastBuildTimestampProperty().get() ),
+               systemUnderTest.buildNumber().getText() 
+      );
+      
+      final long timestamp = 3756298;
+      job.lastBuildTimestampProperty().set( timestamp );
+      Assert.assertEquals( 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
+               systemUnderTest.buildNumber().getText() 
+      );
+      Assert.assertEquals( 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), timestamp ),
                systemUnderTest.buildNumber().getText() 
       );
    }//End Method
@@ -219,6 +232,22 @@ public class JobPanelDescriptionImplTest {
    @Test public void shouldFormatBuildNumber(){
       Assert.assertEquals( "#2001", JobPanelDescriptionImpl.formatBuildNumber( 2001 ) );
       Assert.assertEquals( "#?", JobPanelDescriptionImpl.formatBuildNumber( null ) );
+   }//End Method
+   
+   @Test public void shouldFormatBuildNumberAndTimestamp(){
+      assertThat( 
+               "#200 | 09:59-17/01", 
+               is( JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( 200, 1457963846l ) ) 
+      );
+      assertThat( 
+               "#? | ?-?", 
+               is( JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( null, null ) ) 
+      );
+   }//End Method
+   
+   @Test public void shouldProvideCorrectDateTimeFormat(){
+      assertThat( JobPanelDescriptionImpl.formatTimestamp( 1457963846l ), is( "09:59-17/01" ) );
+      assertThat( JobPanelDescriptionImpl.formatTimestamp( null ), is( "?-?" ) );
    }//End Method
    
    @Test public void shouldFormatCompletionEstimateInSeconds(){
@@ -319,7 +348,7 @@ public class JobPanelDescriptionImplTest {
    
    @Test public void detachmentShouldNotUseJobNumberAndKeepUpdated(){
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumber( job.lastBuildNumberProperty().get() ), 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       
@@ -328,11 +357,22 @@ public class JobPanelDescriptionImplTest {
       final Integer value = 799;
       job.lastBuildNumberProperty().set( value );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatBuildNumber( job.lastBuildNumberProperty().get() ), 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatBuildNumber( value ), 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( value, job.lastBuildTimestampProperty().get() ),
+               systemUnderTest.buildNumber().getText() 
+      );
+      
+      final Long timestamp = 394608347l;
+      job.lastBuildTimestampProperty().set( timestamp );
+      Assert.assertNotEquals( 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
+               systemUnderTest.buildNumber().getText() 
+      );
+      Assert.assertNotEquals( 
+               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), timestamp ),
                systemUnderTest.buildNumber().getText() 
       );
    }//End Method

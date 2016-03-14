@@ -8,6 +8,9 @@
  */
 package buildwall.panel;
 
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.concurrent.TimeUnit;
 
 import buildwall.configuration.BuildWallConfiguration;
@@ -33,12 +36,14 @@ import model.jobs.JenkinsJob;
  */
 public class JobPanelDescriptionImpl extends BorderPane {
 
+   static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
+            .appendPattern( "hh:mm" ).appendLiteral( "-" ).appendPattern( "dd/MM" ).toFormatter();
    static final String UNKNOWN_BUILD_NUMBER = "?";
    static final String BUILD_NUMBER_PREFIX = "#";
    static final double DEFAULT_PROPERTY_OPACITY = 0.8;
    static final double PROPERTIES_INSET = 10;
-   static final double BUILD_PROPERTY_PERCENTAGE = 20;
-   static final double COMPLETION_ESTIMATE_PERCENTAGE = 80;
+   static final double BUILD_PROPERTY_PERCENTAGE = 50;
+   static final double COMPLETION_ESTIMATE_PERCENTAGE = 50;
    
    private JenkinsJob job;
    private BuildWallConfiguration configuration;
@@ -65,7 +70,7 @@ public class JobPanelDescriptionImpl extends BorderPane {
       setCenter( jobName );
       
       properties = new GridPane();
-      buildNumber = new Label( formatBuildNumber( job.lastBuildNumberProperty().get() ) );
+      buildNumber = new Label( formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ) );
       buildNumber.setOpacity( DEFAULT_PROPERTY_OPACITY );
       properties.add( buildNumber, 0, 0 );
 
@@ -110,7 +115,15 @@ public class JobPanelDescriptionImpl extends BorderPane {
                job.lastBuildNumberProperty(), 
                ( source, old, updated ) -> { 
                   DecoupledPlatformImpl.runLater( () -> {
-                     buildNumber.setText( formatBuildNumber( job.lastBuildNumberProperty().get() ) );
+                     buildNumber.setText( formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ) );
+                  } );
+               }
+      ) );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               job.lastBuildTimestampProperty(), 
+               ( source, old, updated ) -> { 
+                  DecoupledPlatformImpl.runLater( () -> {
+                     buildNumber.setText( formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ) );
                   } );
                }
       ) );
@@ -227,7 +240,31 @@ public class JobPanelDescriptionImpl extends BorderPane {
     */
    static String formatBuildNumber( Integer buildNumber ) {
       if ( buildNumber == null ) return BUILD_NUMBER_PREFIX + UNKNOWN_BUILD_NUMBER;
+      
       return BUILD_NUMBER_PREFIX + buildNumber.intValue();
+   }//End Method
+   
+   /**
+    * Utility method to format the build number and timestamp into the format to display.
+    * @param buildNumber the {@link Integer} build number.
+    * @param timestamp the {@link Long} timestamp.
+    * @return the {@link String} formatted.
+    */
+   static String formatBuildNumberAndTimestamp( Integer buildNumber, Long timestamp ) {
+      return formatBuildNumber( buildNumber ) +
+               " | " +
+             formatTimestamp( timestamp );
+   }//End Method
+
+   /**
+    * Method to format the timetamp.
+    * @param timestamp the timestamp.
+    * @return the displayable timestamp representation.
+    */
+   static String formatTimestamp( Long timestamp ) {
+      if ( timestamp == null ) return "?-?";
+      
+      return new Timestamp( timestamp ).toLocalDateTime().format( DATE_TIME_FORMATTER );
    }//End Method
 
    /**
