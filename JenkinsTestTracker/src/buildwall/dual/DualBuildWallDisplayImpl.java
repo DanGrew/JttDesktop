@@ -56,6 +56,8 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       rightConfigurationPanel = new BuildWallConfigurationPanelImpl( rightConfiguration );
       leftConfigurationPanel = new BuildWallConfigurationPanelImpl( leftConfiguration );
       configurationScroller = new ScrollPane();
+      
+      setOnContextMenuRequested( new DualBuildWallContextMenuOpener( this ) );
    }//End Constructor
    
    /**

@@ -185,4 +185,8 @@ public class DualBuildWallDisplayImplTest {
       assertSplitPaneItems( systemUnderTest.leftGridWall(), systemUnderTest.rightGridWall() );
    }//End Method
    
+   @Test public void shouldUseContextMenuOpenerOnEntireSut(){
+      assertThat( systemUnderTest.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
+   }//End Method
+   
 }//End Class
