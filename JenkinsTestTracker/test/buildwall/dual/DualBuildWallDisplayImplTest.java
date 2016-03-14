@@ -78,6 +78,7 @@ public class DualBuildWallDisplayImplTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
          systemUnderTest.showRightConfiguration();
+         systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
       } );
       
