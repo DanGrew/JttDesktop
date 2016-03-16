@@ -50,7 +50,7 @@ public class JobUpdaterTest {
       );
       
       Assert.assertEquals( 1, delayCaptor.getAllValues().size() );
-      Assert.assertEquals( JobUpdater.TASK_DELAY, delayCaptor.getValue().longValue() );
+      Assert.assertEquals( JobUpdater.UPDATE_DELAY, delayCaptor.getValue().longValue() );
       
       Assert.assertEquals( 1, intervalCaptor.getAllValues().size() );
       Assert.assertEquals( interval, intervalCaptor.getValue() );

@@ -20,8 +20,8 @@ import synchronisation.model.TimeKeeper;
  */
 public class JobUpdater extends TimeKeeper {
    
-   static final long TASK_DELAY = TimeKeeper.TASK_DELAY;
-   static final long INTERVAL = 5000l;
+   static final long UPDATE_DELAY = TimeKeeper.TASK_DELAY;
+   static final long INTERVAL = 5000L;
    
    /**
     * Constructs a new {@link JobUpdater}.
