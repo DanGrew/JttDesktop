@@ -9,6 +9,7 @@
 package buildwall.panel;
 
 import buildwall.configuration.BuildWallConfiguration;
+import buildwall.panel.description.JobPanelDescriptionImpl;
 import javafx.registrations.RegistrationImpl;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;

@@ -19,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import buildwall.configuration.BuildWallConfigurationImpl;
+import buildwall.panel.description.JobPanelDescriptionImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;

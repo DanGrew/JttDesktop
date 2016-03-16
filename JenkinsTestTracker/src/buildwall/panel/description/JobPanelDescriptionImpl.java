@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package buildwall.panel;
+package buildwall.panel.description;
 
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
@@ -197,7 +197,7 @@ public class JobPanelDescriptionImpl extends BorderPane {
     * not registered with anything in the system.
     * @return true if no registrations held.
     */
-   boolean isDetached() {
+   public boolean isDetached() {
       return registrations.isEmpty();
    }//End Method
 

@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package buildwall.panel;
+package buildwall.panel.description;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
+import buildwall.panel.description.JobPanelDescriptionImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.TestPlatformDecouplerImpl;
