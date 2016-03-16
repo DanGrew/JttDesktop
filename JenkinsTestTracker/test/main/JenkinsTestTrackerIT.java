@@ -29,6 +29,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import buildwall.dual.DualBuildWallDisplayImpl;
 import buildwall.layout.BuildWallDisplayImpl;
 import categories.IntegrationTest;
 import graphics.DecoupledPlatformImpl;
@@ -121,6 +122,24 @@ public class JenkinsTestTrackerIT {
       
       assertThat( stage.getScene().getRoot(), instanceOf( BuildWallDisplayImpl.class ) );
       assertThat( stage.getScene().getAccelerators().isEmpty(), is( false ) );
+   }//End Method
+   
+   @Test public void shouldUseDualBuildWallDisplay(){
+      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      when( controller.selectTool( Mockito.any() ) ).thenReturn( true );
+      when( controller.selectTool( selectorCaptor.capture() ) ).then( invocation -> {
+         selectorCaptor.getValue().select( Tools.DualBuildWall );
+         return true;
+      } );
+      launchApplication();
+      verify( controller, times( 1 ) ).login( Mockito.any() );
+      verify( controller, times( 1 ) ).selectTool( Mockito.any() );
+      
+      assertThat( stage.isShowing(), is( true ) );
+      assertThat( stage.getScene(), notNullValue() );
+      
+      assertThat( stage.getScene().getRoot(), instanceOf( DualBuildWallDisplayImpl.class ) );
+      assertThat( stage.getScene().getAccelerators().isEmpty(), is( true ) );
    }//End Method
    
    @Test public void shouldUseTestTableView(){

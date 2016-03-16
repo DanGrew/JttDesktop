@@ -10,6 +10,7 @@ package main.selector;
 
 import java.util.function.Function;
 
+import buildwall.dual.DualBuildWallDisplayImpl;
 import buildwall.layout.BuildWallDisplayImpl;
 import javafx.scene.Scene;
 import shortcuts.keyboard.KeyBoardShortcuts;
@@ -24,8 +25,7 @@ public enum Tools {
    TestTable( 
          database -> { 
             TestTableView table = new TestTableView( database );
-            Scene scene = new Scene( table );
-            return scene;
+            return new Scene( table );
          }
    ),
    BuildWall(
@@ -34,6 +34,12 @@ public enum Tools {
             Scene scene = new Scene( buildWall );
             KeyBoardShortcuts.cmdShiftO( scene, () -> buildWall.toggleConfiguration() );
             return scene;
+         }
+   ), 
+   DualBuildWall(
+         database -> {
+            DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( database );
+            return new Scene( dualWall );
          }
    );
    

@@ -16,6 +16,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import buildwall.dual.DualBuildWallDisplayImpl;
 import buildwall.layout.BuildWallDisplayImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
@@ -71,6 +72,17 @@ public class ToolsTest {
       
       runnable.run();
       assertThat( display.hasConfigurationTurnedOn(), is( false ) );
+   }//End Method
+   
+   @Test public void shouldConstructDualBuildWallTool() {
+      Scene scene = Tools.DualBuildWall.construct( new JenkinsDatabaseImpl() );
+      assertThat( scene, notNullValue() );
+      
+      assertThat( scene.getRoot(), notNullValue() );
+      assertThat( scene.getRoot(), instanceOf( DualBuildWallDisplayImpl.class ) );
+      
+      DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) scene.getRoot();
+      assertThat( display.getRight(), is( false ) );
    }//End Method
 
 }//End Class
