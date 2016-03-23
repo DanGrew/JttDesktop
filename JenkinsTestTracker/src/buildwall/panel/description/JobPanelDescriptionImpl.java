@@ -9,7 +9,6 @@
 package buildwall.panel.description;
 
 import java.sql.Timestamp;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.concurrent.TimeUnit;
@@ -38,8 +37,7 @@ import model.jobs.JenkinsJob;
 public class JobPanelDescriptionImpl extends BorderPane {
 
    static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
-            .appendPattern( "hh:mm" ).appendLiteral( "-" ).appendPattern( "dd/MM" ).toFormatter()
-            .withZone( ZoneId.of( "Europe/London" ) );
+            .appendPattern( "hh:mm" ).appendLiteral( "-" ).appendPattern( "dd/MM" ).toFormatter();
    static final String UNKNOWN_BUILD_NUMBER = "?";
    static final String BUILD_NUMBER_PREFIX = "#";
    static final double DEFAULT_PROPERTY_OPACITY = 0.8;
@@ -265,7 +263,7 @@ public class JobPanelDescriptionImpl extends BorderPane {
     */
    static String formatTimestamp( Long timestamp ) {
       if ( timestamp == null ) return "?-?";
-      
+
       return new Timestamp( timestamp ).toLocalDateTime().format( DATE_TIME_FORMATTER );
    }//End Method
 

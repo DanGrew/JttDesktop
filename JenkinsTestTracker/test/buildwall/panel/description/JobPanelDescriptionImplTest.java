@@ -12,8 +12,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
-import java.sql.Timestamp;
-import java.time.ZoneId;
+import java.util.TimeZone;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,7 +22,6 @@ import org.junit.Test;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
-import buildwall.panel.description.JobPanelDescriptionImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.TestPlatformDecouplerImpl;
@@ -48,6 +46,7 @@ public class JobPanelDescriptionImplTest {
    
    @BeforeClass public static void initialisePlatform(){
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
+      TimeZone.setDefault( TimeZone.getTimeZone( "UTC" ) );
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
@@ -238,7 +237,7 @@ public class JobPanelDescriptionImplTest {
    
    @Test public void shouldFormatBuildNumberAndTimestamp(){
       assertThat( 
-               "#200 | 09:59-17/01", 
+               "#200 | 08:59-17/01", 
                is( JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( 200, 1457963846l ) ) 
       );
       assertThat( 
@@ -248,8 +247,7 @@ public class JobPanelDescriptionImplTest {
    }//End Method
    
    @Test public void shouldProvideCorrectDateTimeFormat(){
-      System.out.println( ZoneId.systemDefault() );
-      assertThat( JobPanelDescriptionImpl.formatTimestamp( 1457963846l ), is( "09:59-17/01" ) );
+      assertThat( JobPanelDescriptionImpl.formatTimestamp( 1457963846l ), is( "08:59-17/01" ) );
       assertThat( JobPanelDescriptionImpl.formatTimestamp( null ), is( "?-?" ) );
    }//End Method
    
