@@ -8,14 +8,16 @@
  */
 package main.selector;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import buildwall.dual.DualBuildWallDisplayImpl;
 import buildwall.layout.BuildWallDisplayImpl;
 import javafx.scene.Scene;
+import javafx.scene.control.TitledPane;
 import shortcuts.keyboard.KeyBoardShortcuts;
 import storage.database.JenkinsDatabase;
 import view.table.TestTableView;
+import viewer.basic.DigestViewer;
 
 /**
  * {@link Tools} provides the types of tools available to launch.
@@ -23,13 +25,13 @@ import view.table.TestTableView;
 public enum Tools {
 
    TestTable( 
-         database -> { 
+         ( database, digest ) -> { 
             TestTableView table = new TestTableView( database );
             return new Scene( table );
          }
    ),
    BuildWall(
-         database -> { 
+         ( database, digest ) -> { 
             BuildWallDisplayImpl buildWall = new BuildWallDisplayImpl( database );
             Scene scene = new Scene( buildWall );
             KeyBoardShortcuts.cmdShiftO( scene, () -> buildWall.toggleConfiguration() );
@@ -37,29 +39,31 @@ public enum Tools {
          }
    ), 
    DualBuildWall(
-         database -> {
+         ( database, digest ) -> {
             DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( database );
+            dualWall.setTop( new TitledPane( "System Digest", digest ) );
             return new Scene( dualWall );
          }
    );
    
-   private Function< JenkinsDatabase, Scene > toolConstructor;
+   private transient BiFunction< JenkinsDatabase, DigestViewer, Scene > toolConstructor;
    
    /**
     * Constructs a new {@link Tools}.
-    * @param toolConstructor the {@link Function} for constructing the tool.
+    * @param toolConstructor the {@link BiFunction} for constructing the tool.
     */
-   private Tools( Function< JenkinsDatabase, Scene > toolConstructor ) {
+   private Tools( BiFunction< JenkinsDatabase, DigestViewer, Scene > toolConstructor ) {
       this.toolConstructor = toolConstructor;
    }//End Constructor
    
    /**
     * Method to construct the tool given the {@link JenkinsDatabase}.
     * @param database the {@link JenkinsDatabase} to construct with.
+    * @param digest the {@link DigestViewer}.
     * @return the {@link Scene} the tool is placed in.
     */
-   public Scene construct( JenkinsDatabase database ){
-      return toolConstructor.apply( database );
+   public Scene construct( JenkinsDatabase database, DigestViewer digest ){
+      return toolConstructor.apply( database, digest );
    }//End Method
    
 }//End Enum

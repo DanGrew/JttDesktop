@@ -26,6 +26,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
    private ExternalApi externalApi;
    private JsonJobImporter jobsImporter;
    private JsonTestResultsImporter testsImporter;
+   private JenkinsFetcherDigest digest;
    
    /**
     * Constructs a new {@link JenkinsFetcherImpl}.
@@ -33,6 +34,16 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     * @param externalApi the {@link ExternalApi} to retrieve updates from.
     */
    public JenkinsFetcherImpl( JenkinsDatabase database, ExternalApi externalApi ) {
+      this( database, externalApi, new JenkinsFetcherDigest() );
+   }//End Constructor
+
+   /**
+    * Constructs a new {@link JenkinsFetcherImpl}.
+    * @param database the {@link JenkinsDatabase} to populate and update.
+    * @param externalApi the {@link ExternalApi} to retrieve updates from.
+    * @param digest the {@link JenkinsFetcherDigest} to use.
+    */
+   JenkinsFetcherImpl( JenkinsDatabase database, ExternalApi externalApi, JenkinsFetcherDigest digest ) {
       if ( database == null ) throw new IllegalArgumentException( "Null database provided." );
       if ( externalApi == null ) throw new IllegalArgumentException( "Null api provided." );
       
@@ -40,14 +51,20 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       this.externalApi = externalApi;
       jobsImporter = new JsonJobImporterImpl( database );
       testsImporter = new JsonTestResultsImporterImpl( database );
+      
+      this.digest = digest;
+      this.digest.attachSource( this );
    }//End Constructor
 
    /**
     * {@inheritDoc}
     */
    @Override public void updateBuildState( JenkinsJob jenkinsJob ) {
+      digest.fetching( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
       String response = externalApi.getLastBuildBuildingState( jenkinsJob );
+      digest.parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
       jobsImporter.updateBuildState( jenkinsJob, response );
+      digest.updated( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
    }//End Method
 
    /**
@@ -62,8 +79,11 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
             //Not useful to interrupt during build.
             break;
          case Built:
+            digest.fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
             String response = externalApi.getLastBuildJobDetails( jenkinsJob );
+            digest.parsing( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
             jobsImporter.updateJobDetails( jenkinsJob, response );
+            digest.updated( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
             break;
          default:
             break;
@@ -74,8 +94,11 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     * {@inheritDoc}
     */
    @Override public void fetchJobs() {
+      digest.fetching( JenkinsFetcherDigest.JOBS );
       String response = externalApi.getJobsList();
+      digest.parsing( JenkinsFetcherDigest.JOBS );
       jobsImporter.importJobs( response );
+      digest.updated( JenkinsFetcherDigest.JOBS );
    }//End Method
 
    /**
@@ -96,7 +119,13 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     */
    @Override public void fetchJobsAndUpdateDetails() {
       fetchJobs();
-      database.jenkinsJobs().forEach( this::updateJobDetails );
+      
+      digest.startUpdatingJobs( database.jenkinsJobs().size() );
+      for ( JenkinsJob job : database.jenkinsJobs() ) {
+         updateJobDetails( job );
+         digest.updatedJob( job );
+      }
+      digest.jobsUpdated();
    }//End Method
 
 }//End Class

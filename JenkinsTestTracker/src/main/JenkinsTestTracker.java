@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.selector.ToolSelector;
 import styling.SystemStyling;
+import system.properties.DateAndTimes;
+import viewer.basic.DigestViewer;
 
 /**
  * The {@link JenkinsTestTracker} is the launcher for the application.
@@ -42,6 +44,7 @@ public class JenkinsTestTracker extends Application {
     */
    @Override public void start(Stage stage) throws Exception {
       ExternalApi api = new JenkinsApiImpl( new ClientHandler() );
+      DigestViewer digest = new DigestViewer();
       
       if ( !controller.login( new JenkinsLogin( api ) ) ) {
          return;
@@ -53,7 +56,7 @@ public class JenkinsTestTracker extends Application {
       }
       
       JenkinsTestTrackerCoreImpl core = new JttSystemCoreImpl( api );
-      Scene scene = selector.getSelectedTool().construct( core.getJenkinsDatabase() );
+      Scene scene = selector.getSelectedTool().construct( core.getJenkinsDatabase(), digest );
       
       stage.setOnCloseRequest( event -> PlatformLifecycle.shutdown() );
       stage.setScene( scene );
@@ -63,6 +66,7 @@ public class JenkinsTestTracker extends Application {
    public static void main( String[] args ) {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       SystemStyling.initialise();
+      DateAndTimes.initialise();
       launch();
    }//End Method
 

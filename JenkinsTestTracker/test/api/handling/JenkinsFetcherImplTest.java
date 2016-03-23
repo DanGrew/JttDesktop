@@ -8,13 +8,19 @@
  */
 package api.handling;
 
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import api.sources.ExternalApi;
 import model.jobs.BuildResultStatus;
@@ -31,15 +37,20 @@ public class JenkinsFetcherImplTest {
 
    private JenkinsJob jenkinsJob;
    private JenkinsDatabase database;
-   private ExternalApi externalApi;
+   @Mock private ExternalApi externalApi;
+   @Mock private JenkinsFetcherDigest digest;
    private JenkinsFetcher systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      externalApi = Mockito.mock( ExternalApi.class );
+      MockitoAnnotations.initMocks( this );
       database = new JenkinsDatabaseImpl();
       jenkinsJob = new JenkinsJobImpl( "JenkinsJob" );
       database.store( jenkinsJob );
-      systemUnderTest = new JenkinsFetcherImpl( database, externalApi );
+      systemUnderTest = new JenkinsFetcherImpl( database, externalApi, digest );
+   }//End Method
+   
+   @Test public void shouldAttachFetcherToDigest(){
+      verify( digest ).attachSource( systemUnderTest );
    }//End Method
 
    @Test public void shouldUpdateJobBuilding() {
@@ -50,6 +61,12 @@ public class JenkinsFetcherImplTest {
       Mockito.when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( response );
       systemUnderTest.updateBuildState( jenkinsJob );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
+      
+      InOrder digestOrdering = inOrder( digest, externalApi );
+      digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
+      digestOrdering.verify( externalApi ).getLastBuildBuildingState( jenkinsJob );
+      digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
+      digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
    }//End Method
    
    @Test public void shouldUpdateJobBuilt() {
@@ -76,6 +93,12 @@ public class JenkinsFetcherImplTest {
       systemUnderTest.updateJobDetails( jenkinsJob );
       Assert.assertEquals( 22, jenkinsJob.lastBuildNumberProperty().get() );
       Assert.assertEquals( BuildResultStatus.SUCCESS, jenkinsJob.lastBuildStatusProperty().get() );
+      
+      InOrder digestOrdering = inOrder( digest, externalApi );
+      digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
+      digestOrdering.verify( externalApi ).getLastBuildJobDetails( jenkinsJob );
+      digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
+      digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
    }//End Method
    
    @Test public void shouldNotUpdateJobDetailsWhenBuilding() {
@@ -89,7 +112,13 @@ public class JenkinsFetcherImplTest {
       Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
       Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
       
-      Mockito.verify( externalApi, Mockito.times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
+      verify( externalApi, Mockito.times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
+      
+      InOrder digestOrdering = inOrder( digest, externalApi );
+      digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
+      digestOrdering.verify( externalApi ).getLastBuildBuildingState( jenkinsJob );
+      digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
+      digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
    }//End Method
    
    @Test public void shouldNotUpdateJobDetailsWhenNullJob() {
@@ -99,8 +128,11 @@ public class JenkinsFetcherImplTest {
       Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
       Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
       
-      Mockito.verify( externalApi, Mockito.times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
-      Mockito.verify( externalApi, Mockito.times( 0 ) ).getLastBuildBuildingState( Mockito.any() );
+      verify( externalApi, times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
+      verify( externalApi, times( 0 ) ).getLastBuildBuildingState( Mockito.any() );
+      
+      verify( digest ).attachSource( systemUnderTest );
+      verifyNoMoreInteractions( digest );
    }//End Method
    
    @Test public void shouldFetchAllJobs(){
@@ -118,11 +150,18 @@ public class JenkinsFetcherImplTest {
       Assert.assertEquals( "Silly Project", database.jenkinsJobs().get( 5 ).nameProperty().get() );
       Assert.assertEquals( "SomeOtherTypeOfProject", database.jenkinsJobs().get( 6 ).nameProperty().get() );
       Assert.assertEquals( "Zebra!", database.jenkinsJobs().get( 7 ).nameProperty().get() );
+      
+      InOrder digestOrdering = inOrder( digest, externalApi );
+      digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.JOBS );
+      digestOrdering.verify( externalApi ).getJobsList();
+      digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.JOBS );
+      digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.JOBS );
    }//End Method
    
    @Test public void shouldNotFetchTestResultsForNullJob(){
+      verify( digest ).attachSource( systemUnderTest );
       systemUnderTest.updateTestResults( null );
-      Mockito.verifyZeroInteractions( externalApi );
+      verifyZeroInteractions( externalApi, digest );
    }//End Method
    
    @Test public void shouldFetchTestResultsWrapped(){
@@ -176,13 +215,19 @@ public class JenkinsFetcherImplTest {
       database.store( builtJob2 );
       
       spy.fetchJobsAndUpdateDetails();
-      Mockito.verify( spy ).fetchJobs();
-      Mockito.verify( spy ).updateBuildState( buildingJob1 );
-      Mockito.verify( spy ).updateBuildState( builtJob1 );
-      Mockito.verify( spy ).updateBuildState( buildingJob2 );
-      Mockito.verify( spy ).updateBuildState( builtJob2 );
-      Mockito.verify( spy ).updateJobDetails( builtJob1 );
-      Mockito.verify( spy ).updateJobDetails( builtJob2 );
+      verify( spy ).fetchJobs();
+      verify( spy ).updateBuildState( buildingJob1 );
+      verify( spy ).updateBuildState( builtJob1 );
+      verify( spy ).updateBuildState( buildingJob2 );
+      verify( spy ).updateBuildState( builtJob2 );
+      verify( spy ).updateJobDetails( builtJob1 );
+      verify( spy ).updateJobDetails( builtJob2 );
+
+      verify( digest ).startUpdatingJobs( database.jenkinsJobs().size() );
+      for ( JenkinsJob job : database.jenkinsJobs() ) {
+         verify( digest ).updatedJob( job );
+      }
+      verify( digest ).jobsUpdated();
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullDatabaseInConstructor(){
