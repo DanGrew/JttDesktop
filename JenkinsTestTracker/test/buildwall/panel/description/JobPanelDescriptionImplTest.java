@@ -33,6 +33,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
+import system.properties.DateAndTimes;
 import utility.TestCommon;
 
 /**
@@ -46,7 +47,7 @@ public class JobPanelDescriptionImplTest {
    
    @BeforeClass public static void initialisePlatform(){
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
-      TimeZone.setDefault( TimeZone.getTimeZone( "UTC" ) );
+      DateAndTimes.initialise();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
