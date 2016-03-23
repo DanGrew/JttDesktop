@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import java.sql.Timestamp;
+import java.time.ZoneId;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -247,6 +248,7 @@ public class JobPanelDescriptionImplTest {
    }//End Method
    
    @Test public void shouldProvideCorrectDateTimeFormat(){
+      System.out.println( ZoneId.systemDefault() );
       assertThat( JobPanelDescriptionImpl.formatTimestamp( 1457963846l ), is( "09:59-17/01" ) );
       assertThat( JobPanelDescriptionImpl.formatTimestamp( null ), is( "?-?" ) );
    }//End Method
