@@ -112,5 +112,8 @@ public class FriendlyAlert extends Alert {
    public void friendly_close(){
       close();
    }//End Method
+   
+   /** Method to indicate the end of a piece of processing related to splitting threads.**/
+   public void friendly_separateThreadProcessingComplete(){}
 
 }//End Class

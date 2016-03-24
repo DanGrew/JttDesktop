@@ -119,7 +119,10 @@ public class JenkinsLogin {
          ButtonType type = alert.friendly_getResult();
          if ( type.equals( login ) ) {
             event.consume();
-            new Thread( () -> prepareInputAndLogin( event, alert ) ).start();
+            new Thread( () -> {
+               prepareInputAndLogin( event, alert );
+               alert.friendly_separateThreadProcessingComplete();
+            } ).start();
          }
       } );
       

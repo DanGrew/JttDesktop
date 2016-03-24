@@ -394,10 +394,22 @@ public class JenkinsLoginTest {
     * Convenience method for performing a login on the fx thread.
     */
    private void login(){
+      final CountDownLatch latch = new CountDownLatch( 1 );
+      Mockito.doAnswer( invocation -> { 
+         latch.countDown(); 
+         return null; 
+      } ).when( alert ).friendly_separateThreadProcessingComplete();
+      
       Assert.assertNotNull( onCloseHandler );
       Mockito.when( alert.friendly_getResult() ).thenReturn( systemUnderTest.loginButtonType() );
       onCloseHandler.handle( loginEvent );
       PlatformImpl.runAndWait( () -> {} );
+      
+      try {
+         latch.await();
+      } catch ( InterruptedException e ) {
+         Assert.fail( "CountDownLatch interrupted." );
+      }
       
       verify( loginEvent ).consume();
       verify( digest ).progress( progressCaptor.capture(), messageCaptor.capture() );
