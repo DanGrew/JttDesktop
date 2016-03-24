@@ -27,6 +27,7 @@ import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
 import javafx.scene.Scene;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import shortcuts.keyboard.KeyBoardShortcuts;
 import storage.database.JenkinsDatabaseImpl;
 import utility.TestCommon;
@@ -91,13 +92,15 @@ public class ToolsTest {
       assertThat( scene, notNullValue() );
       
       assertThat( scene.getRoot(), notNullValue() );
-      assertThat( scene.getRoot(), instanceOf( DualBuildWallDisplayImpl.class ) );
+      assertThat( scene.getRoot(), instanceOf( BorderPane.class ) );
       
-      DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) scene.getRoot();
+      BorderPane wrapper = ( BorderPane ) scene.getRoot();
+      
+      DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) wrapper.getCenter();
       assertThat( display.getRight(), nullValue() );
       
-      assertThat( display.getTop(), instanceOf( TitledPane.class ) );
-      TitledPane titledPane = ( TitledPane )display.getTop();
+      assertThat( wrapper.getTop(), instanceOf( TitledPane.class ) );
+      TitledPane titledPane = ( TitledPane )wrapper.getTop();
       assertThat( titledPane.getContent(), is( digestViewer ) );
    }//End Method
 

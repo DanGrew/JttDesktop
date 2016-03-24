@@ -14,6 +14,7 @@ import buildwall.dual.DualBuildWallDisplayImpl;
 import buildwall.layout.BuildWallDisplayImpl;
 import javafx.scene.Scene;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import shortcuts.keyboard.KeyBoardShortcuts;
 import storage.database.JenkinsDatabase;
 import view.table.TestTableView;
@@ -41,8 +42,9 @@ public enum Tools {
    DualBuildWall(
          ( database, digest ) -> {
             DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( database );
-            dualWall.setTop( new TitledPane( "System Digest", digest ) );
-            return new Scene( dualWall );
+            BorderPane digestWrapper = new BorderPane( dualWall );
+            digestWrapper.setTop( new TitledPane( "System Digest", digest ) );
+            return new Scene( digestWrapper );
          }
    );
    
