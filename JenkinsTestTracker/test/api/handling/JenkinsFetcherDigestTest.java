@@ -24,6 +24,7 @@ import org.mockito.MockitoAnnotations;
 
 import core.category.Categories;
 import core.category.Category;
+import core.lockdown.DigestManager;
 import core.lockdown.DigestMessageReceiver;
 import core.lockdown.DigestMessageReceiverImpl;
 import core.lockdown.DigestProgressReceiver;
@@ -55,6 +56,7 @@ public class JenkinsFetcherDigestTest {
    private JenkinsFetcherDigest systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
+      DigestManager.reset();
       MockitoAnnotations.initMocks( this );
       new DigestMessageReceiverImpl( messageReceiver );
       new DigestProgressReceiverImpl( progressReceiver );
