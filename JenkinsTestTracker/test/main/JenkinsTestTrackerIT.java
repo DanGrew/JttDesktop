@@ -38,6 +38,8 @@ import graphics.PlatformDecouplerImpl;
 import javafx.platform.PlatformLifecycle;
 import javafx.platform.PlatformLifecycleImpl;
 import javafx.scene.Group;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import main.selector.ToolSelector;
@@ -138,7 +140,10 @@ public class JenkinsTestTrackerIT {
       assertThat( stage.isShowing(), is( true ) );
       assertThat( stage.getScene(), notNullValue() );
       
-      assertThat( stage.getScene().getRoot(), instanceOf( DualBuildWallDisplayImpl.class ) );
+      assertThat( stage.getScene().getRoot(), instanceOf( BorderPane.class ) );
+      BorderPane wrapper = ( BorderPane ) stage.getScene().getRoot();
+      assertThat( wrapper.getCenter(), instanceOf( DualBuildWallDisplayImpl.class ) );
+      assertThat( wrapper.getTop(), instanceOf( TitledPane.class ) );
       assertThat( stage.getScene().getAccelerators().isEmpty(), is( true ) );
    }//End Method
    
