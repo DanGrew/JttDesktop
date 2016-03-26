@@ -118,14 +118,14 @@ public class SimpleJobPanelDescriptionImplTest {
    }//End Method
    
    @Test public void propertiesShouldBeInsetFromEdge(){
-      Assert.assertEquals( SimpleJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.getInsets().getBottom(), TestCommon.precision() );
-      Assert.assertEquals( SimpleJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.getInsets().getTop(), TestCommon.precision() );
-      Assert.assertEquals( SimpleJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.getInsets().getRight(), TestCommon.precision() );
-      Assert.assertEquals( SimpleJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.getInsets().getLeft(), TestCommon.precision() );
+      Assert.assertEquals( SimpleJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getBottom(), TestCommon.precision() );
+      Assert.assertEquals( SimpleJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getTop(), TestCommon.precision() );
+      Assert.assertEquals( SimpleJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getRight(), TestCommon.precision() );
+      Assert.assertEquals( SimpleJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getLeft(), TestCommon.precision() );
    }//End Method
    
    @Test public void propertiesShouldBeEvenlySplit(){
-      ObservableList< ColumnConstraints > constraints = systemUnderTest.getColumnConstraints();
+      ObservableList< ColumnConstraints > constraints = systemUnderTest.propertiesPane().getColumnConstraints();
       Assert.assertEquals( 3, constraints.size() );
       Assert.assertEquals( SimpleJobPanelDescriptionImpl.BUILD_PROPERTY_PERCENTAGE, constraints.get( 0 ).getPercentWidth(), TestCommon.precision() );
       Assert.assertEquals( SimpleJobPanelDescriptionImpl.JOB_NAME_PERCENTAGE, constraints.get( 1 ).getPercentWidth(), TestCommon.precision() );
@@ -136,7 +136,7 @@ public class SimpleJobPanelDescriptionImplTest {
       Assert.assertEquals( 0, GridPane.getRowIndex( systemUnderTest.buildNumber() ).intValue() );
       Assert.assertEquals( 0, GridPane.getColumnIndex( systemUnderTest.buildNumber() ).intValue() );
       
-      ObservableList< ColumnConstraints > constraints = systemUnderTest.getColumnConstraints();
+      ObservableList< ColumnConstraints > constraints = systemUnderTest.propertiesPane().getColumnConstraints();
       Assert.assertEquals( HPos.LEFT, constraints.get( 0 ).getHalignment() );
    }//End Method
    
@@ -144,7 +144,7 @@ public class SimpleJobPanelDescriptionImplTest {
       assertThat( GridPane.getRowIndex( systemUnderTest.jobName() ), is( 0 ) );
       assertThat( GridPane.getColumnIndex( systemUnderTest.jobName() ), is( 1 ) );
       
-      ObservableList< ColumnConstraints > constraints = systemUnderTest.getColumnConstraints();
+      ObservableList< ColumnConstraints > constraints = systemUnderTest.propertiesPane().getColumnConstraints();
       Assert.assertEquals( HPos.CENTER, constraints.get( 1 ).getHalignment() );
    }//End Method
    
@@ -152,7 +152,7 @@ public class SimpleJobPanelDescriptionImplTest {
       Assert.assertEquals( 0, GridPane.getRowIndex( systemUnderTest.completionEstimate() ).intValue() );
       Assert.assertEquals( 2, GridPane.getColumnIndex( systemUnderTest.completionEstimate() ).intValue() );
       
-      ObservableList< ColumnConstraints > constraints = systemUnderTest.getColumnConstraints();
+      ObservableList< ColumnConstraints > constraints = systemUnderTest.propertiesPane().getColumnConstraints();
       Assert.assertEquals( HPos.RIGHT, constraints.get( 2 ).getHalignment() );
    }//End Method
    
