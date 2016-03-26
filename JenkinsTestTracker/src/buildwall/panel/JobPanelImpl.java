@@ -9,7 +9,7 @@
 package buildwall.panel;
 
 import buildwall.configuration.BuildWallConfiguration;
-import buildwall.panel.description.JobPanelDescriptionImpl;
+import buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import javafx.registrations.RegistrationImpl;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -22,7 +22,7 @@ import model.jobs.JenkinsJob;
 public class JobPanelImpl extends StackPane {
 
    private final JobProgressImpl progress;
-   private final JobPanelDescriptionImpl description;
+   private final DefaultJobPanelDescriptionImpl description;
    private final JenkinsJob job;
    
    /**
@@ -35,7 +35,7 @@ public class JobPanelImpl extends StackPane {
       
       this.progress = new JobProgressImpl( job );
       getChildren().add( progress );
-      this.description = new JobPanelDescriptionImpl( configuration, job );
+      this.description = new DefaultJobPanelDescriptionImpl( configuration, job );
       getChildren().add( description );
    }//End Method
 
@@ -58,7 +58,7 @@ public class JobPanelImpl extends StackPane {
    }//End Method
    
    /**
-    * Method to determine whether the {@link JobPanelDescriptionImpl} is detached and
+    * Method to determine whether the {@link DefaultJobPanelDescriptionImpl} is detached and
     * not registered with anything in the system.
     * @return true if no registrations held.
     */
@@ -70,7 +70,7 @@ public class JobPanelImpl extends StackPane {
       return progress;
    }//End Method
 
-   JobPanelDescriptionImpl description() {
+   DefaultJobPanelDescriptionImpl description() {
       return description;
    }//End Method
 

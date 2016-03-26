@@ -31,10 +31,10 @@ import javafx.scene.text.Font;
 import model.jobs.JenkinsJob;
 
 /**
- * The {@link JobPanelDescriptionImpl} provides a {@link BorderPane} overlay for 
+ * The {@link DefaultJobPanelDescriptionImpl} provides a {@link BorderPane} overlay for 
  * the description of the {@link JenkinsJob}.
  */
-public class JobPanelDescriptionImpl extends BorderPane {
+public class DefaultJobPanelDescriptionImpl extends BorderPane {
 
    static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
             .appendPattern( "hh:mm" ).appendLiteral( "-" ).appendPattern( "dd/MM" ).toFormatter();
@@ -55,11 +55,11 @@ public class JobPanelDescriptionImpl extends BorderPane {
    private RegistrationManager registrations;
 
    /**
-    * Constructs a new {@link JobPanelDescriptionImpl}.
+    * Constructs a new {@link DefaultJobPanelDescriptionImpl}.
     * @param configuration the {@link BuildWallConfiguration}.
     * @param job the {@link JenkinsJob} being described.
     */
-   public JobPanelDescriptionImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
+   public DefaultJobPanelDescriptionImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
       this.configuration = configuration;
       this.job = job;
       this.registrations = new RegistrationManager();
@@ -193,7 +193,7 @@ public class JobPanelDescriptionImpl extends BorderPane {
    }//End Method
    
    /**
-    * Method to determine whether the {@link JobPanelDescriptionImpl} is detached and
+    * Method to determine whether the {@link DefaultJobPanelDescriptionImpl} is detached and
     * not registered with anything in the system.
     * @return true if no registrations held.
     */

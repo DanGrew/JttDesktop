@@ -19,7 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import buildwall.configuration.BuildWallConfigurationImpl;
-import buildwall.panel.description.JobPanelDescriptionImpl;
+import buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
@@ -66,7 +66,7 @@ public class JobPanelImplTest {
    @Test public void shouldHaveProgressAndDescription() {
       Assert.assertTrue( systemUnderTest.getChildren().get( 0 ) instanceof JobProgressImpl );
       assertThat( systemUnderTest.getChildren().get( 0 ), is( systemUnderTest.progress() ) );
-      Assert.assertTrue( systemUnderTest.getChildren().get( 1 ) instanceof JobPanelDescriptionImpl );
+      Assert.assertTrue( systemUnderTest.getChildren().get( 1 ) instanceof DefaultJobPanelDescriptionImpl );
       assertThat( systemUnderTest.getChildren().get( 1 ), is( systemUnderTest.description() ) );
    }//End Method
    

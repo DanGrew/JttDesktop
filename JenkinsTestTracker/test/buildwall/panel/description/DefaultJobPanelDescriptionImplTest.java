@@ -37,13 +37,13 @@ import system.properties.DateAndTimes;
 import utility.TestCommon;
 
 /**
- * {@link JobPanelDescriptionImpl} test.
+ * {@link DefaultJobPanelDescriptionImpl} test.
  */
-public class JobPanelDescriptionImplTest {
+public class DefaultJobPanelDescriptionImplTest {
 
    private JenkinsJob job;
    private BuildWallConfiguration configuration; 
-   private JobPanelDescriptionImpl systemUnderTest;
+   private DefaultJobPanelDescriptionImpl systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
@@ -56,12 +56,12 @@ public class JobPanelDescriptionImplTest {
       job.expectedBuildTimeProperty().set( 10000 );
       configuration = new BuildWallConfigurationImpl();
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new JobPanelDescriptionImpl( configuration, job );
+      systemUnderTest = new DefaultJobPanelDescriptionImpl( configuration, job );
    }//End Method
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> { return new JobPanelDescriptionImpl( configuration, job ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new DefaultJobPanelDescriptionImpl( configuration, job ); } );
       Thread.sleep( 100000 );
    }//End Method
    
@@ -110,23 +110,23 @@ public class JobPanelDescriptionImplTest {
    }//End Method
    
    @Test public void propertiesShouldBeSlightlyTransparent(){
-      Assert.assertEquals( JobPanelDescriptionImpl.DEFAULT_PROPERTY_OPACITY, systemUnderTest.buildNumber().getOpacity(), TestCommon.precision() );
-      Assert.assertEquals( JobPanelDescriptionImpl.DEFAULT_PROPERTY_OPACITY, systemUnderTest.completionEstimate().getOpacity(), TestCommon.precision() );
+      Assert.assertEquals( DefaultJobPanelDescriptionImpl.DEFAULT_PROPERTY_OPACITY, systemUnderTest.buildNumber().getOpacity(), TestCommon.precision() );
+      Assert.assertEquals( DefaultJobPanelDescriptionImpl.DEFAULT_PROPERTY_OPACITY, systemUnderTest.completionEstimate().getOpacity(), TestCommon.precision() );
    }//End Method
    
    @Test public void propertiesShouldBeInsetFromEdge(){
-      Assert.assertEquals( JobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getBottom(), TestCommon.precision() );
-      Assert.assertEquals( JobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getTop(), TestCommon.precision() );
-      Assert.assertEquals( JobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getRight(), TestCommon.precision() );
-      Assert.assertEquals( JobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getLeft(), TestCommon.precision() );
+      Assert.assertEquals( DefaultJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getBottom(), TestCommon.precision() );
+      Assert.assertEquals( DefaultJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getTop(), TestCommon.precision() );
+      Assert.assertEquals( DefaultJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getRight(), TestCommon.precision() );
+      Assert.assertEquals( DefaultJobPanelDescriptionImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getLeft(), TestCommon.precision() );
    }//End Method
    
    @Test public void propertiesShouldBeEvenlySplit(){
       GridPane properties = systemUnderTest.propertiesPane();
       ObservableList< ColumnConstraints > constraints = properties.getColumnConstraints();
       Assert.assertEquals( 2, constraints.size() );
-      Assert.assertEquals( JobPanelDescriptionImpl.BUILD_PROPERTY_PERCENTAGE, constraints.get( 0 ).getPercentWidth(), TestCommon.precision() );
-      Assert.assertEquals( JobPanelDescriptionImpl.COMPLETION_ESTIMATE_PERCENTAGE, constraints.get( 1 ).getPercentWidth(), TestCommon.precision() );
+      Assert.assertEquals( DefaultJobPanelDescriptionImpl.BUILD_PROPERTY_PERCENTAGE, constraints.get( 0 ).getPercentWidth(), TestCommon.precision() );
+      Assert.assertEquals( DefaultJobPanelDescriptionImpl.COMPLETION_ESTIMATE_PERCENTAGE, constraints.get( 1 ).getPercentWidth(), TestCommon.precision() );
    }//End Method
 
    @Test public void jobNameShouldBeInCenter(){
@@ -160,36 +160,36 @@ public class JobPanelDescriptionImplTest {
    
    @Test public void shouldUseJobNumberAndKeepUpdated(){
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       
       final Integer value = 799;
       job.lastBuildNumberProperty().set( value );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( value, job.lastBuildTimestampProperty().get() ),
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( value, job.lastBuildTimestampProperty().get() ),
                systemUnderTest.buildNumber().getText() 
       );
       
       final long timestamp = 3756298;
       job.lastBuildTimestampProperty().set( timestamp );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), timestamp ),
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), timestamp ),
                systemUnderTest.buildNumber().getText() 
       );
    }//End Method
 
    @Test public void shouldUseJobBuildTimeAndKeepUpdated(){
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         job.currentBuildTimeProperty().get(),
                         job.expectedBuildTimeProperty().get()
                ), 
@@ -199,14 +199,14 @@ public class JobPanelDescriptionImplTest {
       final Integer progress = 180;
       job.currentBuildTimeProperty().set( progress );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         job.currentBuildTimeProperty().get(),
                         job.expectedBuildTimeProperty().get()
                ), 
                systemUnderTest.completionEstimate().getText()  
       );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         progress,
                         job.expectedBuildTimeProperty().get()
                ), 
@@ -216,14 +216,14 @@ public class JobPanelDescriptionImplTest {
       final Integer estimate = 180;
       job.expectedBuildTimeProperty().set( estimate );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         job.currentBuildTimeProperty().get(),
                         job.expectedBuildTimeProperty().get()
                ), 
                systemUnderTest.completionEstimate().getText()  
       );
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         progress,
                         estimate
                ), 
@@ -232,40 +232,40 @@ public class JobPanelDescriptionImplTest {
    }//End Method
    
    @Test public void shouldFormatBuildNumber(){
-      Assert.assertEquals( "#2001", JobPanelDescriptionImpl.formatBuildNumber( 2001 ) );
-      Assert.assertEquals( "#?", JobPanelDescriptionImpl.formatBuildNumber( null ) );
+      Assert.assertEquals( "#2001", DefaultJobPanelDescriptionImpl.formatBuildNumber( 2001 ) );
+      Assert.assertEquals( "#?", DefaultJobPanelDescriptionImpl.formatBuildNumber( null ) );
    }//End Method
    
    @Test public void shouldFormatBuildNumberAndTimestamp(){
       assertThat( 
                "#200 | 08:59-17/01", 
-               is( JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( 200, 1457963846l ) ) 
+               is( DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( 200, 1457963846l ) ) 
       );
       assertThat( 
                "#? | ?-?", 
-               is( JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( null, null ) ) 
+               is( DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( null, null ) ) 
       );
    }//End Method
    
    @Test public void shouldProvideCorrectDateTimeFormat(){
-      assertThat( JobPanelDescriptionImpl.formatTimestamp( 1457963846l ), is( "08:59-17/01" ) );
-      assertThat( JobPanelDescriptionImpl.formatTimestamp( null ), is( "?-?" ) );
+      assertThat( DefaultJobPanelDescriptionImpl.formatTimestamp( 1457963846l ), is( "08:59-17/01" ) );
+      assertThat( DefaultJobPanelDescriptionImpl.formatTimestamp( null ), is( "?-?" ) );
    }//End Method
    
    @Test public void shouldFormatCompletionEstimateInSeconds(){
-      Assert.assertEquals( "1m 30s | 2m 0s", JobPanelDescriptionImpl.formatCompletionEstimateInSeconds( 90, 120 ) );
-      Assert.assertEquals( "5m 0s | 1m 0s", JobPanelDescriptionImpl.formatCompletionEstimateInSeconds( 300, 60 ) );
+      Assert.assertEquals( "1m 30s | 2m 0s", DefaultJobPanelDescriptionImpl.formatCompletionEstimateInSeconds( 90, 120 ) );
+      Assert.assertEquals( "5m 0s | 1m 0s", DefaultJobPanelDescriptionImpl.formatCompletionEstimateInSeconds( 300, 60 ) );
    }//End Method
    
    @Test public void shouldFormatCompletionEstimateInMilliseconds(){
-      Assert.assertEquals( "1m 30s | 2m 0s", JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 90000, 120000 ) );
-      Assert.assertEquals( "5m 0s | 1m 0s", JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 300000, 60000 ) );
+      Assert.assertEquals( "1m 30s | 2m 0s", DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 90000, 120000 ) );
+      Assert.assertEquals( "5m 0s | 1m 0s", DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 300000, 60000 ) );
    }//End Method
    
    @Test public void shouldFormatMillisecondsIntoMinutesAndSeconds(){
-      Assert.assertEquals( "1m 30s", JobPanelDescriptionImpl.formatMillisecondsIntoMintuesAndSeconds( 90000 ) );
-      Assert.assertEquals( "2m 0s", JobPanelDescriptionImpl.formatMillisecondsIntoMintuesAndSeconds( 120000 ) );
-      Assert.assertEquals( "0m 0s", JobPanelDescriptionImpl.formatMillisecondsIntoMintuesAndSeconds( 0 ) );
+      Assert.assertEquals( "1m 30s", DefaultJobPanelDescriptionImpl.formatMillisecondsIntoMintuesAndSeconds( 90000 ) );
+      Assert.assertEquals( "2m 0s", DefaultJobPanelDescriptionImpl.formatMillisecondsIntoMintuesAndSeconds( 120000 ) );
+      Assert.assertEquals( "0m 0s", DefaultJobPanelDescriptionImpl.formatMillisecondsIntoMintuesAndSeconds( 0 ) );
    }//End Method
    
    @Test public void shouldConfigureJobNameFontAndUpdate(){
@@ -350,7 +350,7 @@ public class JobPanelDescriptionImplTest {
    
    @Test public void detachmentShouldNotUseJobNumberAndKeepUpdated(){
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       
@@ -359,29 +359,29 @@ public class JobPanelDescriptionImplTest {
       final Integer value = 799;
       job.lastBuildNumberProperty().set( value );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( value, job.lastBuildTimestampProperty().get() ),
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( value, job.lastBuildTimestampProperty().get() ),
                systemUnderTest.buildNumber().getText() 
       );
       
       final Long timestamp = 394608347l;
       job.lastBuildTimestampProperty().set( timestamp );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), timestamp ),
+               DefaultJobPanelDescriptionImpl.formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), timestamp ),
                systemUnderTest.buildNumber().getText() 
       );
    }//End Method
 
    @Test public void detachmentShouldNotUseJobBuildTimeAndKeepUpdated(){
       Assert.assertEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         job.currentBuildTimeProperty().get(),
                         job.expectedBuildTimeProperty().get()
                ), 
@@ -393,14 +393,14 @@ public class JobPanelDescriptionImplTest {
       final Integer progress = 180;
       job.currentBuildTimeProperty().set( progress );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         job.currentBuildTimeProperty().get(),
                         job.expectedBuildTimeProperty().get()
                ), 
                systemUnderTest.completionEstimate().getText()  
       );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         progress,
                         job.expectedBuildTimeProperty().get()
                ), 
@@ -410,14 +410,14 @@ public class JobPanelDescriptionImplTest {
       final Integer estimate = 180;
       job.expectedBuildTimeProperty().set( estimate );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         job.currentBuildTimeProperty().get(),
                         job.expectedBuildTimeProperty().get()
                ), 
                systemUnderTest.completionEstimate().getText()  
       );
       Assert.assertNotEquals( 
-               JobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
+               DefaultJobPanelDescriptionImpl.formatCompletionEstimateInMilliseconds( 
                         progress,
                         estimate
                ), 
