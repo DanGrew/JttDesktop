@@ -74,7 +74,6 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane {
       updateCompletionEstimate( job );
       completionEstimate.setOpacity( DEFAULT_PROPERTY_OPACITY );
       properties.setPadding( new Insets( PROPERTIES_INSET ) );
-      setCenter( properties );
 
       applyRegistrations();
       applyLayout();

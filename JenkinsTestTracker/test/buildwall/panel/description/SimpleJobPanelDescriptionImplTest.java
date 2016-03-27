@@ -55,6 +55,10 @@ public class SimpleJobPanelDescriptionImplTest extends JobPanelDescriptionBaseIm
       Thread.sleep( 100000 );
    }//End Method
    
+   @Test public void propertiesGridShouldBeCenter(){
+      assertThat( systemUnderTest.getCenter(), is( systemUnderTest.propertiesPane() ) );
+   }//End Method
+   
    @Test public void propertiesShouldBeEvenlySplit(){
       ObservableList< ColumnConstraints > constraints = systemUnderTest.propertiesPane().getColumnConstraints();
       Assert.assertEquals( 3, constraints.size() );

@@ -57,6 +57,7 @@ public class SimpleJobPanelDescriptionImpl extends JobPanelDescriptionBaseImpl {
       propertiesPane().add( buildNumber(), 0, 0 );
       propertiesPane().add( jobName(), 1, 0 );
       propertiesPane().add( completionEstimate(), 2, 0 );
+      setCenter( propertiesPane() );
    }//End Class
    
    /**
