@@ -79,6 +79,10 @@ public class JobPanelDescriptionBaseImplTest {
       Thread.sleep( 100000 );
    }//End Method
    
+   @Test public void propertiesGridShouldBeCenter(){
+      assertThat( systemUnderTest.getCenter(), is( systemUnderTest.propertiesPane() ) );
+   }//End Method
+   
    @Test public void shouldUseBuildNumberConfigurations() {
       Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumber().textFillProperty().get() );
       Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumber().fontProperty().get() );
