@@ -19,7 +19,7 @@ import javafx.scene.input.KeyCombination;
  */
 public class KeyBoardShortcuts {
    
-   static KeyCombination cmdShiftO = new KeyCodeCombination( KeyCode.O, KeyCombination.META_DOWN );
+   static KeyCombination cmdShiftO = new KeyCodeCombination( KeyCode.O, KeyCombination.SHORTCUT_DOWN );
 
    /**
     * Method to configure the Cmd + shift + O shortcut, running the given {@link Runnable} when
