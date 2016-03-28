@@ -11,14 +11,16 @@ package buildwall.dual;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.sun.javafx.application.PlatformImpl;
@@ -26,11 +28,15 @@ import com.sun.javafx.application.PlatformImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
+import graphics.TestPlatformDecouplerImpl;
 import javafx.event.ActionEvent;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.layout.BorderPane;
 import storage.database.JenkinsDatabaseImpl;
+import viewer.basic.DigestViewer;
 
 /**
  * {@link DualBuildWallContextMenu} test.
@@ -47,16 +53,18 @@ public class DualBuildWallContextMenuTest {
    private static final int SECOND_SEPARATOR = 6;
    private static final int CANCEL = 7;
    
-   @Mock private DualBuildWallDisplayImpl display;
+   private DualBuildWallDisplayImpl display;
    private DualBuildWallContextMenu systemUnderTest;
    private DualBuildWallContextMenuOpener opener;
    
    @BeforeClass public static void initialisePlatform(){
       PlatformImpl.startup( () -> {} );
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      MockitoAnnotations.initMocks( this );;
+      MockitoAnnotations.initMocks( this );
+      display = mock( DualBuildWallDisplayImpl.class );
       systemUnderTest = new DualBuildWallContextMenu( display );
    }//End Method
 
@@ -160,6 +168,40 @@ public class DualBuildWallContextMenuTest {
          retrieveMenuItem( CANCEL ).getOnAction().handle( new ActionEvent() );
       } );
       assertThat( systemUnderTest.friendly_isShowing(), is( false ) );
+   }//End Method
+   
+   @Test public void shouldProvideHideDigestOptionIfFoundInParent(){
+      assertThat( systemUnderTest.digestControl(), nullValue() );
+   }//End Method
+   
+   @Test public void shouldNotProvideHideDigestOptionIfNotFoundInParent(){
+      assertThat( systemUnderTest.digestControl(), nullValue() );
+   }//End Method
+   
+   /**
+    * Method to apply the preconditions for the digest control being testable.
+    */
+   private void digestControlPreconditions(){
+      display = new DualBuildWallDisplayImpl( new JenkinsDatabaseImpl() );
+      
+      BorderPane parent = new BorderPane( display );
+      new Scene( parent );
+      parent.setTop( new DigestViewer() );
+      
+      systemUnderTest = new DualBuildWallContextMenu( display );
+   }//End Method
+   
+   @Test public void shouldShowAndHideDigest(){
+      digestControlPreconditions();
+      assertThat( display.getParent(), notNullValue() );
+      BorderPane parent = ( BorderPane ) display.getParent();
+      assertThat( parent.getTop(), notNullValue() );
+      
+      systemUnderTest.digestControl().getOnAction().handle( new ActionEvent() );
+      assertThat( parent.getTop(), nullValue() );
+      
+      systemUnderTest.digestControl().getOnAction().handle( new ActionEvent() );
+      assertThat( parent.getTop(), notNullValue() );
    }//End Method
 
 }//End Class

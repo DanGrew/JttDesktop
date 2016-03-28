@@ -27,13 +27,32 @@ public class DualBuildWallContextMenu extends ContextMenu {
    static final String CONFIGURE_RIGHT = "Configure Right";
    static final String CONFIGURE_LEFT = "Configure Left";
    static final String HIDE_CONFIGURATION = "Hide Configuration";
+   static final String SHOW_DIGEST = "Show Digest";
+   static final String HIDE_DIGEST = "Hide Digest";
    static final String CANCEL = "Cancel";
-
+   
+   private MenuItem digestControl;
+   private final WrappedSystemDigest wrappedDigest;
+   
    /**
     * Constructs a new {@link DualBuildWallContextMenu}.
     * @param display the {@link DualBuildWallDisplayImpl} to control. 
     */
    DualBuildWallContextMenu( DualBuildWallDisplayImpl display ) {
+      wrappedDigest = new WrappedSystemDigest( display );
+      
+      applyControls( display );
+      applyDigestControl();
+      applyCancel();
+      
+      setAutoHide( true );
+   }//End Constructor
+
+   /**
+    * Method to apply the functions available to the menu.
+    * @param display the {@link DualBuildWallDisplayImpl} the controls are for.
+    */
+   private void applyControls( DualBuildWallDisplayImpl display ) {
       MenuItem rightWallControl = new MenuItem( HIDE_RIGHT );
       rightWallControl.setOnAction( event -> controlRightWall( display, rightWallControl ) );
       
@@ -49,22 +68,43 @@ public class DualBuildWallContextMenu extends ContextMenu {
       MenuItem hideConfig = new MenuItem( HIDE_CONFIGURATION );
       hideConfig.setOnAction( event -> display.hideConfiguration() );
       
-      MenuItem cancel = new MenuItem( CANCEL );
-      cancel.setOnAction( event -> hide() );
-      
       getItems().addAll( 
             leftWallControl, 
             rightWallControl,
             new SeparatorMenuItem(),
             configureLeft,
             configureRight,
-            hideConfig,
-            new SeparatorMenuItem(),
-            cancel
+            hideConfig
       );
+   }//End Method
+   
+   /**
+    * Method to apply the system digest controls if applicable.
+    */
+   private void applyDigestControl() {
+      if ( !wrappedDigest.isSystemDigestAvailable() ) return;
       
-      setAutoHide( true );
-   }//End Constructor
+      digestControl = new MenuItem( HIDE_DIGEST );
+      digestControl.setOnAction( event -> controlDigest( digestControl ) );
+      
+      getItems().addAll( 
+               new SeparatorMenuItem(),
+               digestControl
+      );
+   }//End Method
+   
+   /**
+    * Method to apply the cancel function to close the menu.
+    */
+   private void applyCancel() {
+      MenuItem cancel = new MenuItem( CANCEL );
+      cancel.setOnAction( event -> hide() );
+      
+      getItems().addAll( 
+               new SeparatorMenuItem(),
+               cancel
+      );
+   }//End Method
 
    /**
     * Method to control the left {@link GridWallImpl}.
@@ -97,6 +137,21 @@ public class DualBuildWallContextMenu extends ContextMenu {
    }//End Method
    
    /**
+    * Method to control the left {@link GridWallImpl}.
+    * @param display the {@link DualBuildWallDisplayImpl} to change.
+    * @param digestControl the {@link MenuItem} to update.
+    */
+   private void controlDigest( MenuItem digestControl ) {
+      if ( digestControl.getText() == SHOW_DIGEST ) {
+         wrappedDigest.insertDigest();
+         digestControl.setText( HIDE_DIGEST );
+      } else {
+         wrappedDigest.removeDigest();
+         digestControl.setText( SHOW_DIGEST );
+      }
+   }//End Method
+   
+   /**
     * {@link ContextMenu#isShowing()}.
     * @return true if showing.
     */
@@ -112,6 +167,10 @@ public class DualBuildWallContextMenu extends ContextMenu {
     */
    public void friendly_show( Node anchor, double screenX, double screenY ) {
       show( anchor, screenX, screenY );
+   }//End Method
+
+   MenuItem digestControl() {
+      return digestControl;
    }//End Method
 
 }//End Class
