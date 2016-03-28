@@ -187,6 +187,7 @@ public class DualBuildWallDisplayImplTest {
    }//End Method
    
    @Test public void shouldUseContextMenuOpenerOnEntireSut(){
+      systemUnderTest.initialiseContextMenu();
       assertThat( systemUnderTest.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
    }//End Method
    

@@ -59,9 +59,17 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       rightConfigurationPanel = new BuildWallConfigurationPanelImpl( rightConfiguration );
       leftConfigurationPanel = new BuildWallConfigurationPanelImpl( leftConfiguration );
       configurationScroller = new ScrollPane();
-      
-      setOnContextMenuRequested( new DualBuildWallContextMenuOpener( this ) );
    }//End Constructor
+   
+   /**
+    * Method to initialise the {@link DualBuildWallContextMenuOpener} for the display. This is a separate
+    * initialisation requirement as the {@link DualBuildWallContextMenu} has a dependency on the initialisation
+    * of the {@link DualBuildWallDisplayImpl}. This can be called at any point, but if the {@link DualBuildWallDisplayImpl}
+    * is not attached to its parent, then the system digest cannot be found and used in the menu. 
+    */
+   public void initialiseContextMenu(){
+      setOnContextMenuRequested( new DualBuildWallContextMenuOpener( this ) );
+   }//End Method
    
    /**
     * Method to show the {@link BuildWallConfiguration} for the right {@link GridWallImpl}.

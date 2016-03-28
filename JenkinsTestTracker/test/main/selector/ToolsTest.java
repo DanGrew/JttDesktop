@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import buildwall.dual.DualBuildWallContextMenuOpener;
 import buildwall.dual.DualBuildWallDisplayImpl;
 import buildwall.layout.BuildWallDisplayImpl;
 import graphics.DecoupledPlatformImpl;
@@ -98,10 +99,12 @@ public class ToolsTest {
       
       DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) wrapper.getCenter();
       assertThat( display.getRight(), nullValue() );
+      assertThat( display.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
       
       assertThat( wrapper.getTop(), instanceOf( TitledPane.class ) );
       TitledPane titledPane = ( TitledPane )wrapper.getTop();
       assertThat( titledPane.getContent(), is( digestViewer ) );
+      
    }//End Method
 
 }//End Class
