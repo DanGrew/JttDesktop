@@ -8,6 +8,8 @@
  */
 package buildwall.dual;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -68,4 +70,12 @@ public class DualBuildWallContextMenuOpenerTest {
       verify( menu, times( 2 ) ).friendly_show( Mockito.any(), Mockito.anyDouble(), Mockito.anyDouble() );
    }//End Method
    
+   @Test public void shouldProvideSystemDigestAvailability(){
+      assertThat( systemUnderTest.isSystemDigestControllable(), is( false ) );
+      when( menu.isSystemDigestControllable() ).thenReturn( true, false, true, true );
+      assertThat( systemUnderTest.isSystemDigestControllable(), is( true ) );
+      assertThat( systemUnderTest.isSystemDigestControllable(), is( false ) );
+      assertThat( systemUnderTest.isSystemDigestControllable(), is( true ) );
+      assertThat( systemUnderTest.isSystemDigestControllable(), is( true ) );
+   }//End Method
 }//End Class

@@ -48,5 +48,13 @@ public class DualBuildWallContextMenuOpener implements EventHandler< ContextMenu
       
       contextMenu.friendly_show( display, event.getScreenX(), event.getScreenY() );
    }//End Method
+   
+   /**
+    * Method to determine whether the system digest is controllable by the {@link DualBuildWallContextMenu}.
+    * @return true if can be controlled, false otherwise.
+    */
+   public boolean isSystemDigestControllable(){
+      return contextMenu.isSystemDigestControllable();
+   }//End Method
 
 }//End Class

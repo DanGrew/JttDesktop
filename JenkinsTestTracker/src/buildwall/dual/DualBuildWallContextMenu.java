@@ -152,6 +152,14 @@ public class DualBuildWallContextMenu extends ContextMenu {
    }//End Method
    
    /**
+    * Method to determine whether the system digest is controllable by the {@link DualBuildWallContextMenu}.
+    * @return true if can be controlled, false otherwise.
+    */
+   public boolean isSystemDigestControllable(){
+      return wrappedDigest.isSystemDigestAvailable();
+   }//End Method
+   
+   /**
     * {@link ContextMenu#isShowing()}.
     * @return true if showing.
     */
@@ -168,7 +176,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
    public void friendly_show( Node anchor, double screenX, double screenY ) {
       show( anchor, screenX, screenY );
    }//End Method
-
+   
    MenuItem digestControl() {
       return digestControl;
    }//End Method

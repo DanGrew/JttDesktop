@@ -100,6 +100,8 @@ public class ToolsTest {
       DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) wrapper.getCenter();
       assertThat( display.getRight(), nullValue() );
       assertThat( display.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
+      DualBuildWallContextMenuOpener opener = ( DualBuildWallContextMenuOpener ) display.getOnContextMenuRequested();
+      assertThat( opener.isSystemDigestControllable(), is( true ) );
       
       assertThat( wrapper.getTop(), instanceOf( TitledPane.class ) );
       TitledPane titledPane = ( TitledPane )wrapper.getTop();

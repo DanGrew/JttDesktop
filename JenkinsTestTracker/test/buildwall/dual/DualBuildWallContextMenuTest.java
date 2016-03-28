@@ -203,5 +203,14 @@ public class DualBuildWallContextMenuTest {
       systemUnderTest.digestControl().getOnAction().handle( new ActionEvent() );
       assertThat( parent.getTop(), notNullValue() );
    }//End Method
+   
+   @Test public void shouldShowDigestAsControllable(){
+      digestControlPreconditions();
+      assertThat( systemUnderTest.isSystemDigestControllable(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldNotShowDigestAsControllable(){
+      assertThat( systemUnderTest.isSystemDigestControllable(), is( false ) );
+   }//End Method
 
 }//End Class
