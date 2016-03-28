@@ -23,12 +23,22 @@ public class BuildWallConfigurationStyle {
    /**
     * Method to create a bold {@link Label}.
     * @param title the text in the {@link Label}.
+    * @param fontSize the size of the {@link Font}.
+    * @return the constructed {@link Label}.
+    */
+   public Label createBoldLabel( String title, double fontSize ) {
+      Label label = new Label( title );
+      Font existingFont = label.getFont();
+      label.setFont( Font.font( existingFont.getFamily(), FontWeight.BOLD, FontPosture.REGULAR, fontSize ) );
+      return label;
+   }//End Method
+   
+   /**
+    * Method to create a bold {@link Label}.
+    * @param title the text in the {@link Label}.
     * @return the constructed {@link Label}.
     */
    public Label createBoldLabel( String title ) {
-      Label label = new Label( title );
-      Font existingFont = label.getFont();
-      label.setFont( Font.font( existingFont.getFamily(), FontWeight.BOLD, FontPosture.REGULAR, existingFont.getSize() ) );
-      return label;
+      return createBoldLabel( title, Font.getDefault().getSize() );
    }//End Method
 }//End Class

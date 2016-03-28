@@ -8,6 +8,7 @@
  */
 package buildwall.configuration;
 
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
@@ -21,6 +22,9 @@ import org.junit.Test;
 import buildwall.panel.type.JobPanelDescriptionProviders;
 import graphics.JavaFxInitializer;
 import javafx.event.ActionEvent;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.control.Label;
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -38,6 +42,7 @@ import utility.TestCommon;
  */
 public class BuildWallConfigurationPaneImplTest {
 
+   private static final String TEST_TITLE = "Some Title";
    private static final String TEST_FONT_FAMILY_A = FontFamilies.getUsableFontFamilies().get( 2 );
    private static final String TEST_FONT_FAMILY_B = FontFamilies.getUsableFontFamilies().get( 10 );
    private static final String TEST_FONT_FAMILY_C = FontFamilies.getUsableFontFamilies().get( 5 );
@@ -54,7 +59,7 @@ public class BuildWallConfigurationPaneImplTest {
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       configuration = new BuildWallConfigurationImpl();
-      systemUnderTest = new BuildWallConfigurationPanelImpl( configuration );
+      systemUnderTest = new BuildWallConfigurationPanelImpl( TEST_TITLE, configuration );
    }//End Method
    
    @Ignore //For manual inspection.
@@ -63,13 +68,16 @@ public class BuildWallConfigurationPaneImplTest {
          for ( int i = 0; i < 100; i++ ) {
             configuration.jobPolicies().put( new JenkinsJobImpl( "job " + i ), BuildWallJobPolicy.values()[ i % 3 ] );
          }
-         return new BuildWallConfigurationPanelImpl( configuration ); 
+         return new BuildWallConfigurationPanelImpl( TEST_TITLE, configuration ); 
       } );
       
       Thread.sleep( 10000000 );
    }//End Method
    
    @Test public void shouldContainNecessaryElements(){
+      Label label = systemUnderTest.titleLabel();
+      Assert.assertTrue( systemUnderTest.getChildren().contains( label ) );
+      
       TitledPane dimensionsPane = systemUnderTest.dimensionsPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( dimensionsPane ) );
       
@@ -352,6 +360,7 @@ public class BuildWallConfigurationPaneImplTest {
    }//End Method
    
    @Test public void shouldUseBoldLabels(){
+      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.titleLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.columnsSpinnerLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.desriptionTypeLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.jobNameFontLabel().getFont().getStyle() ) );
@@ -431,4 +440,14 @@ public class BuildWallConfigurationPaneImplTest {
       assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( true ) );
    }//End Method
    
+   @Test public void shouldCreateTitleWithExpectedProperties(){
+      Label titleLabel = systemUnderTest.titleLabel();
+      assertThat( titleLabel.getFont().getSize(), closeTo( BuildWallConfigurationPanelImpl.TITLE_FONT_SIZE, TestCommon.precision() ) );
+      assertThat( GridPane.getColumnIndex( titleLabel ), is( 0 ) );
+      assertThat( GridPane.getRowIndex( titleLabel ), is( 0 ) );
+      assertThat( GridPane.getColumnSpan( titleLabel ), is( 2 ) );
+      assertThat( GridPane.getRowSpan( titleLabel ), is( 1 ) );
+      assertThat( GridPane.getHalignment( titleLabel ), is( HPos.CENTER ) );
+      assertThat( GridPane.getValignment( titleLabel ), is( VPos.CENTER ) );
+   }//End Method
 }//End Class

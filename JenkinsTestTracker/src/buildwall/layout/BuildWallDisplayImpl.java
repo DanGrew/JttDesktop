@@ -35,7 +35,7 @@ public class BuildWallDisplayImpl extends BorderPane {
       new JobPolicyUpdater( database, configuration );
       
       setCenter( new GridWallImpl( configuration, database ) );
-      configurationPanel = new BuildWallConfigurationPanelImpl( configuration );
+      configurationPanel = new BuildWallConfigurationPanelImpl( "Wall Configuration", configuration );
       configurationScroller = new ScrollPane( configurationPanel );
    }//End Constructor
    

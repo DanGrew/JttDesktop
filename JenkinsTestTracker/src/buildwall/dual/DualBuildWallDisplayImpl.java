@@ -56,8 +56,8 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       buildWallSplitter = new SplitPane( leftGridWall, rightGridWall );
       setCenter( buildWallSplitter );
       
-      rightConfigurationPanel = new BuildWallConfigurationPanelImpl( rightConfiguration );
-      leftConfigurationPanel = new BuildWallConfigurationPanelImpl( leftConfiguration );
+      rightConfigurationPanel = new BuildWallConfigurationPanelImpl( "Right Wall Configuration", rightConfiguration );
+      leftConfigurationPanel = new BuildWallConfigurationPanelImpl( "Left Wall Configuration", leftConfiguration );
       configurationScroller = new ScrollPane();
    }//End Constructor
    

@@ -15,6 +15,9 @@ import buildwall.panel.type.JobPanelDescriptionProviders;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.combobox.FontFamilyPropertyBox;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -38,6 +41,7 @@ import javafx.spinner.PropertySpinner;
  */
 public class BuildWallConfigurationPanelImpl extends GridPane {
    
+   static final int TITLE_FONT_SIZE = 30;
    static final int MAXIMUM_FONT_SIZE = 500;
    static final int MINIMUM_FONT_SIZE = 1;
    static final double LABEL_PERCENTAGE_WIDTH = 40;
@@ -47,6 +51,8 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    
    private BuildWallConfigurationStyle styling;
    private BuildWallConfiguration configuration;
+   
+   private Label titleLabel;
    
    private TitledPane dimensionsPane;
    private TitledPane jobPoliciesPane;
@@ -87,11 +93,13 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    /**
     * Constructs a new {@link BuildWallConfigurationPanelImpl}.
     * @param configuration the {@link BuildWallConfiguration} to configure.
+    * @param title the title of the panel.
     */
-   public BuildWallConfigurationPanelImpl( BuildWallConfiguration configuration ) {
+   public BuildWallConfigurationPanelImpl( String title, BuildWallConfiguration configuration ) {
       this.configuration = configuration;
       this.styling = new BuildWallConfigurationStyle();
       
+      constructTitle( title );
       constructDimensions();
       constructJobPoliciesPane();
       constructFontItemPane();
@@ -102,6 +110,17 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       width.setHgrow( Priority.ALWAYS );
       getColumnConstraints().addAll( width );
    }//End Constructor
+   
+   /**
+    * Method to construct a title for the configuration panel.
+    * @param title the string title to create a {@link Label} for.
+    */
+   private void constructTitle( String title ) {
+      titleLabel = styling.createBoldLabel( title, TITLE_FONT_SIZE );
+      titleLabel.setAlignment( Pos.CENTER );
+      GridPane.setConstraints( titleLabel, 0, 0, 2, 1, HPos.CENTER, VPos.CENTER );
+      add( titleLabel, 0, 0 );
+   }//End Method
    
    /**
     * Method to construct the dimensions configurables.
@@ -135,7 +154,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColumnConstraints( dimensionsContent );
       
       dimensionsPane = new TitledPane( "Dimensions", dimensionsContent );
-      add( dimensionsPane, 0, 0 );
+      add( dimensionsPane, 0, 1 );
    }//End Method
    
    /**
@@ -146,7 +165,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColumnConstraints( policiesContent );
       
       jobPoliciesPane = new TitledPane( "Job Policies", policiesContent );
-      add( jobPoliciesPane, 0, 1 );
+      add( jobPoliciesPane, 0, 2 );
    }//End Method
    
    /**
@@ -194,7 +213,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColumnConstraints( fontContent );
       
       fontPane = new TitledPane( "Fonts", fontContent );
-      add( fontPane, 0, 2 );
+      add( fontPane, 0, 3 );
    }//End Method
    
    /**
@@ -227,7 +246,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColumnConstraints( content );
       
       colourPane = new TitledPane( "Colours", content );
-      add( colourPane, 0, 3 );
+      add( colourPane, 0, 4 );
    }//End Method
    
    /**
@@ -417,6 +436,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
 
    Label desriptionTypeLabel() {
       return descriptionTypeLabel;
+   }//End Method
+
+   Label titleLabel() {
+      return titleLabel;
    }//End Method
 
 }//End Class
