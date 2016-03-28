@@ -10,6 +10,8 @@ package buildwall.configuration;
 
 import buildwall.configuration.components.JobPolicyPanel;
 import buildwall.configuration.style.BuildWallConfigurationStyle;
+import buildwall.panel.type.JobPanelDescriptionProvider;
+import buildwall.panel.type.JobPanelDescriptionProviders;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.combobox.FontFamilyPropertyBox;
@@ -17,8 +19,10 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -51,6 +55,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    
    private Label columnsLabel;
    private IntegerPropertySpinner columnsSpinner;
+   
+   private Label descriptionTypeLabel;
+   private RadioButton simpleDescriptionButton;
+   private RadioButton defaultDescriptionButton;
    
    private Label jobNameFontLabel;
    private Label buildNumberFontLabel;
@@ -107,6 +115,22 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       columnsSpinner = new IntegerPropertySpinner();  
       configureIntegerSpinner( columnsSpinner, configuration.numberOfColumns(), 1, 1000 );
       dimensionsContent.add( columnsSpinner, 1, 0 );
+      
+      final ToggleGroup descriptionToggles = new ToggleGroup();
+      
+      descriptionTypeLabel = styling.createBoldLabel( "Description Type" );
+      dimensionsContent.add( descriptionTypeLabel, 0, 1 );
+      
+      simpleDescriptionButton = configureRadioButton( "Simple Description", JobPanelDescriptionProviders.Simple, descriptionToggles );
+      dimensionsContent.add( simpleDescriptionButton, 1, 1 );
+      
+      defaultDescriptionButton = configureRadioButton( "Default Description", JobPanelDescriptionProviders.Default, descriptionToggles );
+      dimensionsContent.add( defaultDescriptionButton, 1, 2 );
+      
+      updateDescriptionTypeButton( configuration.jobPanelDescriptionProvider().get() );
+      configuration.jobPanelDescriptionProvider().addListener( 
+               ( source, old, updated ) -> updateDescriptionTypeButton( updated ) 
+      );
 
       configureColumnConstraints( dimensionsContent );
       
@@ -255,11 +279,36 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       spinner.setValueFactory( new DefensiveIntegerSpinnerValueFactory( MINIMUM_FONT_SIZE, MAXIMUM_FONT_SIZE ) );
       spinner.bindProperty( 
                property,
-               size -> { return Font.font( property.get().getFamily(), size ); },
-               font -> { return ( int )font.getSize(); }
+               size -> Font.font( property.get().getFamily(), size ),
+               font -> ( int )font.getSize()
       );
       spinner.setMaxWidth( Double.MAX_VALUE );
       spinner.setEditable( true );
+   }//End Method
+   
+   /**
+    * Method to configure the {@link RadioButton}s for this panel.
+    * @param name the name on the button.
+    * @param provider the {@link JobPanelDescriptionProviders} the button is for.
+    * @param descriptionToggles the {@link ToggleGroup} for the {@link RadioButton}s.
+    * @return the {@link RadioButton} constructed.
+    */
+   private RadioButton configureRadioButton( String name, JobPanelDescriptionProviders provider, ToggleGroup descriptionToggles ) {
+      RadioButton descriptionButton = new RadioButton( name );
+      descriptionButton.setToggleGroup( descriptionToggles );
+      descriptionButton.setOnAction( 
+               event -> configuration.jobPanelDescriptionProvider().set( provider ) 
+      );
+      return descriptionButton;
+   }//End Method
+   
+   /**
+    * Method to update the {@link RadioButton}s for the {@link JobPanelDescriptionProviders}.
+    * @param provider the {@link JobPanelDescriptionProvider} set in the {@link BuildWallConfiguration}.
+    */
+   private void updateDescriptionTypeButton( JobPanelDescriptionProvider provider ){
+      simpleDescriptionButton.setSelected( JobPanelDescriptionProviders.Simple.equals( provider )  );
+      defaultDescriptionButton.setSelected( JobPanelDescriptionProviders.Default.equals( provider )  );
    }//End Method
    
    ComboBox< String > jobNameFontBox() {
@@ -356,6 +405,18 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
 
    TitledPane jobPoliciesPane() {
       return jobPoliciesPane;
+   }//End Method
+
+   RadioButton simpleDescriptionButton() {
+      return simpleDescriptionButton;
+   }//End Method
+
+   RadioButton defaultDescriptionButton() {
+      return defaultDescriptionButton;
+   }//End Method
+
+   Label desriptionTypeLabel() {
+      return descriptionTypeLabel;
    }//End Method
 
 }//End Class
