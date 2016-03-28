@@ -14,6 +14,7 @@ import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import buildwall.configuration.updating.JobPolicyUpdater;
 import buildwall.layout.BuildWallDisplayImpl;
 import buildwall.layout.GridWallImpl;
+import buildwall.panel.type.JobPanelDescriptionProviders;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
@@ -43,6 +44,8 @@ public class DualBuildWallDisplayImpl extends BorderPane {
    public DualBuildWallDisplayImpl( JenkinsDatabase database ) {
       this.rightConfiguration = new BuildWallConfigurationImpl();
       this.leftConfiguration = new BuildWallConfigurationImpl();
+      this.leftConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
+      this.leftConfiguration.numberOfColumns().set( 1 );
       
       new JobPolicyUpdater( database, rightConfiguration );
       new JobPolicyUpdater( database, leftConfiguration );

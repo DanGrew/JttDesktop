@@ -8,27 +8,10 @@
  */
 package buildwall.panel.description;
 
-import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.concurrent.TimeUnit;
-
 import buildwall.configuration.BuildWallConfiguration;
-import graphics.DecoupledPlatformImpl;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.registrations.ChangeListenerBindingImpl;
-import javafx.registrations.ChangeListenerRegistrationImpl;
-import javafx.registrations.PaintColorChangeListenerBindingImpl;
-import javafx.registrations.RegistrationImpl;
-import javafx.registrations.RegistrationManager;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import model.jobs.JenkinsJob;
 
 /**

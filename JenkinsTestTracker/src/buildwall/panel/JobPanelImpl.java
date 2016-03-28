@@ -10,7 +10,11 @@ package buildwall.panel;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.panel.description.DefaultJobPanelDescriptionImpl;
+import buildwall.panel.description.JobPanelDescriptionBaseImpl;
+import buildwall.panel.type.JobPanelDescriptionProvider;
+import javafx.registrations.ChangeListenerRegistrationImpl;
 import javafx.registrations.RegistrationImpl;
+import javafx.registrations.RegistrationManager;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import model.jobs.JenkinsJob;
@@ -22,8 +26,10 @@ import model.jobs.JenkinsJob;
 public class JobPanelImpl extends StackPane {
 
    private final JobProgressImpl progress;
-   private final DefaultJobPanelDescriptionImpl description;
+   private JobPanelDescriptionBaseImpl description;
    private final JenkinsJob job;
+   private final BuildWallConfiguration configuration;
+   private final RegistrationManager registrations;
    
    /**
     * Constructs a new {@link JobPanelImpl}.
@@ -31,11 +37,38 @@ public class JobPanelImpl extends StackPane {
     * @param job the {@link JenkinsJob}.
     */
    public JobPanelImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
+      this.configuration = configuration;
       this.job = job;
+      this.registrations = new RegistrationManager();
       
       this.progress = new JobProgressImpl( job );
       getChildren().add( progress );
-      this.description = new DefaultJobPanelDescriptionImpl( configuration, job );
+
+      updateJobPanelDescriptionType( configuration.jobPanelDescriptionProvider().get() );
+      applyRegistrations();
+   }//End Method
+   
+   /**
+    * Method to apply the registrations for this {@link JobPanelImpl}.
+    */
+   private void applyRegistrations(){
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               configuration.jobPanelDescriptionProvider(), 
+               ( source, old, updated ) -> updateJobPanelDescriptionType( updated )
+      ) );
+   }//End Method
+   
+   /**
+    * Method to update the {@link JobPanelDescriptionBaseImpl} used.
+    * @param provider the {@link JobPanelDescriptionProvider} providing the {@link JobPanelDescriptionBaseImpl}.
+    */
+   private void updateJobPanelDescriptionType( JobPanelDescriptionProvider provider ) {
+      if ( description != null ) {
+         getChildren().remove( description );
+         description.detachFromSystem();
+      }
+      
+      this.description = provider.constructJobDescriptionPanel( configuration, job );
       getChildren().add( description );
    }//End Method
 
@@ -53,6 +86,7 @@ public class JobPanelImpl extends StackPane {
     */
    public void detachFromSystem() {
       getChildren().clear();
+      registrations.shutdown();
       progress.detachFromSystem();
       description.detachFromSystem();
    }//End Method
@@ -70,7 +104,7 @@ public class JobPanelImpl extends StackPane {
       return progress;
    }//End Method
 
-   DefaultJobPanelDescriptionImpl description() {
+   JobPanelDescriptionBaseImpl description() {
       return description;
    }//End Method
 

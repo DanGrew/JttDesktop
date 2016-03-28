@@ -15,6 +15,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import buildwall.panel.type.JobPanelDescriptionProviders;
+
 /**
  * {@link BuildWallConfigurationImpl} test.
  */
@@ -39,6 +41,8 @@ public class BuildWallConfigurationImplTest {
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_NUMBER_OF_COLUMNS, systemUnderTest.numberOfColumns().get() );
       
       assertThat( systemUnderTest.jobPolicies().isEmpty(), is( true ) );
+      
+      assertThat( systemUnderTest.jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Default ) );
    }//End Method
    
 }//End Class

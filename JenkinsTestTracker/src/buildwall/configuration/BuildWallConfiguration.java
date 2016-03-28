@@ -9,6 +9,8 @@
 package buildwall.configuration;
 
 import buildwall.layout.BuildWall;
+import buildwall.panel.JobPanelImpl;
+import buildwall.panel.type.JobPanelDescriptionProvider;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableMap;
@@ -69,4 +71,11 @@ public interface BuildWallConfiguration {
     * @return the {@link ObservableMap}.
     */
    public ObservableMap< JenkinsJob, BuildWallJobPolicy > jobPolicies();
+
+   /**
+    * {@link ObjectProperty} for the type of {@link JobPanelDescriptionProvider} to use for
+    * the {@link JobPanelImpl}.
+    * @return the {@link ObjectProperty}.
+    */
+   public ObjectProperty< JobPanelDescriptionProvider > jobPanelDescriptionProvider();
 }//End Interface

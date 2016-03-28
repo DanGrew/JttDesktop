@@ -8,9 +8,13 @@
  */
 package buildwall.panel;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,8 +22,12 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.panel.description.DefaultJobPanelDescriptionImpl;
+import buildwall.panel.description.JobPanelDescriptionBaseImpl;
+import buildwall.panel.description.SimpleJobPanelDescriptionImpl;
+import buildwall.panel.type.JobPanelDescriptionProvider;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
@@ -34,6 +42,7 @@ import styling.SystemStyling;
 public class JobPanelImplTest {
 
    private JenkinsJob job;
+   private BuildWallConfiguration configuration;
    private JobPanelImpl systemUnderTest;
    
    @BeforeClass public static void initialiseStylings(){
@@ -47,7 +56,8 @@ public class JobPanelImplTest {
    @Before public void initialiseSystemUnderTest(){
       job = new JenkinsJobImpl( "JenkinsTestTracker" );
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new JobPanelImpl( new BuildWallConfigurationImpl(), job );
+      configuration = new BuildWallConfigurationImpl();
+      systemUnderTest = new JobPanelImpl( configuration, job );
    }//End Method
    
    @Ignore //For manual inspection.
@@ -90,5 +100,39 @@ public class JobPanelImplTest {
       systemUnderTest.detachFromSystem();
       assertThat( systemUnderTest.isDetached(), is( true ) );
    }//End Method
-
+   
+   @Test public void shouldConstructDescriptionWhenProviderChanged(){
+      JobPanelDescriptionBaseImpl initialDescription = systemUnderTest.description();
+      assertThat( initialDescription.isDetached(), is( false ) );
+      
+      JobPanelDescriptionProvider provider = mock( JobPanelDescriptionProvider.class );
+      SimpleJobPanelDescriptionImpl providedDescription = new SimpleJobPanelDescriptionImpl( configuration, job );
+      when( provider.constructJobDescriptionPanel( configuration, job ) ).thenReturn( providedDescription );
+      configuration.jobPanelDescriptionProvider().set( provider );
+      
+      JobPanelDescriptionBaseImpl updatedDescription = systemUnderTest.description();
+      assertThat( updatedDescription, not( initialDescription ) );
+      assertThat( updatedDescription, is( providedDescription ) );
+      assertThat( initialDescription.isDetached(), is( true ) );
+      assertThat( updatedDescription.isDetached(), is( false ) );
+      assertThat( systemUnderTest.getChildren(), not( contains( initialDescription ) ) );
+      assertThat( systemUnderTest.getChildren(), contains( systemUnderTest.progress(), updatedDescription ) );
+   }//End Method
+   
+   @Test public void detachShouldUnregisterForProviderChanegs(){
+      JobPanelDescriptionBaseImpl initialDescription = systemUnderTest.description();
+      assertThat( initialDescription.isDetached(), is( false ) );
+      
+      systemUnderTest.detachFromSystem();
+      
+      JobPanelDescriptionProvider provider = mock( JobPanelDescriptionProvider.class );
+      SimpleJobPanelDescriptionImpl providedDescription = new SimpleJobPanelDescriptionImpl( configuration, job );
+      when( provider.constructJobDescriptionPanel( configuration, job ) ).thenReturn( providedDescription );
+      configuration.jobPanelDescriptionProvider().set( provider );
+      
+      JobPanelDescriptionBaseImpl updatedDescription = systemUnderTest.description();
+      assertThat( updatedDescription, is( initialDescription ) );
+      assertThat( systemUnderTest.getChildren(), not( contains( systemUnderTest.progress(), providedDescription ) ) );
+   }//End Method
+   
 }//End Class

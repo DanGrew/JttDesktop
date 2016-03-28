@@ -21,6 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import buildwall.layout.GridWallImpl;
+import buildwall.panel.type.JobPanelDescriptionProviders;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
@@ -187,6 +188,11 @@ public class DualBuildWallDisplayImplTest {
    
    @Test public void shouldUseContextMenuOpenerOnEntireSut(){
       assertThat( systemUnderTest.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
+   }//End Method
+   
+   @Test public void leftConfigurationShouldUseDefaults(){
+      assertThat( systemUnderTest.leftConfiguration().numberOfColumns().get(), is( 1 ) );
+      assertThat( systemUnderTest.leftConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Simple ) );
    }//End Method
    
 }//End Class

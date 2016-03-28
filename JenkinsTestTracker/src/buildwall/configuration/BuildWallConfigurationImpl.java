@@ -8,6 +8,8 @@
  */
 package buildwall.configuration;
 
+import buildwall.panel.type.JobPanelDescriptionProvider;
+import buildwall.panel.type.JobPanelDescriptionProviders;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -41,23 +43,25 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
    private IntegerProperty numberOfColumns;
    
    private ObservableMap< JenkinsJob, BuildWallJobPolicy > jobPolicies;
+   private ObjectProperty< JobPanelDescriptionProvider > jobPanelDescriptionProvider;
    
    /**
     * Constructs a new {@link BuildWallConfigurationImpl}.
     */
    public BuildWallConfigurationImpl() {
-      buildNumberColour = new SimpleObjectProperty< Color >( DEFAULT_TEXT_COLOUR );
-      buildNumberFont = new SimpleObjectProperty< Font >( DEFAULT_PROPERTIES_FONT );
+      buildNumberColour = new SimpleObjectProperty<>( DEFAULT_TEXT_COLOUR );
+      buildNumberFont = new SimpleObjectProperty<>( DEFAULT_PROPERTIES_FONT );
       
-      completionEstimateColour = new SimpleObjectProperty< Color >( DEFAULT_TEXT_COLOUR );
-      completionEstimateFont = new SimpleObjectProperty< Font >( DEFAULT_PROPERTIES_FONT );
+      completionEstimateColour = new SimpleObjectProperty<>( DEFAULT_TEXT_COLOUR );
+      completionEstimateFont = new SimpleObjectProperty<>( DEFAULT_PROPERTIES_FONT );
       
-      jobNameColour = new SimpleObjectProperty< Color >( DEFAULT_TEXT_COLOUR );
-      jobNameFont = new SimpleObjectProperty< Font >( DEFAULT_JOB_NAME_FONT );
+      jobNameColour = new SimpleObjectProperty<>( DEFAULT_TEXT_COLOUR );
+      jobNameFont = new SimpleObjectProperty<>( DEFAULT_JOB_NAME_FONT );
       
       numberOfColumns = new SimpleIntegerProperty( DEFAULT_NUMBER_OF_COLUMNS );
       
       jobPolicies = FXCollections.observableHashMap();
+      jobPanelDescriptionProvider = new SimpleObjectProperty<>( JobPanelDescriptionProviders.Default );
    }//End Constructor
    
    /**
@@ -114,6 +118,13 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
     */
    @Override public ObservableMap< JenkinsJob, BuildWallJobPolicy > jobPolicies() {
       return jobPolicies;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObjectProperty< JobPanelDescriptionProvider > jobPanelDescriptionProvider() {
+      return jobPanelDescriptionProvider;
    }//End Method
 
 }//End Class
