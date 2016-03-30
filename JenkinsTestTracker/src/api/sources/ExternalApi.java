@@ -52,6 +52,12 @@ public interface ExternalApi {
     * @return the {@link String} response from the api.
     */
    public String getJobsList();
+   
+   /**
+    * Method to get the list of users currently available.
+    * @return the {@link String} response from the api.
+    */
+   public String getUsersList();
 
    /**
     * Method to get the results of the latest build of the given {@link JenkinsJob} using the wrapped
