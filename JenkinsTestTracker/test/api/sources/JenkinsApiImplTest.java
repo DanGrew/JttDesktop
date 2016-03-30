@@ -42,7 +42,7 @@ import model.jobs.JenkinsJobImpl;
  */
 public class JenkinsApiImplTest {
    
-   private static final String JENKINS_LOACTION = "any-location";
+   private static final String JENKINS_LOCATION = "any-location";
    private static final String USERNAME = "any user";
    private static final String PASSWORD = "any password";
    private static final String EXPECTED_RESPONSE = "anythingNotNull";
@@ -67,31 +67,31 @@ public class JenkinsApiImplTest {
                } 
       );
       
-      when( clientHandler.constructClient( JENKINS_LOACTION, USERNAME, PASSWORD ) ).thenReturn( client );
+      when( clientHandler.constructClient( JENKINS_LOCATION, USERNAME, PASSWORD ) ).thenReturn( client );
       when( clientHandler.handleResponse( Mockito.any() ) ).thenReturn( EXPECTED_RESPONSE );
       
       verify( digest ).attachSource( systemUnderTest );
    }//End Method
 
    @Test public void shouldAttemptLogin() throws ClientProtocolException, IOException {
-      HttpClient actualClient = systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      HttpClient actualClient = systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       assertEquals( client, actualClient );
       
-      verify( clientHandler ).constructClient( JENKINS_LOACTION, USERNAME, PASSWORD );
+      verify( clientHandler ).constructClient( JENKINS_LOCATION, USERNAME, PASSWORD );
       assertNotNull( request.get() );
       assertTrue( request.get() instanceof HttpGet );
       HttpGet get = ( HttpGet )request.get();
-      assertEquals( JenkinsApiImpl.constructBaseRequest( JENKINS_LOACTION ).getURI().toString(), get.getURI().toString() );
+      assertEquals( JenkinsApiImpl.constructBaseRequest( JENKINS_LOCATION ).getURI().toString(), get.getURI().toString() );
       
       verify( digest ).executingLoginRequest();
       verify( digest ).connectionSuccess();
    }//End Method
    
    @Test public void shouldNotAttemptLoginWhenClientIsNull() throws ClientProtocolException, IOException {
-      Mockito.when( clientHandler.constructClient( JENKINS_LOACTION, USERNAME, PASSWORD ) ).thenReturn( null );
-      Assert.assertNull( systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD ) );
+      Mockito.when( clientHandler.constructClient( JENKINS_LOCATION, USERNAME, PASSWORD ) ).thenReturn( null );
+      Assert.assertNull( systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD ) );
       
-      Mockito.verify( clientHandler ).constructClient( JENKINS_LOACTION, USERNAME, PASSWORD );
+      Mockito.verify( clientHandler ).constructClient( JENKINS_LOCATION, USERNAME, PASSWORD );
       Mockito.verifyNoMoreInteractions( client, clientHandler );
       
       verify( digest, times( 0 ) ).executingLoginRequest();
@@ -99,7 +99,7 @@ public class JenkinsApiImplTest {
    
    @Test public void shouldResetClientConnectionAndHandleNullResponse() throws ClientProtocolException, IOException{
       Mockito.when( clientHandler.handleResponse( Mockito.any() ) ).thenReturn( null );
-      Assert.assertNull( systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD ) );
+      Assert.assertNull( systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD ) );
       Assert.assertFalse( systemUnderTest.isLoggedIn() );
       
       verify( digest ).executingLoginRequest();
@@ -113,7 +113,7 @@ public class JenkinsApiImplTest {
    }//End Method
    
    @Test public void shouldGetLastBuildBuildingState() throws ClientProtocolException, IOException {
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       
       String response = systemUnderTest.getLastBuildBuildingState( jenkinsJob );
       Assert.assertEquals( EXPECTED_RESPONSE, response );
@@ -123,14 +123,14 @@ public class JenkinsApiImplTest {
       HttpGet get = ( HttpGet )request.get();
       Assert.assertEquals( 
                JenkinsApiImpl.constructLastBuildBuildingStateRequest( 
-                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOACTION ), jenkinsJob 
+                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOCATION ), jenkinsJob 
                ).getURI().toString(), 
                get.getURI().toString() 
       );
    }//End Method
    
    @Test public void shouldGetLastBuildJobDetails() {
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       
       String response = systemUnderTest.getLastBuildJobDetails( jenkinsJob );
       Assert.assertEquals( EXPECTED_RESPONSE, response );
@@ -140,14 +140,14 @@ public class JenkinsApiImplTest {
       HttpGet get = ( HttpGet )request.get();
       Assert.assertEquals( 
                JenkinsApiImpl.constructLastBuildJobDetailsRequest(  
-                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOACTION ), jenkinsJob 
+                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOCATION ), jenkinsJob 
                ).getURI().toString(), 
                get.getURI().toString() 
       );
    }//End Method
 
    @Test public void shouldGetJobList() {
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       
       String response = systemUnderTest.getJobsList();
       Assert.assertEquals( EXPECTED_RESPONSE, response );
@@ -157,14 +157,31 @@ public class JenkinsApiImplTest {
       HttpGet get = ( HttpGet )request.get();
       Assert.assertEquals( 
                JenkinsApiImpl.constructJobListRequest(   
-                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOACTION ) 
+                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOCATION ) 
                ).getURI().toString(), 
                get.getURI().toString() 
       );
    }//End Method
 
+   @Test public void shouldGetUserList() {
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
+      
+      String response = systemUnderTest.getUsersList();
+      Assert.assertEquals( EXPECTED_RESPONSE, response );
+      
+      Assert.assertNotNull( request.get() );
+      Assert.assertTrue( request.get() instanceof HttpGet );
+      HttpGet get = ( HttpGet )request.get();
+      Assert.assertEquals( 
+               JenkinsApiImpl.constructUserListRequest(   
+                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOCATION ) 
+               ).getURI().toString(), 
+               get.getURI().toString() 
+      );
+   }//End Method
+   
    @Test public void shouldGetLatestTestResultsWrapped() {
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       
       String response = systemUnderTest.getLatestTestResultsWrapped( jenkinsJob );
       Assert.assertEquals( EXPECTED_RESPONSE, response );
@@ -174,14 +191,14 @@ public class JenkinsApiImplTest {
       HttpGet get = ( HttpGet )request.get();
       Assert.assertEquals( 
                JenkinsApiImpl.constructLastBuildTestResultsWrappedRequest( 
-                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOACTION ), jenkinsJob 
+                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOCATION ), jenkinsJob 
                ).getURI().toString(), 
                get.getURI().toString() 
       );
    }//End Method
    
    @Test public void shouldGetLatestTestResultsUnwrapped() {
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       
       String response = systemUnderTest.getLatestTestResultsUnwrapped( jenkinsJob );
       Assert.assertEquals( EXPECTED_RESPONSE, response );
@@ -191,7 +208,7 @@ public class JenkinsApiImplTest {
       HttpGet get = ( HttpGet )request.get();
       Assert.assertEquals( 
                JenkinsApiImpl.constructLastBuildTestResultsUnwrappedRequest( 
-                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOACTION ), jenkinsJob 
+                        JenkinsApiImpl.prefixJenkinsLocation( JENKINS_LOCATION ), jenkinsJob 
                ).getURI().toString(), 
                get.getURI().toString() 
       );
@@ -209,6 +226,11 @@ public class JenkinsApiImplTest {
 
    @Test public void shouldNotGetJobListWhenNotLoggedIn() {
       systemUnderTest.getJobsList();
+      Mockito.verifyNoMoreInteractions( clientHandler, client );
+   }//End Method
+   
+   @Test public void shouldNotGetUserListWhenNotLoggedIn() {
+      systemUnderTest.getUsersList();
       Mockito.verifyNoMoreInteractions( clientHandler, client );
    }//End Method
 
@@ -250,6 +272,14 @@ public class JenkinsApiImplTest {
       );
    }//End Method
    
+   @Test public void shouldConstructUserListRequest(){
+      final String expectedRequest = "http://some-location/api/json?pretty=true&tree=users[user[fullName]]";
+      Assert.assertEquals( 
+               expectedRequest, 
+               JenkinsApiImpl.constructUserListRequest( "http://some-location" ).getURI().toString() 
+      );
+   }//End Method
+   
    @Test public void shouldConstructLastBuildJobDetailsRequest(){
       final String expectedRequest = "http://some-location/job/SomeJenkinsProject/lastCompletedBuild/api/json?tree=number,result";
       Assert.assertEquals( 
@@ -276,7 +306,7 @@ public class JenkinsApiImplTest {
 
    @SuppressWarnings("unchecked") //Fail fast, manually verified. 
    @Test public void executeShouldHandleClientProtocolException() throws ClientProtocolException, IOException{
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       verify( digest, times( 1 ) ).handlingResponse();
       verify( digest, times( 1 ) ).responseReady();
       
@@ -289,7 +319,7 @@ public class JenkinsApiImplTest {
    
    @SuppressWarnings("unchecked") //Fail fast, manually verified.
    @Test public void executeShouldHandleIOException() throws ClientProtocolException, IOException{
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       verify( digest, times( 1 ) ).handlingResponse();
       verify( digest, times( 1 ) ).responseReady();
       
@@ -302,7 +332,7 @@ public class JenkinsApiImplTest {
 
    @SuppressWarnings("unchecked") //Fail fast, manually verified.
    @Test public void executeShouldHandleHttpResponseException() throws ClientProtocolException, IOException{
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       verify( digest, times( 1 ) ).handlingResponse();
       verify( digest, times( 1 ) ).responseReady();
       
@@ -314,7 +344,7 @@ public class JenkinsApiImplTest {
    }//End Method
    
    @Test public void executeShouldDigetsFully() throws ClientProtocolException, IOException{
-      systemUnderTest.attemptLogin( JENKINS_LOACTION, USERNAME, PASSWORD );
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       verify( digest, times( 1 ) ).handlingResponse();
       verify( digest, times( 1 ) ).responseReady();
       

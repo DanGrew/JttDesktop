@@ -42,6 +42,8 @@ public class JenkinsApiImpl implements ExternalApi {
    static final String JOBS_LIST = "/api/json?tree=jobs[name]&pretty=true";
    static final String JOB = "/job/";
    
+   static final String USERS_LIST = "/api/json?pretty=true&tree=users[user[fullName]]";
+   
    private final ClientHandler clientHandler;
    private final JenkinsApiDigest digest;
    private String jenkinsLocation;
@@ -136,6 +138,7 @@ public class JenkinsApiImpl implements ExternalApi {
     */
    @Override public String getLastBuildBuildingState( JenkinsJob jenkinsJob ) {
       if ( !isLoggedIn() ) return null;
+      
       HttpGet get = constructLastBuildBuildingStateRequest( jenkinsLocation, jenkinsJob );
       return executeRequestAndUnpack( get );
    }//End Method
@@ -145,6 +148,7 @@ public class JenkinsApiImpl implements ExternalApi {
     */
    @Override public String getLastBuildJobDetails( JenkinsJob jenkinsJob ) {
       if ( !isLoggedIn() ) return null;
+      
       HttpGet get = constructLastBuildJobDetailsRequest( jenkinsLocation, jenkinsJob );
       return executeRequestAndUnpack( get );
    }//End Method
@@ -154,7 +158,18 @@ public class JenkinsApiImpl implements ExternalApi {
     */
    @Override public String getJobsList() {
       if ( !isLoggedIn() ) return null;
+      
       HttpGet get = constructJobListRequest( jenkinsLocation );
+      return executeRequestAndUnpack( get );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String getUsersList() {
+      if ( !isLoggedIn() ) return null;
+      
+      HttpGet get = constructUserListRequest( jenkinsLocation );
       return executeRequestAndUnpack( get );
    }//End Method
 
@@ -163,6 +178,7 @@ public class JenkinsApiImpl implements ExternalApi {
     */
    @Override public String getLatestTestResultsWrapped( JenkinsJob jenkinsJob ) {
       if ( !isLoggedIn() ) return null;
+      
       HttpGet get = constructLastBuildTestResultsWrappedRequest( jenkinsLocation, jenkinsJob );
       return executeRequestAndUnpack( get );
    }//End Method
@@ -172,6 +188,7 @@ public class JenkinsApiImpl implements ExternalApi {
     */
    @Override public String getLatestTestResultsUnwrapped( JenkinsJob jenkinsJob ) {
       if ( !isLoggedIn() ) return null;
+      
       HttpGet get = constructLastBuildTestResultsUnwrappedRequest( jenkinsLocation, jenkinsJob );
       return executeRequestAndUnpack( get );
    }//End Method
@@ -224,6 +241,15 @@ public class JenkinsApiImpl implements ExternalApi {
     */
    static HttpGet constructJobListRequest( String jenkinsLocation ) {
       return new HttpGet( jenkinsLocation + JOBS_LIST );
+   }//End Method
+   
+   /**
+    * Method to construct the request for getting all users from jenkins.
+    * @param jenkinsLocation the location.
+    * @return the {@link HttpGet} to execute.
+    */
+   static HttpGet constructUserListRequest( String jenkinsLocation ) {
+      return new HttpGet( jenkinsLocation + USERS_LIST );
    }//End Method
 
    /**
