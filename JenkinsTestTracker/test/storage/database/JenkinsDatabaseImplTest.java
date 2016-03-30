@@ -24,6 +24,8 @@ import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
 import model.tests.TestClass;
 import model.tests.TestClassImpl;
+import model.users.JenkinsUser;
+import model.users.JenkinsUserImpl;
 
 /**
  * {@link JenkinsDatabaseImpl} test.
@@ -33,9 +35,11 @@ public class JenkinsDatabaseImplTest {
    private static final String TEST_CLASS_NAME = "anything";
    private static final String TEST_CLASS_LOCATION = "anywhere";
    private static final String JENKINS_JOB_NAME = "job name";
+   private static final String JENKINS_USER_NAME = "user name";
    private JenkinsDatabase systemUnderTest;
    private TestClass testClass;
    private JenkinsJob jenkinsJob;
+   private JenkinsUser jenkinsUser;
    
    /**
     * Method to initialise the {@link JenkinsDatabase} system under test.
@@ -49,6 +53,8 @@ public class JenkinsDatabaseImplTest {
       Assert.assertFalse( systemUnderTest.hasTestClass( new TestClassKeyImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION ) ) );
       jenkinsJob = new JenkinsJobImpl( JENKINS_JOB_NAME );
       Assert.assertFalse( systemUnderTest.hasJenkinsJob( JENKINS_JOB_NAME ) );
+      jenkinsUser = new JenkinsUserImpl( JENKINS_USER_NAME );
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
    }//End Method
    
    /**
@@ -306,5 +312,121 @@ public class JenkinsDatabaseImplTest {
       jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
       
       verify( listener ).accept( jenkinsJob, BuildResultStatus.SUCCESS );
+   }//End Method
+   
+   @Test public void shouldProvideJenkinsUsers(){
+      Assert.assertNotNull( systemUnderTest.jenkinsUsers() );
+      Assert.assertTrue( systemUnderTest.jenkinsUsers().isEmpty() );
+      JenkinsUser anotherUser = new JenkinsUserImpl( "some random user" );
+      systemUnderTest.store( anotherUser );
+      Assert.assertFalse( systemUnderTest.jenkinsUsers().isEmpty() );
+      Assert.assertTrue( systemUnderTest.jenkinsUsers().contains( anotherUser ) );
+   }//End Method
+   
+   @Test public void shouldStoreJenkinsUser() {
+      systemUnderTest.store( jenkinsUser );
+      Assert.assertTrue( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( 1, systemUnderTest.jenkinsUsers().size() );
+      Assert.assertTrue( systemUnderTest.jenkinsUsers().contains( jenkinsUser ) );
+   }//End Method
+   
+   @Test public void shouldRetrieveJenkinsUser() {
+      systemUnderTest.store( jenkinsUser );
+      Assert.assertTrue( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( jenkinsUser, systemUnderTest.getJenkinsUser( JENKINS_USER_NAME ) );
+   }//End Method
+   
+   @Test public void shouldRetrieveOnlyMatchingJenkinsUser() {
+      systemUnderTest.store( new JenkinsUserImpl( "something else" ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertNull( systemUnderTest.getJenkinsUser( JENKINS_USER_NAME ) );
+   }//End Method
+   
+   @Test public void shouldOverwriteDuplicateJenkinsUser() {
+      systemUnderTest.store( jenkinsUser );
+      Assert.assertTrue( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( 1, systemUnderTest.jenkinsUsers().size() );
+      Assert.assertTrue( systemUnderTest.jenkinsUsers().contains( jenkinsUser ) );
+      
+      JenkinsUser alternate = new JenkinsUserImpl( JENKINS_USER_NAME );
+      systemUnderTest.store( alternate );
+      Assert.assertEquals( alternate, systemUnderTest.getJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( 1, systemUnderTest.jenkinsUsers().size() );
+      Assert.assertTrue( systemUnderTest.jenkinsUsers().contains( alternate ) );
+   }//End Method
+   
+   @Test public void shouldNotStoreNullJenkinsUser(){
+      JenkinsUser nullUser = null;
+      systemUnderTest.store( nullUser );
+      Assert.assertTrue( systemUnderTest.hasNoJenkinsUsers() );
+   }//End Method
+   
+   @Test public void shouldNotHasNullJenkinsUser(){
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( null ) );
+   }//End Method
+
+   @Test public void shouldNotGetNullJenkinsUser(){
+      Assert.assertNull( systemUnderTest.getJenkinsUser( null ) );
+   }//End Method
+   
+   @Test public void shouldRemoveJenkinsUserUsingKey(){
+      systemUnderTest.store( jenkinsUser );
+      Assert.assertTrue( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( jenkinsUser, systemUnderTest.removeJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( 0, systemUnderTest.jenkinsUsers().size() );
+   }//End Method
+   
+   @Test public void shouldRemoveJenkinsUserUsingInstance(){
+      systemUnderTest.store( jenkinsUser );
+      Assert.assertTrue( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertTrue( systemUnderTest.removeJenkinsUser( jenkinsUser ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( 0, systemUnderTest.jenkinsUsers().size() );
+   }//End Method
+   
+   @Test public void shouldNotRemoveJenkinsUserUsingInstance(){
+      Assert.assertFalse( systemUnderTest.removeJenkinsUser( jenkinsUser ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+   }//End Method
+   
+   @Test public void shouldNotRemoveJenkinsUserIfNonePresent(){
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertNull( systemUnderTest.removeJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( 0, systemUnderTest.jenkinsUsers().size() );
+   }//End Method
+   
+   @Test public void shouldNotRemoveJenkinsUserIfNotPresent(){
+      systemUnderTest.store( jenkinsUser );
+      Assert.assertTrue( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertNull( systemUnderTest.removeJenkinsUser( "something not defined" ) );
+      Assert.assertTrue( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertEquals( 1, systemUnderTest.jenkinsUsers().size() );
+      Assert.assertTrue( systemUnderTest.jenkinsUsers().contains( jenkinsUser ) );
+   }//End Method
+   
+   @Test public void shouldNotRemoveNullJenkinsUserWithKey(){
+      String name = null;
+      Assert.assertNull( systemUnderTest.removeJenkinsUser( name ) );
+   }//End Method
+   
+   @Test public void shouldNotRemoveNullJenkinsUserWithInstance(){
+      JenkinsUser user = null;
+      Assert.assertFalse( systemUnderTest.removeJenkinsUser( user ) );
+   }//End Method
+   
+   @Test public void shouldNotStoreJenkinsUserWithNoName(){
+      jenkinsUser.nameProperty().set( null );
+      systemUnderTest.store( jenkinsUser );
+      Assert.assertTrue( systemUnderTest.hasNoJenkinsUsers() );
+      Assert.assertTrue( systemUnderTest.jenkinsUsers().isEmpty() );
+      Assert.assertFalse( systemUnderTest.hasJenkinsUser( null ) );
+      Assert.assertNull( systemUnderTest.getJenkinsUser( null ) );
+   }//End Method   
+   
+   @Test public void shouldContainJenkinsUser(){
+      systemUnderTest.store( jenkinsUser );
+      Assert.assertTrue( systemUnderTest.containsJenkinsUser( jenkinsUser ) );
    }//End Method
 }//End Class

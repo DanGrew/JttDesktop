@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import model.jobs.JenkinsJob;
 import model.tests.TestCase;
 import model.tests.TestClass;
+import model.users.JenkinsUser;
 import storage.database.events.JenkinsJobPropertyListener;
 
 /**
@@ -32,6 +33,12 @@ public interface JenkinsDatabase {
     */
    public boolean hasNoJenkinsJobs();
 
+   /**
+    * Method to determine whether the {@link JenkinsDatabase} has any {@link JenkinsUser}s.
+    * @return true if the {@link JenkinsDatabase} has no {@link JenkinsUser}s.
+    */
+   public boolean hasNoJenkinsUsers();
+   
    /**
     * Method to determine whether the {@link JenkinsDatabase} has a {@link TestClass} matching the
     * given {@link TestClassKey}.
@@ -55,12 +62,27 @@ public interface JenkinsDatabase {
    public boolean containsJenkinsJob( JenkinsJob jenkinsJob );
    
    /**
+    * Method to determine whether the {@link JenkinsDatabase} has the given {@link JenkinsUser}.
+    * @param jenkinsUser the {@link JenkinsUser} in question.
+    * @return true if contained.
+    */
+   public boolean containsJenkinsUser( JenkinsUser jenkinsUser );
+   
+   /**
     * Method to determine whether the {@link JenkinsDatabase} has a {@link JenkinsJob} matching the
     * given {@link String} name key.
     * @param key the {@link String} to identify the {@link JenkinsJob}.
     * @return true if the {@link JenkinsJob} is present.
     */
    public boolean hasJenkinsJob( String key );
+   
+   /**
+    * Method to determine whether the {@link JenkinsDatabase} has a {@link JenkinsUser} matching the
+    * given {@link String} name key.
+    * @param key the {@link String} to identify the {@link JenkinsUser}.
+    * @return true if the {@link JenkinsUser} is present.
+    */
+   public boolean hasJenkinsUser( String key );
 
    /**
     * Method to store the given {@link TestClass}. Note that this will replace anything matching the same resulting
@@ -75,6 +97,13 @@ public interface JenkinsDatabase {
     * @param jenkinsJob the {@link JenkinsJob} to store.
     */
    public void store( JenkinsJob jenkinsJob );
+   
+   /**
+    * Method to store the given {@link JenkinsUser}. Note that this will replace anything matching the same resulting
+    * {@link String} key.
+    * @param jenkinsUser the {@link JenkinsUser} to store.
+    */
+   public void store( JenkinsUser jenkinsUser );
 
    /**
     * Method to get the {@link TestClass} matching the given {@link TestClassKey}.
@@ -89,6 +118,13 @@ public interface JenkinsDatabase {
     * @return the matching {@link JenkinsJob}, or null.
     */
    public JenkinsJob getJenkinsJob( String key );
+   
+   /**
+    * Method to get the {@link JenkinsUser} matching the given {@link String} name key.
+    * @param key the {@link String} to identify the {@link JenkinsUser}.
+    * @return the matching {@link JenkinsUser}, or null.
+    */
+   public JenkinsUser getJenkinsUser( String key );
 
    /**
     * Method to remove the {@link TestClass} matching the given {@link TestClassKey}.
@@ -105,6 +141,13 @@ public interface JenkinsDatabase {
    public JenkinsJob removeJenkinsJob( String key );
    
    /**
+    * Method to remove the {@link JenkinsUser} matching the given {@link String} name key.
+    * @param key the {@link String} to identify the {@link JenkinsUser}.
+    * @return the removed {@link JenkinsUser}.
+    */
+   public JenkinsUser removeJenkinsUser( String key );
+   
+   /**
     * Method to remove the given {@link TestClass} from the {@link JenkinsDatabase}.
     * @param testClass the {@link TestClass} to remove.
     * @return true if removed.
@@ -117,7 +160,14 @@ public interface JenkinsDatabase {
     * @return true if removed.
     */
    public boolean removeJenkinsJob( JenkinsJob jenkinsJob );
-
+   
+   /**
+    * Method to remove the given {@link JenkinsUser} from the {@link JenkinsDatabase}.
+    * @param jenkinsUser the {@link JenkinsUser} to remove.
+    * @return true if removed.
+    */
+   public boolean removeJenkinsUser( JenkinsUser jenkinsUser );
+   
    /**
     * Provides the {@link ObservableList} of {@link TestClass}es held by the {@link JenkinsDatabase}.
     * @return the {@link ObservableList} of {@link TestClass}es.
@@ -130,6 +180,12 @@ public interface JenkinsDatabase {
     */
    public ObservableList< JenkinsJob > jenkinsJobs();
 
+   /**
+    * Provides the {@link ObservableList} of {@link JenkinsUser}s held by the {@link JenkinsDatabase}.
+    * @return the {@link ObservableList} of {@link JenkinsUser}s.
+    */
+   public ObservableList< JenkinsUser > jenkinsUsers();
+   
    /**
     * Getter for access to the {@link JenkinsJobPropertyListener} allowing global registrations.
     * @return the {@link JenkinsJobPropertyListener}.
