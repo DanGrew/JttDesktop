@@ -1,0 +1,29 @@
+{
+  "users" : [
+    {
+      "user" : {
+        "fullName" : "Dan Grew"
+      }
+    },
+    {
+      "user" : {
+        "fullName" : "jenkins"
+      }
+    },
+    {
+      "user" : {
+        "fullName" : "He who shall not be named"
+      }
+    },
+    {
+      "user" : {
+        "fullName" : ""
+      }
+    },
+    {
+      "user" : {
+        "fullName" : "Jeffrey"
+      }
+    }
+  ]
+}
