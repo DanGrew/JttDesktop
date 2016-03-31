@@ -37,6 +37,12 @@ public interface JenkinsFetcher {
    public void fetchJobs();
 
    /**
+    * Method to fetch the current users from the {@link ExternalApi} and populate them
+    * in the {@link JenkinsDatabase}.
+    */
+   public void fetchUsers();
+   
+   /**
     * Method to fetch the latest test results from the latest build of the given {@link JenkinsJob}.
     * @param jenkinsJob the {@link JenkinsJob} to get results for.
     */
@@ -47,5 +53,6 @@ public interface JenkinsFetcher {
     * {@link JenkinsJob}s.
     */
    public void fetchJobsAndUpdateDetails();
+
 
 }//End Interface

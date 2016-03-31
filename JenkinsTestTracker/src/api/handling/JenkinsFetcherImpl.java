@@ -13,6 +13,8 @@ import data.JsonTestResultsImporter;
 import data.json.jobs.JsonJobImporter;
 import data.json.jobs.JsonJobImporterImpl;
 import data.json.tests.JsonTestResultsImporterImpl;
+import data.json.users.JsonUserImporter;
+import data.json.users.JsonUserImporterImpl;
 import model.jobs.JenkinsJob;
 import storage.database.JenkinsDatabase;
 
@@ -25,6 +27,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
    private JenkinsDatabase database;
    private ExternalApi externalApi;
    private JsonJobImporter jobsImporter;
+   private JsonUserImporter usersImporter;
    private JsonTestResultsImporter testsImporter;
    private JenkinsFetcherDigest digest;
    
@@ -50,6 +53,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       this.database = database;
       this.externalApi = externalApi;
       jobsImporter = new JsonJobImporterImpl( database );
+      usersImporter = new JsonUserImporterImpl( database );
       testsImporter = new JsonTestResultsImporterImpl( database );
       
       this.digest = digest;
@@ -101,6 +105,17 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       digest.updated( JenkinsFetcherDigest.JOBS );
    }//End Method
 
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void fetchUsers() {
+      digest.fetching( JenkinsFetcherDigest.USERS );
+      String response = externalApi.getUsersList();
+      digest.parsing( JenkinsFetcherDigest.USERS );
+      usersImporter.importUsers( response );
+      digest.updated( JenkinsFetcherDigest.USERS );
+   }//End Method
+   
    /**
     * {@inheritDoc}
     */

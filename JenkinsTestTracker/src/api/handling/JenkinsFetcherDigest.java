@@ -28,6 +28,7 @@ public class JenkinsFetcherDigest extends ObjectDigestImpl {
    static final String BUILD_STATE = "build state";
    static final String JOB_DETAIL = "job details";
    static final String JOBS = "jobs";
+   static final String USERS = "users";
 
    private int jobsToProcess = 0;
    private int jobsProcessed = 0;

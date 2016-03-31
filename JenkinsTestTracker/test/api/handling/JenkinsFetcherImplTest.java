@@ -26,6 +26,8 @@ import api.sources.ExternalApi;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
+import model.users.JenkinsUser;
+import model.users.JenkinsUserImpl;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
 import utility.TestCommon;
@@ -36,6 +38,7 @@ import utility.TestCommon;
 public class JenkinsFetcherImplTest {
 
    private JenkinsJob jenkinsJob;
+   private JenkinsUser jenkinsUser;
    private JenkinsDatabase database;
    @Mock private ExternalApi externalApi;
    @Mock private JenkinsFetcherDigest digest;
@@ -45,7 +48,9 @@ public class JenkinsFetcherImplTest {
       MockitoAnnotations.initMocks( this );
       database = new JenkinsDatabaseImpl();
       jenkinsJob = new JenkinsJobImpl( "JenkinsJob" );
+      jenkinsUser = new JenkinsUserImpl( "JenkinsUser" );
       database.store( jenkinsJob );
+      database.store( jenkinsUser );
       systemUnderTest = new JenkinsFetcherImpl( database, externalApi, digest );
    }//End Method
    
@@ -236,6 +241,27 @@ public class JenkinsFetcherImplTest {
 
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullApiInConstructor(){
       systemUnderTest = new JenkinsFetcherImpl( database, null );
+   }//End Method
+   
+   @Test public void shouldFetchAllUsers(){
+      String response = TestCommon.readFileIntoString( getClass(), "users-list.json" );
+      Assert.assertNotNull( response );
+      Mockito.when( externalApi.getUsersList() ).thenReturn( response );
+      
+      systemUnderTest.fetchUsers();
+      Assert.assertEquals( 6, database.jenkinsUsers().size() );
+      Assert.assertEquals( jenkinsUser.nameProperty().get(), database.jenkinsUsers().get( 0 ).nameProperty().get() );
+      Assert.assertEquals( "Dan Grew", database.jenkinsUsers().get( 1 ).nameProperty().get() );
+      Assert.assertEquals( "jenkins", database.jenkinsUsers().get( 2 ).nameProperty().get() );
+      Assert.assertEquals( "He who shall not be named", database.jenkinsUsers().get( 3 ).nameProperty().get() );
+      Assert.assertEquals( "The Stig", database.jenkinsUsers().get( 4 ).nameProperty().get() );
+      Assert.assertEquals( "Jeffrey", database.jenkinsUsers().get( 5 ).nameProperty().get() );
+      
+      InOrder digestOrdering = inOrder( digest, externalApi );
+      digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.USERS );
+      digestOrdering.verify( externalApi ).getUsersList();
+      digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.USERS );
+      digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.USERS );
    }//End Method
    
 }//End Class
