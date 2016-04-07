@@ -8,6 +8,10 @@
  */
 package data.json.jobs;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +27,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
+import model.users.JenkinsUser;
+import model.users.JenkinsUserImpl;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
 import utility.TestCommon;
@@ -34,11 +40,21 @@ public class JsonJobImporterImplTest {
    
    private JenkinsDatabase database;
    private JenkinsJob jenkinsJob;
+   private JenkinsUser lucille;
+   private JenkinsUser negan;
+   private JenkinsUser aaron;
    private JsonJobImporter systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       jenkinsJob = new JenkinsJobImpl( "anyName" );
+      lucille = new JenkinsUserImpl( "Lucille" );
+      negan = new JenkinsUserImpl( "Negan" );
+      aaron = new JenkinsUserImpl( "Aaron" );
+      
       database = new JenkinsDatabaseImpl();
+      database.store( lucille );
+      database.store( negan );
+      database.store( aaron );
       systemUnderTest = new JsonJobImporterImpl( database );
    }//End Method
 
@@ -128,11 +144,10 @@ public class JsonJobImporterImplTest {
    
    @Test public void shouldParseJobDetails() {
       String response = TestCommon.readFileIntoString( getClass(), "job-details.json" );
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
-      systemUnderTest.updateJobDetails( jenkinsJob, response );
-      Assert.assertEquals( 22, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.SUCCESS, jenkinsJob.lastBuildStatusProperty().get() );
+      assertDefaultJobDetailsImported( response );
+      
+      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
+      assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron ) );
    }//End Method
    
    @Test public void shouldIgnoreJobDetailsMissingNumber() {
@@ -282,4 +297,64 @@ public class JsonJobImporterImplTest {
    @Test public void shouldIgnoreMissingButValidData(){
       systemUnderTest.importJobs( "{ }" );
    }//End Method
+   
+   @Test public void shouldParseEmptyCulpritsInJobDetails() {
+      String response = TestCommon.readFileIntoString( getClass(), "job-details-empty-culprits.json" );
+      assertDefaultJobDetailsImported( response );
+
+      assertThat( jenkinsJob.culprits().isEmpty(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldParseMissingCulpritFullNameInJobDetails() {
+      String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-culprit-full-name.json" );
+      assertDefaultJobDetailsImported( response );
+
+      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
+      assertThat( jenkinsJob.culprits(), contains( negan, aaron ) );
+   }//End Method
+   
+   @Test public void shouldParseMissingCulpritNameInJobDetails() {
+      String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-culprit-name.json" );
+      assertDefaultJobDetailsImported( response );
+
+      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
+      assertThat( jenkinsJob.culprits(), contains( negan, aaron ) );
+   }//End Method
+   
+   @Test public void shouldParseMissingCulpritsInJobDetails() {
+      String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-culprits.json" );
+      assertDefaultJobDetailsImported( response );
+
+      assertThat( jenkinsJob.culprits().isEmpty(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldParseCulpritsButIgnoredIncorrectFormatInJobDetails() {
+      String response = TestCommon.readFileIntoString( getClass(), "job-details-culprit-name-format.json" );
+      assertDefaultJobDetailsImported( response );
+      
+      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
+      assertThat( jenkinsJob.culprits(), contains( negan, aaron ) );
+   }//End Method
+
+   @Test public void shouldParseCulpritsAndIgnoreMissingUsersInJobDetails() {
+      String response = TestCommon.readFileIntoString( getClass(), "job-details-user-missing-from-database.json" );
+      assertDefaultJobDetailsImported( response );
+
+      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
+      assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron ) );
+   }//End Method
+   
+   /**
+    * Method to assert that the default job details are imported when specifically looking at
+    * culprits parsing.
+    * @param response the response from the api.
+    */
+   private void assertDefaultJobDetailsImported( String response ) {
+      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
+      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      systemUnderTest.updateJobDetails( jenkinsJob, response );
+      Assert.assertEquals( 22, jenkinsJob.lastBuildNumberProperty().get() );
+      Assert.assertEquals( BuildResultStatus.SUCCESS, jenkinsJob.lastBuildStatusProperty().get() );
+   }//End Method
+   
 }//End Class

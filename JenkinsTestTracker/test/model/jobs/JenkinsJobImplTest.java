@@ -8,6 +8,8 @@
  */
 package model.jobs;
 
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -16,6 +18,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import api.handling.BuildState;
+import model.users.JenkinsUser;
+import model.users.JenkinsUserImpl;
 
 /**
  * {@link JenkinsJobImpl} test.
@@ -135,6 +139,20 @@ public class JenkinsJobImplTest {
    
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectSpacesOnlyNameInConstructor(){
       new JenkinsJobImpl( "    " );
+   }//End Method
+   
+   @Test public void shouldProvideCulprits() {
+      assertThat( systemUnderTest.culprits(), hasSize( 0 ) );
+   }//End Method
+   
+   @Test public void shouldUpdateCulprits() {
+      shouldProvideCulprits();
+
+      JenkinsUser user1 = new JenkinsUserImpl( "Frist User" );
+      JenkinsUser user2 = new JenkinsUserImpl( "Second User" );
+      systemUnderTest.culprits().add( user1 );
+      systemUnderTest.culprits().add( user2 );
+      assertThat( systemUnderTest.culprits(), hasItems( user1, user2 ) );
    }//End Method
 
 }//End Class

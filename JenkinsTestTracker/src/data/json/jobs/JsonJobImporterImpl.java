@@ -17,6 +17,7 @@ import api.sources.ExternalApi;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
+import model.users.JenkinsUser;
 import storage.database.JenkinsDatabase;
 
 /**
@@ -32,6 +33,8 @@ public class JsonJobImporterImpl implements JsonJobImporter {
    private static final String RESULT_KEY = "result";
    private static final String JOBS_KEY = "jobs";
    private static final String NAME_KEY = "name";
+   private static final String CULPRITS_KEY = "culprits";
+   private static final String FULL_NAME_KEY = "fullName";
 
    private JenkinsDatabase database;
    
@@ -92,6 +95,44 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          
          jenkinsJob.lastBuildNumberProperty().set( lastBuildNumber );
          jenkinsJob.lastBuildStatusProperty().set( lastBuildResult );
+         
+         identifyCulprits( jenkinsJob, object );
+      } catch ( JSONException exception ) {
+         System.out.println( exception.getMessage() );
+         return;
+      }
+   }//End Method
+   
+   /**
+    * Method to identify the culprits for the given {@link JenkinsJob} from the 
+    * given {@link JSONObject} of job details.
+    * @param jenkinsJob the {@link JenkinsJob} the culprits are for.
+    * @param object the {@link JSONObject} to extract the culprits from.
+    */
+   private void identifyCulprits( JenkinsJob jenkinsJob, JSONObject object ) {
+      if ( !object.has( CULPRITS_KEY ) ) {
+         return;
+      }
+      
+      try {
+         JSONArray culprits = object.getJSONArray( CULPRITS_KEY );
+         for ( int i = 0; i < culprits.length(); i++ ) {
+            
+            try {
+               JSONObject culprit = culprits.getJSONObject( i );
+               if ( !culprit.has( FULL_NAME_KEY ) ) continue;
+               
+               String userName = culprit.getString( FULL_NAME_KEY );
+               JenkinsUser user = database.getJenkinsUser( userName );
+               
+               if ( user == null ) continue;
+               
+               jenkinsJob.culprits().add( user );
+            } catch ( JSONException exception ) {
+               System.out.println( exception.getMessage() );
+               continue;
+            }
+         }
       } catch ( JSONException exception ) {
          System.out.println( exception.getMessage() );
          return;

@@ -19,6 +19,9 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.users.JenkinsUser;
 
 /**
  * {@link JenkinsJobImpl} provides an implementation of the {@link JenkinsJob}.
@@ -33,6 +36,7 @@ public class JenkinsJobImpl implements JenkinsJob {
    private LongProperty currentBuildTime;
    private LongProperty lastBuildTimestamp;
    private BooleanProperty testResultsAreSynchronized;
+   private ObservableList< JenkinsUser > culprits;
    
    /**
     * Constructs a new {@link JenkinsJobImpl}.
@@ -50,6 +54,7 @@ public class JenkinsJobImpl implements JenkinsJob {
       currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
       lastBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
       testResultsAreSynchronized = new SimpleBooleanProperty( DEFAULT_TEST_RESULTS_ARE_SYNC );
+      culprits = FXCollections.observableArrayList();
    }//End Constructor
 
    /**
@@ -106,6 +111,13 @@ public class JenkinsJobImpl implements JenkinsJob {
     */
    @Override public BooleanProperty testResultsAreSynchronizedProperty() {
       return testResultsAreSynchronized;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObservableList< JenkinsUser > culprits() {
+      return culprits;
    }//End Method
 
 }//End Class

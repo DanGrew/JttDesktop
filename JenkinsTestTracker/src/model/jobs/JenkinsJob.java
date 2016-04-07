@@ -14,6 +14,8 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
+import model.users.JenkinsUser;
 
 /**
  * The {@link JenkinsJob} provides a representation of a single job or build on the associated
@@ -77,5 +79,12 @@ public interface JenkinsJob {
     * @return the {@link BooleanProperty}.
     */
    public BooleanProperty testResultsAreSynchronizedProperty();
+
+   /**
+    * Provides an {@link ObservableList} of {@link JenkinsUser} culprits for the failure of the
+    * last build.
+    * @return the {@link ObservableList}.
+    */
+   public ObservableList< JenkinsUser > culprits();
    
 }//End Interface
