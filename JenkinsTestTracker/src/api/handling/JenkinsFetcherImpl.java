@@ -52,7 +52,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       
       this.database = database;
       this.externalApi = externalApi;
-      jobsImporter = new JsonJobImporterImpl( database );
+      jobsImporter = new JsonJobImporterImpl( database, this );
       usersImporter = new JsonUserImporterImpl( database );
       testsImporter = new JsonTestResultsImporterImpl( database );
       

@@ -42,7 +42,7 @@ public class JenkinsApiImpl implements ExternalApi {
    static final String JOBS_LIST = "/api/json?tree=jobs[name]&pretty=true";
    static final String JOB = "/job/";
    
-   static final String USERS_LIST = "/api/json?pretty=true&tree=users[user[fullName]]";
+   static final String USERS_LIST = "/asynchPeople/api/json?pretty=true&tree=users[user[fullName]]";
    
    private final ClientHandler clientHandler;
    private final JenkinsApiDigest digest;

@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import api.handling.BuildState;
+import api.handling.JenkinsFetcher;
 import api.sources.ExternalApi;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
@@ -36,14 +37,19 @@ public class JsonJobImporterImpl implements JsonJobImporter {
    private static final String CULPRITS_KEY = "culprits";
    private static final String FULL_NAME_KEY = "fullName";
 
-   private JenkinsDatabase database;
+   private final JenkinsDatabase database;
+   private final JenkinsFetcher fetcher;
    
    /**
     * Constructs a new {@link JsonJobImporterImpl}.
     * @param database the {@link JenkinsDatabase} to import to.
+    * @param fetcher the {@link JenkinsFetcher} providing a feedback loop for importing.
     */
-   public JsonJobImporterImpl( JenkinsDatabase database ) {
+   public JsonJobImporterImpl( JenkinsDatabase database, JenkinsFetcher fetcher ) {
+      if ( fetcher == null ) throw new IllegalArgumentException( "Null fetcher provided." );
+      
       this.database = database;
+      this.fetcher = fetcher;
    }//End Constructor
 
    /**
@@ -123,11 +129,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
                if ( !culprit.has( FULL_NAME_KEY ) ) continue;
                
                String userName = culprit.getString( FULL_NAME_KEY );
-               JenkinsUser user = database.getJenkinsUser( userName );
-               
-               if ( user == null ) continue;
-               
-               jenkinsJob.culprits().add( user );
+               retrieveAndApplyCulprit( userName, jenkinsJob );
             } catch ( JSONException exception ) {
                System.out.println( exception.getMessage() );
                continue;
@@ -137,6 +139,31 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          System.out.println( exception.getMessage() );
          return;
       }
+   }//End Method
+   
+   /**
+    * Method to retrieve the culprit from the {@link JenkinsDatabase} if present. If not the
+    * {@link JenkinsFetcher} will be used to retrieve an updted list of {@link JenkinsUser}s.
+    * @param userName the name of the user being found.
+    * @param jenkinsJob the {@link JenkinsJob} the culprit is for.
+    */
+   private void retrieveAndApplyCulprit( String userName, JenkinsJob jenkinsJob ){
+      //first attempt
+      JenkinsUser user = database.getJenkinsUser( userName );
+      
+      //if null request users loaded
+      if ( user == null ) {
+         fetcher.fetchUsers();
+      }
+      
+      //try once more
+      user = database.getJenkinsUser( userName );
+      //if still null forget the user
+      if ( user == null ) return;
+      
+      //otherwise record culprit
+      jenkinsJob.culprits().add( user );
+      System.out.println( "Found culprit " + userName + " for " + jenkinsJob.nameProperty().get() );
    }//End Method
    
    /**

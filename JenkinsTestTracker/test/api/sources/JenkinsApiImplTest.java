@@ -273,7 +273,7 @@ public class JenkinsApiImplTest {
    }//End Method
    
    @Test public void shouldConstructUserListRequest(){
-      final String expectedRequest = "http://some-location/api/json?pretty=true&tree=users[user[fullName]]";
+      final String expectedRequest = "http://some-location/asynchPeople/api/json?pretty=true&tree=users[user[fullName]]";
       Assert.assertEquals( 
                expectedRequest, 
                JenkinsApiImpl.constructUserListRequest( "http://some-location" ).getURI().toString() 

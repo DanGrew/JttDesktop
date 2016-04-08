@@ -19,8 +19,12 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import api.handling.BuildState;
+import api.handling.JenkinsFetcher;
 import api.sources.ExternalApi;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -38,6 +42,7 @@ import utility.TestCommon;
  */
 public class JsonJobImporterImplTest {
    
+   @Mock private JenkinsFetcher fetcher;
    private JenkinsDatabase database;
    private JenkinsJob jenkinsJob;
    private JenkinsUser lucille;
@@ -46,6 +51,8 @@ public class JsonJobImporterImplTest {
    private JsonJobImporter systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
+      MockitoAnnotations.initMocks( this );
+      
       jenkinsJob = new JenkinsJobImpl( "anyName" );
       lucille = new JenkinsUserImpl( "Lucille" );
       negan = new JenkinsUserImpl( "Negan" );
@@ -55,7 +62,7 @@ public class JsonJobImporterImplTest {
       database.store( lucille );
       database.store( negan );
       database.store( aaron );
-      systemUnderTest = new JsonJobImporterImpl( database );
+      systemUnderTest = new JsonJobImporterImpl( database, fetcher );
    }//End Method
 
    @Test public void shouldParseBuildingStateMissingExpectedCompletion() {
@@ -286,8 +293,12 @@ public class JsonJobImporterImplTest {
    }//End Method
    
    @Test public void shouldIgnoreNullDatabaseInJobList(){
-      systemUnderTest = new JsonJobImporterImpl( null );
+      systemUnderTest = new JsonJobImporterImpl( null, fetcher );
       systemUnderTest.importJobs( "anything" );
+   }//End Method
+   
+   @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullFetcher(){
+      systemUnderTest = new JsonJobImporterImpl( database, null );
    }//End Method
    
    @Test public void shouldIgnoreNullResponseInJobList(){
@@ -336,12 +347,26 @@ public class JsonJobImporterImplTest {
       assertThat( jenkinsJob.culprits(), contains( negan, aaron ) );
    }//End Method
 
-   @Test public void shouldParseCulpritsAndIgnoreMissingUsersInJobDetails() {
+   @Test public void shouldParseCulpritsAndRequestMissingUsersIgnoringIfNotResolvedInJobDetails() {
       String response = TestCommon.readFileIntoString( getClass(), "job-details-user-missing-from-database.json" );
       assertDefaultJobDetailsImported( response );
 
       assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
       assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron ) );
+   }//End Method
+   
+   @Test public void shouldParseCulpritsAndRequestMissingUsersIdentifyingIfResolvedInJobDetails() {
+      String response = TestCommon.readFileIntoString( getClass(), "job-details-user-missing-from-database.json" );
+      
+      JenkinsUser glenn = new JenkinsUserImpl( "Not going to be Glenn!" );
+      Mockito.doAnswer( invocation -> {
+         database.store( glenn );
+         return null;
+      } ).when( fetcher ).fetchUsers();
+      assertDefaultJobDetailsImported( response );
+
+      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
+      assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron, glenn ) );
    }//End Method
    
    /**
