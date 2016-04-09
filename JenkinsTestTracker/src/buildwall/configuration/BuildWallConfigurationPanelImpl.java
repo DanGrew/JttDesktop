@@ -65,6 +65,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private Label descriptionTypeLabel;
    private RadioButton simpleDescriptionButton;
    private RadioButton defaultDescriptionButton;
+   private RadioButton detailedDescriptionButton;
    
    private Label jobNameFontLabel;
    private Label buildNumberFontLabel;
@@ -145,6 +146,9 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       
       defaultDescriptionButton = configureRadioButton( "Default Description", JobPanelDescriptionProviders.Default, descriptionToggles );
       dimensionsContent.add( defaultDescriptionButton, 1, 2 );
+      
+      detailedDescriptionButton = configureRadioButton( "Detailed Description", JobPanelDescriptionProviders.Detailed, descriptionToggles );
+      dimensionsContent.add( detailedDescriptionButton, 1, 3 );
       
       updateDescriptionTypeButton( configuration.jobPanelDescriptionProvider().get() );
       configuration.jobPanelDescriptionProvider().addListener( 
@@ -328,6 +332,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private void updateDescriptionTypeButton( JobPanelDescriptionProvider provider ){
       simpleDescriptionButton.setSelected( JobPanelDescriptionProviders.Simple.equals( provider )  );
       defaultDescriptionButton.setSelected( JobPanelDescriptionProviders.Default.equals( provider )  );
+      detailedDescriptionButton.setSelected( JobPanelDescriptionProviders.Detailed.equals( provider )  );
    }//End Method
    
    ComboBox< String > jobNameFontBox() {
@@ -432,6 +437,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
 
    RadioButton defaultDescriptionButton() {
       return defaultDescriptionButton;
+   }//End Method
+   
+   RadioButton detailedDescriptionButton() {
+      return detailedDescriptionButton;
    }//End Method
 
    Label desriptionTypeLabel() {
