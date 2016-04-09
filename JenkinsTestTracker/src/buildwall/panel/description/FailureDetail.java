@@ -9,6 +9,7 @@
 package buildwall.panel.description;
 
 import buildwall.configuration.BuildWallConfiguration;
+import graphics.DecoupledPlatformImpl;
 import javafx.registrations.ChangeListenerRegistrationImpl;
 import javafx.registrations.ListChangeListenerRegistrationImpl;
 import javafx.registrations.RegisteredComponent;
@@ -145,7 +146,9 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
     */
    private void updateCulpritText(){
       StringBuilder culprits = constructCulpritsList();
-      culpritsLabel.setText( CULPRITS_PREFIX + culprits.toString() );
+      DecoupledPlatformImpl.runLater( () -> {
+         culpritsLabel.setText( CULPRITS_PREFIX + culprits.toString() );
+      } );
    }//End Method
    
    Label culpritsLabel() {

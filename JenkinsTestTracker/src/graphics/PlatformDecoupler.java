@@ -15,6 +15,7 @@ import com.sun.javafx.application.PlatformImpl;
  * so that it is not so difficult to test. Exploratory testing may be needed to identify 
  * graphical issues and concurrency problems.
  */
+@FunctionalInterface
 public interface PlatformDecoupler {
    
    /**

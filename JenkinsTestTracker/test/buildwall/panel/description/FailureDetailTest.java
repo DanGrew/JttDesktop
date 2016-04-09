@@ -22,7 +22,9 @@ import com.sun.javafx.application.PlatformImpl;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
+import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
+import graphics.TestPlatformDecouplerImpl;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.RowConstraints;
@@ -44,6 +46,7 @@ public class FailureDetailTest {
    
    @BeforeClass public static void initialisePlatform(){
       JavaFxInitializer.startPlatform();
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
@@ -198,6 +201,17 @@ public class FailureDetailTest {
       jenkinsJob.culprits().remove( jenkinsJob.culprits().get( 2 ) );
       
       assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl." ) );
+   }//End Method
+   
+   @Test public void shouldUseDecoupledPlatformToSetText(){
+      DecoupledPlatformImpl.setInstance( runnable -> {} );
+    
+      jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl." ) );
+      
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
+      jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl, Walker, Walker." ) );
    }//End Method
 
 }//End Class
