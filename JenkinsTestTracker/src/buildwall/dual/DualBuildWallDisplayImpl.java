@@ -43,6 +43,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     */
    public DualBuildWallDisplayImpl( JenkinsDatabase database ) {
       this.rightConfiguration = new BuildWallConfigurationImpl();
+      this.rightConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
       this.leftConfiguration = new BuildWallConfigurationImpl();
       this.leftConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
       this.leftConfiguration.numberOfColumns().set( 1 );

@@ -78,4 +78,16 @@ public interface BuildWallConfiguration {
     * @return the {@link ObjectProperty}.
     */
    public ObjectProperty< JobPanelDescriptionProvider > jobPanelDescriptionProvider();
+
+   /**
+    * Property for the culprits {@link Font}.
+    * @return the {@link ObjectProperty}.
+    */
+   public ObjectProperty< Font > culpritsFont(); 
+   
+   /**
+    * Property for the culprits {@link Color}.
+    * @return the {@link ObjectProperty}.
+    */
+   public ObjectProperty< Color > culpritsColour();
 }//End Interface

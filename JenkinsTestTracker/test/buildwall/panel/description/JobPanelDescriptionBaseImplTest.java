@@ -73,12 +73,6 @@ public class JobPanelDescriptionBaseImplTest {
       systemUnderTest = new TestJobPanelDescription( configuration, job );
    }//End Method
    
-   @Ignore //For manual inspection.
-   @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> { return new TestJobPanelDescription( configuration, job ); } );
-      Thread.sleep( 100000 );
-   }//End Method
-   
    @Test public void shouldUseBuildNumberConfigurations() {
       Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumber().textFillProperty().get() );
       Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumber().fontProperty().get() );
@@ -129,10 +123,10 @@ public class JobPanelDescriptionBaseImplTest {
    }//End Method
    
    @Test public void propertiesShouldBeInsetFromEdge(){
-      Assert.assertEquals( JobPanelDescriptionBaseImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getBottom(), TestCommon.precision() );
-      Assert.assertEquals( JobPanelDescriptionBaseImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getTop(), TestCommon.precision() );
-      Assert.assertEquals( JobPanelDescriptionBaseImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getRight(), TestCommon.precision() );
-      Assert.assertEquals( JobPanelDescriptionBaseImpl.PROPERTIES_INSET, systemUnderTest.propertiesPane().getInsets().getLeft(), TestCommon.precision() );
+      Assert.assertEquals( JobPanelDescriptionBaseImpl.PROPERTIES_INSET, systemUnderTest.getInsets().getBottom(), TestCommon.precision() );
+      Assert.assertEquals( JobPanelDescriptionBaseImpl.PROPERTIES_INSET, systemUnderTest.getInsets().getTop(), TestCommon.precision() );
+      Assert.assertEquals( JobPanelDescriptionBaseImpl.PROPERTIES_INSET, systemUnderTest.getInsets().getRight(), TestCommon.precision() );
+      Assert.assertEquals( JobPanelDescriptionBaseImpl.PROPERTIES_INSET, systemUnderTest.getInsets().getLeft(), TestCommon.precision() );
    }//End Method
    
    @Test public void shouldUseJobNameAndKeepUpdated(){
@@ -457,5 +451,13 @@ public class JobPanelDescriptionBaseImplTest {
       assertThat( systemUnderTest.isDetached(), is( false ) );
       systemUnderTest.detachFromSystem();
       assertThat( systemUnderTest.isDetached(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldProvideAssociatedJob(){
+      assertThat( systemUnderTest.getJenkinsJob(), is( job ) );
+   }//End Method
+   
+   @Test public void shouldProvideAssociatedConfiguration(){
+      assertThat( systemUnderTest.getConfiguration(), is( configuration ) );
    }//End Method
 }//End Class

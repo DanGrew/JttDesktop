@@ -20,6 +20,7 @@ import javafx.geometry.Insets;
 import javafx.registrations.ChangeListenerBindingImpl;
 import javafx.registrations.ChangeListenerRegistrationImpl;
 import javafx.registrations.PaintColorChangeListenerBindingImpl;
+import javafx.registrations.RegisteredComponent;
 import javafx.registrations.RegistrationImpl;
 import javafx.registrations.RegistrationManager;
 import javafx.scene.control.Label;
@@ -34,7 +35,7 @@ import model.jobs.JenkinsJob;
  * The {@link JobPanelDescriptionBaseImpl} is responsible for defining the structure and common
  * components for the description part of a {@link JobPanelImpl}.
  */
-public abstract class JobPanelDescriptionBaseImpl extends BorderPane {
+public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements RegisteredComponent {
 
    static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
             .appendPattern( "hh:mm" ).appendLiteral( "-" ).appendPattern( "dd/MM" ).toFormatter();
@@ -73,7 +74,7 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane {
       completionEstimate = new Label();
       updateCompletionEstimate( job );
       completionEstimate.setOpacity( DEFAULT_PROPERTY_OPACITY );
-      properties.setPadding( new Insets( PROPERTIES_INSET ) );
+      setPadding( new Insets( PROPERTIES_INSET ) );
 
       applyRegistrations();
       applyLayout();
@@ -180,7 +181,7 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane {
    /**
     * Method to detach this object and its {@link RegistrationImpl}s from the system.
     */
-   public void detachFromSystem() {
+   @Override public void detachFromSystem() {
       registrations.shutdown();
    }//End Method
    
@@ -189,8 +190,24 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane {
     * not registered with anything in the system.
     * @return true if no registrations held.
     */
-   public boolean isDetached() {
+   @Override public boolean isDetached() {
       return registrations.isEmpty();
+   }//End Method
+   
+   /**
+    * Getter for the associated {@link JenkinsJob}.
+    * @return the {@link JenkinsJob}.
+    */
+   protected JenkinsJob getJenkinsJob(){
+      return job;
+   }//End Method
+   
+   /**
+    * Getter for the associated {@link BuildWallConfiguration}.
+    * @return the {@link BuildWallConfiguration}.
+    */
+   protected BuildWallConfiguration getConfiguration(){
+      return configuration;
    }//End Method
 
    /**

@@ -10,6 +10,7 @@ package buildwall.panel.type;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.panel.description.DefaultJobPanelDescriptionImpl;
+import buildwall.panel.description.DetailedJobPanelDescriptionImpl;
 import buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import buildwall.panel.description.SimpleJobPanelDescriptionImpl;
 import model.jobs.JenkinsJob;
@@ -21,7 +22,8 @@ import model.jobs.JenkinsJob;
 public enum JobPanelDescriptionProviders implements JobPanelDescriptionProvider {
    
    Simple( ( configuration, job ) -> new SimpleJobPanelDescriptionImpl( configuration, job ) ),
-   Default( ( configuration, job ) -> new DefaultJobPanelDescriptionImpl( configuration, job ) );
+   Default( ( configuration, job ) -> new DefaultJobPanelDescriptionImpl( configuration, job ) ),
+   Detailed( ( configuration, job ) -> new DetailedJobPanelDescriptionImpl( configuration, job ) );
    
    private transient JobPanelDescriptionProvider provider;
    

@@ -157,6 +157,15 @@ public class JsonJobImporterImplTest {
       assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron ) );
    }//End Method
    
+   @Test public void shouldParseJobDetailsAndNotDuplicateCulprits() {
+      String response = TestCommon.readFileIntoString( getClass(), "job-details.json" );
+      assertDefaultJobDetailsImported( response );
+      systemUnderTest.updateJobDetails( jenkinsJob, response );
+      
+      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
+      assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron ) );
+   }//End Method
+   
    @Test public void shouldIgnoreJobDetailsMissingNumber() {
       String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-number.json" );
       assertJobUnchanged( response );

@@ -19,6 +19,7 @@ import org.junit.Test;
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.panel.description.DefaultJobPanelDescriptionImpl;
+import buildwall.panel.description.DetailedJobPanelDescriptionImpl;
 import buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import buildwall.panel.description.SimpleJobPanelDescriptionImpl;
 import graphics.DecoupledPlatformImpl;
@@ -55,6 +56,12 @@ public class JobPanelDescriptionProvidersTest {
       JobPanelDescriptionBaseImpl description = JobPanelDescriptionProviders.Default.constructJobDescriptionPanel( configuration, job );
       assertThat( description, notNullValue() );
       assertThat( description, instanceOf( DefaultJobPanelDescriptionImpl.class ) );
+   }//End Method
+   
+   @Test public void detailedShouldProvideDetailed() {
+      JobPanelDescriptionBaseImpl description = JobPanelDescriptionProviders.Detailed.constructJobDescriptionPanel( configuration, job );
+      assertThat( description, notNullValue() );
+      assertThat( description, instanceOf( DetailedJobPanelDescriptionImpl.class ) );
    }//End Method
 
 }//End Class

@@ -45,7 +45,7 @@ public class SimpleJobPanelDescriptionImplTest extends JobPanelDescriptionBaseIm
    }//End Method
    
    @Ignore //For manual inspection.
-   @Test @Override public void manualInspection() throws InterruptedException {
+   @Test public void manualInspection() throws InterruptedException {
       JavaFxInitializer.launchInWindow( () -> { 
          configuration.buildNumberColour().set( Color.BLACK );
          configuration.jobNameColour().set( Color.BLACK );

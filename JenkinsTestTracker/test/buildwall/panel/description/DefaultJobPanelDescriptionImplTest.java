@@ -31,7 +31,7 @@ public class DefaultJobPanelDescriptionImplTest extends JobPanelDescriptionBaseI
    }//End Method
    
    @Ignore //For manual inspection.
-   @Test @Override public void manualInspection() throws InterruptedException {
+   @Test public void manualInspection() throws InterruptedException {
       JavaFxInitializer.launchInWindow( () -> { return new DefaultJobPanelDescriptionImpl( configuration, job ); } );
       Thread.sleep( 100000 );
    }//End Method

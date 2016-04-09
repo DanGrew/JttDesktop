@@ -15,6 +15,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -27,8 +29,10 @@ import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
+import model.users.JenkinsUserImpl;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
 import styling.SystemStyling;
@@ -67,15 +71,21 @@ public class DualBuildWallDisplayImplTest {
       database.store( new JenkinsJobImpl( "Configurable Build6" ) );
       database.store( new JenkinsJobImpl( "Configurable Build7" ) );
       
+      Random random = new Random(); 
+      for ( JenkinsJob job : database.jenkinsJobs() ) {
+         int userCount = random.nextInt( 20 );
+         for ( int i = 0; i < userCount; i++ ) {
+            job.lastBuildStatusProperty().set( BuildResultStatus.values()[ i %BuildResultStatus.values().length ] );
+            job.culprits().add( new JenkinsUserImpl( "User " + userCount + "_" + i ) );
+         }
+      }
+      
       JavaFxInitializer.startPlatform();
       systemUnderTest = new DualBuildWallDisplayImpl( database );
    }//End Method
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      for ( int i = 0; i < 40; i++ ) {
-         database.store( new JenkinsJobImpl( "" + i ) );
-      }
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
          systemUnderTest.showRightConfiguration();
@@ -194,6 +204,10 @@ public class DualBuildWallDisplayImplTest {
    @Test public void leftConfigurationShouldUseDefaults(){
       assertThat( systemUnderTest.leftConfiguration().numberOfColumns().get(), is( 1 ) );
       assertThat( systemUnderTest.leftConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Simple ) );
+   }//End Method
+   
+   @Test public void rightConfigurationShouldUseDefaults(){
+      assertThat( systemUnderTest.rightConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
    }//End Method
    
 }//End Class

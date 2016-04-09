@@ -116,6 +116,8 @@ public class JsonJobImporterImpl implements JsonJobImporter {
     * @param object the {@link JSONObject} to extract the culprits from.
     */
    private void identifyCulprits( JenkinsJob jenkinsJob, JSONObject object ) {
+      jenkinsJob.culprits().clear();
+      
       if ( !object.has( CULPRITS_KEY ) ) {
          return;
       }
