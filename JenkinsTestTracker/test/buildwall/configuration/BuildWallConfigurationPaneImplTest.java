@@ -94,10 +94,12 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontBox() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontBox() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontBox() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.culpritsFontBox() ) );
       
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontSizeSpinner() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontSizeSpinner() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontSizeSpinner() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.culpritsFontSizeSpinner() ) );
       
       TitledPane policiesPane = systemUnderTest.jobPoliciesPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( policiesPane ) );
@@ -109,6 +111,7 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.jobNameColourPicker() ) );
       Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.buildNumberColourPicker() ) );
       Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.completionEstimateColourPicker() ) );
+      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.culpritsColourPicker() ) );
    }//End Method
    
    @Test public void shouldUseInitialConfiguration(){
@@ -134,6 +137,13 @@ public class BuildWallConfigurationPaneImplTest {
       );
       Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
       assertThat( configuration.completionEstimateFont().get().getSize(), is( systemUnderTest.completionEstimateFontSizeSpinner().getValue().doubleValue() ) );
+      
+      Assert.assertEquals( 
+               configuration.culpritsFont().get().getFamily(), 
+               systemUnderTest.culpritsFontBox().getSelectionModel().getSelectedItem() 
+      );
+      Assert.assertEquals( configuration.culpritsColour().get(), systemUnderTest.culpritsColourPicker().valueProperty().get() );
+      assertThat( configuration.culpritsFont().get().getSize(), is( systemUnderTest.culpritsFontSizeSpinner().getValue().doubleValue() ) );
       
       assertThat( systemUnderTest.simpleDescriptionButton().isSelected(), is( false ) );
       assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( true ) );
@@ -335,11 +345,66 @@ public class BuildWallConfigurationPaneImplTest {
       assertThat( factory.getMax(), is( BuildWallConfigurationPanelImpl.MAXIMUM_FONT_SIZE ) );
    }//End Method
    
+   @Test public void shouldUpdateCulpritsFontFromConfiguration(){
+      configuration.culpritsFont().set( Font.font( TEST_FONT_FAMILY_A ) );
+      Assert.assertEquals( TEST_FONT_FAMILY_A, systemUnderTest.culpritsFontBox().getSelectionModel().getSelectedItem() );
+      
+      configuration.culpritsFont().set( Font.font( TEST_FONT_FAMILY_B ) );
+      Assert.assertEquals( TEST_FONT_FAMILY_B, systemUnderTest.culpritsFontBox().getSelectionModel().getSelectedItem() );
+
+      configuration.culpritsFont().set( Font.font( TEST_FONT_FAMILY_C ) );
+      Assert.assertEquals( TEST_FONT_FAMILY_C, systemUnderTest.culpritsFontBox().getSelectionModel().getSelectedItem() );
+   }//End Method
+   
+   @Test public void shouldSetCulpritsFontInConfiguration(){
+      systemUnderTest.culpritsFontBox().getSelectionModel().select( TEST_FONT_FAMILY_A );
+      Assert.assertEquals( TEST_FONT_FAMILY_A, configuration.culpritsFont().get().getFamily() );
+      
+      systemUnderTest.culpritsFontBox().getSelectionModel().select( TEST_FONT_FAMILY_B );
+      Assert.assertEquals( TEST_FONT_FAMILY_B, configuration.culpritsFont().get().getFamily() );
+   }//End Method
+   
+   @Test public void shouldUpdateCulpritsEstimateColourFromConfiguration(){
+      configuration.culpritsColour().set( Color.BISQUE );
+      Assert.assertEquals( configuration.culpritsColour().get(), systemUnderTest.culpritsColourPicker().valueProperty().get() );
+      
+      configuration.culpritsColour().set( Color.DARKORCHID );
+      Assert.assertEquals( configuration.culpritsColour().get(), systemUnderTest.culpritsColourPicker().valueProperty().get() );
+      
+      configuration.culpritsColour().set( Color.MOCCASIN );
+      Assert.assertEquals( configuration.culpritsColour().get(), systemUnderTest.culpritsColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void shouldSetCulpritsColourInConfiguration(){
+      Assert.assertNotEquals( Color.AQUA, configuration.culpritsColour().get() );
+      systemUnderTest.culpritsColourPicker().valueProperty().set( Color.AQUA );
+      Assert.assertEquals( Color.AQUA, configuration.culpritsColour().get() );
+   }//End Method
+   
+   @Test public void shouldUpdateCulpritsFontSizeSpinnerWhenConfigurationChanges(){
+      assertThat( configuration.culpritsFont().get().getSize(), is( systemUnderTest.culpritsFontSizeSpinner().getValue().doubleValue() ) );
+      configuration.culpritsFont().set( Font.font( 54 ) );
+      assertThat( systemUnderTest.culpritsFontSizeSpinner().getValue(), is( 54 ) );
+   }//End Method
+   
+   @Test public void shouldUpdateConfigurationWhenCulpritsFontSizeSpinnerChanges(){
+      assertThat( configuration.culpritsFont().get().getSize(), is( systemUnderTest.culpritsFontSizeSpinner().getValue().doubleValue() ) );
+      systemUnderTest.culpritsFontSizeSpinner().getValueFactory().setValue( 34 );
+      assertThat( configuration.culpritsFont().get().getSize(), is( 34.0 ) );
+   }//End Method
+   
+   @Test public void culpritsFontSizeSpinnerShouldBeBound(){
+      IntegerSpinnerValueFactory factory = ( IntegerSpinnerValueFactory )systemUnderTest.culpritsFontSizeSpinner().getValueFactory();
+      assertThat( factory.getMin(), is( BuildWallConfigurationPanelImpl.MINIMUM_FONT_SIZE ) );
+      assertThat( factory.getMax(), is( BuildWallConfigurationPanelImpl.MAXIMUM_FONT_SIZE ) );
+   }//End Method
+   
    @Test public void eachSpinnerShouldBeEditable(){
       assertThat( systemUnderTest.columnsSpinner().isEditable(), is( true ) );
       assertThat( systemUnderTest.jobNameFontSizeSpinner().isEditable(), is( true ) );
       assertThat( systemUnderTest.buildNumberFontSizeSpinner().isEditable(), is( true ) );
       assertThat( systemUnderTest.completionEstimateFontSizeSpinner().isEditable(), is( true ) );
+      assertThat( systemUnderTest.culpritsFontSizeSpinner().isEditable(), is( true ) );
    }//End Method
    
    @Test public void eachSpinnerShouldAcceptInvalidInput(){
@@ -359,6 +424,10 @@ public class BuildWallConfigurationPaneImplTest {
                systemUnderTest.completionEstimateFontSizeSpinner().getValueFactory().getConverter().fromString( "anything" ), 
                is( systemUnderTest.completionEstimateFontSizeSpinner().getValue() ) 
       );
+      assertThat( 
+               systemUnderTest.culpritsFontSizeSpinner().getValueFactory().getConverter().fromString( "anything" ), 
+               is( systemUnderTest.culpritsFontSizeSpinner().getValue() ) 
+      );
    }//End Method
    
    @Test public void shouldUseBoldLabels(){
@@ -374,6 +443,9 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.completionEstimateFontLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.completionEstimateColourLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.completionEstimateFontSizeLabel().getFont().getStyle() ) );
+      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.culpritsFontLabel().getFont().getStyle() ) );
+      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.culpritsColourLabel().getFont().getStyle() ) );
+      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.culpritsFontSizeLabel().getFont().getStyle() ) );
    }//End Method
    
    @Test public void eachPaneShouldCoverEntireWidth() {

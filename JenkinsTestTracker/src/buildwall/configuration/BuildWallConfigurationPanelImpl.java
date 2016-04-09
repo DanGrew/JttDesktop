@@ -70,26 +70,32 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private Label jobNameFontLabel;
    private Label buildNumberFontLabel;
    private Label completionEstimateFontLabel;
+   private Label culpritsFontLabel;
    
    private Label jobNameColourLabel;
    private Label buildNumberColourLabel;
    private Label completionEstimateColourLabel;
+   private Label culpritsColourLabel;
    
    private Label jobNameFontSizeLabel;
    private Label buildNumberFontSizeLabel;
    private Label completionEstimateFontSizeLabel;
+   private Label culpritsFontSizeLabel;
    
    private FontFamilyPropertyBox jobNameFontBox;
    private FontFamilyPropertyBox buildNumberFontBox;
    private FontFamilyPropertyBox completionEstimateFontBox;
+   private FontFamilyPropertyBox culpritsFontBox;
    
    private PropertySpinner< Integer, Font > jobNameFontSizeSpinner;
    private PropertySpinner< Integer, Font > buildNumberFontSizeSpinner;
    private PropertySpinner< Integer, Font > completionEstimateFontSizeSpinner;
+   private PropertySpinner< Integer, Font > culpritsFontSizeSpinner;
    
    private ColorPicker jobNameColourPicker;
    private ColorPicker buildNumberColourPicker;
    private ColorPicker completionEstimateColourPicker;
+   private ColorPicker culpritsColourPicker;
    
    /**
     * Constructs a new {@link BuildWallConfigurationPanelImpl}.
@@ -214,6 +220,18 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureFontSizeSpinner( completionEstimateFontSizeSpinner, configuration.completionEstimateFont() );
       fontContent.add( completionEstimateFontSizeSpinner, 1, 10 );
       
+      culpritsFontLabel = styling.createBoldLabel( "Culprits Font" );
+      fontContent.add( culpritsFontLabel, 0, 12 );
+      culpritsFontBox = new FontFamilyPropertyBox( configuration.culpritsFont() );
+      culpritsFontBox.setMaxWidth( Double.MAX_VALUE );
+      fontContent.add( culpritsFontBox, 1, 12 );
+      
+      culpritsFontSizeLabel = styling.createBoldLabel( "Culprits Size" );
+      fontContent.add( culpritsFontSizeLabel, 0, 14 );
+      culpritsFontSizeSpinner = new PropertySpinner<>();  
+      configureFontSizeSpinner( culpritsFontSizeSpinner, configuration.culpritsFont() );
+      fontContent.add( culpritsFontSizeSpinner, 1, 14 );
+      
       configureColumnConstraints( fontContent );
       
       fontPane = new TitledPane( "Fonts", fontContent );
@@ -246,6 +264,13 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       completionEstimateColourPicker = new ColorPicker();
       configureColorPicker( completionEstimateColourPicker, configuration.completionEstimateColour() );
       content.add( completionEstimateColourPicker, 1, 2 );
+      
+      culpritsColourLabel = styling.createBoldLabel( "Culprits" );
+      content.add( culpritsColourLabel, 0, 3 );
+      
+      culpritsColourPicker = new ColorPicker();
+      configureColorPicker( culpritsColourPicker, configuration.culpritsColour() );
+      content.add( culpritsColourPicker, 1, 3 );
       
       configureColumnConstraints( content );
       
@@ -346,6 +371,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    ComboBox< String > completionEstimateFontBox() {
       return completionEstimateFontBox;
    }//End Method
+   
+   ComboBox< String > culpritsFontBox() {
+      return culpritsFontBox;
+   }//End Method
 
    TitledPane fontPane() {
       return fontPane;
@@ -365,6 +394,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
 
    ColorPicker completionEstimateColourPicker() {
       return completionEstimateColourPicker;
+   }//End Method
+   
+   ColorPicker culpritsColourPicker() {
+      return culpritsColourPicker;
    }//End Method
 
    Label jobNameFontLabel() {
@@ -390,6 +423,14 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    Labeled completionEstimateColourLabel() {
       return completionEstimateColourLabel;
    }//End Method
+   
+   Labeled culpritsFontLabel() {
+      return culpritsFontLabel;
+   }//End Method
+
+   Labeled culpritsColourLabel() {
+      return culpritsColourLabel;
+   }//End Method
 
    TitledPane dimensionsPane() {
       return dimensionsPane;
@@ -414,6 +455,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    PropertySpinner< Integer, Font > completionEstimateFontSizeSpinner() {
       return completionEstimateFontSizeSpinner;
    }//End Method
+   
+   PropertySpinner< Integer, Font > culpritsFontSizeSpinner() {
+      return culpritsFontSizeSpinner;
+   }//End Method
 
    Label jobNameFontSizeLabel() {
       return jobNameFontSizeLabel;
@@ -425,6 +470,10 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    
    Label completionEstimateFontSizeLabel() {
       return completionEstimateFontSizeLabel;
+   }//End Method
+   
+   Label culpritsFontSizeLabel() {
+      return culpritsFontSizeLabel;
    }//End Method
 
    TitledPane jobPoliciesPane() {
