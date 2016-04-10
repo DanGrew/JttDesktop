@@ -1,0 +1,105 @@
+/*
+ * PLGUINS: apply all plugins needed for the build
+ */
+plugins {
+    id "com.jfrog.bintray" version "1.6"
+}
+
+allprojects { 
+	apply plugin: 'java'
+	apply plugin: 'maven'
+	apply plugin: 'eclipse'
+}
+
+/*
+ * VERSIONING: describe build and calculate build number
+ */
+description = """JenkinsTestTracker"""
+group = 'JenkinsTestTracker'
+
+def buildNumberFromEnvironment = System.getenv()[ 'VERSION_NUMBER' ]
+def buildNumberForThisEnvironment = ( buildNumberFromEnvironment != null ? buildNumberFromEnvironment : 'WORKSPACE' ) 
+version = buildNumberForThisEnvironment
+
+/*
+ * SOURCE: source specific configuration
+ */
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+    test {
+        java {
+            srcDir 'test'
+        }
+        resources {
+//resources are dotted through the folder - arguably against conventions
+        	srcDir 'test'
+        }
+    }
+}
+
+/*
+ * DEPENDENCIES: define repos for resolving and dependencies to resolve
+ */
+repositories {
+     maven { url "http://repo.maven.apache.org/maven2" }
+     maven { url  "http://dl.bintray.com/dangrew/SystemDigest" }
+}
+
+dependencies {
+    compile group: 'org.controlsfx', name: 'controlsfx', version:'8.40.9'
+    compile group: 'dom4j', name: 'dom4j', version:'1.6.1'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version:'4.1.2'
+    compile group: 'org.json', name: 'json', version:'20151123'
+    compile group: 'SystemDigest', name: 'SystemDigest', version: '1.1.31'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'pl.pragmatists', name: 'JUnitParams', version:'0.3.6'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version:'1.3'
+    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.9.5'
+}
+
+/*
+ * UNIT TESTS: configure reports and scope of tests
+ */
+test {
+    filter {
+//test intermingled unit + integ - arguably against conventions
+        includeTestsMatching "*Test"
+    }
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+    reports {
+	    junitXml.enabled = true
+	    html.enabled = false
+    }
+}
+
+/*
+ * INTEGRATION TESTS: configure reports and scope of tests
+ */
+task integrationTests( type: Test ) {
+  	filter {
+  		includeTestsMatching "*IT"
+  	}
+  
+	testLogging.events = test.testLogging.events
+	reports.junitXml.enabled = test.reports.junitXml.enabled
+	reports.html.enabled = test.reports.html.enabled
+}
+check.dependsOn integrationTests
+
+/*
+ * TEST PACKAGING: packaging tests
+ */
+task packageTests(type: Jar) {
+  from sourceSets.test.output
+  classifier = 'tests'
+}
+artifacts.archives packageTests
