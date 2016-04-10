@@ -3,12 +3,17 @@
  */
 plugins {
     id "com.jfrog.bintray" version "1.6"
+//plugin for making shadow jar
+  	id "com.github.johnrengelman.shadow" version "1.2.3"
 }
 
 allprojects { 
 	apply plugin: 'java'
 	apply plugin: 'maven'
+	apply plugin: 'maven-publish'
 	apply plugin: 'eclipse'
+//plugin for building applications and jars that can be run
+	apply plugin: 'application'
 }
 
 /*
@@ -39,6 +44,7 @@ sourceSets {
         }
         resources {
 //resources are dotted through the folder - arguably against conventions
+			srcDir 'src'
         	srcDir 'test'
         }
     }
@@ -103,3 +109,83 @@ task packageTests(type: Jar) {
   classifier = 'tests'
 }
 artifacts.archives packageTests
+
+/*
+ * SHADOW: configure runnable element
+ */
+//link to main class in jar
+mainClassName = "main.JenkinsTestTracker"
+//bind with jar so that whenever jar is run, shadow is run
+jar.dependsOn shadowJar
+//automatic distribution options pulled in from application plugin - not interested
+distZip.enabled = false
+distTar.enabled = false
+//publish will fail with above disabled if we do not tell it to ignore them
+configurations.archives.with {
+    artifacts.remove artifacts.find { it.archiveTask.is distZip }
+    artifacts.remove artifacts.find { it.archiveTask.is distTar }
+}
+
+/*
+ * LOCAL ARCHIVING: define where and how the artifacts should be published
+ */
+uploadArchives {
+	repositories.mavenDeployer {
+		repository( url: 'http://192.168.0.15:14445/repository/jenkins-test-tracker/' ) {
+			authentication ( userName: repoUser, password: repoPass )
+		}
+		
+		pom.version = version
+		pom.artifactId = 'JenkinsTestTracker'
+		pom.groupId = 'JenkinsTestTracker'
+	}
+}	
+
+/*
+ * REMOTE ARCHIVING: publish release candidates to bintray
+ */
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    configurations = ['archives']
+    publications = ['core', 'runnable'] 
+    pkg {
+        repo = 'JenkinsTestTracker'
+        name = 'JenkinsTestTracker'
+        userOrg = bintrayUser
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/DanGrew/JenkinsTestTracker.git'
+        
+        version {
+            name = buildNumberForThisEnvironment
+            desc = 'Continuous Delivery rolling version'
+            released = new Date()
+        }
+    }
+}
+
+publishing {
+    publications {
+    	//publish standard core components - jar + tests
+        core(MavenPublication) {
+        	//publish all items
+            from components.java
+            
+        	//configure description
+            groupId 'JenkinsTestTracker'
+            artifactId 'JenkinsTestTracker'
+            version version
+        }
+        
+        //publish runnable jar
+        runnable(MavenPublication) {
+        	//publish only the shadow jar
+      		artifact ( shadowJar ) { classifier = 'runnable' }
+        
+        	//configure description of publication
+            groupId 'JenkinsTestTracker'
+            artifactId 'JenkinsTestTracker'
+            version version
+    	}
+    }
+}
