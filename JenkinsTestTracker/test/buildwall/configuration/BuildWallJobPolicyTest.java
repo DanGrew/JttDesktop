@@ -48,7 +48,7 @@ public class BuildWallJobPolicyTest {
    
    @Test public void shouldDecideForShowFailuresOnly() {
       job.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
-      assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( false ) );
+      assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( true ) );
       
       job.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
       assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( true ) );

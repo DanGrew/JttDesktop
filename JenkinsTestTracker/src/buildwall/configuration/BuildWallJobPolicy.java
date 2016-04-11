@@ -23,8 +23,8 @@ public enum BuildWallJobPolicy {
       switch ( job.lastBuildStatusProperty().get() ) {
          case FAILURE:
          case UNSTABLE:
-            return true;
          case ABORTED:
+            return true;
          case NOT_BUILT:
          case SUCCESS:
          case UNKNOWN:
