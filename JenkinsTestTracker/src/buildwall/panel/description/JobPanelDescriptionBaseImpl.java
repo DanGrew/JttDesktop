@@ -37,7 +37,7 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
    static final String UNKNOWN_BUILD_NUMBER = "?";
    static final String BUILD_NUMBER_PREFIX = "#";
    static final double DEFAULT_PROPERTY_OPACITY = 0.8;
-   static final double PROPERTIES_INSET = 10;
+   static final double PROPERTIES_INSET = 5;
    
    private JenkinsJob job;
    private BuildWallConfiguration configuration;
