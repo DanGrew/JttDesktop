@@ -74,7 +74,7 @@ public class JobPolicyPanel extends GridPane {
       
       int rowIndex = 0;
       List< JenkinsJob > orderedJobs = new ArrayList<>( configuration.jobPolicies().keySet() );
-      orderedJobs.sort( Comparators.stringExtractionComparater( job -> { return job.nameProperty().get(); } ) );
+      orderedJobs.sort( Comparators.stringExtractionComparater( job -> job.nameProperty().get() ) );
       
       for ( JenkinsJob job : orderedJobs ) {
          Label label = styling.createBoldLabel( job.nameProperty().get() );

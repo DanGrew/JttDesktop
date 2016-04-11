@@ -33,6 +33,20 @@ public enum BuildWallJobPolicy {
       }
    } ),
    
+   OnlyShowPassing( job -> {
+      switch ( job.lastBuildStatusProperty().get() ) {
+         case SUCCESS:
+            return true;
+         case UNSTABLE:
+         case ABORTED:
+         case FAILURE:
+         case NOT_BUILT:
+         case UNKNOWN:
+         default:
+            return false;
+      }
+   } ),
+   
    NeverShow( job -> { return false; } );
    
    private Predicate< JenkinsJob > deciderFunction;

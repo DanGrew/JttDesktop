@@ -8,8 +8,9 @@
  */
 package buildwall.configuration;
 
-import org.hamcrest.Matchers;
-import org.junit.Assert;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,31 +39,51 @@ public class BuildWallJobPolicyTest {
    }//End Method
 
    @Test public void shouldDecideForAlwaysShow() {
-      Assert.assertThat( BuildWallJobPolicy.AlwaysShow.shouldShow( job ), Matchers.is( true ) );
+      assertThat( BuildWallJobPolicy.AlwaysShow.shouldShow( job ), is( true ) );
    }//End Method
    
    @Test public void shouldDecideForNeverShow() {
-      Assert.assertThat( BuildWallJobPolicy.NeverShow.shouldShow( job ), Matchers.is( false ) );
+      assertThat( BuildWallJobPolicy.NeverShow.shouldShow( job ), is( false ) );
    }//End Method
    
    @Test public void shouldDecideForShowFailuresOnly() {
       job.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
-      Assert.assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), Matchers.is( false ) );
+      assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( false ) );
       
       job.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
-      Assert.assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), Matchers.is( true ) );
+      assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( true ) );
       
       job.lastBuildStatusProperty().set( BuildResultStatus.NOT_BUILT );
-      Assert.assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), Matchers.is( false ) );
+      assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( false ) );
       
       job.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-      Assert.assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), Matchers.is( false ) );
+      assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( false ) );
       
       job.lastBuildStatusProperty().set( BuildResultStatus.UNKNOWN );
-      Assert.assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), Matchers.is( false ) );
+      assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( false ) );
       
       job.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
-      Assert.assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), Matchers.is( true ) );
+      assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( true ) );
+   }//End Method
+   
+   @Test public void shouldDecideForShowPassingOnly() {
+      job.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
+      assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
+      
+      job.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
+      
+      job.lastBuildStatusProperty().set( BuildResultStatus.NOT_BUILT );
+      assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
+      
+      job.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( true ) );
+      
+      job.lastBuildStatusProperty().set( BuildResultStatus.UNKNOWN );
+      assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
+      
+      job.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
    }//End Method
 
 }//End Class
