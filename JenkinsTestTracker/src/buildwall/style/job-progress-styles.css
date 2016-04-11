@@ -35,13 +35,13 @@
 }
  
 .progress-bar-unstable .track{
-    -fx-background-color: #ec7600;
+    -fx-background-color: #ca5304;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 8;
 }
  
 .progress-bar-unstable .bar { 
-    -fx-background-color: #f9b42b;
+    -fx-background-color: #e1971e;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 8;
 }
