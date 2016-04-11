@@ -37,6 +37,9 @@ sourceSets {
         java {
             srcDir 'src'
         }
+        resources {
+			srcDir 'src'
+        }
     }
     test {
         java {
@@ -113,6 +116,8 @@ artifacts.archives packageTests
 /*
  * SHADOW: configure runnable element
  */
+//configure specific name so not '-all'
+shadowJar.archiveName = jar.archiveName.replace( '.jar', '-runnable.jar' )
 //link to main class in jar
 mainClassName = "main.JenkinsTestTracker"
 //bind with jar so that whenever jar is run, shadow is run
