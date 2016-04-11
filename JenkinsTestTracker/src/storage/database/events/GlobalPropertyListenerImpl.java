@@ -20,7 +20,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
-import storage.database.JenkinsDatabase;
 import utility.observable.FunctionListChangeListenerImpl;
 
 /**

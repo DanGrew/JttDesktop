@@ -8,7 +8,6 @@
  */
 package utility;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.Scanner;
 

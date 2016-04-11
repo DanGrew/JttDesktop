@@ -25,7 +25,6 @@ import org.mockito.MockitoAnnotations;
 
 import api.handling.BuildState;
 import api.handling.JenkinsFetcher;
-import api.sources.ExternalApi;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import model.jobs.BuildResultStatus;

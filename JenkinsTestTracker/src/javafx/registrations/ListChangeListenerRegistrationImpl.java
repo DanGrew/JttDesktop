@@ -8,8 +8,6 @@
  */
 package javafx.registrations;
 
-import javafx.beans.property.Property;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 

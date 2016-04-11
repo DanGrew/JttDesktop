@@ -11,7 +11,6 @@ package synchronisation.time;
 import java.util.Timer;
 
 import api.handling.JenkinsFetcher;
-import api.sources.JenkinsApiImpl;
 import synchronisation.model.TimeKeeper;
 
 /**

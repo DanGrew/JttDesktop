@@ -8,7 +8,6 @@
  */
 package buildwall.dual;
 
-import buildwall.layout.GridWallImpl;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;

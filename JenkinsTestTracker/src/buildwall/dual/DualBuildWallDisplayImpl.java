@@ -12,7 +12,6 @@ import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import buildwall.configuration.updating.JobPolicyUpdater;
-import buildwall.layout.BuildWallDisplayImpl;
 import buildwall.layout.GridWallImpl;
 import buildwall.panel.type.JobPanelDescriptionProviders;
 import javafx.scene.control.ScrollPane;

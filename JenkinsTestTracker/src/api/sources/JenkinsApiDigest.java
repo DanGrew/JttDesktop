@@ -9,7 +9,6 @@
 package api.sources;
 
 import core.category.Categories;
-import core.message.Message;
 import core.message.Messages;
 import core.source.SourceImpl;
 import digest.object.ObjectDigestImpl;

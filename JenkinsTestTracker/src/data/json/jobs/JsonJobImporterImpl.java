@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import api.handling.BuildState;
 import api.handling.JenkinsFetcher;
-import api.sources.ExternalApi;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;

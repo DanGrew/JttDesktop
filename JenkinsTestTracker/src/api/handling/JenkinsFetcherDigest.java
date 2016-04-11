@@ -8,11 +8,9 @@
  */
 package api.handling;
 
-import api.sources.ExternalApi;
 import core.category.Categories;
 import core.message.Messages;
 import core.progress.Progresses;
-import core.source.Source;
 import core.source.SourceImpl;
 import digest.object.ObjectDigestImpl;
 import model.jobs.JenkinsJob;

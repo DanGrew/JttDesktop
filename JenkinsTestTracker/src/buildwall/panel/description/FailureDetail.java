@@ -13,13 +13,10 @@ import graphics.DecoupledPlatformImpl;
 import javafx.registrations.ChangeListenerRegistrationImpl;
 import javafx.registrations.ListChangeListenerRegistrationImpl;
 import javafx.registrations.RegisteredComponent;
-import javafx.registrations.RegistrationImpl;
 import javafx.registrations.RegistrationManager;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import model.jobs.JenkinsJob;
 import utility.observable.FunctionListChangeListenerImpl;
 

@@ -12,8 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import api.sources.ExternalApi;
-import model.jobs.JenkinsJob;
 import model.users.JenkinsUser;
 import model.users.JenkinsUserImpl;
 import storage.database.JenkinsDatabase;

@@ -8,9 +8,6 @@
  */
 package data.json.users;
 
-import api.sources.ExternalApi;
-import storage.database.JenkinsDatabase;
-
 /**
  * The {@link JsonUserImporter} provides an interface to an importer of user data in the JSON
  * format.

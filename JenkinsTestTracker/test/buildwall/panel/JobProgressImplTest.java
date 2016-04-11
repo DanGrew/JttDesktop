@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import graphics.JavaFxInitializer;
-import javafx.scene.control.ProgressBar;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;

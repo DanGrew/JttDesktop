@@ -8,8 +8,6 @@
  */
 package javafx.platform;
 
-import com.sun.javafx.application.PlatformImpl;
-
 /**
  * {@link PlatformLifecycle} provides a static interface for controlling the {@link PlatformImpl}s
  * lifecycle, namely shutting down.

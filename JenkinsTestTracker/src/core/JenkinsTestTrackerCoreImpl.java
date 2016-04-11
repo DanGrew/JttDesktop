@@ -15,8 +15,6 @@ import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
 import synchronisation.model.TimeKeeper;
 import synchronisation.testresults.JobMonitorImpl;
-import synchronisation.time.BuildProgressor;
-import synchronisation.time.JobUpdater;
 
 /**
  * The {@link JenkinsTestTrackerCoreImpl} provides the core structure for maintaining a 

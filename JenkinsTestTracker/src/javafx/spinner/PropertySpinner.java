@@ -12,8 +12,6 @@ import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.binding.NodeBinder;
-import javafx.combobox.PropertyBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 
 /**

@@ -11,7 +11,6 @@ package buildwall.panel.description;
 import buildwall.configuration.BuildWallConfiguration;
 import javafx.geometry.HPos;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import model.jobs.JenkinsJob;
 
 /**

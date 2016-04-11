@@ -8,7 +8,6 @@
  */
 package buildwall.configuration.style;
 
-import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;

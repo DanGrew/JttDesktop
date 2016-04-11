@@ -10,7 +10,6 @@ package storage.database;
 
 import javafx.collections.ObservableList;
 import model.jobs.JenkinsJob;
-import model.tests.TestCase;
 import model.tests.TestClass;
 import model.users.JenkinsUser;
 import storage.database.events.JenkinsJobPropertyListener;

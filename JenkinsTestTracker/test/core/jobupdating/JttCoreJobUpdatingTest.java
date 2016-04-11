@@ -17,7 +17,6 @@ import org.mockito.Mockito;
 import api.handling.BuildState;
 import api.sources.ExternalApi;
 import buildwall.layout.BuildWallDisplayImpl;
-import core.JenkinsTestTrackerCoreImpl;
 import core.JttTestCoreImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;

@@ -8,8 +8,6 @@
  */
 package javafx.spinner;
 
-import com.sun.javafx.css.converters.StringConverter;
-
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 
 /**

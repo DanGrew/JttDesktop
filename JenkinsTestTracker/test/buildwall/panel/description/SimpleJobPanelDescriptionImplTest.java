@@ -9,29 +9,19 @@
 package buildwall.panel.description;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import buildwall.configuration.BuildWallConfiguration;
-import buildwall.configuration.BuildWallConfigurationImpl;
-import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
-import graphics.TestPlatformDecouplerImpl;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import model.jobs.JenkinsJob;
-import model.jobs.JenkinsJobImpl;
-import system.properties.DateAndTimes;
 import utility.TestCommon;
 
 /**

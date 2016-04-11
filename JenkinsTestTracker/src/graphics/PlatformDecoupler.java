@@ -8,8 +8,6 @@
  */
 package graphics;
 
-import com.sun.javafx.application.PlatformImpl;
-
 /**
  * The {@link PlatformDecoupler} aims to replace the interface to {@link PlatformImpl}
  * so that it is not so difficult to test. Exploratory testing may be needed to identify 

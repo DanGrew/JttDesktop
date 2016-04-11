@@ -15,7 +15,6 @@ import friendly.controlsfx.FriendlyAlert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import main.selector.ToolSelector;
-import main.selector.Tools;
 
 /**
  * The {@link JttApplicationController} is responsible for abstracting some of the 

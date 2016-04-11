@@ -11,7 +11,6 @@ package synchronisation.time;
 import java.time.Clock;
 import java.util.Timer;
 
-import model.jobs.JenkinsJob;
 import storage.database.JenkinsDatabase;
 import synchronisation.model.TimeKeeper;
 

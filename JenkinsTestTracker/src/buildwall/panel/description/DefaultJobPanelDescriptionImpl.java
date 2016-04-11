@@ -10,7 +10,6 @@ package buildwall.panel.description;
 
 import buildwall.configuration.BuildWallConfiguration;
 import javafx.geometry.HPos;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import model.jobs.JenkinsJob;
 

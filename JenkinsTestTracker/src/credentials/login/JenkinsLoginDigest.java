@@ -11,9 +11,7 @@ package credentials.login;
 import core.category.Categories;
 import core.message.Messages;
 import core.progress.Progresses;
-import core.source.Source;
 import core.source.SourceImpl;
-import digest.object.ObjectDigest;
 import digest.object.ObjectDigestImpl;
 
 /**

@@ -8,8 +8,6 @@
  */
 package graphics;
 
-import com.sun.javafx.application.PlatformImpl;
-
 /**
  * {@link DecoupledPlatformImpl} provides a separate interface to {@link PlatformImpl}
  * to allow decoupling and testing.

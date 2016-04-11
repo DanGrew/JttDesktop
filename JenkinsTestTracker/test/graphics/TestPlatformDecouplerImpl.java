@@ -8,8 +8,6 @@
  */
 package graphics;
 
-import com.sun.javafx.application.PlatformImpl;
-
 /**
  * Implementation of {@link PlatformDecoupler} to simply run the {@link Runnable}
  * without the {@link PlatformImpl} thread. This is used for testing.

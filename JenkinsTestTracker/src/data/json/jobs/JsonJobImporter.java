@@ -8,9 +8,7 @@
  */
 package data.json.jobs;
 
-import api.sources.ExternalApi;
 import model.jobs.JenkinsJob;
-import storage.database.JenkinsDatabase;
 
 /**
  * The {@link JsonJobImporter} is responsible for importing {@link JenkinsJob} information from

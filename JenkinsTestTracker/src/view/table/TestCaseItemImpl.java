@@ -11,8 +11,6 @@ package view.table;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
-import javafx.scene.control.TreeTableView;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.tests.TestCase;
 

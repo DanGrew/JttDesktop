@@ -9,7 +9,6 @@
 package buildwall.panel;
 
 import javafx.registrations.ChangeListenerRegistrationImpl;
-import javafx.registrations.RegistrationImpl;
 import javafx.registrations.RegistrationManager;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;

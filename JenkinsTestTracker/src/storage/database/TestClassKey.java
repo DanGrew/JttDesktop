@@ -8,8 +8,6 @@
  */
 package storage.database;
 
-import model.tests.TestClass;
-
 /**
  * The {@link TestClassKey} provides an interface for an item that can
  * match {@link TestClass}es based on unique information describing the {@link TestClass}.

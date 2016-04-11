@@ -8,9 +8,7 @@
  */
 package api.handling;
 
-import api.sources.ExternalApi;
 import model.jobs.JenkinsJob;
-import storage.database.JenkinsDatabase;
 
 /**
  * The {@link JenkinsFetcher} describes an object that can retrieve updated information

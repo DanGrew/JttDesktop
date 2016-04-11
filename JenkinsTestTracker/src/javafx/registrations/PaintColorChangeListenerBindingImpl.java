@@ -10,7 +10,6 @@ package javafx.registrations;
 
 import java.util.function.Function;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;

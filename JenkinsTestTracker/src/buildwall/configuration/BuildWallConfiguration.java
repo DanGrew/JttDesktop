@@ -8,8 +8,6 @@
  */
 package buildwall.configuration;
 
-import buildwall.layout.BuildWall;
-import buildwall.panel.JobPanelImpl;
 import buildwall.panel.type.JobPanelDescriptionProvider;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;

@@ -14,21 +14,16 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.concurrent.TimeUnit;
 
 import buildwall.configuration.BuildWallConfiguration;
-import buildwall.panel.JobPanelImpl;
 import graphics.DecoupledPlatformImpl;
 import javafx.geometry.Insets;
 import javafx.registrations.ChangeListenerBindingImpl;
 import javafx.registrations.ChangeListenerRegistrationImpl;
 import javafx.registrations.PaintColorChangeListenerBindingImpl;
 import javafx.registrations.RegisteredComponent;
-import javafx.registrations.RegistrationImpl;
 import javafx.registrations.RegistrationManager;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import model.jobs.JenkinsJob;
 
 /**

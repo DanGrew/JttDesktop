@@ -13,9 +13,6 @@ import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.combobox.PropertyBox;
-import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
 
 /**
  * The {@link NodeBinder} is responsible for binding a {@link Node}s value with

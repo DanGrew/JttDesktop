@@ -8,9 +8,6 @@
  */
 package data;
 
-import model.tests.TestCase;
-import model.tests.TestClass;
-
 /**
  * Interface defining the api for importing test results from Jenkins.
  */

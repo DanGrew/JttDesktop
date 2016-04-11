@@ -8,8 +8,6 @@
  */
 package storage.database;
 
-import model.tests.TestClass;
-
 /**
  * Basic implementation of the {@link TestClassKey}.
  */

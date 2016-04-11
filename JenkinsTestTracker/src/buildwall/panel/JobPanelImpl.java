@@ -9,13 +9,10 @@
 package buildwall.panel;
 
 import buildwall.configuration.BuildWallConfiguration;
-import buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import buildwall.panel.type.JobPanelDescriptionProvider;
 import javafx.registrations.ChangeListenerRegistrationImpl;
-import javafx.registrations.RegistrationImpl;
 import javafx.registrations.RegistrationManager;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import model.jobs.JenkinsJob;
 

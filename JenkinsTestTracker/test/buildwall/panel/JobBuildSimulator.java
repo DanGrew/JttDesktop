@@ -9,7 +9,6 @@
 package buildwall.panel;
 
 import api.handling.BuildState;
-import api.sources.ExternalApi;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 
