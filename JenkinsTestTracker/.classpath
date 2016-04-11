@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src">
-		<attributes>
-			<attribute name="FROM_GRADLE_MODEL" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="test">
-		<attributes>
-			<attribute name="FROM_GRADLE_MODEL" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.controlsfx/controlsfx/8.40.9/b709342cf1f2258d6665be301def2703922823ca/controlsfx-8.40.9.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.controlsfx/controlsfx/8.40.9/2d6bae749d7cc70087a158cb38004683a4f5c5e0/controlsfx-8.40.9-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/a8e7149359255f43e0e5e3b1837948f9ed5861fb/dom4j-1.6.1-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.1.2/9003011c1b6d28a7331f04251a25e7ccf63c98f8/httpclient-4.1.2.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.1.2/dc49f8801031e5318f9487e2aa9e23a301c39dcd/httpclient-4.1.2-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.json/json/20151123/1675d5c1142000dedd6627a73af26a8b885ef0e1/json-20151123.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.json/json/20151123/9c179a1becb79c6af729c89f7b212b1cb5e68da3/json-20151123-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/SystemDigest/SystemDigest/1.1.33/22f64584e36c0da42966ce7ece670166f41385d7/SystemDigest-1.1.33.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/pl.pragmatists/JUnitParams/0.3.6/e7ee089b8f4aae2f669f44e245778c6563f34fa2/JUnitParams-0.3.6.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/pl.pragmatists/JUnitParams/0.3.6/823ac304125cd84683eded8deaf112e9ff20cdf7/JUnitParams-0.3.6-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-all/1.3/63a21ebc981131004ad02e0434e799fd7f3a8d5a/hamcrest-all-1.3.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-all/1.3/47e033b7ab18c5dbd5fe29fc1bd5a40afe028818/hamcrest-all-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-all/1.9.5/79a8984096fc6591c1e3690e07d41be506356fa5/mockito-all-1.9.5.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-all/1.9.5/b8086d4e4daa361fc746abea62f77a2ae55d3ed9/mockito-all-1.9.5-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.controlsfx/openjfx-dialogs/1.0.3/55644ba1de2c911a598a08b31bbe6702080a4b31/openjfx-dialogs-1.0.3.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.controlsfx/openjfx-dialogs/1.0.3/7374e6a5a7b4c38030c4a46ffc982ca8da7234cb/openjfx-dialogs-1.0.3-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356bf85c9/xml-apis-1.0.b2.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.0.b2/d8525661c5a0a05702fa41873d250d135031ec25/xml-apis-1.0.b2-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.1.2/39e30fb2ddfcf32b9dd663039ca6e847b698aa6f/httpcore-4.1.2.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.1.2/b3141b5e74071e25f0f5bb337fa2ceae580bfc35/httpcore-4.1.2-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.1/5043bfebc3db072ed80fbd362e7caf00e885d8ae/commons-logging-1.1.1.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.1/f3f156cbff0e0fb0d64bfce31a352cce4a33bc19/commons-logging-1.1.1-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.4/4216af16d38465bbab0f3dff8efa14204f7a399a/commons-codec-1.4.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.4/5310da9f90e843883309e9e0bf5950faa79882a0/commons-codec-1.4-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" sourcepath="/Users/Amelia/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

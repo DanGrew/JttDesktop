@@ -26,7 +26,9 @@ import utility.observable.FunctionListChangeListenerImpl;
  */
 public class FailureDetail extends GridPane implements RegisteredComponent {
    
-   static final String CULPRITS_PREFIX = "Culprits: ";
+   static final String CULPRIT_PREFIX = "Suspect: ";
+   static final String CULPRITS_PREFIX = "Suspects: ";
+   static final String NO_CULPRITS = "No Suspects.";
    private final BuildWallConfiguration configuration;
    private final JenkinsJob jenkinsJob;
    
@@ -65,6 +67,17 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
     */
    private StringBuilder constructCulpritsList() {
       StringBuilder culprits = new StringBuilder();
+      
+      if ( jenkinsJob.culprits().size() == 0 ) {
+         culprits.append( NO_CULPRITS );
+         return culprits;
+      }
+      
+      if ( jenkinsJob.culprits().size() == 1 ) {
+         culprits.append( CULPRIT_PREFIX );
+      } else {
+         culprits.append( CULPRITS_PREFIX );
+      }
       jenkinsJob.culprits().forEach( culprit -> {
          culprits.append( culprit.nameProperty().get() );
          culprits.append( ", " );
@@ -144,7 +157,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    private void updateCulpritText(){
       StringBuilder culprits = constructCulpritsList();
       DecoupledPlatformImpl.runLater( () -> {
-         culpritsLabel.setText( CULPRITS_PREFIX + culprits.toString() );
+         culpritsLabel.setText( culprits.toString() );
       } );
    }//End Method
    

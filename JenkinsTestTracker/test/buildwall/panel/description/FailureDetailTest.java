@@ -41,6 +41,9 @@ import model.users.JenkinsUserImpl;
 public class FailureDetailTest {
    
    private BuildWallConfiguration configuration;
+   private JenkinsUser rick;
+   private JenkinsUser daryl;
+   private JenkinsUser carl;
    private JenkinsJob jenkinsJob;
    private FailureDetail systemUnderTest;
    
@@ -52,9 +55,9 @@ public class FailureDetailTest {
    @Before public void initialiseSystemUnderTest(){
       jenkinsJob = new JenkinsJobImpl( "Some Job" );
       
-      JenkinsUser rick = new JenkinsUserImpl( "Rick" );
-      JenkinsUser daryl = new JenkinsUserImpl( "Daryl" );
-      JenkinsUser carl = new JenkinsUserImpl( "Carl" );
+      rick = new JenkinsUserImpl( "Rick" );
+      daryl = new JenkinsUserImpl( "Daryl" );
+      carl = new JenkinsUserImpl( "Carl" );
 
       jenkinsJob.culprits().addAll( rick, daryl, carl );
       
@@ -98,32 +101,43 @@ public class FailureDetailTest {
    }//End Method
    
    @Test public void shouldListAllCulpritsInOrderDefinedByJob(){
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
+   }//End Method
+   
+   @Test public void shouldShowCulpritForSingle(){
+      jenkinsJob.culprits().clear();
+      jenkinsJob.culprits().add( rick );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspect: Rick." ) );
+   }//End Method
+   
+   @Test public void shouldShowNoCulpritsWhenNoneAvailable(){
+      jenkinsJob.culprits().clear();
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "No Suspects." ) );
    }//End Method
    
    @Test public void shouldUpdateCulpritsListWhenCulpritsAdded(){
       shouldListAllCulpritsInOrderDefinedByJob();
       
       jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl, Walker." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker." ) );
       
       jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Crawler" ), new JenkinsUserImpl( "Governor" ) );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl, Walker, Crawler, Governor." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker, Crawler, Governor." ) );
    }//End Method
    
    @Test public void shouldUpdateCulpritsListWhenCulpritsRemoved(){
       jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Walker" ), new JenkinsUserImpl( "Crawler" ), new JenkinsUserImpl( "Governor" ) );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl, Walker, Crawler, Governor." ) );  
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker, Crawler, Governor." ) );  
       jenkinsJob.culprits().removeAll( 
                jenkinsJob.culprits().get( 2 ), 
                jenkinsJob.culprits().get( 4 ) 
       );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Walker, Governor." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Walker, Governor." ) );
       jenkinsJob.culprits().remove( jenkinsJob.culprits().get( 2 ) );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Governor." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Governor." ) );
    }//End Method
    
    @Test public void shouldRestrainRowToFitInPanel(){
@@ -187,12 +201,12 @@ public class FailureDetailTest {
    @Test public void shouldDetachCulpritUpdatesFromSystem(){
       systemUnderTest.detachFromSystem();
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
       
       jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
       jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Crawler" ), new JenkinsUserImpl( "Governor" ) );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
       
       jenkinsJob.culprits().removeAll( 
                jenkinsJob.culprits().get( 2 ), 
@@ -200,18 +214,18 @@ public class FailureDetailTest {
       );
       jenkinsJob.culprits().remove( jenkinsJob.culprits().get( 2 ) );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
    }//End Method
    
    @Test public void shouldUseDecoupledPlatformToSetText(){
       DecoupledPlatformImpl.setInstance( runnable -> {} );
     
       jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
       
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Culprits: Rick, Daryl, Carl, Walker, Walker." ) );
+      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker, Walker." ) );
    }//End Method
 
 }//End Class
