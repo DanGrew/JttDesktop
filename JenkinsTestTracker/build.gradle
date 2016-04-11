@@ -153,7 +153,10 @@ bintray {
     user = bintrayUser
     key = bintrayKey
     configurations = ['archives']
-    publications = ['core', 'runnable'] 
+    publications = ['core', 'runnable']
+    
+    publish = true //auto publish everything
+    
     pkg {
         repo = 'JenkinsTestTracker'
         name = 'JenkinsTestTracker'
