@@ -9,6 +9,7 @@
 package buildwall.panel.description;
 
 import java.sql.Timestamp;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.concurrent.TimeUnit;
@@ -268,7 +269,9 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
    static String formatTimestamp( Long timestamp ) {
       if ( timestamp == null ) return "?-?";
 
-      return new Timestamp( timestamp ).toLocalDateTime().format( DATE_TIME_FORMATTER );
+      return new Timestamp( timestamp ).toInstant()
+               .atZone( ZoneId.of( "Europe/London" ) )
+               .toLocalDateTime().format( DATE_TIME_FORMATTER );
    }//End Method
 
    /**
