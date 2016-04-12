@@ -19,9 +19,9 @@ import model.jobs.JenkinsJob;
  */
 public class SimpleJobPanelDescriptionImpl extends JobPanelDescriptionBaseImpl {
 
-   static final double BUILD_PROPERTY_PERCENTAGE = 60;
-   static final double JOB_NAME_PERCENTAGE = 80;
-   static final double COMPLETION_ESTIMATE_PERCENTAGE = 60;
+   static final double BUILD_PROPERTY_PERCENTAGE = 50;
+   static final double JOB_NAME_PERCENTAGE = 100;
+   static final double COMPLETION_ESTIMATE_PERCENTAGE = 50;
    
    /**
     * Constructs a new {@link SimpleJobPanelDescriptionImpl}.
