@@ -3,13 +3,13 @@
 }
  
 .progress-bar-success .track{
-    -fx-background-color: #008000;
+    -fx-background-color: #0c6200;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
  
 .progress-bar-success .bar { 
-    -fx-background-color: #1eeb04;
+    -fx-background-color: #1caa06;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
@@ -25,7 +25,7 @@
 }
  
 .progress-bar-failed .bar { 
-    -fx-background-color: #ff0000;
+    -fx-background-color: #c00005;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
@@ -51,13 +51,13 @@
 }
  
 .progress-bar-aborted .track{
-    -fx-background-color: #808080;
+    -fx-background-color: #595959;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
  
 .progress-bar-aborted .bar { 
-    -fx-background-color: #cccccc;
+    -fx-background-color: #848484;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
@@ -67,13 +67,13 @@
 }
  
 .progress-bar-not-built .track{
-    -fx-background-color: #808080;
+    -fx-background-color: #595959;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
  
 .progress-bar-not-built .bar { 
-    -fx-background-color: #cccccc;
+    -fx-background-color: #848484;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
@@ -83,13 +83,13 @@
 }
  
 .progress-bar-unknown .track{
-    -fx-background-color: #808080;
+    -fx-background-color: #595959;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
  
 .progress-bar-unknown .bar { 
-    -fx-background-color: #cccccc;
+    -fx-background-color: #848484;
     -fx-background-radius: 6, 6, 6, 6;
     -fx-background-insets: 4;
 }
