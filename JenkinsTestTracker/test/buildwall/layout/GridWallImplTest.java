@@ -10,6 +10,9 @@ package buildwall.layout;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.configuration.BuildWallJobPolicy;
@@ -29,6 +34,7 @@ import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
 import graphics.TestPlatformDecouplerImpl;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
@@ -317,6 +323,31 @@ public class GridWallImplTest {
          assertThat( panel.isDetached(), is( false ) );
       }
       firstPanels.forEach( panel -> assertThat( panel.isDetached(), is( true ) ) );
+   }//End Method
+   
+   @Test public void emptyPropertyShouldChangeWhenAllPanelsRemovedAndAdded(){
+      assertThat( systemUnderTest.emptyProperty().get(), is( false ) );
+      
+      @SuppressWarnings("unchecked")//mockito mocking 
+      ChangeListener< Boolean > emptyListener = mock( ChangeListener.class );
+      
+      systemUnderTest.emptyProperty().addListener( emptyListener );
+      
+      configuration.jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.NeverShow );
+      PlatformImpl.runAndWait( () -> {} );
+      verify( emptyListener, times( 0 ) ).changed( systemUnderTest.emptyProperty(), false, true );
+      
+      configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      PlatformImpl.runAndWait( () -> {} );
+      verify( emptyListener ).changed( systemUnderTest.emptyProperty(), false, true );
+      
+      configuration.jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      PlatformImpl.runAndWait( () -> {} );
+      verify( emptyListener ).changed( systemUnderTest.emptyProperty(), true, false );
+      
+      configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
+      PlatformImpl.runAndWait( () -> {} );
+      verify( emptyListener ).changed( systemUnderTest.emptyProperty(), true, false );
    }//End Method
    
 }//End Class

@@ -18,6 +18,8 @@ import buildwall.configuration.BuildWallJobPolicy;
 import buildwall.panel.JobPanelImpl;
 import graphics.DecoupledPlatformImpl;
 import javafx.collections.ListChangeListener.Change;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.MapChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
@@ -32,9 +34,10 @@ import storage.database.JenkinsDatabase;
  */
 public class GridWallImpl extends GridPane implements BuildWall {
 
-   private JenkinsDatabase database;
-   private BuildWallConfiguration configuration;
-   private Map< JenkinsJob, JobPanelImpl > jobPanels;
+   private final JenkinsDatabase database;
+   private final BuildWallConfiguration configuration;
+   private final Map< JenkinsJob, JobPanelImpl > jobPanels;
+   private final BooleanProperty emptyProperty;
    
    /**
     * Constructs a new {@link GridWallImpl}.
@@ -42,9 +45,11 @@ public class GridWallImpl extends GridPane implements BuildWall {
     * @param database the {@link JenkinsDatabase} for the {@link JenkinsJob}s.
     */
    public GridWallImpl( BuildWallConfiguration configuration, JenkinsDatabase database ) {
-      jobPanels = new HashMap<>();
+      this.jobPanels = new HashMap<>();
       this.database = database;
       this.configuration = configuration;
+      this.emptyProperty = new SimpleBooleanProperty( false );
+      
       constructLayout();
       
       database.jenkinsJobs().addListener( ( Change< ? extends JenkinsJob > change ) -> constructLayout() );
@@ -68,20 +73,48 @@ public class GridWallImpl extends GridPane implements BuildWall {
     * the java fx thread.
     */
    private void fxConstruction(){
+      removalAllPanelsAndCleanUp();
+      
+      if ( database.jenkinsJobs().isEmpty() ) return;
+      
+      List< JenkinsJob > jobsToShow = identifyDisplayedJobs();
+      int numberOfColumns = calculateNumberOfColumnsToShow( jobsToShow );
+      constructAndRedrawPanels( jobsToShow, numberOfColumns );
+      
+      emptyProperty.set( jobPanels.size() == 0 );
+   }//End Method
+
+   /** 
+    * Method to remove all existing panels and tidy up any references to them.
+    */
+   private void removalAllPanelsAndCleanUp() {
       getChildren().forEach( node -> GridPane.clearConstraints( node ) );
       getChildren().clear();
       getRowConstraints().clear();
       getColumnConstraints().clear();
       jobPanels.values().forEach( panel -> panel.detachFromSystem() );
       jobPanels.clear();
-      
-      if ( database.jenkinsJobs().isEmpty() ) return;
-      List< JenkinsJob > jobsToShow = identifyDisplayedJobs();
-      
+   }//End Method
+   
+   /**
+    * Method to calculate the number of columns to show given the identified {@link JenkinsJob}s
+    * and {@link BuildWallConfiguration} associated.
+    * @param jobsToShow the {@link List} of {@link JenkinsJob}s to show.
+    * @return the number of columns needed.
+    */
+   private int calculateNumberOfColumnsToShow( List< JenkinsJob > jobsToShow ) {
       int numberOfColumns = configuration.numberOfColumns().get();
       numberOfColumns = Math.min( jobsToShow.size(), numberOfColumns );
       numberOfColumns = Math.max( numberOfColumns, 1 );
-
+      return numberOfColumns;
+   }//End Method
+   
+   /**
+    * Method to perform the construction of the panels.
+    * @param jobsToShow the {@link JenkinsJob}s panels are needed for.
+    * @param numberOfColumns the number of columns to display them in.
+    */
+   private void constructAndRedrawPanels( List< JenkinsJob > jobsToShow, int numberOfColumns ) {
       int columnCount = 0;
       int rowCount = 0;
       for ( JenkinsJob job : jobsToShow ) {
@@ -170,6 +203,13 @@ public class GridWallImpl extends GridPane implements BuildWall {
          column.setPercentWidth( columnPercentageWidth );
          getColumnConstraints().add( column );
       }
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public BooleanProperty emptyProperty() {
+      return emptyProperty;
    }//End Method
    
    /**
