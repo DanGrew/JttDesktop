@@ -26,7 +26,7 @@ import storage.database.JenkinsDatabase;
 public class DualBuildWallDisplayImpl extends BorderPane {
 
    private ScrollPane configurationScroller;
-   private SplitPane buildWallSplitter;
+   private DualBuildWallSplitter buildWallSplitter;
    
    private GridWallImpl rightGridWall;
    private GridWallImpl leftGridWall;
@@ -53,7 +53,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       rightGridWall = new GridWallImpl( rightConfiguration, database );
       leftGridWall = new GridWallImpl( leftConfiguration, database );
       
-      buildWallSplitter = new SplitPane( leftGridWall, rightGridWall );
+      buildWallSplitter = new DualBuildWallSplitter( leftGridWall, rightGridWall );
       setCenter( buildWallSplitter );
       
       rightConfigurationPanel = new BuildWallConfigurationPanelImpl( "Right Wall Configuration", rightConfiguration );
@@ -103,7 +103,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       if ( isConfigurationShowing() && configurationScroller.getContent() == rightConfigurationPanel ) {
          hideConfiguration();
       }
-      buildWallSplitter.getItems().remove( rightGridWall );
+      buildWallSplitter.hideRightWall();
    }//End Method
    
    /**
@@ -120,7 +120,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     * @return true if showing, false otherwise.
     */
    public boolean isRightWallShowing(){
-      return buildWallSplitter.getItems().contains( rightGridWall );
+      return buildWallSplitter.isRightWallShowing();
    }//End Method
    
    /**
@@ -130,7 +130,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       if ( isConfigurationShowing() && configurationScroller.getContent() == leftConfigurationPanel ) {
          hideConfiguration();
       }
-      buildWallSplitter.getItems().remove( leftGridWall );
+      buildWallSplitter.hideLeftWall();
    }//End Method
    
    /**
@@ -139,7 +139,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
    public void showLeftWall() {
       if ( isLeftWallShowing() ) return;
       
-      buildWallSplitter.getItems().add( 0, leftGridWall );
+      buildWallSplitter.showLeftWall();
    }//End Method
    
    /**
@@ -147,7 +147,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     * @return true if showing, false otherwise.
     */
    public boolean isLeftWallShowing(){
-      return buildWallSplitter.getItems().contains( leftGridWall );
+      return buildWallSplitter.isLeftWallShowing();
    }//End Method
 
    /**
