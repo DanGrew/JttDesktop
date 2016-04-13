@@ -111,5 +111,73 @@ public class DualBuildWallSplitterTest {
       
       assertThatWallsArePresent( right );
    }//End Method
+
+   /**
+    * Method to assert that the {@link DualBuildWallSplitter} has dividers in the 
+    * given positions.
+    */
+   private void assertDividerPosition( double... expected ) {
+      assertThat( systemUnderTest.getDividerPositions(), is( expected ) );
+   }//End Method
+   
+   @Test public void shouldRetainSplitPositionWhenRightIsRemoved(){
+      final double dividerPosition = 0.7;
+      systemUnderTest.setDividerPositions( dividerPosition );
+      assertDividerPosition( dividerPosition );
+
+      systemUnderTest.hideRightWall();
+      assertDividerPosition();
+      
+      systemUnderTest.showRightWall();
+      assertDividerPosition( dividerPosition );
+   }//End Method
+   
+   @Test public void shouldRetainSplitPositionWhenLeftIsRemoved(){
+      final double dividerPosition = 0.7;
+      systemUnderTest.setDividerPositions( dividerPosition );
+      assertDividerPosition( dividerPosition );
+
+      systemUnderTest.hideLeftWall();
+      assertDividerPosition();
+      
+      systemUnderTest.showLeftWall();
+      assertDividerPosition( dividerPosition );
+   }//End Method
+   
+   @Test public void shouldRetainSplitPositionWhenRightThenLeftRemoved(){
+      final double dividerPosition = 0.7;
+      systemUnderTest.setDividerPositions( dividerPosition );
+      assertDividerPosition( dividerPosition );
+
+      systemUnderTest.hideRightWall();
+      systemUnderTest.hideLeftWall();
+      assertDividerPosition();
+      
+      systemUnderTest.showRightWall();
+      systemUnderTest.showLeftWall();
+      assertDividerPosition( dividerPosition );
+   }//End Method
+   
+   @Test public void shouldRetainSplitPositionWhenLeftThenRightRemoved(){
+      final double dividerPosition = 0.7;
+      systemUnderTest.setDividerPositions( dividerPosition );
+      assertDividerPosition( dividerPosition );
+
+      systemUnderTest.hideLeftWall();
+      systemUnderTest.hideRightWall();
+      assertDividerPosition();
+      
+      systemUnderTest.showLeftWall();
+      systemUnderTest.showRightWall();
+      assertDividerPosition( dividerPosition );
+   }//End Method
+   
+   @Test public void shouldRetainDefaultDividerPositionWhenNotChanged(){
+      systemUnderTest.hideRightWall();
+      assertDividerPosition();
+      
+      systemUnderTest.showRightWall();
+      assertDividerPosition( DualBuildWallSplitter.DEFAULT_DIVIDER );
+   }//End Method
    
 }//End Class

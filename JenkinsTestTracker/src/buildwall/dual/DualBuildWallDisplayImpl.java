@@ -15,7 +15,6 @@ import buildwall.configuration.updating.JobPolicyUpdater;
 import buildwall.layout.GridWallImpl;
 import buildwall.panel.type.JobPanelDescriptionProviders;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import storage.database.JenkinsDatabase;
 
@@ -112,7 +111,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
    public void showRightWall() {
       if ( isRightWallShowing() ) return;
       
-      buildWallSplitter.getItems().add( rightGridWall );
+      buildWallSplitter.showRightWall();
    }//End Method
    
    /**
@@ -180,6 +179,10 @@ public class DualBuildWallDisplayImpl extends BorderPane {
    
    BuildWallConfiguration leftConfiguration() {
       return leftConfiguration;
+   }//End Method
+
+   DualBuildWallSplitter splitPane() {
+      return buildWallSplitter;
    }//End Method
    
 }//End Class

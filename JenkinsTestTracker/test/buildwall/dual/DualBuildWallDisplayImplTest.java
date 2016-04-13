@@ -8,6 +8,7 @@
  */
 package buildwall.dual;
 
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -42,6 +43,7 @@ import model.users.JenkinsUserImpl;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
 import styling.SystemStyling;
+import utility.TestCommon;
 
 /**
  * {@link DualBuildWallDisplayImpl} test.
@@ -324,5 +326,31 @@ public class DualBuildWallDisplayImplTest {
       systemUnderTest.leftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
       PlatformImpl.runAndWait( () -> {} );
       assertThat( systemUnderTest.isLeftWallShowing(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldPreserveDividerLocationForLeft(){
+      final double dividerLocation = 0.8;
+      systemUnderTest.splitPane().setDividerPosition( 0, dividerLocation );
+      
+      systemUnderTest.leftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      PlatformImpl.runAndWait( () -> {} );
+      
+      systemUnderTest.leftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      PlatformImpl.runAndWait( () -> {} );
+      
+      assertThat( systemUnderTest.splitPane().getDividerPositions()[ 0 ], closeTo( dividerLocation, TestCommon.precision() ) );
+   }//End Method
+   
+   @Test public void shouldPreserveDividerLocationForRight(){
+      final double dividerLocation = 0.8;
+      systemUnderTest.splitPane().setDividerPosition( 0, dividerLocation );
+      
+      systemUnderTest.rightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      PlatformImpl.runAndWait( () -> {} );
+      
+      systemUnderTest.rightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      PlatformImpl.runAndWait( () -> {} );
+      
+      assertThat( systemUnderTest.splitPane().getDividerPositions()[ 0 ], closeTo( dividerLocation, TestCommon.precision() ) );
    }//End Method
 }//End Class

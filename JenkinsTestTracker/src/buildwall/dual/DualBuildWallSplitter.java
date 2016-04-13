@@ -18,8 +18,10 @@ import javafx.scene.control.SplitPane;
  */
 public class DualBuildWallSplitter extends SplitPane {
 
+   static final double DEFAULT_DIVIDER = 0.5;
    private final GridWallImpl rightGridWall;
    private final GridWallImpl leftGridWall;
+   private double dividerPosition;
    
    /**
     * Constructs a new {@link DualBuildWallSplitter}.
@@ -30,12 +32,36 @@ public class DualBuildWallSplitter extends SplitPane {
       super( left, right );
       this.rightGridWall = right;
       this.leftGridWall = left;
+      this.dividerPosition = DEFAULT_DIVIDER;
    }//End Constructor
+   
+   /**
+    * Method to update the record of the divider position for restoring later.
+    * Will only take effect if precisely 2 items in this pane.
+    */
+   private void updateDividerPosition(){
+      if ( getItems().size() != 2 ) {
+         return;
+      }
+      dividerPosition = getDividerPositions()[ 0 ];
+   }//End Method
+   
+   /**
+    * Method to restore the previously recorded divider position.
+    * Will only take effect if precisely 2 items in this pane.
+    */
+   private void restoreDividerPosition(){
+      if ( getItems().size() != 2 ) {
+         return;
+      }
+      setDividerPositions( dividerPosition );
+   }//End Method
    
    /**
     * Method to hide the right {@link GridWallImpl}. The configuration will be hidden is for this {@link GridWallImpl}.
     */
    void hideRightWall() {
+      updateDividerPosition();
       getItems().remove( rightGridWall );
    }//End Method
    
@@ -46,6 +72,7 @@ public class DualBuildWallSplitter extends SplitPane {
       if ( isRightWallShowing() ) return;
       
       getItems().add( rightGridWall );
+      restoreDividerPosition();
    }//End Method
    
    /**
@@ -60,6 +87,7 @@ public class DualBuildWallSplitter extends SplitPane {
     * Method to hide the left {@link GridWallImpl}. The configuration will be hidden is for this {@link GridWallImpl}.
     */
    void hideLeftWall() {
+      updateDividerPosition();
       getItems().remove( leftGridWall );
    }//End Method
    
@@ -70,6 +98,7 @@ public class DualBuildWallSplitter extends SplitPane {
       if ( isLeftWallShowing() ) return;
       
       getItems().add( 0, leftGridWall );
+      restoreDividerPosition();
    }//End Method
    
    /**
