@@ -29,7 +29,7 @@ import styling.FontFamilies;
  */
 public class FontFamilyPropertyBoxTest {
 
-   private static final String COMMON_FONT = "Arial";
+   private static final String COMMON_FONT = "SansSerif";
    private static List< String > FONT_FAMILY_CHOICES = FontFamilies.getUsableFontFamilies();
    private static final int COMMON_FONT_POSITION = FONT_FAMILY_CHOICES.indexOf( COMMON_FONT );
    private ObjectProperty< Font > property;
