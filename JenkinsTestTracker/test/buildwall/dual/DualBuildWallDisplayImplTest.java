@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.Map.Entry;
 import java.util.Random;
 
 import org.junit.Before;
@@ -22,13 +23,18 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.sun.javafx.application.PlatformImpl;
+
+import buildwall.configuration.BuildWallJobPolicy;
 import buildwall.layout.GridWallImpl;
 import buildwall.panel.type.JobPanelDescriptionProviders;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
+import javafx.event.EventHandler;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.ContextMenuEvent;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
@@ -82,6 +88,10 @@ public class DualBuildWallDisplayImplTest {
       
       JavaFxInitializer.startPlatform();
       systemUnderTest = new DualBuildWallDisplayImpl( database );
+      
+      systemUnderTest.leftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
+      systemUnderTest.rightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
+      PlatformImpl.runAndWait( () -> {} );
    }//End Method
    
    @Ignore //For manual inspection.
@@ -92,6 +102,86 @@ public class DualBuildWallDisplayImplTest {
          systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
       } );
+      
+      Thread.sleep( 4000 );
+      
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.hideRightWall();
+      } );
+          
+      Thread.sleep( 4000 );
+
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.rightConfiguration().jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Default );
+         for ( Entry< JenkinsJob, BuildWallJobPolicy > entry : systemUnderTest.rightConfiguration().jobPolicies().entrySet() ) {
+            entry.setValue( BuildWallJobPolicy.NeverShow );
+         }
+      } );
+      
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.rightConfiguration().jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
+         for ( Entry< JenkinsJob, BuildWallJobPolicy > entry : systemUnderTest.rightConfiguration().jobPolicies().entrySet() ) {
+            entry.setValue( BuildWallJobPolicy.AlwaysShow );
+         }
+      } );
+      
+      Thread.sleep( 4000 );
+
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.showRightWall();
+      } );
+      
+      Thread.sleep( 4000 );
+
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.rightConfiguration().jobPolicies().entrySet()
+            .forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      } );
+      
+      Thread.sleep( 4000 );
+
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.rightConfiguration().jobPolicies().entrySet()
+            .forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
+      } );
+      
+      Thread.sleep( 4000 );
+
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.rightConfiguration().jobPolicies().entrySet()
+            .forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      } );
+      
+      Thread.sleep( 4000 );
+
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.leftConfiguration().jobPolicies().entrySet()
+            .forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      } );
+      
+      Thread.sleep( 4000 );
+
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest.rightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+         systemUnderTest.leftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      } );
+      
+      Thread.sleep( 10000000 );
+   }//End Method
+   
+   @Ignore
+   @Test public void menuStressing() throws InterruptedException {
+      DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
+      JavaFxInitializer.launchInWindow( () -> {
+         systemUnderTest.showRightConfiguration();
+         systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
+         return systemUnderTest; 
+      } );
+      
+      Random random = new Random();
+      for ( int i = 0; i < 100000; i++ ) {
+         EventHandler< ? super ContextMenuEvent > conextHandler = systemUnderTest.onContextMenuRequestedProperty().get();
+      }
       
       Thread.sleep( 10000000 );
    }//End Method
@@ -145,15 +235,19 @@ public class DualBuildWallDisplayImplTest {
    
    @Test public void shouldHideAndShowRightWall(){
       systemUnderTest.hideRightWall();
+      assertThat( systemUnderTest.isRightWallShowing(), is( false ) );
       assertSplitPaneItems( systemUnderTest.leftGridWall() );
       systemUnderTest.showRightWall();
+      assertThat( systemUnderTest.isRightWallShowing(), is( true ) );
       assertSplitPaneItems( systemUnderTest.leftGridWall(), systemUnderTest.rightGridWall() );
    }//End Method
    
    @Test public void shouldHideAndShowLeftWall(){
       systemUnderTest.hideLeftWall();
+      assertThat( systemUnderTest.isLeftWallShowing(), is( false ) );
       assertSplitPaneItems( systemUnderTest.rightGridWall() );
       systemUnderTest.showLeftWall();
+      assertThat( systemUnderTest.isLeftWallShowing(), is( true ) );
       assertSplitPaneItems( systemUnderTest.leftGridWall(), systemUnderTest.rightGridWall() );
    }//End Method
 
@@ -210,4 +304,25 @@ public class DualBuildWallDisplayImplTest {
       assertThat( systemUnderTest.rightConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
    }//End Method
    
+   @Test public void shouldAutoHideAndAutoShowRightWall(){
+      assertThat( systemUnderTest.isRightWallShowing(), is( true ) );
+      systemUnderTest.rightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      PlatformImpl.runAndWait( () -> {} );
+      assertThat( systemUnderTest.isRightWallShowing(), is( false ) );
+      
+      systemUnderTest.rightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      PlatformImpl.runAndWait( () -> {} );
+      assertThat( systemUnderTest.isRightWallShowing(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldLeftHideAndAutoShowLeftWall(){
+      assertThat( systemUnderTest.isLeftWallShowing(), is( true ) );
+      systemUnderTest.leftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      PlatformImpl.runAndWait( () -> {} );
+      assertThat( systemUnderTest.isLeftWallShowing(), is( false ) );
+      
+      systemUnderTest.leftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      PlatformImpl.runAndWait( () -> {} );
+      assertThat( systemUnderTest.isLeftWallShowing(), is( true ) );
+   }//End Method
 }//End Class

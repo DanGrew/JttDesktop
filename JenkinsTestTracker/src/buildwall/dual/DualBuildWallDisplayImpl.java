@@ -59,6 +59,8 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       rightConfigurationPanel = new BuildWallConfigurationPanelImpl( "Right Wall Configuration", rightConfiguration );
       leftConfigurationPanel = new BuildWallConfigurationPanelImpl( "Left Wall Configuration", leftConfiguration );
       configurationScroller = new ScrollPane();
+      
+      new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
    }//End Constructor
    
    /**
@@ -108,9 +110,17 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     * Method to show the right {@link GridWallImpl}, if not already showing.
     */
    public void showRightWall() {
-      if ( buildWallSplitter.getItems().contains( rightGridWall ) ) return;
+      if ( isRightWallShowing() ) return;
       
       buildWallSplitter.getItems().add( rightGridWall );
+   }//End Method
+   
+   /**
+    * Method to determine whether the right wall is currently showing.
+    * @return true if showing, false otherwise.
+    */
+   public boolean isRightWallShowing(){
+      return buildWallSplitter.getItems().contains( rightGridWall );
    }//End Method
    
    /**
@@ -127,9 +137,17 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     * Method to show the left {@link GridWallImpl}, if not already showing.
     */
    public void showLeftWall() {
-      if ( buildWallSplitter.getItems().contains( leftGridWall ) ) return;
+      if ( isLeftWallShowing() ) return;
       
       buildWallSplitter.getItems().add( 0, leftGridWall );
+   }//End Method
+   
+   /**
+    * Method to determine whether the left wall is currently showing.
+    * @return true if showing, false otherwise.
+    */
+   public boolean isLeftWallShowing(){
+      return buildWallSplitter.getItems().contains( leftGridWall );
    }//End Method
 
    /**

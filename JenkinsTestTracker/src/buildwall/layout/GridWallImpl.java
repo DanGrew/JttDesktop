@@ -48,7 +48,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
       this.jobPanels = new HashMap<>();
       this.database = database;
       this.configuration = configuration;
-      this.emptyProperty = new SimpleBooleanProperty( false );
+      this.emptyProperty = new SimpleBooleanProperty( true );
       
       constructLayout();
       
