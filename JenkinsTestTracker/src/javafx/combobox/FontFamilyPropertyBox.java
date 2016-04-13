@@ -13,6 +13,7 @@ import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import styling.FontFamilies;
 
 /**
@@ -23,8 +24,8 @@ public class FontFamilyPropertyBox extends PropertyBox< String, Font >{
 
    /** {@link BiFunction} for converting a family into a new {@link Font} accounting for the original size. **/
    private static final BiFunction< Font, String, Font > familyToModifiedFontFunction = ( originalFont, family ) -> {
-            if ( originalFont == null ) return Font.font( family, 13 );
-            return Font.font( family, originalFont.getSize() );
+            if ( originalFont == null ) return Font.font( family, FontWeight.BOLD, 13 );
+            return Font.font( family, FontWeight.BOLD, originalFont.getSize() );
    };
    
    /** {@link Function} to convert a {@link Font} into the {@link Font} family to display.**/

@@ -8,10 +8,16 @@
  */
 package utility;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.io.InputStream;
 import java.util.Scanner;
 
 import org.junit.Assert;
+
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 /**
  * Common test values and properties used.
@@ -64,6 +70,14 @@ public final class TestCommon {
       for ( Enum< E > value : enumClass.getEnumConstants() ) {
          Assert.assertEquals( value, Enum.valueOf( enumClass, value.toString() ) );
       }
+   }//End Method
+   
+   /**
+    * Method to assert that the given {@link Font} is bold.
+    * @param font the {@link Font} in question.
+    */
+   public static void assertThatFontIsBold( Font font ) {
+      assertThat( FontWeight.findByName( font.getStyle() ), is( FontWeight.BOLD ) );
    }//End Method
 
 }//End Class
