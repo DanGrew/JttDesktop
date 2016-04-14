@@ -24,6 +24,7 @@ import model.users.JenkinsUser;
 public interface JenkinsJob {
 
    public static final int DEFAULT_LAST_BUILD_NUMBER = 0;
+   public static final int DEFAULT_CURRENT_BUILD_NUMBER = 0;
    public static final BuildResultStatus DEFAULT_LAST_BUILD_STATUS = BuildResultStatus.FAILURE;
    public static final BuildState DEFAULT_BUILD_STATE = BuildState.Built;
    public static final long DEFAULT_CURRENT_BUILD_TIME = 0;
@@ -43,6 +44,13 @@ public interface JenkinsJob {
     */
    public IntegerProperty lastBuildNumberProperty();
 
+   /**
+    * Provides the current build number as found when initially building. If built job details
+    * provides this to be the last build number.
+    * @return the {@link IntegerProperty}.
+    */
+   public IntegerProperty currentBuildNumberProperty();
+   
    /**
     * Provides the last build status of the {@link JenkinsJob}.
     * @return the {@link ObjectProperty} for the {@link BuildResultStatus}.
@@ -68,11 +76,11 @@ public interface JenkinsJob {
    public LongProperty currentBuildTimeProperty();
    
    /**
-    * Provides the last build's timestamp. This is defined as the point at which
+    * Provides the most current build's timestamp. This is defined as the point at which
     * the build was started.
     * @return the {@link LongProperty}.
     */
-   public LongProperty lastBuildTimestampProperty();
+   public LongProperty currentBuildTimestampProperty();
    
    /**
     * Provides whether the test results are being synchronised for this job.
@@ -86,5 +94,5 @@ public interface JenkinsJob {
     * @return the {@link ObservableList}.
     */
    public ObservableList< JenkinsUser > culprits();
-   
+
 }//End Interface

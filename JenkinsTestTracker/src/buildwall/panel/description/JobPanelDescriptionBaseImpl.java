@@ -64,7 +64,8 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
       updateJobNameColour();
       
       properties = new GridPane();
-      buildNumber = new Label( formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ) );
+      buildNumber = new Label();
+      updateBuildNumberAndTimestamp();
       buildNumber.setOpacity( DEFAULT_PROPERTY_OPACITY );
 
       completionEstimate = new Label();
@@ -103,20 +104,12 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
       );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               job.lastBuildNumberProperty(), 
-               ( source, old, updated ) -> { 
-                  DecoupledPlatformImpl.runLater( () -> {
-                     buildNumber.setText( formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ) );
-                  } );
-               }
+               job.currentBuildNumberProperty(), 
+               ( source, old, updated ) -> updateBuildNumberAndTimestamp()
       ) );
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               job.lastBuildTimestampProperty(), 
-               ( source, old, updated ) -> { 
-                  DecoupledPlatformImpl.runLater( () -> {
-                     buildNumber.setText( formatBuildNumberAndTimestamp( job.lastBuildNumberProperty().get(), job.lastBuildTimestampProperty().get() ) );
-                  } );
-               }
+               job.currentBuildTimestampProperty(), 
+               ( source, old, updated ) -> updateBuildNumberAndTimestamp()
       ) );
       
       registrations.apply( new PaintColorChangeListenerBindingImpl( 
@@ -171,6 +164,15 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
                   job.currentBuildTimeProperty().get(),
                   job.expectedBuildTimeProperty().get()
          ) );
+      } );
+   }//End Method
+   
+   /**
+    * Method to update the build number and timestamp when information has changed.
+    */
+   private void updateBuildNumberAndTimestamp(){
+      DecoupledPlatformImpl.runLater( () -> {
+         buildNumber.setText( formatBuildNumberAndTimestamp( job.currentBuildNumberProperty().get(), job.currentBuildTimestampProperty().get() ) );
       } );
    }//End Method
    

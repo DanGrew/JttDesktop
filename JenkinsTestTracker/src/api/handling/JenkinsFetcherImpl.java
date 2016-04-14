@@ -78,21 +78,28 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       if ( jenkinsJob == null ) return;
       
       updateBuildState( jenkinsJob );
-      switch ( jenkinsJob.buildStateProperty().get() ) {
-         case Building:
-            //Not useful to interrupt during build.
-            break;
-         case Built:
-            digest.fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-            String response = externalApi.getLastBuildJobDetails( jenkinsJob );
-            digest.parsing( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-            jobsImporter.updateJobDetails( jenkinsJob, response );
-            digest.updated( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-            break;
-         default:
-            break;
+      
+      if ( isOutDated( jenkinsJob ) ) {
+         digest.fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
+         String response = externalApi.getLastBuildJobDetails( jenkinsJob );
+         digest.parsing( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
+         jobsImporter.updateJobDetails( jenkinsJob, response );
+         digest.updated( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
       }
    }//End Method
+   
+   private boolean isOutDated( JenkinsJob job ) {
+      BuildState buildState = job.buildStateProperty().get();
+      if ( buildState == BuildState.Built ) {
+         return true;
+      }
+      
+      int lastBuild = job.lastBuildNumberProperty().get();
+      int currentBuild = job.currentBuildNumberProperty().get();
+      
+      int difference = currentBuild - lastBuild;
+      return difference > 1;
+   }
 
    /**
     * {@inheritDoc}

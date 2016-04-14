@@ -30,11 +30,12 @@ public class JenkinsJobImpl implements JenkinsJob {
 
    private StringProperty name;
    private IntegerProperty lastBuildNumber;
+   private IntegerProperty currentBuildNumber;
    private ObjectProperty< BuildResultStatus > lastBuildStatus;
    private ObjectProperty< BuildState > buildState;
    private LongProperty expectedBuildTime;
    private LongProperty currentBuildTime;
-   private LongProperty lastBuildTimestamp;
+   private LongProperty currentBuildTimestamp;
    private BooleanProperty testResultsAreSynchronized;
    private ObservableList< JenkinsUser > culprits;
    
@@ -48,11 +49,12 @@ public class JenkinsJobImpl implements JenkinsJob {
       
       this.name = new SimpleStringProperty( name );
       lastBuildNumber = new SimpleIntegerProperty( DEFAULT_LAST_BUILD_NUMBER );
-      lastBuildStatus = new SimpleObjectProperty< BuildResultStatus >( DEFAULT_LAST_BUILD_STATUS );
-      buildState = new SimpleObjectProperty< BuildState >( DEFAULT_BUILD_STATE );
+      currentBuildNumber = new SimpleIntegerProperty( DEFAULT_CURRENT_BUILD_NUMBER );
+      lastBuildStatus = new SimpleObjectProperty<>( DEFAULT_LAST_BUILD_STATUS );
+      buildState = new SimpleObjectProperty<>( DEFAULT_BUILD_STATE );
       expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
       currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
-      lastBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
+      currentBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
       testResultsAreSynchronized = new SimpleBooleanProperty( DEFAULT_TEST_RESULTS_ARE_SYNC );
       culprits = FXCollections.observableArrayList();
    }//End Constructor
@@ -69,6 +71,13 @@ public class JenkinsJobImpl implements JenkinsJob {
     */
    @Override public IntegerProperty lastBuildNumberProperty() {
       return lastBuildNumber;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public IntegerProperty currentBuildNumberProperty() {
+      return currentBuildNumber;
    }//End Method
 
    /**
@@ -102,8 +111,8 @@ public class JenkinsJobImpl implements JenkinsJob {
    /**
     * {@inheritDoc}
     */
-   @Override public LongProperty lastBuildTimestampProperty() {
-      return lastBuildTimestamp;
+   @Override public LongProperty currentBuildTimestampProperty() {
+      return currentBuildTimestamp;
    }//End Method
 
    /**

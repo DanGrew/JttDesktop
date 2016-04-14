@@ -28,7 +28,7 @@ public class JenkinsApiImpl implements ExternalApi {
 
    static final String LOCATION_PREFIX = "http://";
    static final String BASE_REQUEST = "/api/json?tree=jobs[name]&pretty=true";
-   static final String LAST_BUILD_BUILDING = "/lastBuild/api/json?tree=building,estimatedDuration,timestamp";
+   static final String LAST_BUILD_BUILDING = "/lastBuild/api/json?tree=building,estimatedDuration,timestamp,number";
    static final String LAST_BUILD_DETAILS = "/lastCompletedBuild/api/json?tree=number,result,culprits[fullName]";
    
    static final String TEST_CASES_PROPERTIES = "duration,name,className,failedSince,skipped,status,age";

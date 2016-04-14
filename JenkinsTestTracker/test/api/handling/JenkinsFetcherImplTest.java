@@ -8,11 +8,13 @@
  */
 package api.handling;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -124,6 +126,43 @@ public class JenkinsFetcherImplTest {
       digestOrdering.verify( externalApi ).getLastBuildBuildingState( jenkinsJob );
       digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
       digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
+   }//End Method
+   
+   @Test public void shouldUpdateJobDetailsWhenBuildingAndCurrentBuildNumberIsNotAfterLastBuildNumber() {
+      String buildingResponse = TestCommon.readFileIntoString( getClass(), "building-state-24.json" );
+      when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
+      String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
+      when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
+
+      jenkinsJob.lastBuildNumberProperty().set( 22 );
+      systemUnderTest.updateJobDetails( jenkinsJob );
+      assertEquals( 23, jenkinsJob.lastBuildNumberProperty().get() );
+      assertEquals( 24, jenkinsJob.currentBuildNumberProperty().get() );
+   }//End Method
+   
+   @Test public void shouldNotUpdateJobDetailsWhenBuildingAndCurrentBuildNumberIsOneAfterLastBuildNumber() {
+      String buildingResponse = TestCommon.readFileIntoString( getClass(), "building-state-24.json" );
+      when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
+      String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
+      when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
+
+      jenkinsJob.lastBuildNumberProperty().set( 23 );
+      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      systemUnderTest.updateJobDetails( jenkinsJob );
+      assertEquals( 23, jenkinsJob.lastBuildNumberProperty().get() );
+      assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      assertEquals( 24, jenkinsJob.currentBuildNumberProperty().get() );
+   }//End Method
+   
+   @Test public void shouldUpdateJobDetailsWhenBuildingAndLastBuildNumberIsDefault() {
+      String buildingResponse = TestCommon.readFileIntoString( getClass(), "building-state-24.json" );
+      when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
+      String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
+      when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
+
+      assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
+      systemUnderTest.updateJobDetails( jenkinsJob );
+      assertEquals( 23, jenkinsJob.lastBuildNumberProperty().get() );
    }//End Method
    
    @Test public void shouldNotUpdateJobDetailsWhenNullJob() {

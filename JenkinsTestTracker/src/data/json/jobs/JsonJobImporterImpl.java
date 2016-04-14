@@ -70,13 +70,24 @@ public class JsonJobImporterImpl implements JsonJobImporter {
             jenkinsJob.buildStateProperty().set( BuildState.Built );
          }
          
-         if ( !object.has( ESTIMATED_DURATION_KEY ) ) return;
-         long estimatedDurection = object.optLong( ESTIMATED_DURATION_KEY );
-         jenkinsJob.expectedBuildTimeProperty().set( estimatedDurection );
+         if ( object.has( ESTIMATED_DURATION_KEY ) ) {
+            long estimatedDurection = object.optLong( ESTIMATED_DURATION_KEY );
+            jenkinsJob.expectedBuildTimeProperty().set( estimatedDurection );
+         }
          
-         if ( !object.has( TIMESTAMP_KEY ) ) return;
-         long timestamp = object.optLong( TIMESTAMP_KEY );
-         jenkinsJob.lastBuildTimestampProperty().set( timestamp );
+         if ( object.has( TIMESTAMP_KEY ) ) {
+            long timestamp = object.optLong( TIMESTAMP_KEY );
+            jenkinsJob.currentBuildTimestampProperty().set( timestamp );
+         }
+         
+         if ( object.has( NUMBER_KEY ) ) {
+            int buildNumber = object.getInt( NUMBER_KEY );
+            jenkinsJob.currentBuildNumberProperty().set( buildNumber );
+            
+            if ( jenkinsJob.buildStateProperty().get() == BuildState.Built ) {
+               jenkinsJob.lastBuildNumberProperty().set( buildNumber );   
+            }
+         }
       } catch ( JSONException exception ) {
          return;
       }

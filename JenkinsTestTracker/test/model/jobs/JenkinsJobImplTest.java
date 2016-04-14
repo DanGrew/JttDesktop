@@ -105,16 +105,28 @@ public class JenkinsJobImplTest {
       Assert.assertEquals( value, systemUnderTest.currentBuildTimeProperty().get() );
    }//End Method
    
-   @Test public void shouldProvideLastBuildTimestampProperty() {
-      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, systemUnderTest.lastBuildTimestampProperty().get() );
+   @Test public void shouldProvideCurrentBuildTimestampProperty() {
+      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, systemUnderTest.currentBuildTimestampProperty().get() );
    }//End Method
    
-   @Test public void shouldUpdateLastBuildTimestampProperty() {
-      shouldProvideLastBuildTimestampProperty();
+   @Test public void shouldUpdateCurrentBuildTimestampProperty() {
+      shouldProvideCurrentBuildTimestampProperty();
       
       final int value = 1000;
-      systemUnderTest.lastBuildTimestampProperty().set( value );
-      Assert.assertEquals( value, systemUnderTest.lastBuildTimestampProperty().get() );
+      systemUnderTest.currentBuildTimestampProperty().set( value );
+      Assert.assertEquals( value, systemUnderTest.currentBuildTimestampProperty().get() );
+   }//End Method
+   
+   @Test public void shouldProvideCurrentBuildNumberProperty() {
+      Assert.assertEquals( JenkinsJob.DEFAULT_CURRENT_BUILD_NUMBER, systemUnderTest.currentBuildNumberProperty().get() );
+   }//End Method
+   
+   @Test public void shouldUpdateCurrentBuildNumberProperty() {
+      shouldProvideCurrentBuildNumberProperty();
+      
+      final int value = 1000;
+      systemUnderTest.currentBuildNumberProperty().set( value );
+      Assert.assertEquals( value, systemUnderTest.currentBuildNumberProperty().get() );
    }//End Method
    
    @Test public void shouldProvideTestResultsAreSynchronizedProperty() {

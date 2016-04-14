@@ -10,6 +10,7 @@ package data.json.jobs;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
@@ -82,28 +83,48 @@ public class JsonJobImporterImplTest {
       String response = TestCommon.readFileIntoString( getClass(), "building-state-missing-timestamp.json" );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, jenkinsJob.lastBuildTimestampProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, jenkinsJob.currentBuildTimestampProperty().get() );
    }//End Method
    
    @Test public void shouldParseInvalidTimestamp(){
       String response = TestCommon.readFileIntoString( getClass(), "building-state-invalid-timestamp.json" );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, jenkinsJob.lastBuildTimestampProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, jenkinsJob.currentBuildTimestampProperty().get() );
    }//End Method
    
-   @Test public void shouldParseBuildingState() {
+   @Test public void shouldParseMissingNumber(){
+      String response = TestCommon.readFileIntoString( getClass(), "building-state-missing-number.json" );
+      systemUnderTest.updateBuildState( jenkinsJob, response );
+      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
+      Assert.assertEquals( 123456, jenkinsJob.currentBuildTimestampProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_CURRENT_BUILD_NUMBER, jenkinsJob.currentBuildNumberProperty().get() );
+   }//End Method
+   
+   @Test public void shouldParseInvalidNumber(){
+      String response = TestCommon.readFileIntoString( getClass(), "building-state-invalid-number.json" );
+      systemUnderTest.updateBuildState( jenkinsJob, response );
+      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
+      Assert.assertEquals( 123456, jenkinsJob.currentBuildTimestampProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_CURRENT_BUILD_NUMBER, jenkinsJob.currentBuildNumberProperty().get() );
+   }//End Method
+   
+   @Test public void shouldParseBuildingStateWithoutUpdatingLastBuildNumber() {
       String response = TestCommon.readFileIntoString( getClass(), "building-state.json" );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
       Assert.assertEquals( 100000, jenkinsJob.expectedBuildTimeProperty().get() );
-      Assert.assertEquals( 123456, jenkinsJob.lastBuildTimestampProperty().get() );
+      Assert.assertEquals( 123456, jenkinsJob.currentBuildTimestampProperty().get() );
+      assertThat( jenkinsJob.currentBuildNumberProperty().get(), is( 45 ) );
+      assertThat( jenkinsJob.lastBuildNumberProperty(), is( not( jenkinsJob.currentBuildNumberProperty().get() ) ) );
    }//End Method
    
-   @Test public void shouldParseBuiltState() {
+   @Test public void shouldParseBuiltStateAndUpdateBuildNumbers() {
       String response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
       systemUnderTest.updateBuildState( jenkinsJob, response );
       Assert.assertEquals( BuildState.Built, jenkinsJob.buildStateProperty().get() );
+      assertThat( jenkinsJob.lastBuildNumberProperty().get(), is( 456 ) );
+      assertThat( jenkinsJob.currentBuildNumberProperty().get(), is( 456 ) );
    }//End Method
    
    @Test public void shouldResetProgressWhenParseBuiltState() {
