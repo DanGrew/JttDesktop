@@ -50,6 +50,7 @@ public class DualBuildWallContextMenuOpenerTest {
       ContextMenuEvent event = new ContextMenuEvent( null, -1, -1, x, y, false, null );
       systemUnderTest.handle( event );
       
+      verify( menu ).resetMenuOptions();
       verify( menu ).friendly_show( display, x, y );
    }//End Method
    
@@ -59,14 +60,17 @@ public class DualBuildWallContextMenuOpenerTest {
       ContextMenuEvent event = new ContextMenuEvent( null, -1, -1, 0, 0, false, null );
       systemUnderTest.handle( event );
       
+      verify( menu ).resetMenuOptions();
       verify( menu, times( 1 ) ).friendly_show( Mockito.any(), Mockito.anyDouble(), Mockito.anyDouble() );
       
       systemUnderTest.handle( event );
       
       systemUnderTest.handle( event );
+      verify( menu, times( 2 ) ).resetMenuOptions();
       verify( menu, times( 2 ) ).friendly_show( Mockito.any(), Mockito.anyDouble(), Mockito.anyDouble() );
       
       systemUnderTest.handle( event );
+      verify( menu, times( 2 ) ).resetMenuOptions();
       verify( menu, times( 2 ) ).friendly_show( Mockito.any(), Mockito.anyDouble(), Mockito.anyDouble() );
    }//End Method
    

@@ -31,6 +31,9 @@ public class DualBuildWallContextMenu extends ContextMenu {
    static final String CANCEL = "Cancel";
    
    private MenuItem digestControl;
+   private MenuItem rightWallControl;
+   private MenuItem leftWallControl;
+   private final DualBuildWallDisplayImpl display;
    private final WrappedSystemDigest wrappedDigest;
    
    /**
@@ -38,7 +41,8 @@ public class DualBuildWallContextMenu extends ContextMenu {
     * @param display the {@link DualBuildWallDisplayImpl} to control. 
     */
    DualBuildWallContextMenu( DualBuildWallDisplayImpl display ) {
-      wrappedDigest = new WrappedSystemDigest( display );
+      this.display = display;
+      this.wrappedDigest = new WrappedSystemDigest( display );
       
       applyControls( display );
       applyDigestControl();
@@ -52,10 +56,10 @@ public class DualBuildWallContextMenu extends ContextMenu {
     * @param display the {@link DualBuildWallDisplayImpl} the controls are for.
     */
    private void applyControls( DualBuildWallDisplayImpl display ) {
-      MenuItem rightWallControl = new MenuItem( HIDE_RIGHT );
+      rightWallControl = new MenuItem( HIDE_RIGHT );
       rightWallControl.setOnAction( event -> controlRightWall( display, rightWallControl ) );
       
-      MenuItem leftWallControl = new MenuItem( HIDE_LEFT );
+      leftWallControl = new MenuItem( HIDE_LEFT );
       leftWallControl.setOnAction( event -> controlLeftWall( display, leftWallControl ) );
       
       MenuItem configureRight = new MenuItem( CONFIGURE_RIGHT );
@@ -174,6 +178,24 @@ public class DualBuildWallContextMenu extends ContextMenu {
     */
    public void friendly_show( Node anchor, double screenX, double screenY ) {
       show( anchor, screenX, screenY );
+   }//End Method
+   
+   /**
+    * Method to reset the text in the {@link MenuItem}s. This will look at the display and check
+    * the state of the components. 
+    */
+   public void resetMenuOptions() {
+      if ( display.isRightWallShowing() ) {
+         rightWallControl.setText( HIDE_RIGHT );
+      } else {
+         rightWallControl.setText( SHOW_RIGHT );
+      }
+      
+      if ( display.isLeftWallShowing() ) {
+         leftWallControl.setText( HIDE_LEFT );
+      } else {
+         leftWallControl.setText( SHOW_LEFT );
+      }
    }//End Method
    
    MenuItem digestControl() {

@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -211,6 +212,32 @@ public class DualBuildWallContextMenuTest {
    
    @Test public void shouldNotShowDigestAsControllable(){
       assertThat( systemUnderTest.isSystemDigestControllable(), is( false ) );
+   }//End Method
+   
+   @Test public void shouldUpdateTextBasedOnRightWallState(){
+      MenuItem controRight = retrieveMenuItem( CONTROL_RIGHT );
+      assertThat( controRight.getText(), is( DualBuildWallContextMenu.HIDE_RIGHT ) );
+      
+      when( display.isRightWallShowing() ).thenReturn( false );
+      systemUnderTest.resetMenuOptions();
+      assertThat( controRight.getText(), is( DualBuildWallContextMenu.SHOW_RIGHT ) );
+      
+      when( display.isRightWallShowing() ).thenReturn( true );
+      systemUnderTest.resetMenuOptions();
+      assertThat( controRight.getText(), is( DualBuildWallContextMenu.HIDE_RIGHT ) );
+   }//End Method
+   
+   @Test public void shouldUpdateTextBasedOnLeftWallState(){
+      MenuItem controLeft = retrieveMenuItem( CONTROL_LEFT );
+      assertThat( controLeft.getText(), is( DualBuildWallContextMenu.HIDE_LEFT ) );
+      
+      when( display.isLeftWallShowing() ).thenReturn( false );
+      systemUnderTest.resetMenuOptions();
+      assertThat( controLeft.getText(), is( DualBuildWallContextMenu.SHOW_LEFT ) );
+      
+      when( display.isLeftWallShowing() ).thenReturn( true );
+      systemUnderTest.resetMenuOptions();
+      assertThat( controLeft.getText(), is( DualBuildWallContextMenu.HIDE_LEFT ) );
    }//End Method
 
 }//End Class

@@ -46,6 +46,7 @@ public class DualBuildWallContextMenuOpener implements EventHandler< ContextMenu
    @Override public void handle( ContextMenuEvent event ) {
       if ( contextMenu.friendly_isShowing() ) return;
       
+      contextMenu.resetMenuOptions();
       contextMenu.friendly_show( display, event.getScreenX(), event.getScreenY() );
    }//End Method
    
