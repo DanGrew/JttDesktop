@@ -19,6 +19,7 @@ import org.junit.Test;
 import graphics.JavaFxInitializer;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -79,6 +80,10 @@ public class SimpleJobPanelDescriptionImplTest extends JobPanelDescriptionBaseIm
       
       ObservableList< ColumnConstraints > constraints = systemUnderTest.propertiesPane().getColumnConstraints();
       Assert.assertEquals( HPos.RIGHT, constraints.get( 2 ).getHalignment() );
+   }//End Method
+   
+   @Test public void propertiesShouldBeCentred(){
+      assertThat( systemUnderTest.propertiesPane().getAlignment(), is( Pos.CENTER ) );
    }//End Method
    
 }//End Class
