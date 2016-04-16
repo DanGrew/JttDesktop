@@ -9,6 +9,7 @@
 package buildwall.effects.flasher;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -39,6 +40,10 @@ public class ImageFlasherConfigurationTest {
    
    @Test public void shouldProvideTransparency() {
       assertThat( systemUnderTest.transparencyProperty().get(), is( ImageFlasherConfiguration.DEFAULT_TRANSPARENCY ) );
+   }//End Method
+   
+   @Test public void shouldProvideImageProperty(){
+      assertThat( systemUnderTest.imageProperty().get(), is( nullValue() ) );  
    }//End Method
    
 }//End Class

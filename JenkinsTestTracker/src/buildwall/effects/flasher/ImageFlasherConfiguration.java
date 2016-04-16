@@ -10,8 +10,11 @@ package buildwall.effects.flasher;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.image.Image;
 
 /**
  * The {@link ImageFlasherConfiguration} is responsible for providing
@@ -24,6 +27,7 @@ public class ImageFlasherConfiguration {
    static final int DEFAULT_NUMBER_OF_FLASHES = 5;
    static final double DEFAULT_TRANSPARENCY = 0.8;
    
+   private final ObjectProperty< Image > imageProperty;
    private final IntegerProperty flashOnPeriodProperty;
    private final IntegerProperty flashOffPeriodProperty;
    private final IntegerProperty numberOfFlashesProperty;
@@ -33,6 +37,7 @@ public class ImageFlasherConfiguration {
     * Constructs a new {@link ImageFlasherConfiguration}.
     */
    public ImageFlasherConfiguration() {
+      imageProperty = new SimpleObjectProperty<>();
       flashOnPeriodProperty = new SimpleIntegerProperty( DEFAULT_FLASH_ON );
       flashOffPeriodProperty = new SimpleIntegerProperty( DEFAULT_FLASH_OFF );
       numberOfFlashesProperty = new SimpleIntegerProperty( DEFAULT_NUMBER_OF_FLASHES );
@@ -70,6 +75,14 @@ public class ImageFlasherConfiguration {
     */
    public DoubleProperty transparencyProperty() {
       return transparencyProperty;
+   }//End Method
+
+   /**
+    * Method to get the {@link Image} to be shown when flashing.
+    * @return the {@link ObjectProperty}. The value associated is allowed to be null.
+    */
+   public ObjectProperty< Image > imageProperty() {
+      return imageProperty;
    }//End Method
 
 }//End Class
