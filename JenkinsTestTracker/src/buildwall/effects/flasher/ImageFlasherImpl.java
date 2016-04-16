@@ -8,6 +8,7 @@
  */
 package buildwall.effects.flasher;
 
+import buildwall.effects.flasher.configuration.ImageFlasherConfiguration;
 import javafx.registrations.ChangeListenerRegistrationImpl;
 import javafx.registrations.RegisteredComponent;
 import javafx.registrations.RegistrationManager;

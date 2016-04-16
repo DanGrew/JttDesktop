@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package buildwall.effects.flasher;
+package buildwall.effects.flasher.configuration;
 
 import java.io.File;
 

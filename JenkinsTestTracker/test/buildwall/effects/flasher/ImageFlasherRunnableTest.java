@@ -23,6 +23,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import buildwall.effects.flasher.configuration.ImageFlasherConfiguration;
+import buildwall.effects.flasher.configuration.ImageFlasherConfigurationImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.TestPlatformDecouplerImpl;

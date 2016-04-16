@@ -8,6 +8,7 @@
  */
 package buildwall.effects.flasher;
 
+import buildwall.effects.flasher.configuration.ImageFlasherConfiguration;
 import graphics.DecoupledPlatformImpl;
 
 /**
