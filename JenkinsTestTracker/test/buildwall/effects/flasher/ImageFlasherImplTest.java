@@ -19,8 +19,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import buildwall.effects.flasher.configuration.ImageFlasherConfiguration;
-import buildwall.effects.flasher.configuration.ImageFlasherConfigurationImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
@@ -35,15 +33,15 @@ public class ImageFlasherImplTest {
    
    private static final Image ALERT_IMAGE = new Image( ImageFlasherImplTest.class.getResourceAsStream( "alert-image.png" ) );
    private static final Image ALTERNATE_ALERT_IMAGE = new Image( ImageFlasherImplTest.class.getResourceAsStream( "alert-image.png" ) );
-   private ImageFlasherConfiguration configuration;
+   private ImageFlasherProperties properties;
    private ImageFlasherRunnable runnable;
    private ImageFlasherImpl systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      configuration = new ImageFlasherConfigurationImpl();
-      configuration.imageProperty().set( ALERT_IMAGE );
+      properties = new ImageFlasherPropertiesImpl();
+      properties.imageProperty().set( ALERT_IMAGE );
       
-      systemUnderTest = new ImageFlasherImpl( configuration );
+      systemUnderTest = new ImageFlasherImpl( properties );
    }//End Method
    
    @Ignore
@@ -52,12 +50,12 @@ public class ImageFlasherImplTest {
       
       JavaFxInitializer.launchInWindow( () -> {
          
-         ImageFlasherImpl imageFlasher = new ImageFlasherImpl( configuration );
+         ImageFlasherImpl imageFlasher = new ImageFlasherImpl( properties );
          runnable = imageFlasher.flasher();
          return imageFlasher;
       } );
       
-      runnable.run();
+//      runnable.run();
       
       Thread.sleep( 2000000 );
    }//End Method
@@ -87,45 +85,45 @@ public class ImageFlasherImplTest {
    
    @Test public void shouldUseConfiguredTransparency(){
       ImageView imageView = systemUnderTest.imageView();
-      assertThat( imageView.getOpacity(), closeTo( configuration.transparencyProperty().get(), TestCommon.precision() ) );
+      assertThat( imageView.getOpacity(), closeTo( properties.transparencyProperty().get(), TestCommon.precision() ) );
       
-      configuration.transparencyProperty().set( 0.1 );
-      assertThat( imageView.getOpacity(), closeTo( configuration.transparencyProperty().get(), TestCommon.precision() ) );
+      properties.transparencyProperty().set( 0.1 );
+      assertThat( imageView.getOpacity(), closeTo( properties.transparencyProperty().get(), TestCommon.precision() ) );
    }//End Method
    
    @Test public void shouldDetachTransparencyFromSystem() {
       ImageView imageView = systemUnderTest.imageView();
-      assertThat( imageView.getOpacity(), closeTo( configuration.transparencyProperty().get(), TestCommon.precision() ) );
+      assertThat( imageView.getOpacity(), closeTo( properties.transparencyProperty().get(), TestCommon.precision() ) );
       
       systemUnderTest.detachFromSystem();
       
-      final double original = configuration.transparencyProperty().get();
-      configuration.transparencyProperty().set( 0.1 );
+      final double original = properties.transparencyProperty().get();
+      properties.transparencyProperty().set( 0.1 );
       assertThat( imageView.getOpacity(), closeTo( original, TestCommon.precision() ) );
    }//End Method
    
    @Test public void shouldUseConfiguredImage(){
       ImageView imageView = systemUnderTest.imageView();
-      assertThat( imageView.getImage(), is( configuration.imageProperty().get() ) );
+      assertThat( imageView.getImage(), is( properties.imageProperty().get() ) );
       
-      configuration.imageProperty().set( null );
+      properties.imageProperty().set( null );
       assertThat( imageView.getImage(), is( nullValue() ) );
       
-      configuration.imageProperty().set( ALTERNATE_ALERT_IMAGE );
+      properties.imageProperty().set( ALTERNATE_ALERT_IMAGE );
       assertThat( imageView.getImage(), is( ALTERNATE_ALERT_IMAGE ) );
    }//End Method
    
    @Test public void shouldDetachImageFromSystem() {
       ImageView imageView = systemUnderTest.imageView();
-      assertThat( imageView.getImage(), is( configuration.imageProperty().get() ) );
+      assertThat( imageView.getImage(), is( properties.imageProperty().get() ) );
       
       systemUnderTest.detachFromSystem();
       
-      final Image original = configuration.imageProperty().get();
-      configuration.imageProperty().set( null );
+      final Image original = properties.imageProperty().get();
+      properties.imageProperty().set( null );
       assertThat( imageView.getImage(), is( original ) );
       
-      configuration.imageProperty().set( ALTERNATE_ALERT_IMAGE );
+      properties.imageProperty().set( ALTERNATE_ALERT_IMAGE );
       assertThat( imageView.getImage(), is( original ) );
    }//End Method
    

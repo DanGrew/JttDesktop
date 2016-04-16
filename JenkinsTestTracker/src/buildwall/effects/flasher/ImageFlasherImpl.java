@@ -8,7 +8,6 @@
  */
 package buildwall.effects.flasher;
 
-import buildwall.effects.flasher.configuration.ImageFlasherConfiguration;
 import javafx.registrations.ChangeListenerRegistrationImpl;
 import javafx.registrations.RegisteredComponent;
 import javafx.registrations.RegistrationManager;
@@ -23,18 +22,18 @@ public class ImageFlasherImpl extends BorderPane implements ImageFlasher, Regist
 
    private final ImageFlasherRunnable flasher;
    private final ImageView flashingImage;
-   private final ImageFlasherConfiguration configuration;
+   private final ImageFlasherProperties properties;
    private RegistrationManager registrations;
    
    /**
     * Constructs a new {@link ImageFlasherImpl}.
-    * @param configuration the {@link ImageFlasherConfiguration} to configure the flashing.
+    * @param configuration the {@link ImageFlasherProperties} to configure the flashing.
     */
-   public ImageFlasherImpl( ImageFlasherConfiguration configuration ) {
+   public ImageFlasherImpl( ImageFlasherProperties configuration ) {
       flashingImage = new ImageView();
       flasher = new ImageFlasherRunnable( this, configuration );
       
-      this.configuration = configuration;
+      this.properties = configuration;
       updateOpacity();
       updateImage();
       
@@ -48,13 +47,13 @@ public class ImageFlasherImpl extends BorderPane implements ImageFlasher, Regist
       registrations = new RegistrationManager();
       registrations.apply( 
             new ChangeListenerRegistrationImpl< Double >( 
-                     configuration.transparencyProperty().asObject(), 
+                     properties.transparencyProperty().asObject(), 
                      ( source, old, updated ) -> updateOpacity() 
             )
       );
       registrations.apply( 
                new ChangeListenerRegistrationImpl< Image >( 
-                        configuration.imageProperty(), 
+                        properties.imageProperty(), 
                         ( source, old, updated ) -> updateImage() 
                )
          );
@@ -64,14 +63,14 @@ public class ImageFlasherImpl extends BorderPane implements ImageFlasher, Regist
     * Method to update the opacity of the image.
     */
    private void updateOpacity(){
-      flashingImage.setOpacity( configuration.transparencyProperty().get() );
+      flashingImage.setOpacity( properties.transparencyProperty().get() );
    }//End Method
    
    /**
     * Method to update the image used.
     */
    private void updateImage(){
-      flashingImage.setImage( configuration.imageProperty().get() );
+      flashingImage.setImage( properties.imageProperty().get() );
    }//End Method
    
    /**
