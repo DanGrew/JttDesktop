@@ -58,7 +58,7 @@ public class ImageFlasherConfigurationPanelTest {
       extensionFilters = FXCollections.observableArrayList();
       when( fileChooser.getExtensionFilters() ).thenReturn( extensionFilters );
       
-      configuration = new ImageFlasherConfiguration();
+      configuration = new ImageFlasherConfigurationImpl();
       systemUnderTest = new ImageFlasherConfigurationPanel( configuration, fileChooser );
    }//End Method
 

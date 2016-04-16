@@ -38,7 +38,7 @@ public class ImageFlasherImplTest {
    private ImageFlasherImpl systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      configuration = new ImageFlasherConfiguration();
+      configuration = new ImageFlasherConfigurationImpl();
       configuration.imageProperty().set( ALERT_IMAGE );
       
       systemUnderTest = new ImageFlasherImpl( configuration );

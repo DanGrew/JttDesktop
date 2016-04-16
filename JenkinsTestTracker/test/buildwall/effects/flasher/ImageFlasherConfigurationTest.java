@@ -23,23 +23,23 @@ public class ImageFlasherConfigurationTest {
    private ImageFlasherConfiguration systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      systemUnderTest = new ImageFlasherConfiguration();
+      systemUnderTest = new ImageFlasherConfigurationImpl();
    }//End Method
    
    @Test public void shouldProvideFlashOnPeriod() {
-      assertThat( systemUnderTest.flashOnProperty().get(), is( ImageFlasherConfiguration.DEFAULT_FLASH_ON ) );
+      assertThat( systemUnderTest.flashOnProperty().get(), is( ImageFlasherConfigurationImpl.DEFAULT_FLASH_ON ) );
    }//End Method
    
    @Test public void shouldProvideFlashOffPeriod() {
-      assertThat( systemUnderTest.flashOffProperty().get(), is( ImageFlasherConfiguration.DEFAULT_FLASH_OFF ) );
+      assertThat( systemUnderTest.flashOffProperty().get(), is( ImageFlasherConfigurationImpl.DEFAULT_FLASH_OFF ) );
    }//End Method
    
    @Test public void shouldProvideNumberOfFlashes() {
-      assertThat( systemUnderTest.numberOfFlashesProperty().get(), is( ImageFlasherConfiguration.DEFAULT_NUMBER_OF_FLASHES ) );
+      assertThat( systemUnderTest.numberOfFlashesProperty().get(), is( ImageFlasherConfigurationImpl.DEFAULT_NUMBER_OF_FLASHES ) );
    }//End Method
    
    @Test public void shouldProvideTransparency() {
-      assertThat( systemUnderTest.transparencyProperty().get(), is( ImageFlasherConfiguration.DEFAULT_TRANSPARENCY ) );
+      assertThat( systemUnderTest.transparencyProperty().get(), is( ImageFlasherConfigurationImpl.DEFAULT_TRANSPARENCY ) );
    }//End Method
    
    @Test public void shouldProvideImageProperty(){

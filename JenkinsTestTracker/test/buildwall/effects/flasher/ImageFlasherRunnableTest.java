@@ -46,7 +46,7 @@ public class ImageFlasherRunnableTest {
    
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
-      configuration = new ImageFlasherConfiguration();
+      configuration = new ImageFlasherConfigurationImpl();
       systemUnderTest = new ImageFlasherRunnable( imageFlasher, configuration );
    }//End Method
    
