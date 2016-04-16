@@ -58,8 +58,8 @@ public class ImageFlasherRunnableTest {
       assertThat( configuration.numberOfFlashesProperty().get(), not( customNumber ) );
       configuration.numberOfFlashesProperty().set( customNumber );
       
-      configuration.flashOnPeriodProperty().set( 1 );
-      configuration.flashOffPeriodProperty().set( 1 );
+      configuration.flashOnProperty().set( 1 );
+      configuration.flashOffProperty().set( 1 );
       
       systemUnderTest.run();
       
@@ -75,8 +75,8 @@ public class ImageFlasherRunnableTest {
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl( this::assertTimeBetweenInstructions ) );
       
       configuration.numberOfFlashesProperty().set( customNumber );
-      configuration.flashOnPeriodProperty().set( 50 );
-      configuration.flashOffPeriodProperty().set( 20 );
+      configuration.flashOnProperty().set( 50 );
+      configuration.flashOffProperty().set( 20 );
       
       systemUnderTest.run();
       
@@ -94,10 +94,10 @@ public class ImageFlasherRunnableTest {
       long currentSystemTime = System.currentTimeMillis();
       long timeTaken = currentSystemTime - lastRecordedSystemTime;
       if ( countedInstructions % 2 == 0 ) {
-         assertThat( timeTaken, greaterThanOrEqualTo( ( long )configuration.flashOnPeriodProperty().get() ) );
+         assertThat( timeTaken, greaterThanOrEqualTo( ( long )configuration.flashOnProperty().get() ) );
          System.out.println( "proving on " + currentSystemTime );
       } else {
-         assertThat( timeTaken, greaterThanOrEqualTo( ( long )configuration.flashOffPeriodProperty().get() ) );
+         assertThat( timeTaken, greaterThanOrEqualTo( ( long )configuration.flashOffProperty().get() ) );
          System.out.println( "proving of " + currentSystemTime );
       }
       

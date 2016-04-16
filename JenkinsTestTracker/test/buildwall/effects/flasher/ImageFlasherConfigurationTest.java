@@ -27,11 +27,11 @@ public class ImageFlasherConfigurationTest {
    }//End Method
    
    @Test public void shouldProvideFlashOnPeriod() {
-      assertThat( systemUnderTest.flashOnPeriodProperty().get(), is( ImageFlasherConfiguration.DEFAULT_FLASH_ON ) );
+      assertThat( systemUnderTest.flashOnProperty().get(), is( ImageFlasherConfiguration.DEFAULT_FLASH_ON ) );
    }//End Method
    
    @Test public void shouldProvideFlashOffPeriod() {
-      assertThat( systemUnderTest.flashOffPeriodProperty().get(), is( ImageFlasherConfiguration.DEFAULT_FLASH_OFF ) );
+      assertThat( systemUnderTest.flashOffProperty().get(), is( ImageFlasherConfiguration.DEFAULT_FLASH_OFF ) );
    }//End Method
    
    @Test public void shouldProvideNumberOfFlashes() {

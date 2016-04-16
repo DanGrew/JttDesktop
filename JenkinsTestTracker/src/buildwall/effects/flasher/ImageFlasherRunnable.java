@@ -41,8 +41,8 @@ public class ImageFlasherRunnable implements Runnable {
     */
    private void tryToFlash(){
       final int numberOfFlashes = configuration.numberOfFlashesProperty().get();
-      final int flashOn = configuration.flashOnPeriodProperty().get();
-      final int flashOff = configuration.flashOffPeriodProperty().get();
+      final int flashOn = configuration.flashOnProperty().get();
+      final int flashOff = configuration.flashOffProperty().get();
       
       for( int i = 0; i < numberOfFlashes; i++ ) {
          

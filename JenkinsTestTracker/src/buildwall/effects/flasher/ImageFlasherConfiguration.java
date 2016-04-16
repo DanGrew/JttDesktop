@@ -48,7 +48,7 @@ public class ImageFlasherConfiguration {
     * Method to get the number of milliseconds to flash on for.
     * @return the {@link IntegerProperty}.
     */
-   public IntegerProperty flashOnPeriodProperty() {
+   public IntegerProperty flashOnProperty() {
       return flashOnPeriodProperty;
    }//End Method
 
@@ -56,7 +56,7 @@ public class ImageFlasherConfiguration {
     * Method to get the number of milliseconds to wait before flashing on again.
     * @return the {@link IntegerProperty}.
     */
-   public IntegerProperty flashOffPeriodProperty() {
+   public IntegerProperty flashOffProperty() {
       return flashOffPeriodProperty;
    }//End Method
 
