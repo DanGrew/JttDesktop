@@ -139,7 +139,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       dimensionsContent.add( columnsLabel, 0, 0 );
       
       columnsSpinner = new IntegerPropertySpinner();  
-      configureIntegerSpinner( columnsSpinner, configuration.numberOfColumns(), 1, 1000 );
+      styling.configureIntegerSpinner( columnsSpinner, configuration.numberOfColumns(), 1, 1000, 1 );
       dimensionsContent.add( columnsSpinner, 1, 0 );
       
       final ToggleGroup descriptionToggles = new ToggleGroup();
@@ -302,20 +302,6 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       controls.setPercentWidth( CONTROLS_PERCENTAGE_WIDTH );
       controls.setHgrow( Priority.ALWAYS );
       grid.getColumnConstraints().addAll( labels, controls );  
-   }//End Method
-   
-   /**
-    * Method to configure an {@link IntegerPropertySpinner} for the given property and range.
-    * @param spinner the {@link IntegerPropertySpinner} to configure.
-    * @param property the {@link IntegerProperty} to bind to.
-    * @param min the min range.
-    * @param max the max range.
-    */
-   private void configureIntegerSpinner( IntegerPropertySpinner spinner, IntegerProperty property, int min, int max ){
-      spinner.setValueFactory( new DefensiveIntegerSpinnerValueFactory( min, max ) );
-      spinner.bindProperty( property );
-      spinner.setMaxWidth( Double.MAX_VALUE );
-      spinner.setEditable( true );
    }//End Method
    
    /**
