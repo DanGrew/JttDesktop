@@ -8,44 +8,53 @@
  */
 package buildwall.effects.flasher;
 
-import buildwall.effects.flasher.configuration.ImageFlasherConfiguration;
 import graphics.DecoupledPlatformImpl;
+import javafx.beans.value.ObservableValue;
 
 /**
  * {@link ImageFlasherRunnable} is responsible for defining the flashing operation that
  * can be run to flash an {@link ImageFlasher} given the {@link ImageFlasherConfiguration}.
  */
-public class ImageFlasherRunnable implements Runnable {
+public class ImageFlasherRunnable {
    
    private final ImageFlasher flasher;
-   private final ImageFlasherConfiguration configuration;
+   private final ImageFlasherProperties properties;
+   private Thread previousThread;
 
    /**
     * Constructs a new {@link ImageFlasherRunnable}.
     * @param flasher the {@link ImageFlasher} to flash.
-    * @param configuration the {@link ImageFlasherConfiguration} for defining how the flash behaves.
+    * @param properties the {@link ImageFlasherProperties} for defining how the flash behaves.
     */
-   public ImageFlasherRunnable( ImageFlasher flasher, ImageFlasherConfiguration configuration ) {
+   public ImageFlasherRunnable( ImageFlasher flasher, ImageFlasherProperties properties ) {
       this.flasher = flasher;
-      this.configuration = configuration;
+      this.properties = properties;
+      
+      this.properties.flashingSwitch().addListener( this::run );
    }//End Constructor
    
    /**
     * {@inheritDoc}
     */
-   @Override public void run() {
-      new Thread( this::tryToFlash ).start();
+   public void run( ObservableValue< ? extends Boolean > source, Boolean old, Boolean updated ) {
+      if ( previousThread != null && !previousThread.isAlive() ) {
+         previousThread = new Thread( this::tryToFlash );
+         previousThread.start();
+      }
    }//End Method
    
    /**
     * Method to try to perform the flash, catching any issues with threading.
     */
    private void tryToFlash(){
-      final int numberOfFlashes = configuration.numberOfFlashesProperty().get();
-      final int flashOn = configuration.flashOnProperty().get();
-      final int flashOff = configuration.flashOffProperty().get();
+      final int numberOfFlashes = properties.numberOfFlashesProperty().get();
+      final int flashOn = properties.flashOnProperty().get();
+      final int flashOff = properties.flashOffProperty().get();
       
       for( int i = 0; i < numberOfFlashes; i++ ) {
+         if ( !properties.flashingSwitch().get() ) {
+            return;
+         }
          
          DecoupledPlatformImpl.runLater( flasher::flashOn );
          
@@ -63,6 +72,8 @@ public class ImageFlasherRunnable implements Runnable {
             e.printStackTrace();
          }
       }
+      
+      properties.flashingSwitch().set( false );
    }//End Method
 
 }//End Class
