@@ -98,8 +98,13 @@ public class JenkinsLoginTest {
          return content = ( Node )invocation.getArguments()[ 0 ];
       } ).when( alert ).friendly_dialogSetContent( Mockito.any() );
       
-      systemUnderTest = new JenkinsLogin( handler, digest );
-      systemUnderTest.configureAlert( alert );
+      PlatformImpl.runAndWait( () -> {
+         /* Run the launch on PlatformImpl because its possible that two threads interact with StyleManager
+          * in JavaFx at the same time and it is not thread safe in 8u40 but should be in at least 8u77. This
+          * could be caused by JavaFx thread running in parallel to this initialisation from the test thread.*/
+         systemUnderTest = new JenkinsLogin( handler, digest );
+         systemUnderTest.configureAlert( alert );
+      } );
    }//End Method
    
    @Ignore
