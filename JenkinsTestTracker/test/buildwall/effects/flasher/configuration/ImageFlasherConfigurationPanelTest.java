@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import buildwall.effects.flasher.ImageFlasherImplTest;
 import friendly.controlsfx.FriendlyFileChooser;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
@@ -43,7 +44,7 @@ import utility.TestCommon;
  */
 public class ImageFlasherConfigurationPanelTest {
    
-   private static final File ALERT_IMAGE_FILE = new File( ImageFlasherConfigurationPanelTest.class.getResource( "alert-image.png" ).getFile() );
+   private final File ALERT_IMAGE_FILE = new File( ImageFlasherImplTest.class.getResource( "alert-image.png" ).getFile() );
    @Mock private FriendlyFileChooser fileChooser; 
    private ObservableList< ExtensionFilter > extensionFilters;
    private ImageFlasherConfiguration configuration;
