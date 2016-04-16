@@ -27,16 +27,15 @@ public class ImageFlasherImpl extends BorderPane implements ImageFlasher, Regist
    
    /**
     * Constructs a new {@link ImageFlasherImpl}.
-    * @param image the {@link Image} to flash on and off.
     * @param configuration the {@link ImageFlasherConfiguration} to configure the flashing.
     */
-   public ImageFlasherImpl( Image image, ImageFlasherConfiguration configuration ) {
+   public ImageFlasherImpl( ImageFlasherConfiguration configuration ) {
       flashingImage = new ImageView();
-      flashingImage.setImage( image );
       flasher = new ImageFlasherRunnable( this, configuration );
       
       this.configuration = configuration;
       updateOpacity();
+      updateImage();
       
       applyRegistrations();
    }//End Constructor
@@ -45,13 +44,19 @@ public class ImageFlasherImpl extends BorderPane implements ImageFlasher, Regist
     * Method to apply the registrations for the information this {@link ImageFlasher} depends on.
     */
    private void applyRegistrations(){
-      this.registrations = new RegistrationManager();
-      this.registrations.apply( 
+      registrations = new RegistrationManager();
+      registrations.apply( 
             new ChangeListenerRegistrationImpl< Double >( 
                      configuration.transparencyProperty().asObject(), 
                      ( source, old, updated ) -> updateOpacity() 
             )
       );
+      registrations.apply( 
+               new ChangeListenerRegistrationImpl< Image >( 
+                        configuration.imageProperty(), 
+                        ( source, old, updated ) -> updateImage() 
+               )
+         );
    }//End Method
    
    /**
@@ -59,6 +64,13 @@ public class ImageFlasherImpl extends BorderPane implements ImageFlasher, Regist
     */
    private void updateOpacity(){
       flashingImage.setOpacity( configuration.transparencyProperty().get() );
+   }//End Method
+   
+   /**
+    * Method to update the image used.
+    */
+   private void updateImage(){
+      flashingImage.setImage( configuration.imageProperty().get() );
    }//End Method
    
    /**
@@ -91,6 +103,10 @@ public class ImageFlasherImpl extends BorderPane implements ImageFlasher, Regist
    
    ImageFlasherRunnable flasher(){
       return flasher;
+   }//End Method
+
+   ImageView imageView() {
+      return flashingImage;
    }//End Method
 
 }//End Class

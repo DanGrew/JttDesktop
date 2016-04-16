@@ -32,13 +32,16 @@ import utility.TestCommon;
 public class ImageFlasherImplTest {
    
    private static final Image ALERT_IMAGE = new Image( ImageFlasherImplTest.class.getResourceAsStream( "alert-image.png" ) );
+   private static final Image ALTERNATE_ALERT_IMAGE = new Image( ImageFlasherImplTest.class.getResourceAsStream( "alert-image.png" ) );
    private ImageFlasherConfiguration configuration;
    private ImageFlasherRunnable runnable;
    private ImageFlasherImpl systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       configuration = new ImageFlasherConfiguration();
-      systemUnderTest = new ImageFlasherImpl( ALERT_IMAGE, configuration );
+      configuration.imageProperty().set( ALERT_IMAGE );
+      
+      systemUnderTest = new ImageFlasherImpl( configuration );
    }//End Method
    
    @Ignore
@@ -47,7 +50,7 @@ public class ImageFlasherImplTest {
       
       JavaFxInitializer.launchInWindow( () -> {
          
-         ImageFlasherImpl imageFlasher = new ImageFlasherImpl( ALERT_IMAGE, configuration );
+         ImageFlasherImpl imageFlasher = new ImageFlasherImpl( configuration );
          runnable = imageFlasher.flasher();
          return imageFlasher;
       } );
@@ -64,6 +67,7 @@ public class ImageFlasherImplTest {
       
       ImageView imageView = ( ImageView )systemUnderTest.getCenter();
       assertThat( imageView.getImage(), is( ALERT_IMAGE ) );
+      assertThat( imageView, is( systemUnderTest.imageView() ) );
    }//End Method
    
    @Test public void shouldFlashOnAndOff(){
@@ -80,9 +84,7 @@ public class ImageFlasherImplTest {
    }//End Method
    
    @Test public void shouldUseConfiguredTransparency(){
-      systemUnderTest.flashOn();
-      
-      ImageView imageView = ( ImageView )systemUnderTest.getCenter();
+      ImageView imageView = systemUnderTest.imageView();
       assertThat( imageView.getOpacity(), closeTo( configuration.transparencyProperty().get(), TestCommon.precision() ) );
       
       configuration.transparencyProperty().set( 0.1 );
@@ -90,9 +92,7 @@ public class ImageFlasherImplTest {
    }//End Method
    
    @Test public void shouldDetachTransparencyFromSystem() {
-      systemUnderTest.flashOn();
-      
-      ImageView imageView = ( ImageView )systemUnderTest.getCenter();
+      ImageView imageView = systemUnderTest.imageView();
       assertThat( imageView.getOpacity(), closeTo( configuration.transparencyProperty().get(), TestCommon.precision() ) );
       
       systemUnderTest.detachFromSystem();
@@ -100,6 +100,31 @@ public class ImageFlasherImplTest {
       final double original = configuration.transparencyProperty().get();
       configuration.transparencyProperty().set( 0.1 );
       assertThat( imageView.getOpacity(), closeTo( original, TestCommon.precision() ) );
+   }//End Method
+   
+   @Test public void shouldUseConfiguredImage(){
+      ImageView imageView = systemUnderTest.imageView();
+      assertThat( imageView.getImage(), is( configuration.imageProperty().get() ) );
+      
+      configuration.imageProperty().set( null );
+      assertThat( imageView.getImage(), is( nullValue() ) );
+      
+      configuration.imageProperty().set( ALTERNATE_ALERT_IMAGE );
+      assertThat( imageView.getImage(), is( ALTERNATE_ALERT_IMAGE ) );
+   }//End Method
+   
+   @Test public void shouldDetachImageFromSystem() {
+      ImageView imageView = systemUnderTest.imageView();
+      assertThat( imageView.getImage(), is( configuration.imageProperty().get() ) );
+      
+      systemUnderTest.detachFromSystem();
+      
+      final Image original = configuration.imageProperty().get();
+      configuration.imageProperty().set( null );
+      assertThat( imageView.getImage(), is( original ) );
+      
+      configuration.imageProperty().set( ALTERNATE_ALERT_IMAGE );
+      assertThat( imageView.getImage(), is( original ) );
    }//End Method
    
 }//End Class
