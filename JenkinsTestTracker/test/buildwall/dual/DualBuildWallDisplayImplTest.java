@@ -374,4 +374,10 @@ public class DualBuildWallDisplayImplTest {
       assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
       assertThat( systemUnderTest.buildWallPane().getRight(), is( notNullValue() ) );
    }//End Method
+   
+   @Test public void shouldStartFlasherWhenFailureHappens(){
+      assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( false ) );
+      database.jenkinsJobs().get( 0 ).lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( true ) );
+   }//End Method
 }//End Class

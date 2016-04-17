@@ -16,6 +16,7 @@ import buildwall.effects.flasher.ImageFlasherImpl;
 import buildwall.effects.flasher.ImageFlasherProperties;
 import buildwall.effects.flasher.ImageFlasherPropertiesImpl;
 import buildwall.effects.flasher.configuration.ImageFlasherConfigurationPanel;
+import buildwall.effects.triggers.JobFailureTrigger;
 import buildwall.layout.GridWallImpl;
 import buildwall.panel.type.JobPanelDescriptionProviders;
 import javafx.scene.layout.BorderPane;
@@ -58,6 +59,8 @@ public class DualBuildWallDisplayImpl extends StackPane {
       ImageFlasherProperties imageFlasherProperties = new ImageFlasherPropertiesImpl();
       imageFlasher = new ImageFlasherImpl( imageFlasherProperties );
       getChildren().add( imageFlasher );
+      
+      new JobFailureTrigger( database, imageFlasherProperties );
       
       buildWallConfigurer = new DualBuildWallConfigurer( buildWallPane, leftConfiguration, rightConfiguration, imageFlasherProperties );
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
