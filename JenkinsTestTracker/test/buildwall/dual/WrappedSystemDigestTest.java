@@ -45,7 +45,7 @@ public class WrappedSystemDigestTest {
       parent = new BorderPane( display );
       parent.setTop( systemDigest );
       
-      systemUnderTest = new WrappedSystemDigest( display );
+      systemUnderTest = new WrappedSystemDigest( parent );
       assertThat( systemUnderTest.isSystemDigestAvailable(), is( true ) );
    }//End Method
    
@@ -54,19 +54,19 @@ public class WrappedSystemDigestTest {
       systemDigestPane = new TitledPane( "anything", systemDigest );
       parent.setTop( systemDigestPane );
       
-      systemUnderTest = new WrappedSystemDigest( display );
+      systemUnderTest = new WrappedSystemDigest( parent );
       assertThat( systemUnderTest.isSystemDigestAvailable(), is( true ) );
    }//End Method
    
    @Test public void shouldNotIdentifySystemDigestWithNoParent() {
-      systemUnderTest = new WrappedSystemDigest( display );
+      systemUnderTest = new WrappedSystemDigest( parent );
       assertThat( systemUnderTest.isSystemDigestAvailable(), is( false ) );
    }//End Method
    
    @Test public void shouldNotIdentifySystemDigestWithNoTitledPaneAndNoDigest() {
       parent = new BorderPane( display );
       
-      systemUnderTest = new WrappedSystemDigest( display );
+      systemUnderTest = new WrappedSystemDigest( parent );
       assertThat( systemUnderTest.isSystemDigestAvailable(), is( false ) );
    }//End Method
    
@@ -74,7 +74,7 @@ public class WrappedSystemDigestTest {
       parent = new BorderPane( display );
       parent.setTop( systemDigestPane );
       
-      systemUnderTest = new WrappedSystemDigest( display );
+      systemUnderTest = new WrappedSystemDigest( parent );
       assertThat( systemUnderTest.isSystemDigestAvailable(), is( false ) );
    }//End Method
    
@@ -84,7 +84,7 @@ public class WrappedSystemDigestTest {
       parent.setTop( systemDigestPane );
       assertThat( parent.getTop(), is( systemDigestPane ) );
       
-      systemUnderTest = new WrappedSystemDigest( display );
+      systemUnderTest = new WrappedSystemDigest( parent );
       
       systemUnderTest.removeDigest();
       assertThat( parent.getTop(), nullValue() );
@@ -105,7 +105,7 @@ public class WrappedSystemDigestTest {
       parent.setTop( systemDigestPane );
       assertThat( parent.getTop(), is( systemDigestPane ) );
       
-      systemUnderTest = new WrappedSystemDigest( display );
+      systemUnderTest = new WrappedSystemDigest( parent );
       
       systemUnderTest.insertDigest();
       systemUnderTest.insertDigest();
@@ -119,7 +119,7 @@ public class WrappedSystemDigestTest {
       parent.setTop( systemDigestPane );
       assertThat( parent.getTop(), is( systemDigestPane ) );
       
-      systemUnderTest = new WrappedSystemDigest( display );
+      systemUnderTest = new WrappedSystemDigest( parent );
       
       systemUnderTest.removeDigest();
       systemUnderTest.removeDigest();

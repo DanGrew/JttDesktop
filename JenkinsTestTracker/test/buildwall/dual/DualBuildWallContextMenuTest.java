@@ -14,7 +14,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +21,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.sun.javafx.application.PlatformImpl;
@@ -50,11 +50,13 @@ public class DualBuildWallContextMenuTest {
    private static final int FIRST_SEPARATOR = 2;
    private static final int CONFIGURE_LEFT = 3;
    private static final int CONFIGURE_RIGHT = 4;
-   private static final int HIDE_CONFIG = 5;
-   private static final int SECOND_SEPARATOR = 6;
-   private static final int CANCEL = 7;
+   private static final int CONFIGURE_IMAGE_FLASHER = 5;
+   private static final int HIDE_CONFIG = 6;
+   private static final int SECOND_SEPARATOR = 7;
+   private static final int CANCEL = 8;
    
-   private DualBuildWallDisplayImpl display;
+   @Mock private DualBuildWallDisplayImpl display;
+   @Mock private BorderPane buildWallPane;
    private DualBuildWallContextMenu systemUnderTest;
    private DualBuildWallContextMenuOpener opener;
    
@@ -65,7 +67,7 @@ public class DualBuildWallContextMenuTest {
    
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
-      display = mock( DualBuildWallDisplayImpl.class );
+      when( display.buildWallPane() ).thenReturn( buildWallPane );
       systemUnderTest = new DualBuildWallContextMenu( display );
    }//End Method
 
@@ -95,10 +97,11 @@ public class DualBuildWallContextMenuTest {
       assertThat( retrieveMenuItem( FIRST_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
       assertThat( retrieveMenuItem( CONFIGURE_LEFT ).getText(), is( DualBuildWallContextMenu.CONFIGURE_LEFT ) );
       assertThat( retrieveMenuItem( CONFIGURE_RIGHT ).getText(), is( DualBuildWallContextMenu.CONFIGURE_RIGHT ) );
+      assertThat( retrieveMenuItem( CONFIGURE_IMAGE_FLASHER ).getText(), is( DualBuildWallContextMenu.CONFIGURE_IMAGE_FLASHER ) );
       assertThat( retrieveMenuItem( HIDE_CONFIG ).getText(), is( DualBuildWallContextMenu.HIDE_CONFIGURATION ) );
       assertThat( retrieveMenuItem( SECOND_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
       assertThat( retrieveMenuItem( CANCEL ).getText(), is( DualBuildWallContextMenu.CANCEL ) );
-      assertThat( systemUnderTest.getItems(), hasSize( 8 ) );
+      assertThat( systemUnderTest.getItems(), hasSize( 9 ) );
    }//End Method
    
    /**
@@ -145,6 +148,14 @@ public class DualBuildWallContextMenuTest {
       rightConfig.getOnAction().handle( new ActionEvent() );
       verify( display ).showRightConfiguration();
       assertThat( rightConfig.getText(), is( DualBuildWallContextMenu.CONFIGURE_RIGHT ) );
+   }//End Method
+   
+   @Test public void shouldShowImageFlasherConfiguration() {
+      MenuItem config = retrieveMenuItem( CONFIGURE_IMAGE_FLASHER );
+      
+      config.getOnAction().handle( new ActionEvent() );
+      verify( display ).showImageFlasherConfiguration();
+      assertThat( config.getText(), is( DualBuildWallContextMenu.CONFIGURE_IMAGE_FLASHER ) );
    }//End Method
    
    @Test public void shouldHideConfiguration() {

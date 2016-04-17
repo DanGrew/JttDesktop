@@ -12,19 +12,26 @@ import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import buildwall.configuration.updating.JobPolicyUpdater;
+import buildwall.effects.flasher.ImageFlasherImpl;
+import buildwall.effects.flasher.ImageFlasherProperties;
+import buildwall.effects.flasher.ImageFlasherPropertiesImpl;
+import buildwall.effects.flasher.configuration.ImageFlasherConfigurationPanel;
 import buildwall.layout.GridWallImpl;
 import buildwall.panel.type.JobPanelDescriptionProviders;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import storage.database.JenkinsDatabase;
 
 /**
  * The {@link DualBuildWallDisplayImpl} provides a display for two {@link GridWallImpl}s
  * that can have different {@link BuildWallConfiguration}s.
  */
-public class DualBuildWallDisplayImpl extends BorderPane {
+public class DualBuildWallDisplayImpl extends StackPane {
 
-   private DualBuildWallSplitter buildWallSplitter;
-   private DualBuildWallConfigurer buildWallConfigurer;
+   private final BorderPane buildWallPane;
+   private final ImageFlasherImpl imageFlasher;
+   private final DualBuildWallSplitter buildWallSplitter;
+   private final DualBuildWallConfigurer buildWallConfigurer;
    
    /**
     * Constructs a new {@link BuildWallDisplayImpl}.
@@ -44,10 +51,15 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       GridWallImpl leftGridWall = new GridWallImpl( leftConfiguration, database );
       
       buildWallSplitter = new DualBuildWallSplitter( leftGridWall, rightGridWall );
-      setCenter( buildWallSplitter );
+      buildWallPane = new BorderPane();
+      buildWallPane.setCenter( buildWallSplitter );
+      getChildren().add( buildWallPane );
       
-      buildWallConfigurer = new DualBuildWallConfigurer( this, leftConfiguration, rightConfiguration );
+      ImageFlasherProperties imageFlasherProperties = new ImageFlasherPropertiesImpl();
+      imageFlasher = new ImageFlasherImpl( imageFlasherProperties );
+      getChildren().add( imageFlasher );
       
+      buildWallConfigurer = new DualBuildWallConfigurer( buildWallPane, leftConfiguration, rightConfiguration, imageFlasherProperties );
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
    }//End Constructor
    
@@ -73,6 +85,13 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     */
    public void showLeftConfiguration(){
       buildWallConfigurer.showLeftConfiguration();
+   }//End Method
+   
+   /**
+    * Method to show the {@link ImageFlasherConfiguration} for the {@link DualBuildWallDisplayImpl}.
+    */
+   public void showImageFlasherConfiguration(){
+      buildWallConfigurer.showImageFlasherConfiguration();
    }//End Method
    
    /**
@@ -140,6 +159,10 @@ public class DualBuildWallDisplayImpl extends BorderPane {
       return buildWallConfigurer.isConfigurationShowing();
    }//End Method
    
+   BorderPane buildWallPane(){
+      return buildWallPane;
+   }//End Method
+   
    GridWallImpl rightGridWall(){
       return buildWallSplitter.rightGridWall();
    }//End Method
@@ -163,9 +186,21 @@ public class DualBuildWallDisplayImpl extends BorderPane {
    BuildWallConfiguration leftConfiguration() {
       return buildWallConfigurer.leftConfiguration();
    }//End Method
+   
+   ImageFlasherProperties imageFlasherConfiguration(){
+      return buildWallConfigurer.imageFlasherProperties();
+   }//End Method
 
    DualBuildWallSplitter splitPane() {
       return buildWallSplitter;
+   }//End Method
+   
+   ImageFlasherImpl imageFlasher(){
+      return imageFlasher;
+   }//End Method
+   
+   ImageFlasherConfigurationPanel imageFlasherConfigurationPanel(){
+      return buildWallConfigurer.imageFlasherConfigurationPanel();
    }//End Method
    
 }//End Class

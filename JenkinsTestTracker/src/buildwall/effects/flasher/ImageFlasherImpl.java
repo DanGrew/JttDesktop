@@ -38,6 +38,9 @@ public class ImageFlasherImpl extends BorderPane implements ImageFlasher, Regist
       updateImage();
       
       applyRegistrations();
+      
+      //this is a requirement for mouse behaviour dropping through to lower panels.
+      setPickOnBounds( false );
    }//End Constructor
    
    /**

@@ -19,6 +19,8 @@ import org.junit.Test;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
+import buildwall.effects.flasher.ImageFlasherProperties;
+import buildwall.effects.flasher.ImageFlasherPropertiesImpl;
 import graphics.JavaFxInitializer;
 import javafx.scene.layout.BorderPane;
 
@@ -30,6 +32,7 @@ public class DualBuildWallConfigurerTest {
    private BorderPane display;
    private BuildWallConfiguration leftConfiguration;
    private BuildWallConfiguration rightConfiguration;
+   private ImageFlasherProperties imageFlasherProperties;
    private DualBuildWallConfigurer systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
@@ -40,7 +43,8 @@ public class DualBuildWallConfigurerTest {
       display = new BorderPane();
       leftConfiguration = new BuildWallConfigurationImpl();
       rightConfiguration = new BuildWallConfigurationImpl();
-      systemUnderTest = new DualBuildWallConfigurer( display, leftConfiguration, rightConfiguration );
+      imageFlasherProperties = new ImageFlasherPropertiesImpl();
+      systemUnderTest = new DualBuildWallConfigurer( display, leftConfiguration, rightConfiguration, imageFlasherProperties );
    }//End Method
 
    @Test public void displayIntiallyShouldHaveNoConfiguration() {
@@ -110,6 +114,23 @@ public class DualBuildWallConfigurerTest {
       showLeftShouldAddConfigToRight();
       systemUnderTest.hideLeftWall();
       assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
+   }//End Method
+   
+   @Test public void showFlasherConfigShouldShowPanelOnRight(){
+      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
+      assertThat( display.getRight(), is( nullValue() ) );
+      systemUnderTest.showImageFlasherConfiguration();
+      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
+      assertThat( display.getRight(), is( systemUnderTest.scroller() ) );
+      assertThat( systemUnderTest.scroller().getContent(), is( systemUnderTest.imageFlasherConfigurationPanel() ) );
+   }//End Method
+   
+   @Test public void hideConfigShouldHidePanelOnRight(){
+      showFlasherConfigShouldShowPanelOnRight();
+      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
+      systemUnderTest.hideConfiguration();
+      assertThat( systemUnderTest.isConfigurationShowing(), is ( false ) );
+      assertThat( display.getRight(), is( nullValue() ) );
    }//End Method
 
 }//End Class

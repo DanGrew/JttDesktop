@@ -125,4 +125,8 @@ public class ImageFlasherImplTest {
       assertThat( imageView.getImage(), is( original ) );
    }//End Method
    
+   @Test public void shouldSetPickOnBoundsFalse(){
+      assertThat( systemUnderTest.isPickOnBounds(), is( false ) );
+   }//End Method
+   
 }//End Class

@@ -25,22 +25,21 @@ class WrappedSystemDigest {
    
    /**
     * Constructs a new {@link WrappedSystemDigest}.
-    * @param display the {@link BorderPane} display to check for system digest.
+    * @param parent the {@link BorderPane} display to check for system digest.
     */
-   WrappedSystemDigest( BorderPane display ) {
-      Pair< BorderPane, Node > extraction = extract( display );
+   WrappedSystemDigest( Node parent ) {
+      Pair< BorderPane, Node > extraction = extract( parent );
       this.parentWrapper = extraction.getKey();
       this.extractedDigest = extraction.getValue();
    }//End Constructor
    
    /**
     * Method to extract the components needed from the parent if possible.
-    * @param display the {@link BorderPane} parent to extract from.
+    * @param parent the {@link BorderPane} parent to extract from.
     * @return the {@link Pair} of {@link BorderPane} parent to the system digest {@link Node}.
     * Note that this can and does return null if the digest cannot be found.
     */
-   private Pair< BorderPane, Node > extract( BorderPane display ){
-      Node parent = display.getParent();
+   private Pair< BorderPane, Node > extract( Node parent ){
       if ( parent == null || !( parent instanceof BorderPane ) ) {
          return new Pair<>( null, null );
       }

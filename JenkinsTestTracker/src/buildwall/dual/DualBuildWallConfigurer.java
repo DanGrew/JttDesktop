@@ -10,6 +10,8 @@ package buildwall.dual;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationPanelImpl;
+import buildwall.effects.flasher.ImageFlasherProperties;
+import buildwall.effects.flasher.configuration.ImageFlasherConfigurationPanel;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 
@@ -22,31 +24,38 @@ class DualBuildWallConfigurer {
    private final ScrollPane configurationScroller;
    private final BorderPane display;
    
-   private BuildWallConfiguration rightConfiguration;
-   private BuildWallConfigurationPanelImpl rightConfigurationPanel;
+   private final BuildWallConfiguration rightConfiguration;
+   private final BuildWallConfigurationPanelImpl rightConfigurationPanel;
    
-   private BuildWallConfiguration leftConfiguration;
-   private BuildWallConfigurationPanelImpl leftConfigurationPanel;
+   private final BuildWallConfiguration leftConfiguration;
+   private final BuildWallConfigurationPanelImpl leftConfigurationPanel;
+   
+   private final ImageFlasherProperties imageFlasherProperties;
+   private final ImageFlasherConfigurationPanel imageFlasherPanel;
    
    /**
     * Constructs a new {@link DualBuildWallConfigurer}.
     * @param display the {@link BorderPane}, {@link DualBuildWallDisplayImpl}.
     * @param leftConfiguration the left {@link buildwall.layout.GridWallImpl} {@link BuildWallConfiguration}.
     * @param rightConfiguration the right {@link buildwall.layout.GridWallImpl} {@link BuildWallConfiguration}.
+    * @param imageFlasherProperties the {@link ImageFlasherProperties} to configure.
     */
    DualBuildWallConfigurer( 
             BorderPane display, 
             BuildWallConfiguration leftConfiguration, 
-            BuildWallConfiguration rightConfiguration 
+            BuildWallConfiguration rightConfiguration,
+            ImageFlasherProperties imageFlasherProperties
    ) {
       this.display = display;
       this.configurationScroller = new ScrollPane();
       
       this.leftConfiguration = leftConfiguration;
       this.rightConfiguration = rightConfiguration;
+      this.imageFlasherProperties = imageFlasherProperties;
       
       this.leftConfigurationPanel = new BuildWallConfigurationPanelImpl( "Left Wall Configuration", leftConfiguration );
       this.rightConfigurationPanel = new BuildWallConfigurationPanelImpl( "Right Wall Configuration", rightConfiguration );
+      this.imageFlasherPanel = new ImageFlasherConfigurationPanel( imageFlasherProperties );
    }//End Constructor
 
    /**
@@ -62,6 +71,14 @@ class DualBuildWallConfigurer {
     */
    void showLeftConfiguration(){
       configurationScroller.setContent( leftConfigurationPanel );
+      display.setRight( configurationScroller );
+   }//End Method
+   
+   /**
+    * Method to show the {@link ImageFlasherProperties} in a configuration panel.
+    */
+   void showImageFlasherConfiguration(){
+      configurationScroller.setContent( imageFlasherPanel );
       display.setRight( configurationScroller );
    }//End Method
    
@@ -109,6 +126,10 @@ class DualBuildWallConfigurer {
    BuildWallConfigurationPanelImpl leftConfigurationPanel(){
       return leftConfigurationPanel;
    }//End Method
+   
+   ImageFlasherConfigurationPanel imageFlasherConfigurationPanel(){
+      return imageFlasherPanel;
+   }//End Method
 
    BuildWallConfiguration rightConfiguration() {
       return rightConfiguration;
@@ -116,5 +137,9 @@ class DualBuildWallConfigurer {
    
    BuildWallConfiguration leftConfiguration() {
       return leftConfiguration;
+   }//End Method
+   
+   ImageFlasherProperties imageFlasherProperties(){
+      return imageFlasherProperties;
    }//End Method
 }//End Class

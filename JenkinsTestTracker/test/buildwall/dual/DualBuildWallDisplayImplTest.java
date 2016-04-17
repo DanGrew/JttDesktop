@@ -10,6 +10,7 @@ package buildwall.dual;
 
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -27,6 +28,7 @@ import org.junit.Test;
 import com.sun.javafx.application.PlatformImpl;
 
 import buildwall.configuration.BuildWallJobPolicy;
+import buildwall.effects.flasher.ImageFlasherImplTest;
 import buildwall.layout.GridWallImpl;
 import buildwall.panel.type.JobPanelDescriptionProviders;
 import graphics.DecoupledPlatformImpl;
@@ -35,6 +37,7 @@ import graphics.PlatformDecouplerImpl;
 import javafx.event.EventHandler;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
@@ -104,6 +107,10 @@ public class DualBuildWallDisplayImplTest {
          systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
       } );
+      
+      Image alertImage = new Image( ImageFlasherImplTest.class.getResourceAsStream( "alert-image.png" ) );
+      systemUnderTest.imageFlasherConfiguration().imageProperty().set( alertImage );
+      systemUnderTest.imageFlasherConfiguration().flashingSwitch().set( true );
       
       Thread.sleep( 4000 );
       
@@ -190,22 +197,22 @@ public class DualBuildWallDisplayImplTest {
    
    @Test public void shouldInitialseWithNoConfiguration(){
       assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
-      assertThat( systemUnderTest.getRight(), nullValue() );
+      assertThat( systemUnderTest.buildWallPane().getRight(), nullValue() );
    }//End Method
    
    @Test public void shouldShowConfigurationPanelsIndividuallyAlwaysInsideScroller(){
       systemUnderTest.showRightConfiguration();
       assertThat( systemUnderTest.rightConfigurationPanel(), notNullValue() );
       assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      assertThat( systemUnderTest.getRight(), instanceOf( ScrollPane.class ) );
-      ScrollPane scroller = ( ScrollPane ) systemUnderTest.getRight();
+      assertThat( systemUnderTest.buildWallPane().getRight(), instanceOf( ScrollPane.class ) );
+      ScrollPane scroller = ( ScrollPane ) systemUnderTest.buildWallPane().getRight();
       assertThat( scroller.getContent(), is( systemUnderTest.rightConfigurationPanel() ) );
       
       systemUnderTest.showLeftConfiguration();
       assertThat( systemUnderTest.leftConfigurationPanel(), notNullValue() );
       assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      assertThat( systemUnderTest.getRight(), instanceOf( ScrollPane.class ) );
-      scroller = ( ScrollPane ) systemUnderTest.getRight();
+      assertThat( systemUnderTest.buildWallPane().getRight(), instanceOf( ScrollPane.class ) );
+      scroller = ( ScrollPane ) systemUnderTest.buildWallPane().getRight();
       assertThat( scroller.getContent(), is( systemUnderTest.leftConfigurationPanel() ) );
    }//End Method
    
@@ -221,7 +228,7 @@ public class DualBuildWallDisplayImplTest {
    }//End Method
    
    @Test public void shouldProvideGridWallsInSplitPaneForManualSplitting(){
-      assertThat( systemUnderTest.getCenter(), instanceOf( SplitPane.class ) );
+      assertThat( systemUnderTest.buildWallPane().getCenter(), instanceOf( SplitPane.class ) );
       assertSplitPaneItems( systemUnderTest.leftGridWall(), systemUnderTest.rightGridWall() );
    }//End Method
    
@@ -230,7 +237,7 @@ public class DualBuildWallDisplayImplTest {
     * @param expectedWalls the {@link GridWallImpl}s expected.
     */
    private void assertSplitPaneItems( GridWallImpl... expectedWalls ){
-      SplitPane split = ( SplitPane ) systemUnderTest.getCenter();
+      SplitPane split = ( SplitPane ) systemUnderTest.buildWallPane().getCenter();
       assertThat( split.getItems().size(), is( expectedWalls.length ) );
       assertThat( split.getItems(), contains( expectedWalls ) );
    }//End Method
@@ -352,5 +359,19 @@ public class DualBuildWallDisplayImplTest {
       PlatformImpl.runAndWait( () -> {} );
       
       assertThat( systemUnderTest.splitPane().getDividerPositions()[ 0 ], closeTo( dividerLocation, TestCommon.precision() ) );
+   }//End Method
+   
+   @Test public void shouldBeAStackPaneWithFlasherOnTop(){
+      assertThat( systemUnderTest.getChildren(), hasSize( 2 ) );
+      assertThat( systemUnderTest.getChildren().get( 0 ), is( systemUnderTest.buildWallPane() ) );
+      assertThat( systemUnderTest.buildWallPane().getCenter(), is( systemUnderTest.splitPane() ) );
+      assertThat( systemUnderTest.getChildren().get( 1 ), is( systemUnderTest.imageFlasher() ) );
+   }//End Method
+   
+   @Test public void shouldShowImageFlasherConfiguration(){
+      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
+      systemUnderTest.showImageFlasherConfiguration();
+      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
+      assertThat( systemUnderTest.buildWallPane().getRight(), is( notNullValue() ) );
    }//End Method
 }//End Class

@@ -25,12 +25,14 @@ public class DualBuildWallContextMenu extends ContextMenu {
    static final String HIDE_LEFT = "Hide Left";
    static final String CONFIGURE_RIGHT = "Configure Right";
    static final String CONFIGURE_LEFT = "Configure Left";
+   static final String CONFIGURE_IMAGE_FLASHER = "Configure Image Flasher";
    static final String HIDE_CONFIGURATION = "Hide Configuration";
    static final String SHOW_DIGEST = "Show Digest";
    static final String HIDE_DIGEST = "Hide Digest";
    static final String CANCEL = "Cancel";
    
    private MenuItem digestControl;
+   private MenuItem imageFlasherControl;
    private MenuItem rightWallControl;
    private MenuItem leftWallControl;
    private final DualBuildWallDisplayImpl display;
@@ -42,9 +44,9 @@ public class DualBuildWallContextMenu extends ContextMenu {
     */
    DualBuildWallContextMenu( DualBuildWallDisplayImpl display ) {
       this.display = display;
-      this.wrappedDigest = new WrappedSystemDigest( display );
+      this.wrappedDigest = new WrappedSystemDigest( display.getParent() );
       
-      applyControls( display );
+      applyControls();
       applyDigestControl();
       applyCancel();
       
@@ -53,9 +55,8 @@ public class DualBuildWallContextMenu extends ContextMenu {
 
    /**
     * Method to apply the functions available to the menu.
-    * @param display the {@link DualBuildWallDisplayImpl} the controls are for.
     */
-   private void applyControls( DualBuildWallDisplayImpl display ) {
+   private void applyControls() {
       rightWallControl = new MenuItem( HIDE_RIGHT );
       rightWallControl.setOnAction( event -> controlRightWall( display, rightWallControl ) );
       
@@ -68,6 +69,9 @@ public class DualBuildWallContextMenu extends ContextMenu {
       MenuItem configureLeft = new MenuItem( CONFIGURE_LEFT );
       configureLeft.setOnAction( event -> display.showLeftConfiguration() );
       
+      imageFlasherControl = new MenuItem( CONFIGURE_IMAGE_FLASHER );
+      imageFlasherControl.setOnAction( event -> display.showImageFlasherConfiguration() );
+      
       MenuItem hideConfig = new MenuItem( HIDE_CONFIGURATION );
       hideConfig.setOnAction( event -> display.hideConfiguration() );
       
@@ -77,6 +81,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
             new SeparatorMenuItem(),
             configureLeft,
             configureRight,
+            imageFlasherControl,
             hideConfig
       );
    }//End Method

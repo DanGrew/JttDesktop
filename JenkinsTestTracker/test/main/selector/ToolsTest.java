@@ -98,7 +98,6 @@ public class ToolsTest {
       BorderPane wrapper = ( BorderPane ) scene.getRoot();
       
       DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) wrapper.getCenter();
-      assertThat( display.getRight(), nullValue() );
       assertThat( display.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
       DualBuildWallContextMenuOpener opener = ( DualBuildWallContextMenuOpener ) display.getOnContextMenuRequested();
       assertThat( opener.isSystemDigestControllable(), is( true ) );
