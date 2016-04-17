@@ -12,7 +12,6 @@ import buildwall.configuration.components.JobPolicyPanel;
 import buildwall.configuration.style.BuildWallConfigurationStyle;
 import buildwall.panel.type.JobPanelDescriptionProvider;
 import buildwall.panel.type.JobPanelDescriptionProviders;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.combobox.FontFamilyPropertyBox;
 import javafx.geometry.HPos;

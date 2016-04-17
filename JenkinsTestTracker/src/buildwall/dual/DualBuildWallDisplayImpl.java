@@ -14,7 +14,6 @@ import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import buildwall.configuration.updating.JobPolicyUpdater;
 import buildwall.layout.GridWallImpl;
 import buildwall.panel.type.JobPanelDescriptionProviders;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import storage.database.JenkinsDatabase;
 
@@ -24,40 +23,30 @@ import storage.database.JenkinsDatabase;
  */
 public class DualBuildWallDisplayImpl extends BorderPane {
 
-   private ScrollPane configurationScroller;
    private DualBuildWallSplitter buildWallSplitter;
-   
-   private GridWallImpl rightGridWall;
-   private GridWallImpl leftGridWall;
-   private BuildWallConfiguration rightConfiguration;
-   private BuildWallConfigurationPanelImpl rightConfigurationPanel;
-   
-   private BuildWallConfiguration leftConfiguration;
-   private BuildWallConfigurationPanelImpl leftConfigurationPanel;
+   private DualBuildWallConfigurer buildWallConfigurer;
    
    /**
     * Constructs a new {@link BuildWallDisplayImpl}.
     * @param database the {@link JenkinsDatabase} associated.
     */
    public DualBuildWallDisplayImpl( JenkinsDatabase database ) {
-      this.rightConfiguration = new BuildWallConfigurationImpl();
-      this.rightConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
-      this.leftConfiguration = new BuildWallConfigurationImpl();
-      this.leftConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
-      this.leftConfiguration.numberOfColumns().set( 1 );
+      BuildWallConfiguration rightConfiguration = new BuildWallConfigurationImpl();
+      rightConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
+      BuildWallConfiguration leftConfiguration = new BuildWallConfigurationImpl();
+      leftConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
+      leftConfiguration.numberOfColumns().set( 1 );
       
       new JobPolicyUpdater( database, rightConfiguration );
       new JobPolicyUpdater( database, leftConfiguration );
       
-      rightGridWall = new GridWallImpl( rightConfiguration, database );
-      leftGridWall = new GridWallImpl( leftConfiguration, database );
+      GridWallImpl rightGridWall = new GridWallImpl( rightConfiguration, database );
+      GridWallImpl leftGridWall = new GridWallImpl( leftConfiguration, database );
       
       buildWallSplitter = new DualBuildWallSplitter( leftGridWall, rightGridWall );
       setCenter( buildWallSplitter );
       
-      rightConfigurationPanel = new BuildWallConfigurationPanelImpl( "Right Wall Configuration", rightConfiguration );
-      leftConfigurationPanel = new BuildWallConfigurationPanelImpl( "Left Wall Configuration", leftConfiguration );
-      configurationScroller = new ScrollPane();
+      buildWallConfigurer = new DualBuildWallConfigurer( this, leftConfiguration, rightConfiguration );
       
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
    }//End Constructor
@@ -76,32 +65,28 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     * Method to show the {@link BuildWallConfiguration} for the right {@link GridWallImpl}.
     */
    public void showRightConfiguration(){
-      configurationScroller.setContent( rightConfigurationPanel );
-      setRight( configurationScroller );
+      buildWallConfigurer.showRightConfiguration();
    }//End Method
 
    /**
     * Method to show the {@link BuildWallConfiguration} for the left {@link GridWallImpl}.
     */
    public void showLeftConfiguration(){
-      configurationScroller.setContent( leftConfigurationPanel );
-      setRight( configurationScroller );
+      buildWallConfigurer.showLeftConfiguration();
    }//End Method
    
    /**
     * Method to hide the {@link BuildWallConfiguration} for whichever is currently showing.
     */
    public void hideConfiguration(){
-      setRight( null );
+      buildWallConfigurer.hideConfiguration();
    }//End Method
    
    /**
     * Method to hide the right {@link GridWallImpl}. The configuration will be hidden is for this {@link GridWallImpl}.
     */
    public void hideRightWall() {
-      if ( isConfigurationShowing() && configurationScroller.getContent() == rightConfigurationPanel ) {
-         hideConfiguration();
-      }
+      buildWallConfigurer.hideRightWall();
       buildWallSplitter.hideRightWall();
    }//End Method
    
@@ -126,9 +111,7 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     * Method to hide the left {@link GridWallImpl}. The configuration will be hidden is for this {@link GridWallImpl}.
     */
    public void hideLeftWall() {
-      if ( isConfigurationShowing() && configurationScroller.getContent() == leftConfigurationPanel ) {
-         hideConfiguration();
-      }
+      buildWallConfigurer.hideLeftWall();
       buildWallSplitter.hideLeftWall();
    }//End Method
    
@@ -154,31 +137,31 @@ public class DualBuildWallDisplayImpl extends BorderPane {
     * @return true if on, false otherwise.
     */
    public boolean isConfigurationShowing(){
-      return getRight() != null;
+      return buildWallConfigurer.isConfigurationShowing();
    }//End Method
    
    GridWallImpl rightGridWall(){
-      return rightGridWall;
+      return buildWallSplitter.rightGridWall();
    }//End Method
    
    GridWallImpl leftGridWall(){
-      return leftGridWall;
+      return buildWallSplitter.leftGridWall();
    }//End Method
    
    BuildWallConfigurationPanelImpl rightConfigurationPanel(){
-      return rightConfigurationPanel;
+      return buildWallConfigurer.rightConfigurationPanel();
    }//End Method
    
    BuildWallConfigurationPanelImpl leftConfigurationPanel(){
-      return leftConfigurationPanel;
+      return buildWallConfigurer.leftConfigurationPanel();
    }//End Method
 
    BuildWallConfiguration rightConfiguration() {
-      return rightConfiguration;
+      return buildWallConfigurer.rightConfiguration();
    }//End Method
    
    BuildWallConfiguration leftConfiguration() {
-      return leftConfiguration;
+      return buildWallConfigurer.leftConfiguration();
    }//End Method
 
    DualBuildWallSplitter splitPane() {

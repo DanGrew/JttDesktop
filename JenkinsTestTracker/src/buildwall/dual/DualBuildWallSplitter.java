@@ -16,7 +16,7 @@ import javafx.scene.control.SplitPane;
  * and right hand {@link GridWallImpl} so that they can be added and removed and
  * split appropriately.
  */
-public class DualBuildWallSplitter extends SplitPane {
+class DualBuildWallSplitter extends SplitPane {
 
    static final double DEFAULT_DIVIDER = 0.5;
    private final GridWallImpl rightGridWall;
