@@ -77,11 +77,11 @@ public class ImageFlasherRunnableTest {
    }//End Method
    
    @Test public void eachFlashShouldBeOnAndOffForConfiguredPeriod() throws InterruptedException {
-      final int customNumber = 10;
-      latch = new CountDownLatch( customNumber * 2 );
+      final int numberOfFlashes = 10;
+      latch = new CountDownLatch( numberOfFlashes * 2 );
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl( this::assertTimeBetweenInstructions ) );
       
-      properties.numberOfFlashesProperty().set( customNumber );
+      properties.numberOfFlashesProperty().set( numberOfFlashes );
       properties.flashOnProperty().set( 50 );
       properties.flashOffProperty().set( 20 );
       
@@ -89,7 +89,7 @@ public class ImageFlasherRunnableTest {
       
       latch.await();
       
-      assertThat( countedInstructions, is( customNumber * 2 ) );
+      assertThat( countedInstructions, is( numberOfFlashes * 2 ) );
    }//End Method
 
    /**

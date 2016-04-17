@@ -37,7 +37,7 @@ public class ImageFlasherRunnable {
     * {@inheritDoc}
     */
    public void run( ObservableValue< ? extends Boolean > source, Boolean old, Boolean updated ) {
-      if ( previousThread != null && !previousThread.isAlive() ) {
+      if ( previousThread == null || !previousThread.isAlive() ) {
          previousThread = new Thread( this::tryToFlash );
          previousThread.start();
       }
