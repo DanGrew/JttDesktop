@@ -158,6 +158,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       styling.configureColumnConstraints( dimensionsContent );
       
       dimensionsPane = new TitledPane( "Dimensions", dimensionsContent );
+      dimensionsPane.setExpanded( true );
       add( dimensionsPane, 0, 1 );
    }//End Method
    
@@ -169,6 +170,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       styling.configureColumnConstraints( policiesContent );
       
       jobPoliciesPane = new TitledPane( "Job Policies", policiesContent );
+      jobPoliciesPane.setExpanded( false );
       add( jobPoliciesPane, 0, 2 );
    }//End Method
    
@@ -229,6 +231,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       styling.configureColumnConstraints( fontContent );
       
       fontPane = new TitledPane( "Fonts", fontContent );
+      fontPane.setExpanded( true );
       add( fontPane, 0, 3 );
    }//End Method
    
@@ -269,6 +272,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       styling.configureColumnConstraints( content );
       
       colourPane = new TitledPane( "Colours", content );
+      colourPane.setExpanded( true );
       add( colourPane, 0, 4 );
    }//End Method
    

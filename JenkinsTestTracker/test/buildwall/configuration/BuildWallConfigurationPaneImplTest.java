@@ -541,4 +541,11 @@ public class BuildWallConfigurationPaneImplTest {
       assertThat( GridPane.getHalignment( titleLabel ), is( HPos.CENTER ) );
       assertThat( GridPane.getValignment( titleLabel ), is( VPos.CENTER ) );
    }//End Method
+   
+   @Test public void titledPanesShouldBeClosedByDefault(){
+      assertThat( systemUnderTest.dimensionsPane().isExpanded(), is( true ) );
+      assertThat( systemUnderTest.jobPoliciesPane().isExpanded(), is( false ) );
+      assertThat( systemUnderTest.fontPane().isExpanded(), is( true ) );
+      assertThat( systemUnderTest.colourPane().isExpanded(), is( true ) );
+   }//End Method
 }//End Class
