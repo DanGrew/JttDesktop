@@ -15,6 +15,7 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import model.tests.TestCase;
 import model.users.JenkinsUser;
 
 /**
@@ -94,5 +95,12 @@ public interface JenkinsJob {
     * @return the {@link ObservableList}.
     */
    public ObservableList< JenkinsUser > culprits();
+
+   /**
+    * Provides an {@link ObservableList} of {TestCase}s for the failure of the
+    * last build.
+    * @return the {@link ObservableList}.
+    */
+   public ObservableList< TestCase > failingTestCases();
 
 }//End Interface

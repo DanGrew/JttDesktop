@@ -8,16 +8,21 @@
  */
 package model.jobs;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import api.handling.BuildState;
+import model.tests.TestCase;
+import model.tests.TestCaseImpl;
+import model.tests.TestClass;
 import model.users.JenkinsUser;
 import model.users.JenkinsUserImpl;
 
@@ -165,6 +170,18 @@ public class JenkinsJobImplTest {
       systemUnderTest.culprits().add( user1 );
       systemUnderTest.culprits().add( user2 );
       assertThat( systemUnderTest.culprits(), hasItems( user1, user2 ) );
+   }//End Method
+   
+   @Test public void shouldProvideFailingTestCases(){
+      assertThat( systemUnderTest.failingTestCases(), hasSize( 0 ) );
+   }//End Method
+   
+   @Test public void shouldUpdateTestCases(){
+      TestCase firstTestCase = new TestCaseImpl( "first", mock( TestClass.class ) );
+      TestCase secondTestCase = new TestCaseImpl( "second", mock( TestClass.class ) );
+      
+      systemUnderTest.failingTestCases().addAll( firstTestCase, secondTestCase );
+      assertThat( systemUnderTest.failingTestCases(), contains( firstTestCase, secondTestCase ) );
    }//End Method
 
 }//End Class
