@@ -26,6 +26,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import buildwall.effects.flasher.ImageFlasherImplTest;
+import buildwall.effects.flasher.ImageFlasherProperties;
+import buildwall.effects.flasher.ImageFlasherPropertiesImpl;
 import friendly.controlsfx.FriendlyFileChooser;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
@@ -47,7 +49,7 @@ public class ImageFlasherConfigurationPanelTest {
    private final File ALERT_IMAGE_FILE = new File( ImageFlasherImplTest.class.getResource( "alert-image.png" ).getFile() );
    @Mock private FriendlyFileChooser fileChooser; 
    private ObservableList< ExtensionFilter > extensionFilters;
-   private ImageFlasherConfiguration configuration;
+   private ImageFlasherProperties properties;
    private ImageFlasherConfigurationPanel systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
@@ -59,8 +61,8 @@ public class ImageFlasherConfigurationPanelTest {
       extensionFilters = FXCollections.observableArrayList();
       when( fileChooser.getExtensionFilters() ).thenReturn( extensionFilters );
       
-      configuration = new ImageFlasherConfigurationImpl();
-      systemUnderTest = new ImageFlasherConfigurationPanel( configuration, fileChooser );
+      properties = new ImageFlasherPropertiesImpl();
+      systemUnderTest = new ImageFlasherConfigurationPanel( properties, fileChooser );
    }//End Method
 
    @Ignore
@@ -68,6 +70,7 @@ public class ImageFlasherConfigurationPanelTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       JavaFxInitializer.launchInWindow( () -> {
+         systemUnderTest = new ImageFlasherConfigurationPanel( properties );
          return systemUnderTest;
       } );
       
@@ -102,8 +105,8 @@ public class ImageFlasherConfigurationPanelTest {
       assertThat( extensionFilters.get( 0 ), is( ImageFlasherConfigurationPanel.IMAGE_FILTER ) );
    }//End Method
    
-   @Test public void imageButtonShouldDisplayImageViewToHoldImage(){
-      assertThat( systemUnderTest.imageButton().getGraphic(), is( systemUnderTest.imageButtonGraphic() ) );
+   @Test public void imageButtonShouldNotDisplayImageViewToHoldImageInitially(){
+      assertThat( systemUnderTest.imageButton().getGraphic(), is( nullValue() ) );
    }//End Method
    
    @Test public void chosenImageShouldAppearOnButtonWithFixedSize() {
@@ -122,8 +125,8 @@ public class ImageFlasherConfigurationPanelTest {
       
       systemUnderTest.imageButton().getOnAction().handle( new ActionEvent() );
       
-      assertThat( configuration.imageProperty().get(), is( notNullValue() ) );
-      assertThat( configuration.imageProperty().get(), is( systemUnderTest.imageButtonGraphic().getImage() ) );
+      assertThat( properties.imageProperty().get(), is( notNullValue() ) );
+      assertThat( properties.imageProperty().get(), is( systemUnderTest.imageButtonGraphic().getImage() ) );
       assertThat( systemUnderTest.imageButton().getText(), is( nullValue() ) );
    }//End Method
    
@@ -149,18 +152,18 @@ public class ImageFlasherConfigurationPanelTest {
       assertThat( systemUnderTest.numberOfFlashesSpinner().getValue(), is( original ) );
       
       final int newValue = 20;
-      configuration.numberOfFlashesProperty().set( newValue );
+      properties.numberOfFlashesProperty().set( newValue );
       assertThat( systemUnderTest.numberOfFlashesSpinner().getValue(), is( newValue ) );
    }//End Method
    
    @Test public void shouldUpdateConfigurationWhenNumberOfFlashesChanges(){
       final int original = 20;
-      configuration.numberOfFlashesProperty().set( original );
-      assertThat( configuration.numberOfFlashesProperty().get(), is( original ) );
+      properties.numberOfFlashesProperty().set( original );
+      assertThat( properties.numberOfFlashesProperty().get(), is( original ) );
       
       final int newValue = 10;
       systemUnderTest.numberOfFlashesSpinner().getValueFactory().setValue( newValue );
-      assertThat( configuration.numberOfFlashesProperty().get(), is( newValue ) );
+      assertThat( properties.numberOfFlashesProperty().get(), is( newValue ) );
    }//End Method
    
    @Test public void numberOfFlashesSpinnerShouldBeConfigured(){
@@ -185,18 +188,18 @@ public class ImageFlasherConfigurationPanelTest {
       assertThat( systemUnderTest.flashOnSpinner().getValue(), is( original ) );
       
       final int newValue = 20;
-      configuration.flashOnProperty().set( newValue );
+      properties.flashOnProperty().set( newValue );
       assertThat( systemUnderTest.flashOnSpinner().getValue(), is( newValue ) );
    }//End Method
    
    @Test public void shouldUpdateConfigurationWhenFlashOnChanges(){
       final int original = 20;
-      configuration.flashOnProperty().set( original );
-      assertThat( configuration.flashOnProperty().get(), is( original ) );
+      properties.flashOnProperty().set( original );
+      assertThat( properties.flashOnProperty().get(), is( original ) );
       
       final int newValue = 10;
       systemUnderTest.flashOnSpinner().getValueFactory().setValue( newValue );
-      assertThat( configuration.flashOnProperty().get(), is( newValue ) );
+      assertThat( properties.flashOnProperty().get(), is( newValue ) );
    }//End Method
    
    @Test public void flashOnSpinnerShouldBeConfigured(){
@@ -221,18 +224,18 @@ public class ImageFlasherConfigurationPanelTest {
       assertThat( systemUnderTest.flashOffSpinner().getValue(), is( original ) );
       
       final int newValue = 20;
-      configuration.flashOffProperty().set( newValue );
+      properties.flashOffProperty().set( newValue );
       assertThat( systemUnderTest.flashOffSpinner().getValue(), is( newValue ) );
    }//End Method
    
    @Test public void shouldUpdateConfigurationWhenFlashOffChanges(){
       final int original = 20;
-      configuration.flashOffProperty().set( original );
-      assertThat( configuration.flashOffProperty().get(), is( original ) );
+      properties.flashOffProperty().set( original );
+      assertThat( properties.flashOffProperty().get(), is( original ) );
       
       final int newValue = 10;
       systemUnderTest.flashOffSpinner().getValueFactory().setValue( newValue );
-      assertThat( configuration.flashOffProperty().get(), is( newValue ) );
+      assertThat( properties.flashOffProperty().get(), is( newValue ) );
    }//End Method
    
    @Test public void flashOffSpinnerShouldBeConfigured(){
@@ -257,18 +260,18 @@ public class ImageFlasherConfigurationPanelTest {
       assertThat( systemUnderTest.transparencySpinner().getValue(), is( original ) );
       
       final double newValue = 0.7;
-      configuration.transparencyProperty().set( newValue );
+      properties.transparencyProperty().set( newValue );
       assertThat( systemUnderTest.transparencySpinner().getValue(), is( newValue ) );
    }//End Method
    
    @Test public void shouldUpdateConfigurationWhenTransparencyChanges(){
       final double original = 0.7;
-      configuration.transparencyProperty().set( original );
-      assertThat( configuration.transparencyProperty().get(), is( original ) );
+      properties.transparencyProperty().set( original );
+      assertThat( properties.transparencyProperty().get(), is( original ) );
       
       final double newValue = 0.2;
       systemUnderTest.transparencySpinner().getValueFactory().setValue( newValue );
-      assertThat( configuration.transparencyProperty().get(), is( newValue ) );
+      assertThat( properties.transparencyProperty().get(), is( newValue ) );
    }//End Method
    
    @Test public void transparencySpinnerShouldBeConfigured(){
@@ -280,6 +283,47 @@ public class ImageFlasherConfigurationPanelTest {
       
       systemUnderTest.transparencySpinner().increment();
       assertThat( systemUnderTest.transparencySpinner().getValue(), is( 0.05 ) );
+   }//End Method
+   
+   @Test public void shouldProvideConfiguredTestButton(){
+      Button testButton = systemUnderTest.testFlashButton();
+      assertThat( testButton.getText(), is( ImageFlasherConfigurationPanel.TEST_FLASH_LABEL ) );
+      assertThat( testButton.getMaxWidth(), is( Double.MAX_VALUE ) );
+   }//End Method
+   
+   @Test public void testButtonShouldTurnOnFlashSwitch(){
+      assertThat( properties.flashingSwitch().get(), is( false ) );
+      systemUnderTest.testFlashButton().getOnAction().handle( new ActionEvent() );
+      assertThat( properties.flashingSwitch().get(), is( true ) );
+   }//End Method
+   
+   @Test public void testButtonShouldBeDisableWhileFlashSwitchIsOn(){
+      assertThat( systemUnderTest.testFlashButton().isDisabled(), is( false ) );
+      properties.flashingSwitch().set( true );
+      assertThat( systemUnderTest.testFlashButton().isDisabled(), is( true ) );
+      properties.flashingSwitch().set( false );
+      assertThat( systemUnderTest.testFlashButton().isDisabled(), is( false ) );
+   }//End Method
+   
+   @Test public void shouldProvideConfiguredStopTestButton(){
+      Button testButton = systemUnderTest.stopTestFlashButton();
+      assertThat( testButton.getText(), is( ImageFlasherConfigurationPanel.STOP_FLASH_LABEL ) );
+      assertThat( testButton.getMaxWidth(), is( Double.MAX_VALUE ) );
+   }//End Method
+   
+   @Test public void stopTestButtonShouldTurnOffFlashSwitch(){
+      properties.flashingSwitch().set( true );
+      assertThat( properties.flashingSwitch().get(), is( true ) );
+      systemUnderTest.stopTestFlashButton().getOnAction().handle( new ActionEvent() );
+      assertThat( properties.flashingSwitch().get(), is( false ) );
+   }//End Method
+   
+   @Test public void stopTestButtonShouldBeDisableWhileFlashSwitchIsOff(){
+      assertThat( systemUnderTest.stopTestFlashButton().isDisabled(), is( true ) );
+      properties.flashingSwitch().set( true );
+      assertThat( systemUnderTest.stopTestFlashButton().isDisabled(), is( false ) );
+      properties.flashingSwitch().set( false );
+      assertThat( systemUnderTest.stopTestFlashButton().isDisabled(), is( true ) );
    }//End Method
 
 }//End Class

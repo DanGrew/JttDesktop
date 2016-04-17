@@ -11,7 +11,9 @@ package buildwall.effects.flasher.configuration;
 import java.io.File;
 
 import buildwall.configuration.style.BuildWallConfigurationStyle;
+import buildwall.effects.flasher.ImageFlasherProperties;
 import friendly.controlsfx.FriendlyFileChooser;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,11 +29,13 @@ import javafx.stage.FileChooser.ExtensionFilter;
  * for the {@link ImageFlasherConfiguration}.
  */
 public class ImageFlasherConfigurationPanel extends GridPane {
-   
+
    static final String NUMBER_OF_FLASHES_LABEL = "Number of flashes";
    static final String FLASH_ON_LABEL = "Flash On (millis)";
    static final String FLASH_OFF_LABEL = "Flash Off (millis)";
    static final String TRANSPARENCY_LABEL = "Transparency";
+   static final String STOP_FLASH_LABEL = "Stop Flash";
+   static final String TEST_FLASH_LABEL = "Test Flash";
    
    static final double IMAGE_BUTTON_GRAPHIC_HEIGHT = 50.0;
    static final double IMAGE_BUTTON_GRAPHIC_WIDTH = 100.0;
@@ -45,7 +49,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
    static final double INSETS = 10;
    
    private final BuildWallConfigurationStyle styling;
-   private final ImageFlasherConfiguration configuration;
+   private final ImageFlasherProperties properties;
    
    private Label imageLabel;
    private Button imageChooserButton;
@@ -64,23 +68,24 @@ public class ImageFlasherConfigurationPanel extends GridPane {
    private Label transparencyLabel;
    private DoublePropertySpinner transparencySpinner;
    
-//   private Button testEffectButton;
+   private Button testFlashButton;
+   private Button stopFlashButton;
    
    /**
     * Constructs a new {@link ImageFlasherConfigurationPanel}.
-    * @param configuration the {@link ImageFlasherConfiguration} to configure.
+    * @param configuration the {@link ImageFlasherProperties} to configure.
     */
-   public ImageFlasherConfigurationPanel( ImageFlasherConfiguration configuration ) {
-      this( configuration, new FriendlyFileChooser() );
+   public ImageFlasherConfigurationPanel( ImageFlasherProperties properties ) {
+      this( properties, new FriendlyFileChooser() );
    }//End Constructor
    
    /**
     * Constructs a new {@link ImageFlasherConfigurationPanel}.
-    * @param configuration the {@link ImageFlasherConfiguration} to configure.
+    * @param configuration the {@link ImageFlasherProperties} to configure.
     * @param fileChooser the {@link FriendlyFileChooser} to use.
     */
-   ImageFlasherConfigurationPanel( ImageFlasherConfiguration configuration, FriendlyFileChooser fileChooser ) {
-      this.configuration = configuration;
+   ImageFlasherConfigurationPanel( ImageFlasherProperties properties, FriendlyFileChooser fileChooser ) {
+      this.properties = properties;
       this.imageChooser = fileChooser;
       this.styling = new BuildWallConfigurationStyle();
       
@@ -89,10 +94,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       provideFlashOn();
       provideFlashOff();
       provideTransparency();
-      
-//      testEffectButton = new Button( "Test Effect" );  
-//      testEffectButton.setMaxWidth( Double.MAX_VALUE );
-//      add( testEffectButton, 0, 5 );
+      provideTestMechanism();
       
       setPadding( new Insets( INSETS ) );
    }//End Constructor
@@ -105,7 +107,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       add( numberOfFlashesLabel, 0, 1 );
       
       numberOfFlashesSpinner = new IntegerPropertySpinner();  
-      styling.configureIntegerSpinner( numberOfFlashesSpinner, configuration.numberOfFlashesProperty(), 1, 1000, 1 );
+      styling.configureIntegerSpinner( numberOfFlashesSpinner, properties.numberOfFlashesProperty(), 1, 1000, 1 );
       add( numberOfFlashesSpinner, 1, 1 );
    }//End Method
    
@@ -117,7 +119,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       add( flashOnLabel, 0, 2 );
       
       flashOnSpinner = new IntegerPropertySpinner();  
-      styling.configureIntegerSpinner( flashOnSpinner, configuration.flashOnProperty(), 1, Integer.MAX_VALUE, 1000 );
+      styling.configureIntegerSpinner( flashOnSpinner, properties.flashOnProperty(), 1, Integer.MAX_VALUE, 1000 );
       add( flashOnSpinner, 1, 2 );
    }//End Method
 
@@ -129,7 +131,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       add( flashOffLabel, 0, 3 );
       
       flashOffSpinner = new IntegerPropertySpinner();  
-      styling.configureIntegerSpinner( flashOffSpinner, configuration.flashOffProperty(), 1, Integer.MAX_VALUE, 500 );
+      styling.configureIntegerSpinner( flashOffSpinner, properties.flashOffProperty(), 1, Integer.MAX_VALUE, 500 );
       add( flashOffSpinner, 1, 3 );
    }//End Method
    
@@ -141,7 +143,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       add( transparencyLabel, 0, 4 );
       
       transparencySpinner = new DoublePropertySpinner();  
-      styling.configureDoubleSpinner( transparencySpinner, configuration.transparencyProperty(), 0.0, 1.0, 0.05 );
+      styling.configureDoubleSpinner( transparencySpinner, properties.transparencyProperty(), 0.0, 1.0, 0.05 );
       add( transparencySpinner, 1, 4 );
    }//End Method
 
@@ -161,7 +163,6 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       imageButtonGraphic.setFitHeight( IMAGE_BUTTON_GRAPHIC_HEIGHT );
       
       imageChooserButton = new Button( SELECT_IMAGE_TEXT );
-      imageChooserButton.setGraphic( imageButtonGraphic );
       imageChooserButton.setMaxWidth( Double.MAX_VALUE );
       imageChooserButton.setOnAction( event -> handleImageSelection() );
       add( imageChooserButton, 1, 0 );
@@ -175,9 +176,44 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       if ( file == null ) return;
       
       Image image = new Image( file.toURI().toString() );
+      imageChooserButton.setGraphic( imageButtonGraphic );
       imageButtonGraphic.setImage( image );
       imageChooserButton.setText( null );
-      configuration.imageProperty().set( image );
+      properties.imageProperty().set( image );
+   }//End Method
+   
+   /**
+    * Method to provide the components for testing the image flashing.
+    */
+   private void provideTestMechanism(){
+      testFlashButton = new Button( TEST_FLASH_LABEL );
+      testFlashButton.setMaxWidth( Double.MAX_VALUE );
+      testFlashButton.setOnAction( event -> properties.flashingSwitch().set( true ) );
+      add( testFlashButton, 0, 5 );
+      
+      stopFlashButton = new Button( STOP_FLASH_LABEL );
+      stopFlashButton.setMaxWidth( Double.MAX_VALUE );
+      stopFlashButton.setOnAction( event -> properties.flashingSwitch().set( false ) );
+      add( stopFlashButton, 1, 5 );
+      
+      properties.flashingSwitch().addListener( this::updateTestButtons );
+      updateTestButtons( properties.flashingSwitch(), false, false );
+   }//End Method
+   
+   /**
+    * Method to update the test button when the flashing switch changes.
+    * @param source the property observed.
+    * @param old the old value.
+    * @param updated the updated value.
+    */
+   private void updateTestButtons( ObservableValue< ? extends Boolean > source, Boolean old, Boolean updated ) {
+      if ( updated ) {
+         testFlashButton.setDisable( true );
+         stopFlashButton.setDisable( false );
+      } else {
+         testFlashButton.setDisable( false );
+         stopFlashButton.setDisable( true );
+      }
    }//End Method
    
    Label imageLabel() {
@@ -222,5 +258,13 @@ public class ImageFlasherConfigurationPanel extends GridPane {
 
    DoublePropertySpinner transparencySpinner() {
       return transparencySpinner;
+   }//End Method
+
+   Button testFlashButton() {
+      return testFlashButton;
+   }//End Method
+
+   Button stopTestFlashButton() {
+      return stopFlashButton;
    }//End Method
 }//End Class
