@@ -108,4 +108,12 @@ public class DualBuildWallSplitter extends SplitPane {
    boolean isLeftWallShowing(){
       return getItems().contains( leftGridWall );
    }//End Method
+   
+   GridWallImpl rightGridWall(){
+      return rightGridWall;
+   }//End Method
+   
+   GridWallImpl leftGridWall(){
+      return leftGridWall;
+   }//End Method
 }//End Class
