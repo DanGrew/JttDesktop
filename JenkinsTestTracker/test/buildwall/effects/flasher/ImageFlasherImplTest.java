@@ -34,7 +34,6 @@ public class ImageFlasherImplTest {
    private static final Image ALERT_IMAGE = new Image( ImageFlasherImplTest.class.getResourceAsStream( "alert-image.png" ) );
    private static final Image ALTERNATE_ALERT_IMAGE = new Image( ImageFlasherImplTest.class.getResourceAsStream( "alert-image.png" ) );
    private ImageFlasherProperties properties;
-   private ImageFlasherRunnable runnable;
    private ImageFlasherImpl systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
@@ -51,11 +50,10 @@ public class ImageFlasherImplTest {
       JavaFxInitializer.launchInWindow( () -> {
          
          ImageFlasherImpl imageFlasher = new ImageFlasherImpl( properties );
-         runnable = imageFlasher.flasher();
          return imageFlasher;
       } );
       
-//      runnable.run();
+      properties.flashingSwitch().set( true );
       
       Thread.sleep( 2000000 );
    }//End Method
