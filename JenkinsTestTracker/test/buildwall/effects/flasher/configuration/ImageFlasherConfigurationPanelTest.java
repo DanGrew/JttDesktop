@@ -8,6 +8,7 @@
  */
 package buildwall.effects.flasher.configuration;
 
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -25,6 +26,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import buildwall.configuration.style.BuildWallConfigurationStyleTest;
 import buildwall.effects.flasher.ImageFlasherImplTest;
 import buildwall.effects.flasher.ImageFlasherProperties;
 import buildwall.effects.flasher.ImageFlasherPropertiesImpl;
@@ -35,9 +37,12 @@ import graphics.PlatformDecouplerImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser.ExtensionFilter;
 import utility.TestCommon;
 
@@ -62,7 +67,7 @@ public class ImageFlasherConfigurationPanelTest {
       when( fileChooser.getExtensionFilters() ).thenReturn( extensionFilters );
       
       properties = new ImageFlasherPropertiesImpl();
-      systemUnderTest = new ImageFlasherConfigurationPanel( properties, fileChooser );
+      systemUnderTest = new ImageFlasherConfigurationPanel( "Test Flasher", properties, fileChooser );
    }//End Method
 
    @Ignore
@@ -70,7 +75,7 @@ public class ImageFlasherConfigurationPanelTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       JavaFxInitializer.launchInWindow( () -> {
-         systemUnderTest = new ImageFlasherConfigurationPanel( properties );
+         systemUnderTest = new ImageFlasherConfigurationPanel( "Test Flasher", properties );
          return systemUnderTest;
       } );
       
@@ -324,6 +329,17 @@ public class ImageFlasherConfigurationPanelTest {
       assertThat( systemUnderTest.stopTestFlashButton().isDisabled(), is( false ) );
       properties.flashingSwitch().set( false );
       assertThat( systemUnderTest.stopTestFlashButton().isDisabled(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldCreateTitleWithExpectedProperties(){
+      Label titleLabel = systemUnderTest.titleLabel();
+      assertThat( titleLabel.getFont().getSize(), closeTo( BuildWallConfigurationStyleTest.TITLE_FONT_SIZE, TestCommon.precision() ) );
+      assertThat( GridPane.getColumnIndex( titleLabel ), is( 0 ) );
+      assertThat( GridPane.getRowIndex( titleLabel ), is( 0 ) );
+      assertThat( GridPane.getColumnSpan( titleLabel ), is( 2 ) );
+      assertThat( GridPane.getRowSpan( titleLabel ), is( 1 ) );
+      assertThat( GridPane.getHalignment( titleLabel ), is( HPos.CENTER ) );
+      assertThat( GridPane.getValignment( titleLabel ), is( VPos.CENTER ) );
    }//End Method
 
 }//End Class

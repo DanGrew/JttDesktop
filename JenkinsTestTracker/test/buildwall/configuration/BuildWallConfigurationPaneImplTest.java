@@ -19,6 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import buildwall.configuration.style.BuildWallConfigurationStyleTest;
 import buildwall.panel.type.JobPanelDescriptionProviders;
 import graphics.JavaFxInitializer;
 import javafx.event.ActionEvent;
@@ -466,7 +467,7 @@ public class BuildWallConfigurationPaneImplTest {
     */
    private void assertColumnConstraints( GridPane grid ){
       Assert.assertEquals( 
-               BuildWallConfigurationPanelImpl.CONTROLS_PERCENTAGE_WIDTH, 
+               BuildWallConfigurationStyleTest.CONTROLS_PERCENTAGE_WIDTH, 
                grid.getColumnConstraints().get( 1 ).getPercentWidth(),
                TestCommon.precision()
       );
@@ -532,7 +533,7 @@ public class BuildWallConfigurationPaneImplTest {
    
    @Test public void shouldCreateTitleWithExpectedProperties(){
       Label titleLabel = systemUnderTest.titleLabel();
-      assertThat( titleLabel.getFont().getSize(), closeTo( BuildWallConfigurationPanelImpl.TITLE_FONT_SIZE, TestCommon.precision() ) );
+      assertThat( titleLabel.getFont().getSize(), closeTo( BuildWallConfigurationStyleTest.TITLE_FONT_SIZE, TestCommon.precision() ) );
       assertThat( GridPane.getColumnIndex( titleLabel ), is( 0 ) );
       assertThat( GridPane.getRowIndex( titleLabel ), is( 0 ) );
       assertThat( GridPane.getColumnSpan( titleLabel ), is( 2 ) );

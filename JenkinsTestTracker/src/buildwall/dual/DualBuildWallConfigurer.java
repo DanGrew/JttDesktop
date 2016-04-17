@@ -55,7 +55,7 @@ class DualBuildWallConfigurer {
       
       this.leftConfigurationPanel = new BuildWallConfigurationPanelImpl( "Left Wall Configuration", leftConfiguration );
       this.rightConfigurationPanel = new BuildWallConfigurationPanelImpl( "Right Wall Configuration", rightConfiguration );
-      this.imageFlasherPanel = new ImageFlasherConfigurationPanel( imageFlasherProperties );
+      this.imageFlasherPanel = new ImageFlasherConfigurationPanel( "Failure Image Flash", imageFlasherProperties );
    }//End Constructor
 
    /**

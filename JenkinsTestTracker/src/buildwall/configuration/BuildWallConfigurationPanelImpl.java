@@ -40,11 +40,8 @@ import javafx.spinner.PropertySpinner;
  */
 public class BuildWallConfigurationPanelImpl extends GridPane {
    
-   static final int TITLE_FONT_SIZE = 30;
    static final int MAXIMUM_FONT_SIZE = 500;
    static final int MINIMUM_FONT_SIZE = 1;
-   static final double LABEL_PERCENTAGE_WIDTH = 40;
-   static final double CONTROLS_PERCENTAGE_WIDTH = 60;
    static final int MINIMUM_COLUMNS = 1;
    static final int MAXIMUM_COLUMNS = 1000;
    
@@ -116,15 +113,13 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       width.setHgrow( Priority.ALWAYS );
       getColumnConstraints().addAll( width );
    }//End Constructor
-   
+
    /**
-    * Method to construct a title for the configuration panel.
-    * @param title the string title to create a {@link Label} for.
+    * Method to construct the title for the panel.
+    * @param title the title to use.
     */
    private void constructTitle( String title ) {
-      titleLabel = styling.createBoldLabel( title, TITLE_FONT_SIZE );
-      titleLabel.setAlignment( Pos.CENTER );
-      GridPane.setConstraints( titleLabel, 0, 0, 2, 1, HPos.CENTER, VPos.CENTER );
+      titleLabel = styling.constructTitle( title );
       add( titleLabel, 0, 0 );
    }//End Method
    
@@ -160,7 +155,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
                ( source, old, updated ) -> updateDescriptionTypeButton( updated ) 
       );
 
-      configureColumnConstraints( dimensionsContent );
+      styling.configureColumnConstraints( dimensionsContent );
       
       dimensionsPane = new TitledPane( "Dimensions", dimensionsContent );
       add( dimensionsPane, 0, 1 );
@@ -171,7 +166,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     */
    private void constructJobPoliciesPane(){
       GridPane policiesContent = new JobPolicyPanel( configuration );
-      configureColumnConstraints( policiesContent );
+      styling.configureColumnConstraints( policiesContent );
       
       jobPoliciesPane = new TitledPane( "Job Policies", policiesContent );
       add( jobPoliciesPane, 0, 2 );
@@ -231,7 +226,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureFontSizeSpinner( culpritsFontSizeSpinner, configuration.culpritsFont() );
       fontContent.add( culpritsFontSizeSpinner, 1, 14 );
       
-      configureColumnConstraints( fontContent );
+      styling.configureColumnConstraints( fontContent );
       
       fontPane = new TitledPane( "Fonts", fontContent );
       add( fontPane, 0, 3 );
@@ -271,7 +266,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColorPicker( culpritsColourPicker, configuration.culpritsColour() );
       content.add( culpritsColourPicker, 1, 3 );
       
-      configureColumnConstraints( content );
+      styling.configureColumnConstraints( content );
       
       colourPane = new TitledPane( "Colours", content );
       add( colourPane, 0, 4 );
@@ -287,20 +282,6 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       colorPicker.valueProperty().set( colorProperty.get() );
       colorPicker.valueProperty().addListener( ( source, old, updated ) -> colorProperty.set( updated ) );
       colorProperty.addListener( ( source, old, updated ) -> colorPicker.valueProperty().set( updated ) );
-   }//End Method
-   
-   /**
-    * Method to configure the {@link ColumnConstraints} on the given {@link GridPane}.
-    * @param grid the {@link GridPane} to apply constraints to.
-    */
-   private void configureColumnConstraints( GridPane grid ){
-      ColumnConstraints labels = new ColumnConstraints();
-      labels.setPercentWidth( LABEL_PERCENTAGE_WIDTH );
-      labels.setHgrow( Priority.ALWAYS );
-      ColumnConstraints controls = new ColumnConstraints();
-      controls.setPercentWidth( CONTROLS_PERCENTAGE_WIDTH );
-      controls.setHgrow( Priority.ALWAYS );
-      grid.getColumnConstraints().addAll( labels, controls );  
    }//End Method
    
    /**

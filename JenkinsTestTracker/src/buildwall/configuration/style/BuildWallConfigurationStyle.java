@@ -10,7 +10,13 @@ package buildwall.configuration.style;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -25,6 +31,10 @@ import javafx.spinner.IntegerPropertySpinner;
  */
 public class BuildWallConfigurationStyle {
 
+   static final int TITLE_FONT_SIZE = 30;
+   static final double LABEL_PERCENTAGE_WIDTH = 40;
+   static final double CONTROLS_PERCENTAGE_WIDTH = 60;
+   
    /**
     * Method to create a bold {@link Label}.
     * @param title the text in the {@link Label}.
@@ -93,6 +103,32 @@ public class BuildWallConfigurationStyle {
       spinner.bindProperty( property );
       spinner.setMaxWidth( Double.MAX_VALUE );
       spinner.setEditable( true );
+   }//End Method
+   
+   /**
+    * Method to construct a title for the configuration panel.
+    * @param title the string title to create a {@link Label} for.
+    * @return the {@link Label} constructed.
+    */
+   public Label constructTitle( String title ) {
+      Label titleLabel = createBoldLabel( title, TITLE_FONT_SIZE );
+      titleLabel.setAlignment( Pos.CENTER );
+      GridPane.setConstraints( titleLabel, 0, 0, 2, 1, HPos.CENTER, VPos.CENTER );
+      return titleLabel;
+   }//End Method
+   
+   /**
+    * Method to configure the {@link ColumnConstraints} on the given {@link GridPane}.
+    * @param grid the {@link GridPane} to apply constraints to.
+    */
+   public void configureColumnConstraints( GridPane grid ){
+      ColumnConstraints labels = new ColumnConstraints();
+      labels.setPercentWidth( LABEL_PERCENTAGE_WIDTH );
+      labels.setHgrow( Priority.ALWAYS );
+      ColumnConstraints controls = new ColumnConstraints();
+      controls.setPercentWidth( CONTROLS_PERCENTAGE_WIDTH );
+      controls.setHgrow( Priority.ALWAYS );
+      grid.getColumnConstraints().addAll( labels, controls );  
    }//End Method
    
 }//End Class

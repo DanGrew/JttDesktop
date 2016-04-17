@@ -9,6 +9,7 @@
 package buildwall.configuration.style;
 
 import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -22,7 +23,13 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.FontWeight;
 import javafx.spinner.DefensiveDoubleSpinnerValueFactory;
 import javafx.spinner.DefensiveIntegerSpinnerValueFactory;
@@ -35,6 +42,9 @@ import utility.TestCommon;
  */
 public class BuildWallConfigurationStyleTest {
 
+   public static final int TITLE_FONT_SIZE = BuildWallConfigurationStyle.TITLE_FONT_SIZE;
+   public static final double LABEL_PERCENTAGE_WIDTH = BuildWallConfigurationStyle.LABEL_PERCENTAGE_WIDTH;
+   public static final double CONTROLS_PERCENTAGE_WIDTH = BuildWallConfigurationStyle.CONTROLS_PERCENTAGE_WIDTH;
    private BuildWallConfigurationStyle systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
@@ -119,6 +129,37 @@ public class BuildWallConfigurationStyleTest {
       
       assertThat( spinner.isEditable(), is( true ) );
       assertThat( spinner.getMaxWidth(), is( Double.MAX_VALUE ) );
+   }//End Method
+   
+   @Test public void shouldConstructTitle(){
+      final String title = "some title";
+      Label constructed = systemUnderTest.constructTitle( title );
+      
+      assertThat( constructed.getText(), is( title ) );
+      TestCommon.assertThatFontIsBold( constructed.getFont() );
+      assertThat( constructed.getAlignment(), is( Pos.CENTER ) );
+      
+      assertThat( GridPane.getColumnIndex( constructed ), is( 0 ) );
+      assertThat( GridPane.getRowIndex( constructed ), is( 0 ) );
+      assertThat( GridPane.getColumnSpan( constructed ), is( 2 ) );
+      assertThat( GridPane.getRowSpan( constructed ), is( 1 ) );
+      assertThat( GridPane.getHalignment( constructed ), is( HPos.CENTER ) );
+      assertThat( GridPane.getValignment( constructed ), is( VPos.CENTER ) );
+   }//End Method
+   
+   @Test public void shouldProvideColumnConstraintsForGrid(){
+      GridPane grid = new GridPane();
+      systemUnderTest.configureColumnConstraints( grid );
+      
+      assertThat( grid.getColumnConstraints(), hasSize( 2 ) );
+      
+      ColumnConstraints first = grid.getColumnConstraints().get( 0 );
+      assertThat( first.getPercentWidth(), is( BuildWallConfigurationStyle.LABEL_PERCENTAGE_WIDTH ) );
+      assertThat( first.getHgrow(), is( Priority.ALWAYS ) );
+      
+      ColumnConstraints second = grid.getColumnConstraints().get( 1 );
+      assertThat( second.getPercentWidth(), is( BuildWallConfigurationStyle.CONTROLS_PERCENTAGE_WIDTH ) );
+      assertThat( second.getHgrow(), is( Priority.ALWAYS ) );
    }//End Method
 
 }//End Class

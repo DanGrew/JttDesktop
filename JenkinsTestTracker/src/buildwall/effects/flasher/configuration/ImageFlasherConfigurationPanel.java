@@ -51,6 +51,8 @@ public class ImageFlasherConfigurationPanel extends GridPane {
    private final BuildWallConfigurationStyle styling;
    private final ImageFlasherProperties properties;
    
+   private Label titleLabel;
+   
    private Label imageLabel;
    private Button imageChooserButton;
    private ImageView imageButtonGraphic;
@@ -73,22 +75,25 @@ public class ImageFlasherConfigurationPanel extends GridPane {
    
    /**
     * Constructs a new {@link ImageFlasherConfigurationPanel}.
+    * @param title the title of the configuration pane.
     * @param configuration the {@link ImageFlasherProperties} to configure.
     */
-   public ImageFlasherConfigurationPanel( ImageFlasherProperties properties ) {
-      this( properties, new FriendlyFileChooser() );
+   public ImageFlasherConfigurationPanel( String title, ImageFlasherProperties properties ) {
+      this( title, properties, new FriendlyFileChooser() );
    }//End Constructor
    
    /**
     * Constructs a new {@link ImageFlasherConfigurationPanel}.
+    * @param title the title for the configuration pane.
     * @param configuration the {@link ImageFlasherProperties} to configure.
     * @param fileChooser the {@link FriendlyFileChooser} to use.
     */
-   ImageFlasherConfigurationPanel( ImageFlasherProperties properties, FriendlyFileChooser fileChooser ) {
+   ImageFlasherConfigurationPanel( String title, ImageFlasherProperties properties, FriendlyFileChooser fileChooser ) {
       this.properties = properties;
       this.imageChooser = fileChooser;
       this.styling = new BuildWallConfigurationStyle();
       
+      provideTitle( title );
       provideImageConfiguration();
       provideNumberOfFlashes();
       provideFlashOn();
@@ -96,55 +101,17 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       provideTransparency();
       provideTestMechanism();
       
+      styling.configureColumnConstraints( this );
       setPadding( new Insets( INSETS ) );
    }//End Constructor
    
    /**
-    * Method to provide configuration components for the number of flashes property.
+    * Method to construct the title for the panel.
+    * @param title the title to use.
     */
-   private void provideNumberOfFlashes() {
-      numberOfFlashesLabel = styling.createBoldLabel( NUMBER_OF_FLASHES_LABEL );
-      add( numberOfFlashesLabel, 0, 1 );
-      
-      numberOfFlashesSpinner = new IntegerPropertySpinner();  
-      styling.configureIntegerSpinner( numberOfFlashesSpinner, properties.numberOfFlashesProperty(), 1, 1000, 1 );
-      add( numberOfFlashesSpinner, 1, 1 );
-   }//End Method
-   
-   /**
-    * Method to provide configuration components for the flash on property.
-    */
-   private void provideFlashOn() {
-      flashOnLabel = styling.createBoldLabel( FLASH_ON_LABEL );
-      add( flashOnLabel, 0, 2 );
-      
-      flashOnSpinner = new IntegerPropertySpinner();  
-      styling.configureIntegerSpinner( flashOnSpinner, properties.flashOnProperty(), 1, Integer.MAX_VALUE, 1000 );
-      add( flashOnSpinner, 1, 2 );
-   }//End Method
-
-   /**
-    * Method to provide configuration components for the flash off property.
-    */
-   private void provideFlashOff() {
-      flashOffLabel = styling.createBoldLabel( FLASH_OFF_LABEL );
-      add( flashOffLabel, 0, 3 );
-      
-      flashOffSpinner = new IntegerPropertySpinner();  
-      styling.configureIntegerSpinner( flashOffSpinner, properties.flashOffProperty(), 1, Integer.MAX_VALUE, 500 );
-      add( flashOffSpinner, 1, 3 );
-   }//End Method
-   
-   /**
-    * Method to provide configuration components for the transparency property.
-    */
-   private void provideTransparency() {
-      transparencyLabel = styling.createBoldLabel( TRANSPARENCY_LABEL );
-      add( transparencyLabel, 0, 4 );
-      
-      transparencySpinner = new DoublePropertySpinner();  
-      styling.configureDoubleSpinner( transparencySpinner, properties.transparencyProperty(), 0.0, 1.0, 0.05 );
-      add( transparencySpinner, 1, 4 );
+   private void provideTitle( String title ) {
+      titleLabel = styling.constructTitle( title );
+      add( titleLabel, 0, 0 );
    }//End Method
 
    /**
@@ -152,7 +119,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
     */
    private void provideImageConfiguration() {
       imageLabel = styling.createBoldLabel( IMAGE_LABEL_TEXT );
-      add( imageLabel, 0, 0 );
+      add( imageLabel, 0, 1 );
       
       imageChooser.setTitle( IMAGE_CHOOSER_TITLE );
       imageChooser.setInitialDirectory( USER_HOME_FILE );
@@ -165,7 +132,55 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       imageChooserButton = new Button( SELECT_IMAGE_TEXT );
       imageChooserButton.setMaxWidth( Double.MAX_VALUE );
       imageChooserButton.setOnAction( event -> handleImageSelection() );
-      add( imageChooserButton, 1, 0 );
+      add( imageChooserButton, 1, 1 );
+   }//End Method
+   
+   /**
+    * Method to provide configuration components for the number of flashes property.
+    */
+   private void provideNumberOfFlashes() {
+      numberOfFlashesLabel = styling.createBoldLabel( NUMBER_OF_FLASHES_LABEL );
+      add( numberOfFlashesLabel, 0, 2 );
+      
+      numberOfFlashesSpinner = new IntegerPropertySpinner();  
+      styling.configureIntegerSpinner( numberOfFlashesSpinner, properties.numberOfFlashesProperty(), 1, 1000, 1 );
+      add( numberOfFlashesSpinner, 1, 2 );
+   }//End Method
+   
+   /**
+    * Method to provide configuration components for the flash on property.
+    */
+   private void provideFlashOn() {
+      flashOnLabel = styling.createBoldLabel( FLASH_ON_LABEL );
+      add( flashOnLabel, 0, 3 );
+      
+      flashOnSpinner = new IntegerPropertySpinner();  
+      styling.configureIntegerSpinner( flashOnSpinner, properties.flashOnProperty(), 1, Integer.MAX_VALUE, 1000 );
+      add( flashOnSpinner, 1, 3 );
+   }//End Method
+
+   /**
+    * Method to provide configuration components for the flash off property.
+    */
+   private void provideFlashOff() {
+      flashOffLabel = styling.createBoldLabel( FLASH_OFF_LABEL );
+      add( flashOffLabel, 0, 4 );
+      
+      flashOffSpinner = new IntegerPropertySpinner();  
+      styling.configureIntegerSpinner( flashOffSpinner, properties.flashOffProperty(), 1, Integer.MAX_VALUE, 500 );
+      add( flashOffSpinner, 1, 4 );
+   }//End Method
+   
+   /**
+    * Method to provide configuration components for the transparency property.
+    */
+   private void provideTransparency() {
+      transparencyLabel = styling.createBoldLabel( TRANSPARENCY_LABEL );
+      add( transparencyLabel, 0, 5 );
+      
+      transparencySpinner = new DoublePropertySpinner();  
+      styling.configureDoubleSpinner( transparencySpinner, properties.transparencyProperty(), 0.0, 1.0, 0.05 );
+      add( transparencySpinner, 1, 5 );
    }//End Method
    
    /**
@@ -189,12 +204,12 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       testFlashButton = new Button( TEST_FLASH_LABEL );
       testFlashButton.setMaxWidth( Double.MAX_VALUE );
       testFlashButton.setOnAction( event -> properties.flashingSwitch().set( true ) );
-      add( testFlashButton, 0, 5 );
+      add( testFlashButton, 0, 6 );
       
       stopFlashButton = new Button( STOP_FLASH_LABEL );
       stopFlashButton.setMaxWidth( Double.MAX_VALUE );
       stopFlashButton.setOnAction( event -> properties.flashingSwitch().set( false ) );
-      add( stopFlashButton, 1, 5 );
+      add( stopFlashButton, 1, 6 );
       
       properties.flashingSwitch().addListener( this::updateTestButtons );
       updateTestButtons( properties.flashingSwitch(), false, false );
@@ -266,5 +281,9 @@ public class ImageFlasherConfigurationPanel extends GridPane {
 
    Button stopTestFlashButton() {
       return stopFlashButton;
+   }//End Method
+
+   Label titleLabel() {
+      return titleLabel;
    }//End Method
 }//End Class
