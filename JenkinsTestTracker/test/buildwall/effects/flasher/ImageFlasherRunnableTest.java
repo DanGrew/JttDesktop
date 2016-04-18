@@ -50,6 +50,7 @@ public class ImageFlasherRunnableTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
       properties = new ImageFlasherPropertiesImpl();
       systemUnderTest = new ImageFlasherRunnable( imageFlasher, properties );
@@ -96,18 +97,17 @@ public class ImageFlasherRunnableTest {
     * Method to assert that time between instruction is correct.
     */
    private void assertTimeBetweenInstructions() {
-      countedInstructions++;
-      
       long currentSystemTime = System.currentTimeMillis();
       long timeTaken = currentSystemTime - lastRecordedSystemTime;
       if ( countedInstructions % 2 == 0 ) {
-         assertThat( timeTaken, greaterThanOrEqualTo( ( long )properties.flashOnProperty().get() ) );
-         System.out.println( "proving on " + currentSystemTime );
-      } else {
+         System.out.println( "proving time leading up to flash on " + currentSystemTime );
          assertThat( timeTaken, greaterThanOrEqualTo( ( long )properties.flashOffProperty().get() ) );
-         System.out.println( "proving of " + currentSystemTime );
+      } else {
+         System.out.println( "proving time leading up to flash off " + currentSystemTime );
+         assertThat( timeTaken, greaterThanOrEqualTo( ( long )properties.flashOnProperty().get() ) );
       }
       
+      countedInstructions++;
       lastRecordedSystemTime = currentSystemTime;
       
       latch.countDown();

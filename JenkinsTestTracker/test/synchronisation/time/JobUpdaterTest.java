@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import api.handling.JenkinsFetcher;
+import api.handling.JenkinsProcessing;
 
 /**
  * {@link JobUpdater} test.
@@ -32,14 +32,14 @@ public class JobUpdaterTest {
    @Captor private ArgumentCaptor< Long > intervalCaptor;
    
    @Mock private Timer timer;
-   @Mock private JenkinsFetcher fetcher;
+   @Mock private JenkinsProcessing jenkinsProcessing;
    private Long interval;
    private JobUpdater systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       interval = 1000l;
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new JobUpdater( timer, fetcher, interval );
+      systemUnderTest = new JobUpdater( timer, jenkinsProcessing, interval );
    }//End Method
    
    @Test public void shouldScheduleTimerTaskOnTimer(){
@@ -57,23 +57,23 @@ public class JobUpdaterTest {
       
       Assert.assertEquals( 1, timerTaskCaptor.getAllValues().size() );
       Assert.assertNotNull( timerTaskCaptor.getValue() );
-      Mockito.verifyZeroInteractions( fetcher );
+      Mockito.verifyZeroInteractions( jenkinsProcessing );
       
       timerTaskCaptor.getValue().run();
-      Mockito.verify( fetcher ).fetchJobsAndUpdateDetails();
+      Mockito.verify( jenkinsProcessing ).fetchJobsAndUpdateDetails();
    }//End Method
    
    @Test public void pollShouldRunRunnable(){
-      Mockito.verifyZeroInteractions( fetcher );
+      Mockito.verifyZeroInteractions( jenkinsProcessing );
       systemUnderTest.poll();
-      Mockito.verify( fetcher ).fetchJobsAndUpdateDetails();
+      Mockito.verify( jenkinsProcessing ).fetchJobsAndUpdateDetails();
    }//End Method
 
    @Test public void manualConstructorPollShouldRunRunnable(){
-      Mockito.verifyZeroInteractions( fetcher );
-      systemUnderTest = new JobUpdater( fetcher );
+      Mockito.verifyZeroInteractions( jenkinsProcessing );
+      systemUnderTest = new JobUpdater( jenkinsProcessing );
       systemUnderTest.poll();
-      Mockito.verify( fetcher ).fetchJobsAndUpdateDetails();
+      Mockito.verify( jenkinsProcessing ).fetchJobsAndUpdateDetails();
    }//End Method
 
 }//End Class

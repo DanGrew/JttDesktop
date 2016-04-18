@@ -23,9 +23,9 @@ import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
 
 /**
- * {@link JenkinsProcessing} test.
+ * {@link JenkinsProcessingImpl} test.
  */
-public class JenkinsProcessingTest {
+public class JenkinsProcessingImplTest {
 
    private JenkinsDatabase database;
    private JenkinsJob firstJob;
@@ -34,7 +34,7 @@ public class JenkinsProcessingTest {
    
    @Mock private JenkinsFetcher fetcher;
    @Mock private JenkinsProcessingDigest digest;
-   private JenkinsProcessing systemUnderTest;
+   private JenkinsProcessingImpl systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
@@ -47,15 +47,15 @@ public class JenkinsProcessingTest {
       thirdJob = new JenkinsJobImpl( "third" );
       database.store( thirdJob );
       
-      systemUnderTest = new JenkinsProcessing( database, fetcher, digest );
+      systemUnderTest = new JenkinsProcessingImpl( database, fetcher, digest );
    }//End Method
 
    @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullDatabase(){
-      new JenkinsProcessing( null, fetcher );
+      new JenkinsProcessingImpl( null, fetcher );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullFetcher(){
-      new JenkinsProcessing( database, null );
+      new JenkinsProcessingImpl( database, null );
    }//End Method
    
    @Test public void updateBuildStateShouldCallThrough() {

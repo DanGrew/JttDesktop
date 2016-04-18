@@ -10,6 +10,8 @@ package core;
 
 import api.handling.JenkinsFetcher;
 import api.handling.JenkinsFetcherImpl;
+import api.handling.JenkinsProcessing;
+import api.handling.JenkinsProcessingImpl;
 import api.sources.ExternalApi;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
@@ -23,7 +25,7 @@ import synchronisation.testresults.JobMonitorImpl;
 public abstract class JenkinsTestTrackerCoreImpl {
 
    private final JenkinsDatabase database;
-   private final JenkinsFetcher fetcher; 
+   private final JenkinsProcessing jenkinsProcessing; 
    private TimeKeeper jobUpdater;
    private TimeKeeper buildProgressor;
    
@@ -33,7 +35,8 @@ public abstract class JenkinsTestTrackerCoreImpl {
     */
    public JenkinsTestTrackerCoreImpl( ExternalApi api ) {
       database = new JenkinsDatabaseImpl();
-      fetcher = new JenkinsFetcherImpl( database, api );
+      JenkinsFetcher fetcher = new JenkinsFetcherImpl( database, api );
+      jenkinsProcessing = new JenkinsProcessingImpl( database, fetcher );
       new JobMonitorImpl( database, fetcher );
       initialiseTimeKeepers();
    }//End Constructor
@@ -50,6 +53,7 @@ public abstract class JenkinsTestTrackerCoreImpl {
     */
    protected void setTimeKeepers( TimeKeeper jobUpdater, TimeKeeper buildProgressor ) {
       if ( this.jobUpdater != null || this.buildProgressor != null ) throw new IllegalArgumentException( "Already initialised." );
+      
       this.jobUpdater = jobUpdater;
       this.buildProgressor = buildProgressor;
    }//End Method
@@ -63,11 +67,11 @@ public abstract class JenkinsTestTrackerCoreImpl {
    }//End Method
    
    /**
-    * Getter for the {@link JenkinsFetcher}.
-    * @return the {@link JenkinsFetcher}.
+    * Getter for the {@link JenkinsProcessing}.
+    * @return the {@link JenkinsProcessing}.
     */
-   protected JenkinsFetcher getJenkinsFetcher(){
-      return fetcher;
+   protected JenkinsProcessing getJenkinsProcessing(){
+      return jenkinsProcessing;
    }//End Method
 
    /**

@@ -24,7 +24,6 @@ import storage.database.JenkinsDatabase;
  */
 public class JenkinsFetcherImpl implements JenkinsFetcher {
 
-   private JenkinsDatabase database;
    private ExternalApi externalApi;
    private JsonJobImporter jobsImporter;
    private JsonUserImporter usersImporter;
@@ -50,7 +49,6 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       if ( database == null ) throw new IllegalArgumentException( "Null database provided." );
       if ( externalApi == null ) throw new IllegalArgumentException( "Null api provided." );
       
-      this.database = database;
       this.externalApi = externalApi;
       jobsImporter = new JsonJobImporterImpl( database, this );
       usersImporter = new JsonUserImporterImpl( database );
@@ -134,20 +132,6 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       testsImporter.updateTestResults( response );
       response = externalApi.getLatestTestResultsUnwrapped( jenkinsJob );
       testsImporter.updateTestResults( response );
-   }//End Method
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override public void fetchJobsAndUpdateDetails() {
-      fetchJobs();
-      
-      digest.startUpdatingJobs( database.jenkinsJobs().size() );
-      for ( JenkinsJob job : database.jenkinsJobs() ) {
-         updateJobDetails( job );
-         digest.updatedJob( job );
-      }
-      digest.jobsUpdated();
    }//End Method
 
 }//End Class

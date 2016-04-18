@@ -10,7 +10,7 @@ package synchronisation.time;
 
 import java.util.Timer;
 
-import api.handling.JenkinsFetcher;
+import api.handling.JenkinsProcessing;
 import synchronisation.model.TimeKeeper;
 
 /**
@@ -25,23 +25,23 @@ public class JobUpdater extends TimeKeeper {
    /**
     * Constructs a new {@link JobUpdater}.
     * @param timer the {@link Timer} to time events.
-    * @param fetcher the {@link JenkinsFetcher} to request job updates on.
+    * @param jenkinsProcessing the {@link JenkinsProcessing} to request job updates on.
     * @param interval the interval between updates.
     */
-   public JobUpdater( Timer timer, JenkinsFetcher fetcher, Long interval ) {
+   public JobUpdater( Timer timer, JenkinsProcessing jenkinsProcessing, Long interval ) {
       super( 
                timer, 
-               () -> fetcher.fetchJobsAndUpdateDetails(),
+               () -> jenkinsProcessing.fetchJobsAndUpdateDetails(),
                interval
       );
    }//End Constructor
    
    /**
     * Constructs a new {@link JobUpdater}.
-    * @param fetcher the {@link JenkinsFetcher} to request job updates on.
+    * @param jenkinsProcessing the {@link JenkinsProcessing} to request job updates on.
     */
-   public JobUpdater( JenkinsFetcher fetcher ) {
-      super( () -> fetcher.fetchJobsAndUpdateDetails() );
+   public JobUpdater( JenkinsProcessing jenkinsProcessing ) {
+      super( () -> jenkinsProcessing.fetchJobsAndUpdateDetails() );
    }//End Constructor
 
 }//End Class

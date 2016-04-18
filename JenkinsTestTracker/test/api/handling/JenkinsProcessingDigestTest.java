@@ -61,7 +61,7 @@ public class JenkinsProcessingDigestTest {
       job = new JenkinsJobImpl( "some jenkins job" );
       
       systemUnderTest = new JenkinsProcessingDigest();
-      systemUnderTest.attachSource( mock( JenkinsProcessing.class ) );
+      systemUnderTest.attachSource( mock( JenkinsProcessingImpl.class ) );
    }//End Method
    
    @Test public void shouldProvideConstantName() {

@@ -244,36 +244,6 @@ public class JenkinsFetcherImplTest {
       verify( externalApi ).getLatestTestResultsUnwrapped( jenkinsJob );
    }//End Method
    
-   @Test public void shouldFetchJobsAndUpdateDetailsOnAllNotBuilding(){
-      JenkinsFetcher spy = Mockito.spy( systemUnderTest );
-      
-      JenkinsJob buildingJob1 = new JenkinsJobImpl( "buildingJob1" );
-      database.store( buildingJob1 );
-      buildingJob1.buildStateProperty().set( BuildState.Building );
-      JenkinsJob builtJob1 = new JenkinsJobImpl( "builtJob1" );
-      database.store( builtJob1 );
-      JenkinsJob buildingJob2 = new JenkinsJobImpl( "buildingJob2" );
-      database.store( buildingJob2 );
-      buildingJob2.buildStateProperty().set( BuildState.Building );
-      JenkinsJob builtJob2 = new JenkinsJobImpl( "builtJob2" );
-      database.store( builtJob2 );
-      
-      spy.fetchJobsAndUpdateDetails();
-      verify( spy ).fetchJobs();
-      verify( spy ).updateBuildState( buildingJob1 );
-      verify( spy ).updateBuildState( builtJob1 );
-      verify( spy ).updateBuildState( buildingJob2 );
-      verify( spy ).updateBuildState( builtJob2 );
-      verify( spy ).updateJobDetails( builtJob1 );
-      verify( spy ).updateJobDetails( builtJob2 );
-
-      verify( digest ).startUpdatingJobs( database.jenkinsJobs().size() );
-      for ( JenkinsJob job : database.jenkinsJobs() ) {
-         verify( digest ).updatedJob( job );
-      }
-      verify( digest ).jobsUpdated();
-   }//End Method
-   
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullDatabaseInConstructor(){
       systemUnderTest = new JenkinsFetcherImpl( null, externalApi );
    }//End Method
