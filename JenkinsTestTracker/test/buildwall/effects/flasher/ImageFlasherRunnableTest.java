@@ -174,11 +174,10 @@ public class ImageFlasherRunnableTest {
     * Method to interrupt the thread at the stopping point.
     */
    private void interruptAtStoppingPoint(){
-      if ( counter.get() == 0 ) latch.countDown();
-      
       counter.set( counter.get() + 1 );
       if ( counter.get() == stoppingPoint ) {
          properties.flashingSwitch().set( false );
+         latch.countDown();
       }
    }//End Method
 }//End Class

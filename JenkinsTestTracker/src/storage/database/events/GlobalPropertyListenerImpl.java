@@ -48,10 +48,10 @@ public class GlobalPropertyListenerImpl< ObjectTypeT, PropertyTypeT > {
       this.propertyGetterFunction = propertyGetterFunction;
       
       databaseJobs.addListener( new FunctionListChangeListenerImpl<>( 
-               object -> listenForJobPropertyChange( object ),
-               object -> removeObjectListeners( object )
+               this::listenForJobPropertyChange,
+               this::removeObjectListeners
       ) );
-      databaseJobs.forEach( object -> listenForJobPropertyChange( object ) );
+      databaseJobs.forEach( this::listenForJobPropertyChange );
    }//End Constructor
    
    /**

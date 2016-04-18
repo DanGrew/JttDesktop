@@ -29,7 +29,7 @@ public class JenkinsJobPropertyListener {
    public JenkinsJobPropertyListener( JenkinsDatabase database ) {
       buildResultStatusPropertyListener = new GlobalPropertyListenerImpl<>(
                database.jenkinsJobs(), 
-               job -> { return job.lastBuildStatusProperty(); }
+               job -> job.lastBuildStatusProperty()
       );
    }//End Constructor
 
