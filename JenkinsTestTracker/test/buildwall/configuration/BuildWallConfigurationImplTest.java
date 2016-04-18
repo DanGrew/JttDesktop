@@ -44,8 +44,8 @@ public class BuildWallConfigurationImplTest {
       
       assertThat( systemUnderTest.jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Default ) );
       
-      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_PROPERTIES_FONT, systemUnderTest.culpritsFont().get() );
-      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.culpritsColour().get() );
+      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_PROPERTIES_FONT, systemUnderTest.detailFont().get() );
+      Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.detailColour().get() );
    }//End Method
    
 }//End Class

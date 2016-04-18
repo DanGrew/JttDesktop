@@ -48,7 +48,6 @@ public class DetailedJobPanelDescriptionImplTest extends JobPanelDescriptionBase
       JenkinsUser carol = new JenkinsUserImpl( "Carol" );
 
       job.culprits().addAll( rick, daryl, carl, michonne, abraham, maggie, glenn, eugene, jesus, carol );
-      
       systemUnderTest = new DetailedJobPanelDescriptionImpl( configuration, job );
    }//End Method
    
@@ -58,6 +57,7 @@ public class DetailedJobPanelDescriptionImplTest extends JobPanelDescriptionBase
          configuration.buildNumberColour().set( Color.BLACK );
          configuration.jobNameColour().set( Color.BLACK );
          configuration.completionEstimateColour().set( Color.BLACK );
+         configuration.detailColour().set( Color.BLACK );
          return new DetailedJobPanelDescriptionImpl( configuration, job ); 
       } );
       Thread.sleep( 100000 );

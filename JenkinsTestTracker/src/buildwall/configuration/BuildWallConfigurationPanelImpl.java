@@ -66,32 +66,32 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private Label jobNameFontLabel;
    private Label buildNumberFontLabel;
    private Label completionEstimateFontLabel;
-   private Label culpritsFontLabel;
+   private Label detailFontLabel;
    
    private Label jobNameColourLabel;
    private Label buildNumberColourLabel;
    private Label completionEstimateColourLabel;
-   private Label culpritsColourLabel;
+   private Label detailColourLabel;
    
    private Label jobNameFontSizeLabel;
    private Label buildNumberFontSizeLabel;
    private Label completionEstimateFontSizeLabel;
-   private Label culpritsFontSizeLabel;
+   private Label detailFontSizeLabel;
    
    private FontFamilyPropertyBox jobNameFontBox;
    private FontFamilyPropertyBox buildNumberFontBox;
    private FontFamilyPropertyBox completionEstimateFontBox;
-   private FontFamilyPropertyBox culpritsFontBox;
+   private FontFamilyPropertyBox detailFontBox;
    
    private PropertySpinner< Integer, Font > jobNameFontSizeSpinner;
    private PropertySpinner< Integer, Font > buildNumberFontSizeSpinner;
    private PropertySpinner< Integer, Font > completionEstimateFontSizeSpinner;
-   private PropertySpinner< Integer, Font > culpritsFontSizeSpinner;
+   private PropertySpinner< Integer, Font > detailFontSizeSpinner;
    
    private ColorPicker jobNameColourPicker;
    private ColorPicker buildNumberColourPicker;
    private ColorPicker completionEstimateColourPicker;
-   private ColorPicker culpritsColourPicker;
+   private ColorPicker detailColourPicker;
    
    /**
     * Constructs a new {@link BuildWallConfigurationPanelImpl}.
@@ -216,17 +216,17 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureFontSizeSpinner( completionEstimateFontSizeSpinner, configuration.completionEstimateFont() );
       fontContent.add( completionEstimateFontSizeSpinner, 1, 10 );
       
-      culpritsFontLabel = styling.createBoldLabel( "Culprits Font" );
-      fontContent.add( culpritsFontLabel, 0, 12 );
-      culpritsFontBox = new FontFamilyPropertyBox( configuration.culpritsFont() );
-      culpritsFontBox.setMaxWidth( Double.MAX_VALUE );
-      fontContent.add( culpritsFontBox, 1, 12 );
+      detailFontLabel = styling.createBoldLabel( "Detail Font" );
+      fontContent.add( detailFontLabel, 0, 12 );
+      detailFontBox = new FontFamilyPropertyBox( configuration.detailFont() );
+      detailFontBox.setMaxWidth( Double.MAX_VALUE );
+      fontContent.add( detailFontBox, 1, 12 );
       
-      culpritsFontSizeLabel = styling.createBoldLabel( "Culprits Size" );
-      fontContent.add( culpritsFontSizeLabel, 0, 14 );
-      culpritsFontSizeSpinner = new PropertySpinner<>();  
-      configureFontSizeSpinner( culpritsFontSizeSpinner, configuration.culpritsFont() );
-      fontContent.add( culpritsFontSizeSpinner, 1, 14 );
+      detailFontSizeLabel = styling.createBoldLabel( "Detail Size" );
+      fontContent.add( detailFontSizeLabel, 0, 14 );
+      detailFontSizeSpinner = new PropertySpinner<>();  
+      configureFontSizeSpinner( detailFontSizeSpinner, configuration.detailFont() );
+      fontContent.add( detailFontSizeSpinner, 1, 14 );
       
       styling.configureColumnConstraints( fontContent );
       
@@ -262,12 +262,12 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       configureColorPicker( completionEstimateColourPicker, configuration.completionEstimateColour() );
       content.add( completionEstimateColourPicker, 1, 2 );
       
-      culpritsColourLabel = styling.createBoldLabel( "Culprits" );
-      content.add( culpritsColourLabel, 0, 3 );
+      detailColourLabel = styling.createBoldLabel( "Detail" );
+      content.add( detailColourLabel, 0, 3 );
       
-      culpritsColourPicker = new ColorPicker();
-      configureColorPicker( culpritsColourPicker, configuration.culpritsColour() );
-      content.add( culpritsColourPicker, 1, 3 );
+      detailColourPicker = new ColorPicker();
+      configureColorPicker( detailColourPicker, configuration.detailColour() );
+      content.add( detailColourPicker, 1, 3 );
       
       styling.configureColumnConstraints( content );
       
@@ -342,8 +342,8 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       return completionEstimateFontBox;
    }//End Method
    
-   ComboBox< String > culpritsFontBox() {
-      return culpritsFontBox;
+   ComboBox< String > detailFontBox() {
+      return detailFontBox;
    }//End Method
 
    TitledPane fontPane() {
@@ -366,8 +366,8 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       return completionEstimateColourPicker;
    }//End Method
    
-   ColorPicker culpritsColourPicker() {
-      return culpritsColourPicker;
+   ColorPicker detailColourPicker() {
+      return detailColourPicker;
    }//End Method
 
    Label jobNameFontLabel() {
@@ -394,12 +394,12 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       return completionEstimateColourLabel;
    }//End Method
    
-   Labeled culpritsFontLabel() {
-      return culpritsFontLabel;
+   Labeled detailFontLabel() {
+      return detailFontLabel;
    }//End Method
 
-   Labeled culpritsColourLabel() {
-      return culpritsColourLabel;
+   Labeled detailColourLabel() {
+      return detailColourLabel;
    }//End Method
 
    TitledPane dimensionsPane() {
@@ -426,8 +426,8 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       return completionEstimateFontSizeSpinner;
    }//End Method
    
-   PropertySpinner< Integer, Font > culpritsFontSizeSpinner() {
-      return culpritsFontSizeSpinner;
+   PropertySpinner< Integer, Font > detailFontSizeSpinner() {
+      return detailFontSizeSpinner;
    }//End Method
 
    Label jobNameFontSizeLabel() {
@@ -442,8 +442,8 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
       return completionEstimateFontSizeLabel;
    }//End Method
    
-   Label culpritsFontSizeLabel() {
-      return culpritsFontSizeLabel;
+   Label detailFontSizeLabel() {
+      return detailFontSizeLabel;
    }//End Method
 
    TitledPane jobPoliciesPane() {

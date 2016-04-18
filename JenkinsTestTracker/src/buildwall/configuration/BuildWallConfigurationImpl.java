@@ -45,8 +45,8 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
    private ObservableMap< JenkinsJob, BuildWallJobPolicy > jobPolicies;
    private ObjectProperty< JobPanelDescriptionProvider > jobPanelDescriptionProvider;
    
-   private ObjectProperty< Font > culpritsFont;
-   private ObjectProperty< Color > culpritsColour;
+   private ObjectProperty< Font > detailFont;
+   private ObjectProperty< Color > detailColour;
    
    /**
     * Constructs a new {@link BuildWallConfigurationImpl}.
@@ -66,8 +66,8 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
       jobPolicies = FXCollections.observableHashMap();
       jobPanelDescriptionProvider = new SimpleObjectProperty<>( JobPanelDescriptionProviders.Default );
       
-      culpritsColour = new SimpleObjectProperty<>( DEFAULT_TEXT_COLOUR );
-      culpritsFont = new SimpleObjectProperty<>( DEFAULT_PROPERTIES_FONT );
+      detailColour = new SimpleObjectProperty<>( DEFAULT_TEXT_COLOUR );
+      detailFont = new SimpleObjectProperty<>( DEFAULT_PROPERTIES_FONT );
    }//End Constructor
    
    /**
@@ -136,15 +136,15 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
    /**
     * {@inheritDoc}
     */
-   @Override public ObjectProperty< Font > culpritsFont() {
-      return culpritsFont;
+   @Override public ObjectProperty< Font > detailFont() {
+      return detailFont;
    }//End Method
 
    /**
     * {@inheritDoc}
     */
-   @Override public ObjectProperty< Color > culpritsColour() {
-      return culpritsColour;
+   @Override public ObjectProperty< Color > detailColour() {
+      return detailColour;
    }//End Method
 
 }//End Class

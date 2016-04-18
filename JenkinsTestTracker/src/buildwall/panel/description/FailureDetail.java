@@ -8,6 +8,9 @@
  */
 package buildwall.panel.description;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import buildwall.configuration.BuildWallConfiguration;
 import graphics.DecoupledPlatformImpl;
 import javafx.registrations.ChangeListenerRegistrationImpl;
@@ -18,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import model.jobs.JenkinsJob;
+import model.tests.TestClass;
 import utility.observable.FunctionListChangeListenerImpl;
 
 /**
@@ -29,11 +33,19 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    static final String CULPRIT_PREFIX = "Suspect: ";
    static final String CULPRITS_PREFIX = "Suspects: ";
    static final String NO_CULPRITS = "No Suspects.";
+   
+   static final String FAILING_TEST_CLASS_PREFIX = "Failure:";
+   static final String FAILING_TEST_CLASSES_PREFIX = "Failures:";
+   static final String NO_FAILING_TESTS = "No Failures.";
+   static final double CULPRITS_ROW_PERCENT = 30.0;
+   static final double FAILURES_ROW_PERCENT = 70.0;
+   
    private final BuildWallConfiguration configuration;
    private final JenkinsJob jenkinsJob;
    
    private RegistrationManager registrations;
    private Label culpritsLabel;
+   private Label failingLabel;
    
    /**
     * Constructs a new {@link FailureDetail}.
@@ -45,6 +57,11 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       this.configuration = configuration;
       
       provideCulprits();
+      provideFailingTestCases();
+      
+      updateDetailColour();
+      updateDetailFont();
+      
       applyRegistrations();
       applyRowConstraints();
    }//End Constructor
@@ -55,8 +72,6 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    private void provideCulprits(){  
       culpritsLabel = new Label();
       updateCulpritText();
-      updateCulpritFont();
-      updateCulpritColour();
       culpritsLabel.setWrapText( true );
       add( culpritsLabel, 0, 0 );
    }//End Method
@@ -68,7 +83,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    private StringBuilder constructCulpritsList() {
       StringBuilder culprits = new StringBuilder();
       
-      if ( jenkinsJob.culprits().size() == 0 ) {
+      if ( jenkinsJob.culprits().isEmpty() ) {
          culprits.append( NO_CULPRITS );
          return culprits;
       }
@@ -90,13 +105,61 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    }//End Method
    
    /**
+    * Method to provide the culprits on the component as a {@link Label}.
+    */
+   private void provideFailingTestCases(){  
+      failingLabel = new Label();
+      failingLabel.setLineSpacing( 0.0 );
+      updateFailuresText();
+      failingLabel.setWrapText( true );
+      add( failingLabel, 0, 1 );
+   }//End Method
+
+   /**
+    * Method to construct the list of culprits as a {@link StringBuilder}.
+    * @return the {@link StringBuilder} for further changes if needed.
+    */
+   private StringBuilder constructFailingTestCasesList() {
+      StringBuilder failingTests = new StringBuilder();
+      
+      Set< TestClass > uniqueTestClasses = new LinkedHashSet<>();
+      jenkinsJob.failingTestCases().forEach( testCase -> uniqueTestClasses.add( testCase.testClassProperty().get() ) );
+      
+      if ( uniqueTestClasses.isEmpty() ) {
+         failingTests.append( NO_FAILING_TESTS );
+         return failingTests;
+      }
+      
+      if ( uniqueTestClasses.size() == 1 ) {
+         failingTests.append( FAILING_TEST_CLASS_PREFIX );
+      } else {
+         failingTests.append( FAILING_TEST_CLASSES_PREFIX );
+      }
+      failingTests.append( "\n" );
+      
+      uniqueTestClasses.forEach( test -> {
+         failingTests.append( test.nameProperty().get() );
+         failingTests.append( "\n" );
+      } );
+      if ( failingTests.length() > 0 ) {
+         failingTests.setLength( failingTests.length() - 1 );
+      }
+      return failingTests;
+   }//End Method
+   
+   /**
     * Method to apply the {@link RowConstraints} needed.
     */
    private void applyRowConstraints() {
       RowConstraints culpritsRow = new RowConstraints();
-      culpritsRow.setPercentHeight( 100 );
+      culpritsRow.setPercentHeight( CULPRITS_ROW_PERCENT );
       culpritsRow.setMaxHeight( Double.MAX_VALUE );
-      getRowConstraints().add( culpritsRow );
+      
+      RowConstraints failuresRow = new RowConstraints();
+      failuresRow.setPercentHeight( FAILURES_ROW_PERCENT );
+      failuresRow.setMaxHeight( Double.MAX_VALUE );
+      
+      getRowConstraints().addAll( culpritsRow, failuresRow );
    }//End Method
    
    /**
@@ -106,19 +169,26 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       registrations = new RegistrationManager();
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               configuration.culpritsFont(), 
-               ( source, old, updated ) -> updateCulpritFont() 
+               configuration.detailFont(), 
+               ( source, old, updated ) -> updateDetailFont() 
       ) );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               configuration.culpritsColour(), 
-               ( source, old, updated ) -> updateCulpritColour() 
+               configuration.detailColour(), 
+               ( source, old, updated ) -> updateDetailColour() 
       ) );
       
       registrations.apply( new ListChangeListenerRegistrationImpl<>(
                jenkinsJob.culprits(), 
                new FunctionListChangeListenerImpl<>( 
                         added -> updateCulpritText(), removed -> updateCulpritText()
+               )
+      ) );
+      
+      registrations.apply( new ListChangeListenerRegistrationImpl<>(
+               jenkinsJob.failingTestCases(), 
+               new FunctionListChangeListenerImpl<>( 
+                        added -> updateFailuresText(), removed -> updateFailuresText()
                )
       ) );
    }//End Method
@@ -140,15 +210,17 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    /**
     * Method to update the culprits {@link Font} in line with the {@link BuildWallConfiguration}.
     */
-   private void updateCulpritFont(){
-      culpritsLabel.fontProperty().set( configuration.culpritsFont().get() );
+   private void updateDetailFont(){
+      culpritsLabel.fontProperty().set( configuration.detailFont().get() );
+      failingLabel.fontProperty().set( configuration.detailFont().get() );
    }//End Method
    
    /**
     * Method to update the culprits {@link Color} in line with the {@link BuildWallConfiguration}.
     */
-   private void updateCulpritColour(){
-      culpritsLabel.textFillProperty().set( configuration.culpritsColour().get() );
+   private void updateDetailColour(){
+      culpritsLabel.textFillProperty().set( configuration.detailColour().get() );
+      failingLabel.textFillProperty().set( configuration.detailColour().get() );
    }//End Method
    
    /**
@@ -161,8 +233,22 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       } );
    }//End Method
    
+   /**
+    * Method to update the culprit text displayed in the {@link Label}.
+    */
+   private void updateFailuresText(){
+      StringBuilder failures = constructFailingTestCasesList();
+      DecoupledPlatformImpl.runLater( () -> {
+         failingLabel.setText( failures.toString() );
+      } );
+   }//End Method
+   
    Label culpritsLabel() {
       return culpritsLabel;
+   }//End Method
+
+   Label failuresLabel() {
+      return failingLabel;
    }//End Method
    
 }//End Class
