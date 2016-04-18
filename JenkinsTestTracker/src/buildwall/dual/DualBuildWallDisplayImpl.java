@@ -57,10 +57,12 @@ public class DualBuildWallDisplayImpl extends StackPane {
       getChildren().add( buildWallPane );
       
       ImageFlasherProperties imageFlasherProperties = new ImageFlasherPropertiesImpl();
+      //not ideal - must be before flasher registration
+      new JobFailureTrigger( database, imageFlasherProperties );
+      
       imageFlasher = new ImageFlasherImpl( imageFlasherProperties );
       getChildren().add( imageFlasher );
       
-      new JobFailureTrigger( database, imageFlasherProperties );
       
       buildWallConfigurer = new DualBuildWallConfigurer( buildWallPane, leftConfiguration, rightConfiguration, imageFlasherProperties );
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
