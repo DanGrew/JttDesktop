@@ -376,6 +376,7 @@ public class DualBuildWallDisplayImplTest {
    }//End Method
    
    @Test public void shouldStartFlasherWhenFailureHappens(){
+      database.jenkinsJobs().get( 0 ).lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( false ) );
       database.jenkinsJobs().get( 0 ).lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( true ) );
