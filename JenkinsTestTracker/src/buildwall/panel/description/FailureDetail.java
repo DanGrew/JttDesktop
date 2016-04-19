@@ -20,6 +20,7 @@ import javafx.registrations.RegistrationManager;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.tests.TestClass;
 import utility.observable.FunctionListChangeListenerImpl;
@@ -39,6 +40,9 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    static final String NO_FAILING_TESTS = "No Failures.";
    static final double CULPRITS_ROW_PERCENT = 30.0;
    static final double FAILURES_ROW_PERCENT = 70.0;
+   
+   static final Object ABORTED_DESCRIPTION = "ABORTED: Manual, Build Timeout, etc.";
+   static final Object FAILURE_DESCRIPTION = "FAILURE: Compilation Problem, Partial Checkout, etc.";
    
    private final BuildWallConfiguration configuration;
    private final JenkinsJob jenkinsJob;
@@ -122,6 +126,13 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    private StringBuilder constructFailingTestCasesList() {
       StringBuilder failingTests = new StringBuilder();
       
+      BuildResultStatus status = jenkinsJob.lastBuildStatusProperty().get();
+      if ( status == BuildResultStatus.ABORTED ) {
+         return failingTests.append( ABORTED_DESCRIPTION );
+      } else if ( status == BuildResultStatus.FAILURE ) {
+         return failingTests.append( FAILURE_DESCRIPTION );
+      }
+      
       Set< TestClass > uniqueTestClasses = new LinkedHashSet<>();
       jenkinsJob.failingTestCases().forEach( testCase -> uniqueTestClasses.add( testCase.testClassProperty().get() ) );
       
@@ -190,6 +201,11 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
                new FunctionListChangeListenerImpl<>( 
                         added -> updateFailuresText(), removed -> updateFailuresText()
                )
+      ) );
+      
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               jenkinsJob.lastBuildStatusProperty(), 
+               ( source, old, updated ) -> updateFailuresText() 
       ) );
    }//End Method
    
