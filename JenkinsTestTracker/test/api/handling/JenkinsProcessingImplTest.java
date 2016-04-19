@@ -102,57 +102,43 @@ public class JenkinsProcessingImplTest {
       jobUpdates.verify( digest ).jobsUpdated();
    }//End Method
    
+   /**
+    * Method to update the properties of a {@link JenkinsJob} when the {@link JenkinsFetcher} is requested to update details.
+    * @param job the {@link JenkinsJob} to update.
+    * @param buildNumber the build number updated to.
+    * @param status the {@link BuildResultStatus} updated to.
+    */
+   private void updatePropertiesWhenJobDetailsUpdated( JenkinsJob job, int buildNumber, BuildResultStatus status ) {
+      doAnswer( invocation -> { 
+         job.lastBuildNumberProperty().set( buildNumber );
+         job.lastBuildStatusProperty().set( status );
+         return null;
+      } ).when( fetcher ).updateJobDetails( job );
+   }//End Method
+   
    @Test public void shouldNotFetchTestResultsForJobsNotUnstable(){
-      doAnswer( invocation -> { 
-         firstJob.lastBuildNumberProperty().set( 10 );
-         firstJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-         return null;
-      } ).when( fetcher ).updateJobDetails( firstJob );
-      
-      doAnswer( invocation -> { 
-         secondJob.lastBuildNumberProperty().set( 10 );
-         secondJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-         return null;
-      } ).when( fetcher ).updateJobDetails( secondJob );
-      
-      doAnswer( invocation -> { 
-         thirdJob.lastBuildNumberProperty().set( 10 );
-         thirdJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-         return null;
-      } ).when( fetcher ).updateJobDetails( thirdJob );
+      updatePropertiesWhenJobDetailsUpdated( firstJob, 10, BuildResultStatus.SUCCESS );
+      updatePropertiesWhenJobDetailsUpdated( secondJob, 10, BuildResultStatus.SUCCESS );
+      updatePropertiesWhenJobDetailsUpdated( thirdJob, 10, BuildResultStatus.SUCCESS );
       
       systemUnderTest.fetchJobsAndUpdateDetails();
       
       verify( fetcher, never() ).updateTestResults( firstJob );
       verify( fetcher, never() ).updateTestResults( secondJob );
       verify( fetcher, never() ).updateTestResults( thirdJob );
-   }
+   }//End Method
    
    @Test public void shouldOnlyFetchTestResultsForJobsUnstableAndBuildNumberChanged(){
-      doAnswer( invocation -> { 
-         firstJob.lastBuildNumberProperty().set( 10 );
-         firstJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-         return null;
-      } ).when( fetcher ).updateJobDetails( firstJob );
-      
-      doAnswer( invocation -> { 
-         secondJob.lastBuildNumberProperty().set( 10 );
-         secondJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
-         return null;
-      } ).when( fetcher ).updateJobDetails( secondJob );
-      
-      doAnswer( invocation -> { 
-         thirdJob.lastBuildNumberProperty().set( 10 );
-         thirdJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
-         return null;
-      } ).when( fetcher ).updateJobDetails( thirdJob );
+      updatePropertiesWhenJobDetailsUpdated( firstJob, 10, BuildResultStatus.SUCCESS );
+      updatePropertiesWhenJobDetailsUpdated( secondJob, 10, BuildResultStatus.UNSTABLE );
+      updatePropertiesWhenJobDetailsUpdated( thirdJob, 10, BuildResultStatus.FAILURE );
       
       systemUnderTest.fetchJobsAndUpdateDetails();
       
       verify( fetcher, never() ).updateTestResults( firstJob );
       verify( fetcher, times( 1 ) ).updateTestResults( secondJob );
       verify( fetcher, never() ).updateTestResults( thirdJob );
-   }
+   }//End Method
    
 //   @Test public void shouldFetchTestResultsForJobsSuccessWhenWasUnstableAndBuildNumberChanged(){
 //      firstJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );

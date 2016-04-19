@@ -418,17 +418,25 @@ public class JsonTestResultImporterTest {
       }
    }//End Method
    
-   @Test public void shouldAttachFailedTestCasesToJob(){
-      String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
-      Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( jenkinsJob, input );
-      
+   /**
+    * Method to assert that the data has been loaded correctly from the multiple cases and classes sample
+    * file, proving that the database has the correct elements.
+    */
+   private void assertThatMultipleTestCaseAndClassCasesHaveBeenLoaded() {
       Assert.assertEquals( 36, database.testClasses().size() );
       
       assertThat( jenkinsJob.failingTestCases(), hasSize( 3 ) );
       assertThat( jenkinsJob.failingTestCases().get( 0 ).nameProperty().get(), is( "shouldStoreObjectsAndRemoveAllMatches" ) );
       assertThat( jenkinsJob.failingTestCases().get( 1 ).nameProperty().get(), is( "shouldStoreObjectsAndRetrieveAllDefaultMatch" ) );
       assertThat( jenkinsJob.failingTestCases().get( 2 ).nameProperty().get(), is( "shouldAssignUniqueIdentifier" ) );
+   }//End Method
+   
+   @Test public void shouldAttachFailedTestCasesToJob(){
+      String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
+      Assert.assertNotNull( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
+      
+      assertThatMultipleTestCaseAndClassCasesHaveBeenLoaded();
    }//End Method
    
    @Test public void shouldNotDuplicateWhenAttachFailedTestCasesToJob(){
@@ -440,14 +448,9 @@ public class JsonTestResultImporterTest {
       systemUnderTest.updateTestResults( jenkinsJob, input );
       systemUnderTest.updateTestResults( jenkinsJob, input );
       
-      Assert.assertEquals( 36, database.testClasses().size() );
-      
-      assertThat( jenkinsJob.failingTestCases(), hasSize( 3 ) );
-      assertThat( jenkinsJob.failingTestCases().get( 0 ).nameProperty().get(), is( "shouldStoreObjectsAndRemoveAllMatches" ) );
-      assertThat( jenkinsJob.failingTestCases().get( 1 ).nameProperty().get(), is( "shouldStoreObjectsAndRetrieveAllDefaultMatch" ) );
-      assertThat( jenkinsJob.failingTestCases().get( 2 ).nameProperty().get(), is( "shouldAssignUniqueIdentifier" ) );
+      assertThatMultipleTestCaseAndClassCasesHaveBeenLoaded();
    }//End Method
-   
+
    @Test public void shouldNotClearFailuresWhenNoValidResponseReceivedWhenAttachFailedTestCasesToJob(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
       Assert.assertNotNull( input );
@@ -457,12 +460,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.updateTestResults( jenkinsJob, "" );
       systemUnderTest.updateTestResults( jenkinsJob, "anything" );
       
-      Assert.assertEquals( 36, database.testClasses().size() );
-      
-      assertThat( jenkinsJob.failingTestCases(), hasSize( 3 ) );
-      assertThat( jenkinsJob.failingTestCases().get( 0 ).nameProperty().get(), is( "shouldStoreObjectsAndRemoveAllMatches" ) );
-      assertThat( jenkinsJob.failingTestCases().get( 1 ).nameProperty().get(), is( "shouldStoreObjectsAndRetrieveAllDefaultMatch" ) );
-      assertThat( jenkinsJob.failingTestCases().get( 2 ).nameProperty().get(), is( "shouldAssignUniqueIdentifier" ) );
+      assertThatMultipleTestCaseAndClassCasesHaveBeenLoaded();
    }//End Method
    
 }//End Class
