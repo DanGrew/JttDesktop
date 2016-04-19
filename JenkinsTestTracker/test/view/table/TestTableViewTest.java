@@ -358,15 +358,4 @@ public class TestTableViewTest {
       systemUnderTest.removeTestCase( newCase );
    }//End Method
    
-   @Test public void shouldEnableTestResultsSynchronizing(){
-      database.jenkinsJobs().forEach( job -> assertThat( job.testResultsAreSynchronizedProperty().get(), is( true ) ) );
-   }//End Method
-   
-   @Test public void shouldEnableTestResultsAsJobsAreCreated(){
-      JenkinsJob newJob = new JenkinsJobImpl( "anotherJob" );
-      assertThat( newJob.testResultsAreSynchronizedProperty().get(), is( false ) );
-      database.store( newJob );
-      assertThat( newJob.testResultsAreSynchronizedProperty().get(), is( true ) );
-   }//End Method
-
 }//End Class

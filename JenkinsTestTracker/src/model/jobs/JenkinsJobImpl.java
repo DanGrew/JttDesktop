@@ -117,13 +117,6 @@ public class JenkinsJobImpl implements JenkinsJob {
    @Override public LongProperty currentBuildTimestampProperty() {
       return currentBuildTimestamp;
    }//End Method
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override public BooleanProperty testResultsAreSynchronizedProperty() {
-      return testResultsAreSynchronized;
-   }//End Method
    
    /**
     * {@inheritDoc}

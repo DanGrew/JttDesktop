@@ -134,18 +134,6 @@ public class JenkinsJobImplTest {
       Assert.assertEquals( value, systemUnderTest.currentBuildNumberProperty().get() );
    }//End Method
    
-   @Test public void shouldProvideTestResultsAreSynchronizedProperty() {
-      assertThat( systemUnderTest.testResultsAreSynchronizedProperty().get(), is( JenkinsJob.DEFAULT_TEST_RESULTS_ARE_SYNC ) );
-   }//End Method
-   
-   @Test public void shouldUpdateTestResultsAreSynchronizedProperty() {
-      shouldProvideTestResultsAreSynchronizedProperty();
-      
-      final boolean value = !JenkinsJob.DEFAULT_TEST_RESULTS_ARE_SYNC;
-      systemUnderTest.testResultsAreSynchronizedProperty().set( value );
-      assertThat( systemUnderTest.testResultsAreSynchronizedProperty().get(), is( value ) );
-   }//End Method
-   
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullNameInConstructor(){
       new JenkinsJobImpl( null );
    }//End Method

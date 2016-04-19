@@ -8,7 +8,10 @@
  */
 package api.handling;
 
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
@@ -17,6 +20,7 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
 import storage.database.JenkinsDatabase;
@@ -97,5 +101,85 @@ public class JenkinsProcessingImplTest {
       jobUpdates.verify( digest ).updatedJob( thirdJob );
       jobUpdates.verify( digest ).jobsUpdated();
    }//End Method
+   
+   @Test public void shouldNotFetchTestResultsForJobsNotUnstable(){
+      doAnswer( invocation -> { 
+         firstJob.lastBuildNumberProperty().set( 10 );
+         firstJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+         return null;
+      } ).when( fetcher ).updateJobDetails( firstJob );
+      
+      doAnswer( invocation -> { 
+         secondJob.lastBuildNumberProperty().set( 10 );
+         secondJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+         return null;
+      } ).when( fetcher ).updateJobDetails( secondJob );
+      
+      doAnswer( invocation -> { 
+         thirdJob.lastBuildNumberProperty().set( 10 );
+         thirdJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+         return null;
+      } ).when( fetcher ).updateJobDetails( thirdJob );
+      
+      systemUnderTest.fetchJobsAndUpdateDetails();
+      
+      verify( fetcher, never() ).updateTestResults( firstJob );
+      verify( fetcher, never() ).updateTestResults( secondJob );
+      verify( fetcher, never() ).updateTestResults( thirdJob );
+   }
+   
+   @Test public void shouldOnlyFetchTestResultsForJobsUnstableAndBuildNumberChanged(){
+      doAnswer( invocation -> { 
+         firstJob.lastBuildNumberProperty().set( 10 );
+         firstJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+         return null;
+      } ).when( fetcher ).updateJobDetails( firstJob );
+      
+      doAnswer( invocation -> { 
+         secondJob.lastBuildNumberProperty().set( 10 );
+         secondJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+         return null;
+      } ).when( fetcher ).updateJobDetails( secondJob );
+      
+      doAnswer( invocation -> { 
+         thirdJob.lastBuildNumberProperty().set( 10 );
+         thirdJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+         return null;
+      } ).when( fetcher ).updateJobDetails( thirdJob );
+      
+      systemUnderTest.fetchJobsAndUpdateDetails();
+      
+      verify( fetcher, never() ).updateTestResults( firstJob );
+      verify( fetcher, times( 1 ) ).updateTestResults( secondJob );
+      verify( fetcher, never() ).updateTestResults( thirdJob );
+   }
+   
+//   @Test public void shouldFetchTestResultsForJobsSuccessWhenWasUnstableAndBuildNumberChanged(){
+//      firstJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+//      
+//      doAnswer( invocation -> { 
+//         firstJob.lastBuildNumberProperty().set( 10 );
+//         firstJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+//         return null;
+//      } ).when( fetcher ).updateJobDetails( firstJob );
+//      
+//      doAnswer( invocation -> { 
+//         secondJob.lastBuildNumberProperty().set( 10 );
+//         secondJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+//         return null;
+//      } ).when( fetcher ).updateJobDetails( secondJob );
+//      
+//      doAnswer( invocation -> { 
+//         thirdJob.lastBuildNumberProperty().set( 10 );
+//         thirdJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+//         return null;
+//      } ).when( fetcher ).updateJobDetails( thirdJob );
+//      
+//      systemUnderTest.fetchJobsAndUpdateDetails();
+//      
+//      verify( fetcher, times( 1 ) ).updateTestResults( firstJob );
+//      verify( fetcher, never() ).updateTestResults( secondJob );
+//      verify( fetcher, never() ).updateTestResults( thirdJob );
+//   }
    
 }//End Class

@@ -55,8 +55,6 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
     * {@inheritDoc}
     */
    @Override public void updateTestResults( JenkinsJob job, String input ) {
-      job.failingTestCases().clear(); 
-      
       if ( input == null ) {
          return;
       }
@@ -65,6 +63,9 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
       if ( jsonRoot == null ) {
          return;
       }
+      
+      //clear of erroneous calls
+      job.failingTestCases().clear(); 
       
       JSONArray jsonTestClasses = extractTestClasses( jsonRoot );
       if ( jsonTestClasses == null ) {

@@ -448,4 +448,21 @@ public class JsonTestResultImporterTest {
       assertThat( jenkinsJob.failingTestCases().get( 2 ).nameProperty().get(), is( "shouldAssignUniqueIdentifier" ) );
    }//End Method
    
+   @Test public void shouldNotClearFailuresWhenNoValidResponseReceivedWhenAttachFailedTestCasesToJob(){
+      String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
+      Assert.assertNotNull( input );
+      
+      systemUnderTest.updateTestResults( jenkinsJob, input );
+      systemUnderTest.updateTestResults( jenkinsJob, null );
+      systemUnderTest.updateTestResults( jenkinsJob, "" );
+      systemUnderTest.updateTestResults( jenkinsJob, "anything" );
+      
+      Assert.assertEquals( 36, database.testClasses().size() );
+      
+      assertThat( jenkinsJob.failingTestCases(), hasSize( 3 ) );
+      assertThat( jenkinsJob.failingTestCases().get( 0 ).nameProperty().get(), is( "shouldStoreObjectsAndRemoveAllMatches" ) );
+      assertThat( jenkinsJob.failingTestCases().get( 1 ).nameProperty().get(), is( "shouldStoreObjectsAndRetrieveAllDefaultMatch" ) );
+      assertThat( jenkinsJob.failingTestCases().get( 2 ).nameProperty().get(), is( "shouldAssignUniqueIdentifier" ) );
+   }//End Method
+   
 }//End Class

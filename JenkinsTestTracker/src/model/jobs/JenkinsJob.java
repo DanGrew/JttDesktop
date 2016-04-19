@@ -84,12 +84,6 @@ public interface JenkinsJob {
    public LongProperty currentBuildTimestampProperty();
    
    /**
-    * Provides whether the test results are being synchronised for this job.
-    * @return the {@link BooleanProperty}.
-    */
-   public BooleanProperty testResultsAreSynchronizedProperty();
-
-   /**
     * Provides an {@link ObservableList} of {@link JenkinsUser} culprits for the failure of the
     * last build.
     * @return the {@link ObservableList}.

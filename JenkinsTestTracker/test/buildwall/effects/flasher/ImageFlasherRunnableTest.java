@@ -20,6 +20,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -33,6 +34,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 /**
  * {@link ImageFlasherRunnable} test.
  */
+@Ignore
 public class ImageFlasherRunnableTest {
    
    private ImageFlasherProperties properties;

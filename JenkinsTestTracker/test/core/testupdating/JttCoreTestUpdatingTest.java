@@ -30,6 +30,7 @@ import view.table.TestTableView;
 /**
  * {@link JenkinsTestTrackerCoreImpl} test.
  */
+@Ignore
 public class JttCoreTestUpdatingTest {
 
    @Ignore
@@ -121,7 +122,6 @@ public class JttCoreTestUpdatingTest {
       String response = TestCommon.readFileIntoString( getClass(), "job.json" );
       Mockito.when( api.getJobsList() ).thenReturn( response );
       timeKeeper.poll();
-      database.jenkinsJobs().forEach( job -> job.testResultsAreSynchronizedProperty().set( true ) );
       
       //...and prove that nothing else changes, and the job is initially built...
       Assert.assertFalse( database.hasNoJenkinsJobs() );
@@ -213,7 +213,6 @@ public class JttCoreTestUpdatingTest {
       String response = TestCommon.readFileIntoString( getClass(), "multiple-jobs.json" );
       Mockito.when( api.getJobsList() ).thenReturn( response );
       timeKeeper.poll();
-      database.jenkinsJobs().forEach( job -> job.testResultsAreSynchronizedProperty().set( true ) );
       
       //...and prove that nothing else changes, and the job is initially built...
       Assert.assertFalse( database.hasNoJenkinsJobs() );

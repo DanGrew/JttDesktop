@@ -37,7 +37,7 @@ public abstract class JenkinsTestTrackerCoreImpl {
       database = new JenkinsDatabaseImpl();
       JenkinsFetcher fetcher = new JenkinsFetcherImpl( database, api );
       jenkinsProcessing = new JenkinsProcessingImpl( database, fetcher );
-      new JobMonitorImpl( database, fetcher );
+//      new JobMonitorImpl( database, fetcher );
       initialiseTimeKeepers();
    }//End Constructor
    

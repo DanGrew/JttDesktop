@@ -213,7 +213,6 @@ public class JenkinsFetcherImplTest {
       Assert.assertNotNull( response );
       Mockito.when( externalApi.getLatestTestResultsWrapped( jenkinsJob ) ).thenReturn( response );
       
-      jenkinsJob.testResultsAreSynchronizedProperty().set( true );
       systemUnderTest.updateTestResults( jenkinsJob );
       Assert.assertEquals( 1, database.testClasses().size() );
       Assert.assertEquals( 1, database.testClasses().get( 0 ).testCasesList().size() );
@@ -225,20 +224,12 @@ public class JenkinsFetcherImplTest {
       Mockito.when( externalApi.getLatestTestResultsWrapped( jenkinsJob ) ).thenReturn( "{ }" );
       Mockito.when( externalApi.getLatestTestResultsUnwrapped( jenkinsJob ) ).thenReturn( response );
       
-      jenkinsJob.testResultsAreSynchronizedProperty().set( true );
       systemUnderTest.updateTestResults( jenkinsJob );
       Assert.assertEquals( 1, database.testClasses().size() );
       Assert.assertEquals( 1, database.testClasses().get( 0 ).testCasesList().size() );
    }//End Method
    
-   @Test public void shouldNotFetchTestResultsForDisabledTestResults(){
-      jenkinsJob.testResultsAreSynchronizedProperty().set( false );
-      systemUnderTest.updateTestResults( jenkinsJob );
-      verifyZeroInteractions( externalApi );
-   }//End Method
-   
    @Test public void shouldFetchTestResultsForEnabledTestResults(){
-      jenkinsJob.testResultsAreSynchronizedProperty().set( true );
       systemUnderTest.updateTestResults( jenkinsJob );
       verify( externalApi ).getLatestTestResultsWrapped( jenkinsJob );
       verify( externalApi ).getLatestTestResultsUnwrapped( jenkinsJob );

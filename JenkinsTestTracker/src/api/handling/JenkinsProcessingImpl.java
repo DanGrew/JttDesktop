@@ -8,6 +8,7 @@
  */
 package api.handling;
 
+import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import storage.database.JenkinsDatabase;
 
@@ -89,12 +90,21 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
       
       digest.startUpdatingJobs( database.jenkinsJobs().size() );
       for ( JenkinsJob job : database.jenkinsJobs() ) {
+         
+         int currentBuildNumber = job.lastBuildNumberProperty().get();
+         
          updateJobDetails( job );
          digest.updatedJob( job );
          
-//         if ( job.lastBuildStatusProperty().get() == BuildResultStatus.UNSTABLE ) {
-//            updateTestResults( job );
-//         }
+         int lastBuildNumber = job.lastBuildNumberProperty().get();
+         
+         if ( currentBuildNumber == lastBuildNumber ) {
+            continue;
+         }
+         
+         if ( job.lastBuildStatusProperty().get() == BuildResultStatus.UNSTABLE ) {
+            updateTestResults( job );
+         }
       }
       digest.jobsUpdated();
    }//End Method
