@@ -8,6 +8,7 @@
  */
 package buildwall.configuration.components;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
@@ -32,12 +33,14 @@ import graphics.JavaFxInitializer;
 import graphics.TestPlatformDecouplerImpl;
 import javafx.beans.property.ObjectProperty;
 import javafx.combobox.SimplePropertyBox;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
+import utility.TestCommon;
 import utility.comparator.Comparators;
 
 /**
@@ -180,6 +183,37 @@ public class JobPolicyPanelTest {
                   is( policy )
          );
       }
+   }//End Method
+   
+   @Test public void shouldProvideSetAllPropertyBox(){
+      assertThat( systemUnderTest.setAllPropertyBox(), is( notNullValue() ) );
+      assertThat( systemUnderTest.setAllPropertyBox().getItems(), contains( BuildWallJobPolicy.values() ) );
+      assertThat( systemUnderTest.setAllPropertyBox().getMaxWidth(), is( Double.MAX_VALUE ) );
+   }//End Method
+   
+   @Test public void shouldDefaultSetAll(){
+      assertThat( systemUnderTest.setAllPropertyBox().getSelectionModel().getSelectedItem(), is( BuildWallJobPolicy.NeverShow ) );
+   }//End Method
+   
+   @Test public void shouldProvideSetAllButton(){
+      assertThat( systemUnderTest.setAllButton(), is( notNullValue() ) );
+      assertThat( systemUnderTest.setAllButton().getMaxWidth(), is( Double.MAX_VALUE ) );
+      TestCommon.assertThatFontIsBold( systemUnderTest.setAllButton().getFont() );
+   }//End Method
+   
+   @Test public void setAllShouldChangePropertyBoxes(){
+      configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
+      
+      systemUnderTest.setAllPropertyBox().getSelectionModel().select( BuildWallJobPolicy.OnlyShowFailures );
+      systemUnderTest.setAllButton().getOnAction().handle( new ActionEvent() );
+      
+      configuration.jobPolicies().entrySet().forEach( entry -> {
+         assertThat( 
+                  systemUnderTest.jobBox( entry.getKey() ).getSelectionModel().getSelectedItem(), 
+                  is( BuildWallJobPolicy.OnlyShowFailures ) 
+         );
+         assertThat( entry.getValue(), is( BuildWallJobPolicy.OnlyShowFailures ) );
+      } );
    }//End Method
    
 }//End Class

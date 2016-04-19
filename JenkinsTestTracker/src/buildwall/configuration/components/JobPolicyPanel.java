@@ -21,8 +21,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.MapChangeListener.Change;
 import javafx.combobox.SimplePropertyBox;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import model.jobs.JenkinsJob;
 import utility.comparator.Comparators;
 
@@ -39,6 +43,9 @@ public class JobPolicyPanel extends GridPane {
    private Map< JenkinsJob, Label > labels;
    private Map< JenkinsJob, SimplePropertyBox< BuildWallJobPolicy > > boxes;
    private Map< JenkinsJob, ObjectProperty< BuildWallJobPolicy > > properties;
+   
+   private SimplePropertyBox< BuildWallJobPolicy > setAllBox;
+   private Button setAllButton;
    
    /**
     * Constructs a new {@link JobPolicyPanel}.
@@ -67,12 +74,56 @@ public class JobPolicyPanel extends GridPane {
     * Method to construct the layout for the {@link GridPane}.
     */
    void constructLayout(){
+      clearAndResetComponents();
+      
+      provideSetAllControl();
+      providePolicyConfigurationPerJob();
+      
+      setPadding( new Insets( INSETS ) );
+   }//End Method
+
+   /**
+    * Method to clear and reset the components of the panel.
+    */
+   private void clearAndResetComponents() {
       getChildren().clear();
       labels.clear();
       boxes.clear();
       properties.clear();
+   }//End Method
+   
+   /**
+    * Method to provide the control to set {@link BuildWallJobPolicy} for all {@link JenkinsJob}s at once.
+    */
+   private void provideSetAllControl() {
+      setAllBox = new SimplePropertyBox<>();
+      setAllBox.getItems().addAll( BuildWallJobPolicy.values() );
+      setAllBox.setMaxWidth( Double.MAX_VALUE );
+      setAllBox.getSelectionModel().select( BuildWallJobPolicy.NeverShow );
+      add( setAllBox, 0, 0 );
       
-      int rowIndex = 0;
+      setAllButton = new Button( "Set All" );
+      Font setAllButtonFont = setAllButton.getFont();
+      setAllButton.setFont( Font.font( setAllButtonFont.getFamily(), FontWeight.BOLD, FontPosture.REGULAR, setAllButtonFont.getSize() ) );
+      setAllButton.setMaxWidth( Double.MAX_VALUE );
+      add( setAllButton, 1, 0 );
+      
+      setAllButton.setOnAction( event -> setAllBoxesToSelectedPolicy() );
+   }//End Method
+   
+   /**
+    * Method to set all {@link SimplePropertyBox}es to the currently selected {@link BuildWallJobPolicy}.
+    */
+   private void setAllBoxesToSelectedPolicy() {
+      BuildWallJobPolicy selected = setAllBox.getSelectionModel().getSelectedItem();
+      boxes.entrySet().forEach( entry -> entry.getValue().getSelectionModel().select( selected ) );
+   }//End Method
+
+   /**
+    * Method to configure the panel for all {@link JenkinsJob}s.
+    */
+   private void providePolicyConfigurationPerJob() {
+      int rowIndex = 1;
       List< JenkinsJob > orderedJobs = new ArrayList<>( configuration.jobPolicies().keySet() );
       orderedJobs.sort( Comparators.stringExtractionComparater( job -> job.nameProperty().get() ) );
       
@@ -95,8 +146,6 @@ public class JobPolicyPanel extends GridPane {
          
          rowIndex++;
       }
-      
-      setPadding( new Insets( INSETS ) );
    }//End Method
 
    Label jobLabel( JenkinsJob job ) {
@@ -109,6 +158,14 @@ public class JobPolicyPanel extends GridPane {
 
    ObjectProperty< BuildWallJobPolicy > jobProperty( JenkinsJob job ) {
       return properties.get( job );
+   }//End Method
+
+   SimplePropertyBox< BuildWallJobPolicy > setAllPropertyBox() {
+      return setAllBox;
+   }//End Method
+
+   Button setAllButton() {
+      return setAllButton;
    }//End Method
 
 }//End Class
