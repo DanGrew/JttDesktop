@@ -8,6 +8,10 @@
  */
 package data.json.tests;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +21,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import data.JsonTestResultsImporter;
+import model.jobs.JenkinsJob;
+import model.jobs.JenkinsJobImpl;
 import model.tests.TestCase;
 import model.tests.TestClass;
 import model.tests.TestResultStatus;
@@ -45,6 +51,7 @@ public class JsonTestResultImporterTest {
       TestClass
    }//End Enum
    
+   private JenkinsJob jenkinsJob;
    private JenkinsDatabase database;
    private JsonTestResultsImporter systemUnderTest;
    
@@ -53,6 +60,7 @@ public class JsonTestResultImporterTest {
     */
    @Before public void initialiseSystemUnderTest(){
       database = new JenkinsDatabaseImpl();
+      jenkinsJob = new JenkinsJobImpl( "AnyJob" );
       systemUnderTest = new JsonTestResultsImporterImpl( database );
    }//End Method
    
@@ -63,35 +71,35 @@ public class JsonTestResultImporterTest {
    @Test public void shouldImportSingleTestCase() {
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( new ArrayList<>() );
    }//End Method
    
    @Test public void shouldImportSingleTestCaseClassWithMismatch() {
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-mismatch.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( new ArrayList<>() );
    }//End Method
    
    @Test public void shouldImportSingleTestCaseWithSuitesOnly() {
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-suites-only.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( new ArrayList<>() );
    }//End Method
    
    @Test public void shouldNotDuplicateImportSingleTestCase() {
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-suites-only.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( new ArrayList<>() );
       
       TestClass firstImported = database.testClasses().get( 0 );
       Assert.assertNotNull( firstImported );
       Assert.assertEquals( 1, database.testClasses().size() );
       
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       
       Assert.assertEquals( 1, database.testClasses().size() );
       TestClass secondImported = database.testClasses().get( 0 );
@@ -100,59 +108,59 @@ public class JsonTestResultImporterTest {
    }//End Method
    
    @Test public void shouldSafelyAvoidNullInput(){
-      systemUnderTest.updateTestResults( null );
+      systemUnderTest.updateTestResults( jenkinsJob, null );
    }//End Method
    
    @Test public void shouldSafelyAvoidInvalidFormat(){
-      systemUnderTest.updateTestResults( "anything" );
+      systemUnderTest.updateTestResults( jenkinsJob, "anything" );
    }//End Method
    
    @Test public void shouldNotImportSingleTestClassWithMissingCase() {
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-case-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldNotImportSingleTestClassWithMissingClass() {
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingChildReports(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-child-reports-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingResult(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-result-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingSuites(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-suites-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingCases(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-cases-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingClassDuration(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-duration-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.ClassDuration ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -162,7 +170,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleMissingCaseDuration(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-case-duration-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.CaseDuration ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -173,14 +181,14 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleMissingClassName(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-name-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertTrue( database.hasNoTestClasses() );
    }//End Method
    
    @Test public void shouldHandleMissingCaseName(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-case-name-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertEquals( 1, database.testClasses().size() );
       Assert.assertTrue( database.testClasses().get( 0 ).testCasesList().isEmpty() );
    }//End Method
@@ -188,7 +196,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleMissingAge(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-age-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.Age ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -199,7 +207,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleMissingSkipped(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-skipped-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.Skipped ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -210,7 +218,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleMissingStatus(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-status-missing.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList(  AssertableProperty.Status ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -221,7 +229,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleInvalidClassDuration(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-duration-invalid.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.ClassDuration ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -231,7 +239,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleInvalidCaseDuration(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-case-duration-invalid.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.CaseDuration ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -242,14 +250,14 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleInvalidClassName(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-class-name-invalid.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( new ArrayList<>() );
    }//End Method
    
    @Test public void shouldHandleInvalidCaseName(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-case-name-invalid.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       Assert.assertEquals( 1, database.testClasses().size() );
       Assert.assertTrue( database.testClasses().get( 0 ).testCasesList().isEmpty() );
    }//End Method
@@ -257,7 +265,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleInvalidAge(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-age-invalid.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.Age ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -268,7 +276,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleInvalidSkipped(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-skipped-invalid.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList( AssertableProperty.Skipped ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -279,7 +287,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleInvalidStatus(){
       String input = TestCommon.readFileIntoString( getClass(), "single-test-case-status-invalid.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       assertTestClassAndTestCasePresent( Arrays.asList(  AssertableProperty.Status ) );
       
       TestClass testClass = database.getTestClass( new TestClassKeyImpl( CLASS_NAME, CLASS_LOCATION ) );
@@ -290,7 +298,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleMultipleTestCases(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-single-test-class.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       
       Assert.assertEquals( 1, database.testClasses().size() );
       TestClass testClass = database.testClasses().get( 0 );
@@ -300,7 +308,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldAddNewTestCasesAndNotDuplicate(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-single-test-class.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       
       Assert.assertEquals( 1, database.testClasses().size() );
       TestClass testClass = database.testClasses().get( 0 );
@@ -309,7 +317,7 @@ public class JsonTestResultImporterTest {
       testClass.removeTestCase( testClass.testCasesList().get( 4 ) );
       Assert.assertEquals( 4, testClass.testCasesList().size() );
       
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       
       Assert.assertEquals( 1, database.testClasses().size() );
       Assert.assertEquals( 5, testClass.testCasesList().size() );
@@ -318,7 +326,7 @@ public class JsonTestResultImporterTest {
    @Test public void shouldHandleMultipleTestCasesAndMultipleClasses(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
       Assert.assertNotNull( input );
-      systemUnderTest.updateTestResults( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
       
       Assert.assertEquals( 36, database.testClasses().size() );
       assertTestClassHasTestCases( 0, 5 );
@@ -408,6 +416,36 @@ public class JsonTestResultImporterTest {
       if ( !propertiesToIgnore.contains( AssertableProperty.TestClass ) ) {
          Assert.assertEquals( testClass, testCase.testClassProperty().get() );
       }
+   }//End Method
+   
+   @Test public void shouldAttachFailedTestCasesToJob(){
+      String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
+      Assert.assertNotNull( input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
+      
+      Assert.assertEquals( 36, database.testClasses().size() );
+      
+      assertThat( jenkinsJob.failingTestCases(), hasSize( 3 ) );
+      assertThat( jenkinsJob.failingTestCases().get( 0 ).nameProperty().get(), is( "shouldStoreObjectsAndRemoveAllMatches" ) );
+      assertThat( jenkinsJob.failingTestCases().get( 1 ).nameProperty().get(), is( "shouldStoreObjectsAndRetrieveAllDefaultMatch" ) );
+      assertThat( jenkinsJob.failingTestCases().get( 2 ).nameProperty().get(), is( "shouldAssignUniqueIdentifier" ) );
+   }//End Method
+   
+   @Test public void shouldNotDuplicateWhenAttachFailedTestCasesToJob(){
+      String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
+      Assert.assertNotNull( input );
+      
+      systemUnderTest.updateTestResults( jenkinsJob, input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
+      systemUnderTest.updateTestResults( jenkinsJob, input );
+      
+      Assert.assertEquals( 36, database.testClasses().size() );
+      
+      assertThat( jenkinsJob.failingTestCases(), hasSize( 3 ) );
+      assertThat( jenkinsJob.failingTestCases().get( 0 ).nameProperty().get(), is( "shouldStoreObjectsAndRemoveAllMatches" ) );
+      assertThat( jenkinsJob.failingTestCases().get( 1 ).nameProperty().get(), is( "shouldStoreObjectsAndRetrieveAllDefaultMatch" ) );
+      assertThat( jenkinsJob.failingTestCases().get( 2 ).nameProperty().get(), is( "shouldAssignUniqueIdentifier" ) );
    }//End Method
    
 }//End Class

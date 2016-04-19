@@ -129,9 +129,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       if ( !jenkinsJob.testResultsAreSynchronizedProperty().get() ) return;
       
       String response = externalApi.getLatestTestResultsWrapped( jenkinsJob );
-      testsImporter.updateTestResults( response );
+      testsImporter.updateTestResults( jenkinsJob, response );
       response = externalApi.getLatestTestResultsUnwrapped( jenkinsJob );
-      testsImporter.updateTestResults( response );
+      testsImporter.updateTestResults( jenkinsJob, response );
    }//End Method
 
 }//End Class

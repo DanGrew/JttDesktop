@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import data.JsonTestResultsImporter;
+import model.jobs.JenkinsJob;
 import model.tests.TestCase;
 import model.tests.TestCaseImpl;
 import model.tests.TestClass;
@@ -53,7 +54,9 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
    /**
     * {@inheritDoc}
     */
-   @Override public void updateTestResults( String input ) {
+   @Override public void updateTestResults( JenkinsJob job, String input ) {
+      job.failingTestCases().clear(); 
+      
       if ( input == null ) {
          return;
       }
@@ -69,7 +72,7 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
       }
       
       for ( int i = 0; i < jsonTestClasses.length(); i++ ) {
-         constructTestCases( jsonTestClasses.getJSONObject( i ) );
+         constructTestCases( job, jsonTestClasses.getJSONObject( i ) );
       }
    }//End Method
    
@@ -111,15 +114,16 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
    }//End Method
    
    /**
-    * Method to consruct a {@link TestClass} from json data.
+    * Method to construct a {@link TestClass} from json data.
+    * @param job the {@link JenkinsJob} to import into.
     * @param jsonTestClass the {@link JSONObject} representing the {@link TestClass}.
     */
-   private void constructTestCases( JSONObject jsonTestClass ) {
+   private void constructTestCases( JenkinsJob job, JSONObject jsonTestClass ) {
       try {
          if ( !jsonTestClass.has( CASES ) ) return;
          JSONArray jsonTestCases = jsonTestClass.getJSONArray( CASES );
          for ( int i = 0; i < jsonTestCases.length(); i++ ) {
-            constructTestCase( jsonTestCases.getJSONObject( i ) );
+            constructTestCase( job, jsonTestCases.getJSONObject( i ) );
          }
       } catch ( JSONException exception ) {
          System.out.println( exception.getMessage() );
@@ -150,9 +154,10 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
    
    /**
     * Method to construct the {@link TestCase} from the given {@link JSONObject} test case.
+    * @param job the {@link JenkinsJob} to import into.
     * @param jsonTestCase the {@link JSONObject} representing the {@link TestCase}.
     */
-   private void constructTestCase( JSONObject jsonTestCase ) {
+   private void constructTestCase( JenkinsJob job, JSONObject jsonTestCase ) {
       try {
          TestClass testClass = constructTestClass( jsonTestCase );
          if ( testClass == null ) return;
@@ -184,6 +189,10 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
          if ( jsonTestCase.has( STATUS ) ) {
             TestResultStatus status = jsonTestCase.getEnum( TestResultStatus.class, STATUS );
             testCase.statusProperty().set( status );
+            
+            if ( status == TestResultStatus.FAILED || status == TestResultStatus.REGRESSION ) {
+               job.failingTestCases().add( testCase );
+            }
          }
       } catch ( JSONException exception ) {
          System.out.println( exception.getMessage() );

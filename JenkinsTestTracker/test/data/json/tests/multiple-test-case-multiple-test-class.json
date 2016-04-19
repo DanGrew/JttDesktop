@@ -31,7 +31,7 @@
                 "failedSince" : 0,
                 "name" : "shouldStoreObjectsAndRemoveAllMatches",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -43,7 +43,7 @@
                 "failedSince" : 0,
                 "name" : "shouldStoreObjectsAndRetrieveAllDefaultMatch",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "FAILED"
               },
               {
                 "testActions" : [
@@ -643,7 +643,7 @@
                 "failedSince" : 0,
                 "name" : "shouldAssignUniqueIdentifier",
                 "skipped" : false,
-                "status" : "PASSED"
+                "status" : "REGRESSION"
               },
               {
                 "testActions" : [

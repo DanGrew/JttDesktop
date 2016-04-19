@@ -56,7 +56,7 @@ public class TestTableViewTest {
       database = new JenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "anything" ) );
       JsonTestResultsImporter importer = new JsonTestResultsImporterImpl( database );
-      importer.updateTestResults( input );
+      importer.updateTestResults( database.jenkinsJobs().get( 0 ), input );
       JavaFxInitializer.startPlatform();
       systemUnderTest = new TestTableView( database );
       
