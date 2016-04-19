@@ -26,7 +26,7 @@ public interface JenkinsJob {
 
    public static final int DEFAULT_LAST_BUILD_NUMBER = 0;
    public static final int DEFAULT_CURRENT_BUILD_NUMBER = 0;
-   public static final BuildResultStatus DEFAULT_LAST_BUILD_STATUS = BuildResultStatus.FAILURE;
+   public static final BuildResultStatus DEFAULT_LAST_BUILD_STATUS = BuildResultStatus.NOT_BUILT;
    public static final BuildState DEFAULT_BUILD_STATE = BuildState.Built;
    public static final long DEFAULT_CURRENT_BUILD_TIME = 0;
    public static final long DEFAULT_EXPECTED_BUILD_TIME = 0;

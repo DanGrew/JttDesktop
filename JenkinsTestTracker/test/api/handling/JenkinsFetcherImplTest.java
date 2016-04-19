@@ -50,6 +50,7 @@ public class JenkinsFetcherImplTest {
       MockitoAnnotations.initMocks( this );
       database = new JenkinsDatabaseImpl();
       jenkinsJob = new JenkinsJobImpl( "JenkinsJob" );
+      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
       jenkinsUser = new JenkinsUserImpl( "JenkinsUser" );
       database.store( jenkinsJob );
       database.store( jenkinsUser );

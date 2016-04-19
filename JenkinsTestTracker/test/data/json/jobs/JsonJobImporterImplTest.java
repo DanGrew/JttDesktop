@@ -227,10 +227,10 @@ public class JsonJobImporterImplTest {
     */
    private void assertJobUnchanged( String response ){
       Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( BuildResultStatus.NOT_BUILT, jenkinsJob.lastBuildStatusProperty().get() );
       systemUnderTest.updateJobDetails( jenkinsJob, response );
       Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( BuildResultStatus.NOT_BUILT, jenkinsJob.lastBuildStatusProperty().get() );
    }//End Method
    
    @Test public void shouldParseJobsList(){
@@ -405,7 +405,7 @@ public class JsonJobImporterImplTest {
     */
    private void assertDefaultJobDetailsImported( String response ) {
       Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( BuildResultStatus.NOT_BUILT, jenkinsJob.lastBuildStatusProperty().get() );
       systemUnderTest.updateJobDetails( jenkinsJob, response );
       Assert.assertEquals( 22, jenkinsJob.lastBuildNumberProperty().get() );
       Assert.assertEquals( BuildResultStatus.SUCCESS, jenkinsJob.lastBuildStatusProperty().get() );
