@@ -91,22 +91,40 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
       digest.startUpdatingJobs( database.jenkinsJobs().size() );
       for ( JenkinsJob job : database.jenkinsJobs() ) {
          
-         int currentBuildNumber = job.lastBuildNumberProperty().get();
+         int previousBuildNumber = job.lastBuildNumberProperty().get();
+         BuildResultStatus previousStatus = job.lastBuildStatusProperty().get();
          
          updateJobDetails( job );
          digest.updatedJob( job );
          
-         int lastBuildNumber = job.lastBuildNumberProperty().get();
-         
-         if ( currentBuildNumber == lastBuildNumber ) {
-            continue;
-         }
-         
-         if ( job.lastBuildStatusProperty().get() == BuildResultStatus.UNSTABLE ) {
-            updateTestResults( job );
-         }
+         updateTestsIfStateChanged( job, previousBuildNumber, previousStatus );
       }
       digest.jobsUpdated();
+   }//End Method
+
+   /**
+    * Method to update the tests for the {@link JenkinsJob} is the state has changed in a way that requires
+    * tests to be reimported.
+    * @param job the {@link JenkinsJob} to update for.
+    * @param previousBuildNumber the build number before the details were updated.
+    * @param previousStatus the {@link BuildResultStatus} before the details were updated.
+    */
+   private void updateTestsIfStateChanged( JenkinsJob job, int previousBuildNumber, BuildResultStatus previousStatus ) {
+      int lastBuildNumber = job.lastBuildNumberProperty().get();
+      
+      if ( previousBuildNumber == lastBuildNumber ) {
+         return;
+      }
+      
+      if ( previousStatus == BuildResultStatus.UNSTABLE ) {
+         updateTestResults( job );
+         return;
+      }
+      
+      if ( job.lastBuildStatusProperty().get() == BuildResultStatus.UNSTABLE ) {
+         updateTestResults( job );
+         return;
+      }
    }//End Method
    
 }//End Class

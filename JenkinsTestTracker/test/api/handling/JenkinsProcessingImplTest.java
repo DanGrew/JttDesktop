@@ -140,6 +140,34 @@ public class JenkinsProcessingImplTest {
       verify( fetcher, never() ).updateTestResults( thirdJob );
    }//End Method
    
+   @Test public void shouldFetchTestResultsForJobsSucessFromUnstableAndBuildNumberChanged(){
+      secondJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      
+      updatePropertiesWhenJobDetailsUpdated( firstJob, 10, BuildResultStatus.SUCCESS );
+      updatePropertiesWhenJobDetailsUpdated( secondJob, 10, BuildResultStatus.SUCCESS );
+      updatePropertiesWhenJobDetailsUpdated( thirdJob, 10, BuildResultStatus.SUCCESS );
+      
+      systemUnderTest.fetchJobsAndUpdateDetails();
+      
+      verify( fetcher, never() ).updateTestResults( firstJob );
+      verify( fetcher, times( 1 ) ).updateTestResults( secondJob );
+      verify( fetcher, never() ).updateTestResults( thirdJob );
+   }//End Method
+   
+   @Test public void shouldFetchTestResultsOnceForJobsUnstableToUnstableAndBuildNumberChanged(){
+      secondJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      
+      updatePropertiesWhenJobDetailsUpdated( firstJob, 10, BuildResultStatus.SUCCESS );
+      updatePropertiesWhenJobDetailsUpdated( secondJob, 10, BuildResultStatus.UNSTABLE );
+      updatePropertiesWhenJobDetailsUpdated( thirdJob, 10, BuildResultStatus.SUCCESS );
+      
+      systemUnderTest.fetchJobsAndUpdateDetails();
+      
+      verify( fetcher, never() ).updateTestResults( firstJob );
+      verify( fetcher, times( 1 ) ).updateTestResults( secondJob );
+      verify( fetcher, never() ).updateTestResults( thirdJob );
+   }//End Method
+   
 //   @Test public void shouldFetchTestResultsForJobsSuccessWhenWasUnstableAndBuildNumberChanged(){
 //      firstJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
 //      
