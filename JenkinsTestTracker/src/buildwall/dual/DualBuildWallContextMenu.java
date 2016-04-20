@@ -27,6 +27,8 @@ public class DualBuildWallContextMenu extends ContextMenu {
    static final String CONFIGURE_LEFT = "Configure Left";
    static final String CONFIGURE_IMAGE_FLASHER = "Configure Image Flasher";
    static final String HIDE_CONFIGURATION = "Hide Configuration";
+   static final String OPEN_CONFIGURATION_WINDOW = "Open Configuration Window";
+   static final String CLOSE_CONFIGURATION_WINDOW = "Close Configuration Window";
    static final String SHOW_DIGEST = "Show Digest";
    static final String HIDE_DIGEST = "Hide Digest";
    static final String CANCEL = "Cancel";
@@ -35,6 +37,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
    private MenuItem imageFlasherControl;
    private MenuItem rightWallControl;
    private MenuItem leftWallControl;
+   private MenuItem configWindowControl;
    private final DualBuildWallDisplayImpl display;
    private final WrappedSystemDigest wrappedDigest;
    
@@ -47,6 +50,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
       this.wrappedDigest = new WrappedSystemDigest( display.getParent() );
       
       applyControls();
+      applyConfigWindowControl();
       applyDigestControl();
       applyCancel();
       
@@ -83,6 +87,19 @@ public class DualBuildWallContextMenu extends ContextMenu {
             configureRight,
             imageFlasherControl,
             hideConfig
+      );
+   }//End Method
+   
+   /**
+    * Method to apply the configuration window controls.
+    */
+   private void applyConfigWindowControl() {
+      configWindowControl = new MenuItem( OPEN_CONFIGURATION_WINDOW );
+      configWindowControl.setOnAction( event -> controlConfigWindow( configWindowControl ) );
+      
+      getItems().addAll( 
+               new SeparatorMenuItem(),
+               configWindowControl
       );
    }//End Method
    
@@ -145,6 +162,21 @@ public class DualBuildWallContextMenu extends ContextMenu {
    }//End Method
    
    /**
+    * Method to control the configuration window.
+    * @param display the {@link DualBuildWallDisplayImpl} to change.
+    * @param configWindowControl the {@link MenuItem} to update.
+    */
+   private void controlConfigWindow( MenuItem configWindowControl ) {
+      if ( configWindowControl.getText() == OPEN_CONFIGURATION_WINDOW ) {
+         display.showConfigurationWindow();
+         configWindowControl.setText( CLOSE_CONFIGURATION_WINDOW );
+      } else {
+         display.hideConfigurationWindow();
+         configWindowControl.setText( OPEN_CONFIGURATION_WINDOW );
+      }
+   }//End Method
+   
+   /**
     * Method to control the left {@link GridWallImpl}.
     * @param display the {@link DualBuildWallDisplayImpl} to change.
     * @param digestControl the {@link MenuItem} to update.
@@ -200,6 +232,12 @@ public class DualBuildWallContextMenu extends ContextMenu {
          leftWallControl.setText( HIDE_LEFT );
       } else {
          leftWallControl.setText( SHOW_LEFT );
+      }
+      
+      if ( display.isConfigurationWindowShowing() ) {
+         configWindowControl.setText( CLOSE_CONFIGURATION_WINDOW );
+      } else {
+         configWindowControl.setText( OPEN_CONFIGURATION_WINDOW );
       }
    }//End Method
    

@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -72,6 +73,11 @@ public class BuildWallConfigurationPaneImplTest {
       } );
       
       Thread.sleep( 10000000 );
+   }//End Method
+   
+   @Test public void shouldUseConfiguration(){
+      assertThat( systemUnderTest.usesConfiguration( configuration ), is( true ) );
+      assertThat( systemUnderTest.usesConfiguration( mock( BuildWallConfiguration.class ) ), is( false ) );
    }//End Method
    
    @Test public void shouldContainNecessaryElements(){

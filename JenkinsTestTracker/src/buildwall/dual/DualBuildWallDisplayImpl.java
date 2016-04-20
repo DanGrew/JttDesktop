@@ -33,6 +33,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
    private final ImageFlasherImpl imageFlasher;
    private final DualBuildWallSplitter buildWallSplitter;
    private final DualBuildWallConfigurer buildWallConfigurer;
+   private final DualBuildWallConfigurationWindowController configWindowController;
    
    /**
     * Constructs a new {@link BuildWallDisplayImpl}.
@@ -65,6 +66,10 @@ public class DualBuildWallDisplayImpl extends StackPane {
       
       buildWallConfigurer = new DualBuildWallConfigurer( buildWallPane, leftConfiguration, rightConfiguration, imageFlasherProperties );
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
+      
+      configWindowController = new DualBuildWallConfigurationWindowController( 
+               leftConfiguration, imageFlasherProperties, rightConfiguration 
+      );
    }//End Constructor
    
    /**
@@ -161,6 +166,28 @@ public class DualBuildWallDisplayImpl extends StackPane {
     */
    public boolean isConfigurationShowing(){
       return buildWallConfigurer.isConfigurationShowing();
+   }//End Method
+   
+   /**
+    * Method to show the {@link DualBuildWallConfigurationWindow}.
+    */
+   public void showConfigurationWindow(){
+      configWindowController.showConfigurationWindow();
+   }//End Method
+   
+   /**
+    * Method to hide the {@link DualBuildWallConfigurationWindow}.
+    */
+   public void hideConfigurationWindow(){
+      configWindowController.hideConfigurationWindow();
+   }//End Method
+   
+   /**
+    * Method to detemrine whether the {@link DualBuildWallConfigurationWindow} is showing.
+    * @return true if showing, false otherwise.
+    */
+   public boolean isConfigurationWindowShowing(){
+      return configWindowController.isConfigurationWindowShowing();
    }//End Method
    
    BorderPane buildWallPane(){

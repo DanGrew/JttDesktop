@@ -53,7 +53,9 @@ public class DualBuildWallContextMenuTest {
    private static final int CONFIGURE_IMAGE_FLASHER = 5;
    private static final int HIDE_CONFIG = 6;
    private static final int SECOND_SEPARATOR = 7;
-   private static final int CANCEL = 8;
+   private static final int CONFIG_WINDOW = 8;
+   private static final int THIRD_SEPARATOR = 9;
+   private static final int CANCEL = 10;
    
    @Mock private DualBuildWallDisplayImpl display;
    @Mock private BorderPane buildWallPane;
@@ -100,8 +102,10 @@ public class DualBuildWallContextMenuTest {
       assertThat( retrieveMenuItem( CONFIGURE_IMAGE_FLASHER ).getText(), is( DualBuildWallContextMenu.CONFIGURE_IMAGE_FLASHER ) );
       assertThat( retrieveMenuItem( HIDE_CONFIG ).getText(), is( DualBuildWallContextMenu.HIDE_CONFIGURATION ) );
       assertThat( retrieveMenuItem( SECOND_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
+      assertThat( retrieveMenuItem( CONFIG_WINDOW ).getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
+      assertThat( retrieveMenuItem( THIRD_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
       assertThat( retrieveMenuItem( CANCEL ).getText(), is( DualBuildWallContextMenu.CANCEL ) );
-      assertThat( systemUnderTest.getItems(), hasSize( 9 ) );
+      assertThat( systemUnderTest.getItems(), hasSize( 11 ) );
    }//End Method
    
    /**
@@ -135,6 +139,18 @@ public class DualBuildWallContextMenuTest {
       controLeft.getOnAction().handle( new ActionEvent() );
       verify( display ).showLeftWall();
       assertThat( controLeft.getText(), is( DualBuildWallContextMenu.HIDE_LEFT ) );
+   }//End Method
+   
+   @Test public void shouldControlConfigWindow() {
+      MenuItem controWindow = retrieveMenuItem( CONFIG_WINDOW );
+      
+      controWindow.getOnAction().handle( new ActionEvent() );
+      verify( display ).showConfigurationWindow();
+      assertThat( controWindow.getText(), is( DualBuildWallContextMenu.CLOSE_CONFIGURATION_WINDOW ) );
+      
+      controWindow.getOnAction().handle( new ActionEvent() );
+      verify( display ).hideConfigurationWindow();
+      assertThat( controWindow.getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
    }//End Method
    
    @Test public void shouldShowConfiguration() {
@@ -249,6 +265,19 @@ public class DualBuildWallContextMenuTest {
       when( display.isLeftWallShowing() ).thenReturn( true );
       systemUnderTest.resetMenuOptions();
       assertThat( controLeft.getText(), is( DualBuildWallContextMenu.HIDE_LEFT ) );
+   }//End Method
+   
+   @Test public void shouldUpdateTextBasedOnConfigWindowState(){
+      MenuItem configWindow = retrieveMenuItem( CONFIG_WINDOW );
+      assertThat( configWindow.getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
+      
+      when( display.isConfigurationWindowShowing() ).thenReturn( true );
+      systemUnderTest.resetMenuOptions();
+      assertThat( configWindow.getText(), is( DualBuildWallContextMenu.CLOSE_CONFIGURATION_WINDOW ) );
+      
+      when( display.isConfigurationWindowShowing() ).thenReturn( false );
+      systemUnderTest.resetMenuOptions();
+      assertThat( configWindow.getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
    }//End Method
 
 }//End Class

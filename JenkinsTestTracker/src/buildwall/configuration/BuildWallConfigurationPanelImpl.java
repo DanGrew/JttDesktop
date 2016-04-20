@@ -115,6 +115,16 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    }//End Constructor
 
    /**
+    * Method to determine whether the {@link BuildWallConfiguration} associated with this
+    * {@link BuildWallConfigurationPanelImpl} is exactly that given.
+    * @param configuration the {@link BuildWallConfiguration} in question.
+    * @return true if exactly equal.
+    */
+   public boolean usesConfiguration( BuildWallConfiguration configuration ) {
+      return this.configuration == configuration;
+   }//End Method
+   
+   /**
     * Method to construct the title for the panel.
     * @param title the title to use.
     */
