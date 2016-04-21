@@ -28,49 +28,105 @@ import storage.database.JenkinsDatabase;
  * that can have different {@link BuildWallConfiguration}s.
  */
 public class DualBuildWallDisplayImpl extends StackPane {
-
-   private final BorderPane buildWallPane;
-   private final ImageFlasherImpl imageFlasher;
-   private final DualBuildWallSplitter buildWallSplitter;
-   private final DualBuildWallConfigurer buildWallConfigurer;
+   
+   private final JenkinsDatabase database;
+   private final BuildWallConfiguration rightConfiguration;
+   private final BuildWallConfiguration leftConfiguration;
+   private final ImageFlasherProperties imageFlasherProperties;
    private final DualBuildWallConfigurationWindowController configWindowController;
+
+   private BorderPane buildWallPane;
+   private DualBuildWallSplitter buildWallSplitter;
+   private GridWallImpl leftGridWall;
+   private GridWallImpl rightGridWall;
+   private ImageFlasherImpl imageFlasher;
+   private DualBuildWallConfigurer buildWallConfigurer;
    
    /**
     * Constructs a new {@link BuildWallDisplayImpl}.
     * @param database the {@link JenkinsDatabase} associated.
     */
    public DualBuildWallDisplayImpl( JenkinsDatabase database ) {
-      BuildWallConfiguration rightConfiguration = new BuildWallConfigurationImpl();
+      this( database, new DualBuildWallConfigurationWindowController() );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link BuildWallDisplayImpl}.
+    * @param database the {@link JenkinsDatabase} associated.
+    * @param windowController the {@link DualBuildWallConfigurationWindowController} to use
+    * to open a separate configuration window.
+    */
+   DualBuildWallDisplayImpl( JenkinsDatabase database, DualBuildWallConfigurationWindowController windowController ) {
+      this.database = database;
+      this.rightConfiguration = new BuildWallConfigurationImpl();
+      this.leftConfiguration = new BuildWallConfigurationImpl();
+      this.imageFlasherProperties = new ImageFlasherPropertiesImpl();
+      this.configWindowController = windowController;
+      
+      applyDefaultConfigurations();
+      applyPolicyUpdaters();
+      createAndArrangeWalls();
+      provideImageFlasherOverlay();
+      applyConfigurationControls();
+      applyEffectsTriggers();
+   }//End Constructor
+
+   /**
+    * Method to apply the default configurations to the {@link BuildWallConfiguration}s.
+    */
+   private void applyDefaultConfigurations(){
       rightConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
-      BuildWallConfiguration leftConfiguration = new BuildWallConfigurationImpl();
       leftConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
       leftConfiguration.numberOfColumns().set( 1 );
-      
+   }//End Method
+   
+   /**
+    * Method to set up the {@link JobPolicyUpdater}s.
+    */
+   private void applyPolicyUpdaters(){
       new JobPolicyUpdater( database, rightConfiguration );
       new JobPolicyUpdater( database, leftConfiguration );
-      
-      GridWallImpl rightGridWall = new GridWallImpl( rightConfiguration, database );
-      GridWallImpl leftGridWall = new GridWallImpl( leftConfiguration, database );
+   }//End Method
+   
+   /**
+    * Method to create the {@link GridWallImpl}s and arrange them.
+    */
+   private void createAndArrangeWalls(){
+      rightGridWall = new GridWallImpl( rightConfiguration, database );
+      leftGridWall = new GridWallImpl( leftConfiguration, database );
       
       buildWallSplitter = new DualBuildWallSplitter( leftGridWall, rightGridWall );
       buildWallPane = new BorderPane();
       buildWallPane.setCenter( buildWallSplitter );
       getChildren().add( buildWallPane );
-      
-      ImageFlasherProperties imageFlasherProperties = new ImageFlasherPropertiesImpl();
-      
+   }//End Method
+   
+   /**
+    * Method to set up the {@link ImageFlasherImpl} and add it to this.
+    */
+   private void provideImageFlasherOverlay(){
       imageFlasher = new ImageFlasherImpl( imageFlasherProperties );
-      getChildren().add( imageFlasher );
-      
-      new JobFailureTrigger( database, imageFlasherProperties );
-      
+      getChildren().add( imageFlasher );  
+   }//End Method
+   
+   /**
+    * Method to apply the controls for configuration.
+    */
+   private void applyConfigurationControls(){
       buildWallConfigurer = new DualBuildWallConfigurer( buildWallPane, leftConfiguration, rightConfiguration, imageFlasherProperties );
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
       
-      configWindowController = new DualBuildWallConfigurationWindowController( 
+      configWindowController.associateWithConfiguration( 
                leftConfiguration, imageFlasherProperties, rightConfiguration 
       );
-   }//End Constructor
+   }//End Method
+   
+   /**
+    * Method to apply the effects triggers.
+    */
+   private void applyEffectsTriggers(){
+      new JobFailureTrigger( database, imageFlasherProperties );
+   }//End Method
    
    /**
     * Method to initialise the {@link DualBuildWallContextMenuOpener} for the display. This is a separate

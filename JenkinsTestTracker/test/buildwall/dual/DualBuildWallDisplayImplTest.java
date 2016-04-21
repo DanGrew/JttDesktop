@@ -16,6 +16,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Map.Entry;
 import java.util.Random;
@@ -24,6 +27,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.sun.javafx.application.PlatformImpl;
 
@@ -53,6 +58,7 @@ import utility.TestCommon;
  */
 public class DualBuildWallDisplayImplTest {
 
+   @Mock private DualBuildWallConfigurationWindowController windowController;
    private JenkinsDatabase database;
    private DualBuildWallDisplayImpl systemUnderTest;
    
@@ -65,6 +71,8 @@ public class DualBuildWallDisplayImplTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
+      MockitoAnnotations.initMocks( this );
+      
       database = new JenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "Project Build" ) );
       database.store( new JenkinsJobImpl( "Subset A" ) );
@@ -92,7 +100,7 @@ public class DualBuildWallDisplayImplTest {
       }
       
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new DualBuildWallDisplayImpl( database );
+      systemUnderTest = new DualBuildWallDisplayImpl( database, windowController );
       
       systemUnderTest.leftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
       systemUnderTest.rightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
@@ -103,6 +111,7 @@ public class DualBuildWallDisplayImplTest {
    @Test public void manualInspection() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
+         systemUnderTest = new DualBuildWallDisplayImpl( database );
          systemUnderTest.showRightConfiguration();
          systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
@@ -380,5 +389,37 @@ public class DualBuildWallDisplayImplTest {
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( false ) );
       database.jenkinsJobs().get( 0 ).lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldAssociateConfigurationWindowController(){
+      verify( windowController ).associateWithConfiguration( 
+               systemUnderTest.leftConfiguration(), 
+               systemUnderTest.imageFlasherConfiguration(), 
+               systemUnderTest.rightConfiguration() 
+      );
+   }//End Method
+   
+   @Test public void shouldRedirectShowConfigurationWindow(){
+      systemUnderTest.showConfigurationWindow();
+      verify( windowController ).showConfigurationWindow();
+   }//End Method
+   
+   @Test public void shouldRedirectHideConfigurationWindow(){
+      systemUnderTest.hideConfigurationWindow();
+      verify( windowController ).hideConfigurationWindow();
+   }//End Method
+   
+   @Test public void shouldRedirectIsShowingConfigurationWindow(){
+      when( windowController.isConfigurationWindowShowing() ).thenReturn( false );
+      assertThat( systemUnderTest.isConfigurationWindowShowing(), is( false ) );
+      verify( windowController, times( 1 ) ).isConfigurationWindowShowing();
+      
+      when( windowController.isConfigurationWindowShowing() ).thenReturn( true );
+      assertThat( systemUnderTest.isConfigurationWindowShowing(), is( true ) );
+      verify( windowController, times( 2 ) ).isConfigurationWindowShowing();
+      
+      when( windowController.isConfigurationWindowShowing() ).thenReturn( false );
+      assertThat( systemUnderTest.isConfigurationWindowShowing(), is( false ) );
+      verify( windowController, times( 3 ) ).isConfigurationWindowShowing();
    }//End Method
 }//End Class

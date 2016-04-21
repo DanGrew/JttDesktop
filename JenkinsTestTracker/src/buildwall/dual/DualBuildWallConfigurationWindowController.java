@@ -27,11 +27,19 @@ public class DualBuildWallConfigurationWindowController {
    
    /**
     * Constructs a new {@link DualBuildWallConfigurationWindowController}.
+    * {@link #associateWithConfiguration(BuildWallConfiguration, ImageFlasherProperties, BuildWallConfiguration)}
+    * should be called to initialise this object. This is broken down to allow more flexibility with construction
+    * since this is a heavy setup and sometimes may not be required.
+    */
+   DualBuildWallConfigurationWindowController() {}//End Constructor
+   
+   /**
+    * Constructs a new {@link DualBuildWallConfigurationWindowController}.
     * @param leftConfiguration the {@link BuildWallConfiguration} for the left wall.
     * @param imageFlasherProperties the {@link ImageFlasherProperties}.
     * @param rightConfiguration the {@link BuildWallConfiguration} for the right wall.
     */
-   DualBuildWallConfigurationWindowController(
+   void associateWithConfiguration(
             BuildWallConfiguration leftConfiguration,
             ImageFlasherProperties imageFlasherProperties,
             BuildWallConfiguration rightConfiguration
@@ -47,9 +55,19 @@ public class DualBuildWallConfigurationWindowController {
    }//End Constructor
    
    /**
+    * Method to verify that the controller is associated with the configuration it needs.
+    */
+   private void verifyState(){
+      if ( configurationWindowStage == null ) {
+         throw new IllegalStateException( "Controller has not be associated." );
+      }
+   }//End Method
+   
+   /**
     * Method to show the {@link DualBuildWallConfigurationWindow}.
     */
    void showConfigurationWindow(){
+      verifyState();
       PlatformImpl.runLater( () -> configurationWindowStage.show() );
    }//End Method
    
@@ -57,14 +75,16 @@ public class DualBuildWallConfigurationWindowController {
     * Method to hide the {@link DualBuildWallConfigurationWindow}.
     */
    void hideConfigurationWindow(){
+      verifyState();
       PlatformImpl.runLater( () -> configurationWindowStage.hide() );
    }//End Method
    
    /**
-    * Method to detemrine whether the {@link DualBuildWallConfigurationWindow} is showing.
+    * Method to determine whether the {@link DualBuildWallConfigurationWindow} is showing.
     * @return true if showing, false otherwise.
     */
    boolean isConfigurationWindowShowing(){
+      verifyState();
       return configurationWindowStage.isShowing();
    }//End Method
    

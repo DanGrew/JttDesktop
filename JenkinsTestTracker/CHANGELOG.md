@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Internal changes looking at issue 93 to try and simplify constructor of dual buil wall. Factored out separate clear methods and tested interaction with configuration window controller.
+
+###1.3.60 (Apr 20, 2016 9:33:20 PM)
+
 First published changelog.
 
 ###1.3.59 (Apr 20, 2016 12:58:18 PM)
@@ -38,7 +42,7 @@ Added a simple description for aborted and failed builds in place of the test re
 
 Solved Issue 102:
 
-The failing tests associated with unstable jobs were not being removed when the job then passed, or changed state. This had the effect that failures may show up at a later point on the build when it was not unstable. This has been fixed so that they are added when a job has been built and is unstable and removed when a job changes to any state other than unstable.
+The failing tests associated with unstable jobs were not being removed when the job then passed, or changed state. This had the effect that failures may show up at a later point on the build when it was not unstable. This has been fixed so that they are added when a job has been built and is unstable and removed when a job changes to any state from unstable.
 
 ###1.3.54 (Apr 19, 2016 11:49:17 AM)
 

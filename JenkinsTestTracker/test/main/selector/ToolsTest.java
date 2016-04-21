@@ -106,6 +106,8 @@ public class ToolsTest {
       TitledPane titledPane = ( TitledPane )wrapper.getTop();
       assertThat( titledPane.getContent(), is( digestViewer ) );
       
+      assertThat( scene.getWidth(), is( 500.0 ) );
+      assertThat( scene.getHeight(), is( 500.0 ) );
    }//End Method
 
 }//End Class

@@ -45,7 +45,7 @@ public enum Tools {
             BorderPane digestWrapper = new BorderPane( dualWall );
             digestWrapper.setTop( new TitledPane( "System Digest", digest ) );
             dualWall.initialiseContextMenu();
-            return new Scene( digestWrapper );
+            return new Scene( digestWrapper, 500, 500 );
          }
    );
    

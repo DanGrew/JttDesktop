@@ -55,7 +55,23 @@ public class DualBuildWallConfigurationWindowControllerTest {
       leftConfig.jobPolicies().putAll( rightConfig.jobPolicies() );
       
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new DualBuildWallConfigurationWindowController( leftConfig, imageConfig, rightConfig );
+      systemUnderTest = new DualBuildWallConfigurationWindowController();
+      systemUnderTest.associateWithConfiguration( leftConfig, imageConfig, rightConfig );
+   }//End Method
+   
+   @Test( expected = IllegalStateException.class ) public void shouldNotAllowShowIfNotAssociated(){
+      systemUnderTest = new DualBuildWallConfigurationWindowController();
+      systemUnderTest.showConfigurationWindow();
+   }//End Method
+   
+   @Test( expected = IllegalStateException.class ) public void shouldNotAllowHideIfNotAssociated(){
+      systemUnderTest = new DualBuildWallConfigurationWindowController();
+      systemUnderTest.hideConfigurationWindow();
+   }//End Method
+   
+   @Test( expected = IllegalStateException.class ) public void shouldNotAllowIsShowingCheckIfNotAssociated(){
+      systemUnderTest = new DualBuildWallConfigurationWindowController();
+      systemUnderTest.isConfigurationWindowShowing();
    }//End Method
    
    @Test public void shouldHaveInitialisedStage() {
