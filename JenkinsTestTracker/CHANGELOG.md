@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Internal changes for handling conversion from jenkins api response to JSON import. Not integrated yet.
+
+###1.3.62 (Apr 21, 2016 12:23:23 PM)
+
 Solved Issue 106:
 
 Wrapped build wall configuration panels in scroll panes so that when there are lots of jobs, they can be reached and configured.
