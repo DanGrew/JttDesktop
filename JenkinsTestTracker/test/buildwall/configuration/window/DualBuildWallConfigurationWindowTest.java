@@ -19,7 +19,6 @@ import org.junit.Test;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
-import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import buildwall.configuration.BuildWallJobPolicy;
 import buildwall.effects.flasher.ImageFlasherProperties;
 import buildwall.effects.flasher.ImageFlasherPropertiesImpl;
@@ -27,6 +26,7 @@ import buildwall.effects.flasher.configuration.ImageFlasherConfigurationPanel;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.TestPlatformDecouplerImpl;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import model.jobs.JenkinsJobImpl;
@@ -72,17 +72,22 @@ public class DualBuildWallConfigurationWindowTest {
       }
    }//End Method
    
+   @Test public void shouldProvideBuildWallConfigurationInScrollers(){
+      assertThat( systemUnderTest.leftScroller().getContent(), is( systemUnderTest.leftConfigPanel() ) );
+      assertThat( systemUnderTest.rightScroller().getContent(), is( systemUnderTest.rightConfigPanel() ) );
+   }//End Method
+   
    @Test public void shouldDisplayPanelsInCorrectOrder() {
-      BuildWallConfigurationPanelImpl leftConfig = systemUnderTest.leftConfigPanel();
-      assertThat( GridPane.getColumnIndex( leftConfig ), is( 0 ) );
-      assertThat( GridPane.getRowIndex( leftConfig ), is( 0 ) );
+      ScrollPane leftScroller = systemUnderTest.leftScroller();
+      assertThat( GridPane.getColumnIndex( leftScroller ), is( 0 ) );
+      assertThat( GridPane.getRowIndex( leftScroller ), is( 0 ) );
       
       ImageFlasherConfigurationPanel imageConfig = systemUnderTest.imageConfigPanel();
       assertThat( GridPane.getColumnIndex( imageConfig ), is( 1 ) );
       assertThat( GridPane.getRowIndex( imageConfig ), is( 0 ) );
       
-      BuildWallConfigurationPanelImpl rightConfig = systemUnderTest.rightConfigPanel();
-      assertThat( GridPane.getColumnIndex( rightConfig ), is( 2 ) );
-      assertThat( GridPane.getRowIndex( rightConfig ), is( 0 ) );
+      ScrollPane rightScroller = systemUnderTest.rightScroller();
+      assertThat( GridPane.getColumnIndex( rightScroller ), is( 2 ) );
+      assertThat( GridPane.getRowIndex( rightScroller ), is( 0 ) );
    }//End Method
 }//End Class

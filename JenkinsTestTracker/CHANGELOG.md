@@ -2,6 +2,12 @@
 
 ### Latest Version
 
+Solved Issue 106:
+
+Wrapped build wall configuration panels in scroll panes so that when there are lots of jobs, they can be reached and configured.
+
+###1.3.61 (Apr 21, 2016 7:41:09 AM)
+
 Internal changes looking at issue 93 to try and simplify constructor of dual buil wall. Factored out separate clear methods and tested interaction with configuration window controller.
 
 ###1.3.60 (Apr 20, 2016 9:33:20 PM)

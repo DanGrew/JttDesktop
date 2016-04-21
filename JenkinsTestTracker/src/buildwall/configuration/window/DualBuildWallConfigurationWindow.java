@@ -12,6 +12,7 @@ import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationPanelImpl;
 import buildwall.effects.flasher.ImageFlasherProperties;
 import buildwall.effects.flasher.configuration.ImageFlasherConfigurationPanel;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
@@ -22,6 +23,10 @@ import javafx.scene.layout.GridPane;
 public class DualBuildWallConfigurationWindow extends GridPane {
    
    static final double CONFIG_PANEL_WIDTH_PERCENT = 66;
+   
+   private ScrollPane leftScroller;
+   private ScrollPane rightScroller;
+   
    private BuildWallConfigurationPanelImpl leftConfigPanel;
    private ImageFlasherConfigurationPanel imageConfigPanel;
    private BuildWallConfigurationPanelImpl rightConfigPanel;
@@ -56,9 +61,12 @@ public class DualBuildWallConfigurationWindow extends GridPane {
       imageConfigPanel = new ImageFlasherConfigurationPanel( "Image Flasher", imageFlasherProperties );
       rightConfigPanel = new BuildWallConfigurationPanelImpl( "Right Wall", rightConfiguration );
       
-      add( leftConfigPanel, 0, 0 );
+      leftScroller = new ScrollPane( leftConfigPanel );
+      rightScroller = new ScrollPane( rightConfigPanel );
+      
+      add( leftScroller, 0, 0 );
       add( imageConfigPanel, 1, 0 );
-      add( rightConfigPanel, 2, 0 );
+      add( rightScroller, 2, 0 );
    }//End Method
 
    /**
@@ -87,6 +95,14 @@ public class DualBuildWallConfigurationWindow extends GridPane {
 
    BuildWallConfigurationPanelImpl rightConfigPanel() {
       return rightConfigPanel;
+   }//End Method
+   
+   ScrollPane leftScroller(){
+      return leftScroller;
+   }//End Method
+   
+   ScrollPane rightScroller(){
+      return rightScroller;
    }//End Method
    
 }//End Class
