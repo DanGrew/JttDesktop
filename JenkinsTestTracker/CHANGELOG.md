@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Refactored json user importer to get rid of the try catches that were unnecessary.
+
+###1.3.66 (Apr 22, 2016 12:28:35 PM)
+
 Working on issue 83. Refactored the user import test and extracted common object for converting from string response from Jenkins to JSONObject. This allows the logic to be simplifed and testing to be simplified elsewhere.
 
 ###1.3.65 (Apr 22, 2016 7:54:35 AM)

@@ -84,6 +84,11 @@ public class JsonUserImporterImplTest {
       when( usersArray.getJSONObject( 2 ) ).thenReturn( thirdUserWrapper );
       when( usersArray.getJSONObject( 3 ) ).thenReturn( fourthUserWrapper );
       when( usersArray.getJSONObject( 4 ) ).thenReturn( fifthUserWrapper );
+      when( usersArray.optJSONObject( 0 ) ).thenReturn( firstUserWrapper );
+      when( usersArray.optJSONObject( 1 ) ).thenReturn( secondUserWrapper );
+      when( usersArray.optJSONObject( 2 ) ).thenReturn( thirdUserWrapper );
+      when( usersArray.optJSONObject( 3 ) ).thenReturn( fourthUserWrapper );
+      when( usersArray.optJSONObject( 4 ) ).thenReturn( fifthUserWrapper );
       
       whenHasGetOptObject( USER_KEY, firstUser, firstUserWrapper );
       whenHasGetOptObject( USER_KEY, secondUser, secondUserWrapper );
@@ -139,6 +144,21 @@ public class JsonUserImporterImplTest {
       assertThat( database.jenkinsUsers(), hasSize( 5 ) );
    }//End Method
    
+   @Test public void shouldNotImportWhenUsersAreThoughtPresent(){
+      when( response.has( USERS_KEY ) ).thenReturn( true );
+      when( response.optJSONArray( USERS_KEY ) ).thenReturn( null );
+      when( response.getJSONArray( USERS_KEY ) ).thenThrow( new JSONException( "" ) );
+      
+      assertUsersImported( Arrays.asList( 0, 1, 2, 3, 4 ) );
+   }//End Method
+   
+   @Test public void shouldNotImportFourthWhenUsersArePresentButFourthIsNot(){
+      when( usersArray.getJSONObject( 3 ) ).thenReturn( null );
+      when( usersArray.optJSONObject( 3 ) ).thenReturn( null );
+      
+      assertUsersImported( Arrays.asList( 0, 1, 2, 3, 4 ) );
+   }//End Method
+   
    @Test public void shouldNotImportWhenUsersAreNotPresent(){
       when( response.has( USERS_KEY ) ).thenReturn( false );
       when( response.optJSONArray( USERS_KEY ) ).thenReturn( null );
@@ -170,6 +190,14 @@ public class JsonUserImporterImplTest {
       }
       
       assertUsersImported( Arrays.asList( 0, 1, 2, 3, 4 ) );
+   }//End Method
+   
+   @Test public void shouldNotImportSecondWhenUserThoughtPresent(){
+      when( secondUserWrapper.has( USER_KEY ) ).thenReturn( true );
+      when( secondUserWrapper.optJSONObject( USER_KEY ) ).thenReturn( null );
+      when( secondUserWrapper.getJSONObject( USER_KEY ) ).thenThrow( exception );
+      
+      assertUsersImported( Arrays.asList( 1 ) );
    }//End Method
    
    @Test public void shouldNotImportSecondWhenUserKeyNotPresent(){

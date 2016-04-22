@@ -49,28 +49,22 @@ public class JsonUserImporterImpl implements JsonUserImporter {
     */
    @Override public void importUsers( JSONObject response ) {
       if ( response == null ) return;
-      try {
-         if ( !response.has( USERS_KEY ) ) return;
+      if ( !response.has( USERS_KEY ) ) return;
+      
+      JSONArray jobs = response.optJSONArray( USERS_KEY );
+      if ( jobs == null ) return;
+      
+      for ( int i = 0; i < jobs.length(); i++ ) {
+         JSONObject user = jobs.optJSONObject( i );
+         if ( user == null ) continue;
+         if ( !user.has( USER_KEY ) ) continue;
          
-         JSONArray jobs = response.getJSONArray( USERS_KEY );
-         for ( int i = 0; i < jobs.length(); i++ ) {
-            try { //Protective wrapper for parse in constructor.
-               JSONObject user = jobs.getJSONObject( i );
-               if ( !user.has( USER_KEY ) ) continue;
-               
-               JSONObject job = user.getJSONObject( USER_KEY );
-               if ( !job.has( FULL_NAME_KEY ) ) continue;
-               
-               String name = job.getString( FULL_NAME_KEY );
-               handler.userFound( name );
-            } catch ( JSONException exception ) {
-               System.out.println( exception.getMessage() );
-               continue;
-            }
-         }
-      } catch ( JSONException exception ) {
-         System.out.println( exception.getMessage() );
-         return;
+         JSONObject job = user.optJSONObject( USER_KEY );
+         if ( job == null ) continue;
+         if ( !job.has( FULL_NAME_KEY ) ) continue;
+         
+         String name = job.optString( FULL_NAME_KEY );
+         handler.userFound( name );
       }
    }//End Method
 
