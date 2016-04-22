@@ -2,7 +2,13 @@
 
 ### Latest Version
 
+Working on issue 83. Refactored the user import test and extracted common object for converting from string response from Jenkins to JSONObject. This allows the logic to be simplifed and testing to be simplified elsewhere.
+
+###1.3.65 (Apr 22, 2016 7:54:35 AM)
+
 Internal changes for handling conversion from jenkins api response to JSON import. Not integrated yet.
+
+###1.3.63 - 1.3.64 Unreleased
 
 ###1.3.62 (Apr 21, 2016 12:23:23 PM)
 

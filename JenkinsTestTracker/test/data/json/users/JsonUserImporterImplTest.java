@@ -8,81 +8,192 @@
  */
 package data.json.users;
 
+import static data.json.users.JsonUserImporterImpl.FULL_NAME_KEY;
+import static data.json.users.JsonUserImporterImpl.USERS_KEY;
+import static data.json.users.JsonUserImporterImpl.USER_KEY;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import model.users.JenkinsUserImpl;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
-import utility.TestCommon;
 
 /**
  * {@link JsonUserImporterImpl} test.
  */
 public class JsonUserImporterImplTest {
    
-   private JenkinsDatabase database;
+   private static final String FIRST_USER = "Dan Grew";
+   private static final String SECOND_USER = "jenkins";
+   private static final String THIRD_USER = "He who shall not be named";
+   private static final String FOURTH_USER = "The Stig";
+   private static final String FIFTH_USER = "Jeffrey";
+   
+   @Mock private JSONObject response;
+   @Mock private JSONArray usersArray;
+   
+   @Mock private JSONObject firstUserWrapper;
+   @Mock private JSONObject secondUserWrapper;
+   @Mock private JSONObject thirdUserWrapper;
+   @Mock private JSONObject fourthUserWrapper;
+   @Mock private JSONObject fifthUserWrapper;
+   
+   @Mock private JSONObject firstUser;
+   @Mock private JSONObject secondUser;
+   @Mock private JSONObject thirdUser;
+   @Mock private JSONObject fourthUser;
+   @Mock private JSONObject fifthUser;
+   
+   @Mock private JSONException exception;
+   
+   @Mock private JsonUserImportHandler handler;
    private JsonUserImporter systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      database = new JenkinsDatabaseImpl();
+      MockitoAnnotations.initMocks( this );
+      systemUnderTest = new JsonUserImporterImpl( handler );
+      
+      constructJsonResponseThatCanBeDynamicallyChangedDuringTest();
+   }//End Method
+   
+   /**
+    * Method to construct the {@link JSONObject} response for testing. The theory here is to mock out an entire
+    * user import structure, then have individual cases break parts of it to test the import.
+    */
+   private void constructJsonResponseThatCanBeDynamicallyChangedDuringTest(){
+      when( response.has( USERS_KEY ) ).thenReturn( true );
+      when( response.getJSONArray( USERS_KEY ) ).thenReturn( usersArray );
+      when( response.optJSONArray( USERS_KEY ) ).thenReturn( usersArray );
+      
+      when( usersArray.length() ).thenReturn( 5 );
+      when( usersArray.getJSONObject( 0 ) ).thenReturn( firstUserWrapper );
+      when( usersArray.getJSONObject( 1 ) ).thenReturn( secondUserWrapper );
+      when( usersArray.getJSONObject( 2 ) ).thenReturn( thirdUserWrapper );
+      when( usersArray.getJSONObject( 3 ) ).thenReturn( fourthUserWrapper );
+      when( usersArray.getJSONObject( 4 ) ).thenReturn( fifthUserWrapper );
+      
+      whenHasGetOptObject( USER_KEY, firstUser, firstUserWrapper );
+      whenHasGetOptObject( USER_KEY, secondUser, secondUserWrapper );
+      whenHasGetOptObject( USER_KEY, thirdUser, thirdUserWrapper );
+      whenHasGetOptObject( USER_KEY, fourthUser, fourthUserWrapper );
+      whenHasGetOptObject( USER_KEY, fifthUser, fifthUserWrapper );
+      
+      whenHasGetOptString( FULL_NAME_KEY, FIRST_USER, firstUser );
+      whenHasGetOptString( FULL_NAME_KEY, SECOND_USER, secondUser );
+      whenHasGetOptString( FULL_NAME_KEY, THIRD_USER, thirdUser );
+      whenHasGetOptString( FULL_NAME_KEY, FOURTH_USER, fourthUser );
+      whenHasGetOptString( FULL_NAME_KEY, FIFTH_USER, fifthUser );
+   }//End Method
+   
+   /**
+    * Method to mock out the return result for a particular {@link String} value.
+    * @param key the key in the data.
+    * @param value the value to provide.
+    * @param object the {@link JSONObject} to when on.
+    */
+   private void whenHasGetOptString( String key, String value, JSONObject object ) {
+      when( object.has( key ) ).thenReturn( true );
+      when( object.getString( key ) ).thenReturn( value );
+      when( object.optString( key ) ).thenReturn( value );
+   }//End Method
+   
+   /**
+    * Method to mock out the return result for a particular {@link JSONObject} value.
+    * @param key the key in the data.
+    * @param value the value to provide.
+    * @param object the {@link JSONObject} to when on.
+    */
+   private void whenHasGetOptObject( String key, JSONObject value, JSONObject object ) {
+      when( object.has( key ) ).thenReturn( true );
+      when( object.getJSONObject( key ) ).thenReturn( value );
+      when( object.optJSONObject( key ) ).thenReturn( value );
+   }//End Method
+   
+   @Test public void systemConstructorShouldConstruct(){
+      JenkinsDatabase database = new JenkinsDatabaseImpl();
       systemUnderTest = new JsonUserImporterImpl( database );
+      systemUnderTest.importUsers( new JSONObject() );
    }//End Method
    
    @Test public void shouldParseUsersList(){
-      String response = TestCommon.readFileIntoString( getClass(), "users-list.json" );
-      
-      assertUsersImported( response, new ArrayList<>() );
+      assertUsersImported( new ArrayList<>() );
    }//End Method
    
-   @Test public void shouldIgnoreEmptyUsersList(){
-      String response = TestCommon.readFileIntoString( getClass(), "users-list-empty-users.json" );
-      
+   @Test public void shouldParseUsersListWithSystemConstructor(){
       JenkinsDatabase database = new JenkinsDatabaseImpl();
+      systemUnderTest = new JsonUserImporterImpl( database );
       systemUnderTest.importUsers( response );
-      Assert.assertTrue( database.hasNoJenkinsUsers() );
-      Assert.assertTrue( database.jenkinsUsers().isEmpty() );
+      assertThat( database.jenkinsUsers(), hasSize( 5 ) );
    }//End Method
    
-   @Test public void shouldIgnoreInvalidUserNameInUserList(){
-      String response = TestCommon.readFileIntoString( getClass(), "users-list-invalid-full-name-value.json" );
+   @Test public void shouldNotImportWhenUsersAreNotPresent(){
+      when( response.has( USERS_KEY ) ).thenReturn( false );
+      when( response.optJSONArray( USERS_KEY ) ).thenReturn( null );
+      when( response.getJSONArray( USERS_KEY ) ).thenThrow( new JSONException( "" ) );
       
-      assertUsersImported( response, Arrays.asList( 0 ) );
+      assertUsersImported( Arrays.asList( 0, 1, 2, 3, 4 ) );
    }//End Method
    
-   @Test public void shouldIgnoreMissingUsersInUserList(){
-      String response = TestCommon.readFileIntoString( getClass(), "users-list-missing-users.json" );
+   @Test public void shouldNotImportWhenUsersAreEmpty(){
+      when( response.has( USERS_KEY ) ).thenReturn( false );
+      when( response.optJSONArray( USERS_KEY ) ).thenReturn( new JSONArray() );
+      when( response.getJSONArray( USERS_KEY ) ).thenThrow( new JSONException( "" ) );
       
-      JenkinsDatabase database = new JenkinsDatabaseImpl();
-      systemUnderTest.importUsers( response );
-      Assert.assertTrue( database.hasNoJenkinsUsers() );
-      Assert.assertTrue( database.jenkinsUsers().isEmpty() );
+      assertUsersImported( Arrays.asList( 0, 1, 2, 3, 4 ) );
    }//End Method
    
-   @Test public void shouldIgnoreMissingFullNameKeyInUserList(){
-      String response = TestCommon.readFileIntoString( getClass(), "users-list-missing-full-name-key.json" );
+   @Test public void shouldNotImportWhenUsersAreThoughtButNotPresent(){
+      when( response.has( USERS_KEY ) ).thenReturn( true );
+      when( response.optJSONArray( USERS_KEY ) ).thenReturn( null );
+      when( response.getJSONArray( USERS_KEY ) ).thenThrow( exception );
       
-      assertUsersImported( response, Arrays.asList( 1 ) );
+      assertUsersImported( Arrays.asList( 0, 1, 2, 3, 4 ) );
    }//End Method
    
-   @Test public void shouldIgnoreMissingFullNameValueInUserList(){
-      String response = TestCommon.readFileIntoString( getClass(), "users-list-missing-full-name-value.json" );
+   @Test public void shouldNotImportWhenUsersArePresentButNoElements(){
+      when( usersArray.length() ).thenReturn( 0 );
+      for ( int i = 0; i < 5; i++ ) {
+         when( usersArray.get( i ) ).thenReturn( null );
+      }
       
-      assertUsersImported( response, Arrays.asList( 3 ) );
+      assertUsersImported( Arrays.asList( 0, 1, 2, 3, 4 ) );
    }//End Method
    
-   @Test public void shouldOnlyImportNewUsers(){
-      database.store( new JenkinsUserImpl( "Dan Grew" ) );
-      database.store( new JenkinsUserImpl( "jenkins" ) );
+   @Test public void shouldNotImportSecondWhenUserKeyNotPresent(){
+      when( secondUserWrapper.has( USER_KEY ) ).thenReturn( false );
+      when( secondUserWrapper.optJSONObject( USER_KEY ) ).thenReturn( null );
+      when( secondUserWrapper.getJSONObject( USER_KEY ) ).thenThrow( exception );
       
-      String response = TestCommon.readFileIntoString( getClass(), "users-list.json" );
+      assertUsersImported( Arrays.asList( 1 ) );
+   }//End Method
+   
+   @Test public void shouldNotImportThirdWhenUserFullNameNotPresent(){
+      when( thirdUser.has( FULL_NAME_KEY ) ).thenReturn( false );
+      when( thirdUser.optString( FULL_NAME_KEY ) ).thenReturn( null );
+      when( thirdUser.getString( FULL_NAME_KEY ) ).thenThrow( exception );
       
-      assertUsersImported( response, new ArrayList<>() );
+      assertUsersImported( Arrays.asList( 2 ) );
+   }//End Method
+   
+   @Test public void shouldNotImportThirdWhenUserFullNameNotValid(){
+      when( thirdUser.has( FULL_NAME_KEY ) ).thenReturn( true );
+      when( thirdUser.optString( FULL_NAME_KEY ) ).thenReturn( null );
+      when( thirdUser.getString( FULL_NAME_KEY ) ).thenThrow( exception );
+      
+      assertUsersImported( Arrays.asList( 2 ) );
    }//End Method
    
    /**
@@ -90,41 +201,28 @@ public class JsonUserImporterImplTest {
     * @param response the response from the {@link ExternalApi}.
     * @param missingUsers the user number to exclude.
     */
-   private void assertUsersImported( String response, List< Integer > missingUsers ) {
+   private void assertUsersImported( List< Integer > missingUsers ) {
       List< String > expected = new ArrayList<>();
       if ( !missingUsers.contains( 0 ) ) {
-         expected.add( "Dan Grew" );
+         expected.add( FIRST_USER );
       }
       if ( !missingUsers.contains( 1 ) ) {
-         expected.add( "jenkins" );
+         expected.add( SECOND_USER );
       }
       if ( !missingUsers.contains( 2 ) ) {
-         expected.add( "He who shall not be named" );
+         expected.add( THIRD_USER );
       } 
       if ( !missingUsers.contains( 3 ) ) {
-         expected.add( "The Stig" );
+         expected.add( FOURTH_USER );
       }
       if ( !missingUsers.contains( 4 ) ) {
-         expected.add( "Jeffrey" );
+         expected.add( FIFTH_USER );
       }
       
       systemUnderTest.importUsers( response );
-      Assert.assertEquals( 5 - missingUsers.size(), database.jenkinsUsers().size() );
-      for ( int i = 0; i < 5 - missingUsers.size(); i ++ ) {
-         Assert.assertEquals( expected.get( i ), database.jenkinsUsers().get( i ).nameProperty().get() );
+      for ( String expectedUser : expected ) {
+         verify( handler ).userFound( expectedUser );
       }
    }//End Method
    
-   @Test public void shouldIgnoreNullDatabaseInJobList(){
-      systemUnderTest = new JsonUserImporterImpl( null );
-      systemUnderTest.importUsers( "anything" );
-   }//End Method
-   
-   @Test public void shouldIgnoreNullResponseInJobList(){
-      systemUnderTest.importUsers( null );
-   }//End Method
-   
-   @Test public void shouldIgnoreMissingButValidData(){
-      systemUnderTest.importUsers( "{ }" );
-   }//End Method
 }//End Class

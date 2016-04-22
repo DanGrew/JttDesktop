@@ -8,8 +8,11 @@
  */
 package api.handling;
 
+import org.json.JSONObject;
+
 import api.sources.ExternalApi;
 import data.JsonTestResultsImporter;
+import data.json.conversion.ApiResponseToJsonConverter;
 import data.json.jobs.JsonJobImporter;
 import data.json.jobs.JsonJobImporterImpl;
 import data.json.tests.JsonTestResultsImporterImpl;
@@ -24,11 +27,12 @@ import storage.database.JenkinsDatabase;
  */
 public class JenkinsFetcherImpl implements JenkinsFetcher {
 
-   private ExternalApi externalApi;
-   private JsonJobImporter jobsImporter;
-   private JsonUserImporter usersImporter;
-   private JsonTestResultsImporter testsImporter;
-   private JenkinsFetcherDigest digest;
+   private final ExternalApi externalApi;
+   private final JsonJobImporter jobsImporter;
+   private final JsonUserImporter usersImporter;
+   private final JsonTestResultsImporter testsImporter;
+   private final JenkinsFetcherDigest digest;
+   private final ApiResponseToJsonConverter converter;
    
    /**
     * Constructs a new {@link JenkinsFetcherImpl}.
@@ -50,12 +54,14 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       if ( externalApi == null ) throw new IllegalArgumentException( "Null api provided." );
       
       this.externalApi = externalApi;
-      jobsImporter = new JsonJobImporterImpl( database, this );
-      usersImporter = new JsonUserImporterImpl( database );
-      testsImporter = new JsonTestResultsImporterImpl( database );
+      this.jobsImporter = new JsonJobImporterImpl( database, this );
+      this.usersImporter = new JsonUserImporterImpl( database );
+      this.testsImporter = new JsonTestResultsImporterImpl( database );
       
       this.digest = digest;
       this.digest.attachSource( this );
+      
+      this.converter = new ApiResponseToJsonConverter();
    }//End Constructor
 
    /**
@@ -117,7 +123,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       digest.fetching( JenkinsFetcherDigest.USERS );
       String response = externalApi.getUsersList();
       digest.parsing( JenkinsFetcherDigest.USERS );
-      usersImporter.importUsers( response );
+      
+      JSONObject converted = converter.convert( response );
+      usersImporter.importUsers( converted );
       digest.updated( JenkinsFetcherDigest.USERS );
    }//End Method
    

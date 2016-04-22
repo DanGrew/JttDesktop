@@ -22,32 +22,37 @@ import storage.database.JenkinsDatabase;
  */
 public class JsonUserImporterImpl implements JsonUserImporter {
    
-   private static final String USERS_KEY = "users";
-   private static final String USER_KEY = "user";
-   private static final String FULL_NAME_KEY = "fullName";
+   static final String USERS_KEY = "users";
+   static final String USER_KEY = "user";
+   static final String FULL_NAME_KEY = "fullName";
 
-   private JenkinsDatabase database;
+   private final JsonUserImportHandler handler;
    
    /**
     * Constructs a new {@link JsonUserImporterImpl}.
     * @param database the {@link JenkinsDatabase} to import to.
     */
    public JsonUserImporterImpl( JenkinsDatabase database ) {
-      this.database = database;
+      this( new JsonUserImportHandler( database ) );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link JsonUserImporterImpl}.
+    * @param handler the {@link JsonUserImportHandler} to handle import data.
+    */
+   JsonUserImporterImpl( JsonUserImportHandler handler ) {
+      this.handler = handler;
    }//End Constructor
 
    /**
-    * Method to import the users from a json {@link String} into the given {@link JenkinsDatabase}.
-    * @param response the response from the {@link ExternalApi}.
+    * {@inheritDoc}
     */
-   @Override public void importUsers( String response ) {
-      if ( response == null || database == null ) return;
+   @Override public void importUsers( JSONObject response ) {
+      if ( response == null ) return;
       try {
-         JSONObject object = new JSONObject( response );
+         if ( !response.has( USERS_KEY ) ) return;
          
-         if ( !object.has( USERS_KEY ) ) return;
-         
-         JSONArray jobs = object.getJSONArray( USERS_KEY );
+         JSONArray jobs = response.getJSONArray( USERS_KEY );
          for ( int i = 0; i < jobs.length(); i++ ) {
             try { //Protective wrapper for parse in constructor.
                JSONObject user = jobs.getJSONObject( i );
@@ -57,14 +62,7 @@ public class JsonUserImporterImpl implements JsonUserImporter {
                if ( !job.has( FULL_NAME_KEY ) ) continue;
                
                String name = job.getString( FULL_NAME_KEY );
-               if ( name.trim().length() == 0 ) continue;
-               
-               if ( database.hasJenkinsUser( name ) ) {
-                  continue;
-               }
-               
-               JenkinsUser jenkinsUser = new JenkinsUserImpl( name );
-               database.store( jenkinsUser );
+               handler.userFound( name );
             } catch ( JSONException exception ) {
                System.out.println( exception.getMessage() );
                continue;

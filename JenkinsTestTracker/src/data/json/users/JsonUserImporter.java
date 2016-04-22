@@ -8,6 +8,8 @@
  */
 package data.json.users;
 
+import org.json.JSONObject;
+
 /**
  * The {@link JsonUserImporter} provides an interface to an importer of user data in the JSON
  * format.
@@ -15,9 +17,9 @@ package data.json.users;
 public interface JsonUserImporter {
    
    /**
-    * Method to import the users from a json {@link String} into the given {@link JenkinsDatabase}.
+    * Method to import the users from a {@link JSONObject} into the given {@link JenkinsDatabase}.
     * @param response the response from the {@link ExternalApi}.
     */
-   public void importUsers( String response );//End Method
+   public void importUsers( JSONObject response );//End Method
 
 }//End Interface
