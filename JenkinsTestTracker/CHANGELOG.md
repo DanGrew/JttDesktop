@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Refactored models updates when jobs and details for jobs are imported. This will allow more complicated logic to be performed on imports in future if needed. Also resolved an issue where failures were being cleared by certain types of Jenkins Jobs (such as Maven).
+
+###1.3.67 (Apr 22, 2016 7:43:33 PM)
+
 Refactored json user importer to get rid of the try catches that were unnecessary.
 
 ###1.3.66 (Apr 22, 2016 12:28:35 PM)

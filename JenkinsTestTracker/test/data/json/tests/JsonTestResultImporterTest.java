@@ -459,6 +459,7 @@ public class JsonTestResultImporterTest {
       systemUnderTest.updateTestResults( jenkinsJob, null );
       systemUnderTest.updateTestResults( jenkinsJob, "" );
       systemUnderTest.updateTestResults( jenkinsJob, "anything" );
+      systemUnderTest.updateTestResults( jenkinsJob, "{ }" );
       
       assertThatMultipleTestCaseAndClassCasesHaveBeenLoaded();
    }//End Method

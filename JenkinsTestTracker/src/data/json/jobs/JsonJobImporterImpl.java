@@ -12,12 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import api.handling.BuildState;
 import api.handling.JenkinsFetcher;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
-import model.jobs.JenkinsJobImpl;
-import model.users.JenkinsUser;
 import storage.database.JenkinsDatabase;
 
 /**
@@ -37,7 +34,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
    private static final String FULL_NAME_KEY = "fullName";
 
    private final JenkinsDatabase database;
-   private final JenkinsFetcher fetcher;
+   private final JsonJobImportHandler handler;
    
    /**
     * Constructs a new {@link JsonJobImporterImpl}.
@@ -48,7 +45,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
       if ( fetcher == null ) throw new IllegalArgumentException( "Null fetcher provided." );
       
       this.database = database;
-      this.fetcher = fetcher;
+      this.handler = new JsonJobImportHandler( database, fetcher );
    }//End Constructor
 
    /**
@@ -63,30 +60,21 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          if ( !object.has( BUILDING_KEY ) ) return;
          
          boolean isBuilding = object.getBoolean( BUILDING_KEY );
-         if ( isBuilding ) {
-            jenkinsJob.buildStateProperty().set( BuildState.Building );
-         } else {
-            jenkinsJob.currentBuildTimeProperty().set( 0 );
-            jenkinsJob.buildStateProperty().set( BuildState.Built );
-         }
+         handler.handleBuildingState( jenkinsJob, isBuilding );
          
          if ( object.has( ESTIMATED_DURATION_KEY ) ) {
-            long estimatedDurection = object.optLong( ESTIMATED_DURATION_KEY );
-            jenkinsJob.expectedBuildTimeProperty().set( estimatedDurection );
+            long estimatedDuration = object.optLong( ESTIMATED_DURATION_KEY );
+            handler.handleExpectedDuration( jenkinsJob, estimatedDuration );
          }
          
          if ( object.has( TIMESTAMP_KEY ) ) {
             long timestamp = object.optLong( TIMESTAMP_KEY );
-            jenkinsJob.currentBuildTimestampProperty().set( timestamp );
+            handler.handleBuildTimestamp( jenkinsJob, timestamp );
          }
          
          if ( object.has( NUMBER_KEY ) ) {
             int buildNumber = object.getInt( NUMBER_KEY );
-            jenkinsJob.currentBuildNumberProperty().set( buildNumber );
-            
-            if ( jenkinsJob.buildStateProperty().get() == BuildState.Built ) {
-               jenkinsJob.lastBuildNumberProperty().set( buildNumber );   
-            }
+            handler.handleBuildNumber( jenkinsJob, buildNumber );
          }
       } catch ( JSONException exception ) {
          return;
@@ -109,8 +97,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          int lastBuildNumber = object.getInt( NUMBER_KEY );
          BuildResultStatus lastBuildResult = object.getEnum( BuildResultStatus.class, RESULT_KEY );
          
-         jenkinsJob.lastBuildNumberProperty().set( lastBuildNumber );
-         jenkinsJob.lastBuildStatusProperty().set( lastBuildResult );
+         handler.handleBuiltJobDetails( jenkinsJob, lastBuildNumber, lastBuildResult );
          
          identifyCulprits( jenkinsJob, object );
       } catch ( JSONException exception ) {
@@ -126,7 +113,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
     * @param object the {@link JSONObject} to extract the culprits from.
     */
    private void identifyCulprits( JenkinsJob jenkinsJob, JSONObject object ) {
-      jenkinsJob.culprits().clear();
+      handler.startImportingJobCulprits( jenkinsJob );
       
       if ( !object.has( CULPRITS_KEY ) ) {
          return;
@@ -141,7 +128,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
                if ( !culprit.has( FULL_NAME_KEY ) ) continue;
                
                String userName = culprit.getString( FULL_NAME_KEY );
-               retrieveAndApplyCulprit( userName, jenkinsJob );
+               handler.handleUserCulprit( jenkinsJob, userName );
             } catch ( JSONException exception ) {
                System.out.println( exception.getMessage() );
                continue;
@@ -151,31 +138,6 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          System.out.println( exception.getMessage() );
          return;
       }
-   }//End Method
-   
-   /**
-    * Method to retrieve the culprit from the {@link JenkinsDatabase} if present. If not the
-    * {@link JenkinsFetcher} will be used to retrieve an updted list of {@link JenkinsUser}s.
-    * @param userName the name of the user being found.
-    * @param jenkinsJob the {@link JenkinsJob} the culprit is for.
-    */
-   private void retrieveAndApplyCulprit( String userName, JenkinsJob jenkinsJob ){
-      //first attempt
-      JenkinsUser user = database.getJenkinsUser( userName );
-      
-      //if null request users loaded
-      if ( user == null ) {
-         fetcher.fetchUsers();
-      }
-      
-      //try once more
-      user = database.getJenkinsUser( userName );
-      //if still null forget the user
-      if ( user == null ) return;
-      
-      //otherwise record culprit
-      jenkinsJob.culprits().add( user );
-      System.out.println( "Found culprit " + userName + " for " + jenkinsJob.nameProperty().get() );
    }//End Method
    
    /**
@@ -196,13 +158,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
                if ( !job.has( NAME_KEY ) ) continue;
                
                String name = job.getString( NAME_KEY );
-               if ( name.trim().length() == 0 ) continue;
-               if ( database.hasJenkinsJob( name ) ) {
-                  continue;
-               }
-               
-               JenkinsJob jenkinsJob = new JenkinsJobImpl( name );
-               database.store( jenkinsJob );
+               handler.handleJobFound( name );
             } catch ( JSONException exception ) {
                System.out.println( exception.getMessage() );
                continue;

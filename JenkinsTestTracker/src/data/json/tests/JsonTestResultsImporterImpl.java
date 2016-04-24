@@ -64,13 +64,13 @@ public class JsonTestResultsImporterImpl implements JsonTestResultsImporter {
          return;
       }
       
-      //clear of erroneous calls
-      job.failingTestCases().clear(); 
-      
       JSONArray jsonTestClasses = extractTestClasses( jsonRoot );
       if ( jsonTestClasses == null ) {
          return;
       }
+      
+      //clear of erroneous calls
+      job.failingTestCases().clear(); 
       
       for ( int i = 0; i < jsonTestClasses.length(); i++ ) {
          constructTestCases( job, jsonTestClasses.getJSONObject( i ) );
