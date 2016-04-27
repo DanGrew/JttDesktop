@@ -62,6 +62,7 @@ public class JenkinsLogin {
    private ButtonType login;
    private ButtonType cancel;
    
+   private final DigestViewer digestViewer;
    private JenkinsLoginDigest digest;
    private final ValidationSupport validation;
    private InputValidator validator;
@@ -82,23 +83,26 @@ public class JenkinsLogin {
    /**
     * Constructs a new {@link JenkinsLogin}.
     * @param externalApi the {@link ExternalApi} for logging in.
+    * @param digestViewer the {@link DigestViewer} to display in the login screen.
     */
-   public JenkinsLogin( ExternalApi externalApi ) {
-      this( externalApi, new JenkinsLoginDigest() );
+   public JenkinsLogin( ExternalApi externalApi, DigestViewer digestViewer ) {
+      this( externalApi, digestViewer, new JenkinsLoginDigest() );
    }//End Constructor
    
    /**
     * Constructs a new {@link JenkinsLogin}.
-    * @param externalApi the {@link ExternalApi} for loggin in.
+    * @param externalApi the {@link ExternalApi} for logging in.
+    * @param digestViewer the {@link DigestViewer} to display in the login screen.
     * @param digest the {@link JenkinsLoginDigest} to use.
     */
-   JenkinsLogin( ExternalApi externalApi, JenkinsLoginDigest digest ) {
+   JenkinsLogin( ExternalApi externalApi, DigestViewer digestViewer, JenkinsLoginDigest digest ) {
       this.externalApi = externalApi;
       this.validation = new ValidationSupport();
+      this.digestViewer = digestViewer;
       this.digest = digest;
       this.digest.attachSource( this );
-      login = new ButtonType( "Login" );
-      cancel = new ButtonType( "Cancel" );
+      this.login = new ButtonType( "Login" );
+      this.cancel = new ButtonType( "Cancel" );
       initialiseContent();
    }//End Constructor
    
@@ -159,7 +163,7 @@ public class JenkinsLogin {
       loginContent.add( passwordField, 1, 3 );
 
       content = new BorderPane( loginContent );
-      TitledPane digestPane = new TitledPane( "System Digest", new DigestViewer( 600, 200 ) );
+      TitledPane digestPane = new TitledPane( "System Digest", digestViewer );
       digestPane.setExpanded( false );
       content.setBottom( digestPane );
       digest.resetLoginProgress();

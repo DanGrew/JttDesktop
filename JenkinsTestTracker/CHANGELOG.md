@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Looked at issue #110 to find the cause of the memory leak and the System Digest table appears to be fine and the immediate issue seems to be multiple digest viewers being created when only one should be. This has been addressed so that there is only one digest. There should be no difference from the users perspective other than a memory improvement. 
+
+###1.3.70 (Apr 27, 2016 3:09:09 PM)
+
 Attempted to resolve issue specifically noticed on Windows, issue #95, where the split pane divider position is lost. It's not completely clear where the issue is, and having researched how the split pane works it seems to have some quirks. The issue found on Mac, with another larger screen, was going from maximised to not maximised back to maximised was resetting the divider location to the middle (ish). While this may not be the exact issue on Windows, it is definitely an issue for Mac. This has been fixed.
 
 ###1.3.69 (Apr 27, 2016 10:02:36 AM)

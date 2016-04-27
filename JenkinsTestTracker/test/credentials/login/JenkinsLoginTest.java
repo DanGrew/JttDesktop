@@ -70,6 +70,7 @@ public class JenkinsLoginTest {
    private Node content;
    private ObservableList< ButtonType > buttonTypes;
    @Mock private ExternalApi handler;
+   @Mock private DigestViewer digestViewer;
    @Mock private JenkinsLoginDigest digest;
    @Captor private ArgumentCaptor< Progress > progressCaptor;
    @Captor private ArgumentCaptor< Message > messageCaptor;
@@ -102,7 +103,7 @@ public class JenkinsLoginTest {
          /* Run the launch on PlatformImpl because its possible that two threads interact with StyleManager
           * in JavaFx at the same time and it is not thread safe in 8u40 but should be in at least 8u77. This
           * could be caused by JavaFx thread running in parallel to this initialisation from the test thread.*/
-         systemUnderTest = new JenkinsLogin( handler, digest );
+         systemUnderTest = new JenkinsLogin( handler, digestViewer, digest );
          systemUnderTest.configureAlert( alert );
       } );
    }//End Method
@@ -120,7 +121,7 @@ public class JenkinsLoginTest {
    @Test public void manualConnectionTest() {
       runOnFxThreadAndWait( () -> {
          FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );
-         systemUnderTest = new JenkinsLogin( new JenkinsApiImpl( new ClientHandler() ) );
+         systemUnderTest = new JenkinsLogin( new JenkinsApiImpl( new ClientHandler() ), new DigestViewer( 600, 200 ) );
          systemUnderTest.configureAlert( alert );
          alert.showAndWait();
       } );
@@ -300,7 +301,7 @@ public class JenkinsLoginTest {
       
       Assert.assertTrue( borderPane.getBottom() instanceof TitledPane );
       TitledPane digestPane = ( TitledPane )borderPane.getBottom();
-      assertThat( digestPane.getContent(), instanceOf( DigestViewer.class ) );
+      assertThat( digestPane.getContent(), is( digestViewer ) );
       assertThat( digestPane.isExpanded(), is( false ) );
    }//End Method
    

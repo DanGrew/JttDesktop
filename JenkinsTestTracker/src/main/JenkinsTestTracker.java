@@ -44,9 +44,9 @@ public class JenkinsTestTracker extends Application {
     */
    @Override public void start(Stage stage) throws Exception {
       ExternalApi api = new JenkinsApiImpl( new ClientHandler() );
-      DigestViewer digest = new DigestViewer();
+      DigestViewer digest = new DigestViewer( 600, 200 );
       
-      if ( !controller.login( new JenkinsLogin( api ) ) ) {
+      if ( !controller.login( new JenkinsLogin( api, digest ) ) ) {
          return;
       }
       
