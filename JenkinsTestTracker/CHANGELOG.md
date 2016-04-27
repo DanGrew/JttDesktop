@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Refactored test for job importing to have more flexible test cases, mocking the structure to parse. Consequently, the careless exception catching has been removed since the parsing should now be correctly defended. No functionality/behaviour changes expected.
+
+###1.3.68 (Apr 24, 2016 9:38:41 AM)
+
 Refactored models updates when jobs and details for jobs are imported. This will allow more complicated logic to be performed on imports in future if needed. Also resolved an issue where failures were being cleared by certain types of Jenkins Jobs (such as Maven).
 
 ###1.3.67 (Apr 22, 2016 7:43:33 PM)

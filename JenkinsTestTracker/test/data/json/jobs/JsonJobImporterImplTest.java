@@ -8,26 +8,29 @@
  */
 package data.json.jobs;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
+import static data.json.jobs.JsonJobImporterImpl.BUILDING_KEY;
+import static data.json.jobs.JsonJobImporterImpl.CULPRITS_KEY;
+import static data.json.jobs.JsonJobImporterImpl.ESTIMATED_DURATION_KEY;
+import static data.json.jobs.JsonJobImporterImpl.FULL_NAME_KEY;
+import static data.json.jobs.JsonJobImporterImpl.JOBS_KEY;
+import static data.json.jobs.JsonJobImporterImpl.NAME_KEY;
+import static data.json.jobs.JsonJobImporterImpl.NUMBER_KEY;
+import static data.json.jobs.JsonJobImporterImpl.RESULT_KEY;
+import static data.json.jobs.JsonJobImporterImpl.TIMESTAMP_KEY;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Assert;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import api.handling.BuildState;
-import api.handling.JenkinsFetcher;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import model.jobs.BuildResultStatus;
 import model.jobs.JenkinsJob;
 import model.jobs.JenkinsJobImpl;
@@ -35,380 +38,442 @@ import model.users.JenkinsUser;
 import model.users.JenkinsUserImpl;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
-import utility.TestCommon;
 
 /**
  * {@link JsonJobImporterImpl} test.
  */
 public class JsonJobImporterImplTest {
    
-   @Mock private JenkinsFetcher fetcher;
-   private JenkinsDatabase database;
+   private static final int IMPORTED_BUILD_NUMBER = 45;
+   private static final long IMPORTED_TIMESTAMP = 12345L;
+   private static final long IMPORTED_ESTIMATED_DURATION = 1000450L;
+   private static final BuildResultStatus IMPORTED_RESULT = BuildResultStatus.SUCCESS;
+   
+   private static final int INITIAL_BUILD_NUMBER = 44;
+   private static final long INITIAL_TIMESTAMP = 12345L;
+   private static final long INITIAL_ESTIMATED_DURATION = 1000320L;
+   
+   private static final int BUILD_NUMBER_PROVIDED = 46;
+   private static final long TIMESTAMP_PROVIDED = 902L;
+   private static final long ESTIMATED_DURATION_PROVIDED = 8726L;
+   
+   private static final String FIRST_CULPRIT = "firstCulprit";
+   private static final String SECOND_CULPRIT = "secondCulprit";
+   private static final String THIRD_CULPRIT = "thirdCulprit";
+   
+   private static final String FIRST_JOB = "firstJob";
+   private static final String SECOND_JOB = "secondJob";
+   private static final String THIRD_JOB = "thirdJob";
+   
+   @Mock private JsonJobImportHandler handler;
    private JenkinsJob jenkinsJob;
-   private JenkinsUser lucille;
-   private JenkinsUser negan;
-   private JenkinsUser aaron;
+   
+   @Mock private JSONException exception;
+   
+   @Mock private JSONObject buildingStateResponse;
+   
+   @Mock private JSONObject jobDetailsResponse;
+   @Mock private JSONArray culpritsArray;
+   @Mock private JSONObject firstCulprit;
+   @Mock private JSONObject secondCulprit;
+   @Mock private JSONObject thirdCulprit;
+   
+   @Mock private JSONObject jobsListResponse;
+   @Mock private JSONArray jobsList;
+   @Mock private JSONObject firstJob;
+   @Mock private JSONObject secondJob;
+   @Mock private JSONObject thirdJob;
+   
    private JsonJobImporter systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
       
       jenkinsJob = new JenkinsJobImpl( "anyName" );
-      lucille = new JenkinsUserImpl( "Lucille" );
-      negan = new JenkinsUserImpl( "Negan" );
-      aaron = new JenkinsUserImpl( "Aaron" );
+      jenkinsJob.expectedBuildTimeProperty().set( INITIAL_ESTIMATED_DURATION );
+      jenkinsJob.currentBuildTimestampProperty().set( INITIAL_TIMESTAMP );
+      jenkinsJob.currentBuildNumberProperty().set( INITIAL_BUILD_NUMBER );
       
-      database = new JenkinsDatabaseImpl();
-      database.store( lucille );
-      database.store( negan );
-      database.store( aaron );
-      systemUnderTest = new JsonJobImporterImpl( database, fetcher );
+      systemUnderTest = new JsonJobImporterImpl( handler );
+      
+      constructBuildingStateJsonResponseThatCanBeDynamicallyUpdated();
+      constructJobDetailsJsonResponseThatCanByDynamicallyUpdated();
+      constructJobListJsonResponseThatCanByDynamicallyUpdated();
    }//End Method
+   
+   /**
+    * Method to construct a building state response that can be dynamically updated for different test
+    * cases, breaking parts of the data structure in order to handle errors in test cases.
+    */
+   private void constructBuildingStateJsonResponseThatCanBeDynamicallyUpdated(){
+      when( buildingStateResponse.has( BUILDING_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.getBoolean( BUILDING_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optBoolean( BUILDING_KEY ) ).thenReturn( true );
+      
+      when( buildingStateResponse.has( ESTIMATED_DURATION_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optLong( ESTIMATED_DURATION_KEY, jenkinsJob.expectedBuildTimeProperty().get() ) ).thenReturn( IMPORTED_ESTIMATED_DURATION );
+      
+      when( buildingStateResponse.has( TIMESTAMP_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optLong( TIMESTAMP_KEY, jenkinsJob.currentBuildTimestampProperty().get() ) ).thenReturn( IMPORTED_TIMESTAMP );
+      
+      when( buildingStateResponse.has( NUMBER_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optInt( NUMBER_KEY, jenkinsJob.currentBuildNumberProperty().get() ) ).thenReturn( IMPORTED_BUILD_NUMBER );
+   }//End Method
+   
+   /**
+    * Method to verify that the building state data has been handled correctly.
+    * @param building expected value for building, null implies not expected to be handled.
+    * @param duration expected value for expected duration, null implies not expected to be handled.
+    * @param timestamp expected value for timestamp, null implies not expected to be handled.
+    * @param number expected value for build number, null implies not expected to be handled.
+    */
+   private void verifyBuildingStateImportDataIsHandled( Boolean building, Long duration, Long timestamp, Integer number ) {
+      if ( building == null ) {
+         verify( handler, never() ).handleBuildingState( Mockito.any(), Mockito.anyBoolean() );
+      } else {
+         verify( handler, times( 1 ) ).handleBuildingState( jenkinsJob, building );
+      }
+      
+      if ( duration == null ) {
+         verify( handler, never() ).handleExpectedDuration( Mockito.any(), Mockito.anyLong() );
+      } else {
+         verify( handler, times( 1 ) ).handleExpectedDuration( jenkinsJob, duration );
+      }
 
-   @Test public void shouldParseBuildingStateMissingExpectedCompletion() {
-      String response = TestCommon.readFileIntoString( getClass(), "building-state-missing-expected-completion.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME, jenkinsJob.expectedBuildTimeProperty().get() );
-   }//End Method
-   
-   @Test public void shouldParseBuildingStateInvalidExpectedCompletion() {
-      String response = TestCommon.readFileIntoString( getClass(), "building-state-invalid-expected-completion.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME, jenkinsJob.expectedBuildTimeProperty().get() );
-   }//End Method
-   
-   @Test public void shouldParseMissingTimestamp(){
-      String response = TestCommon.readFileIntoString( getClass(), "building-state-missing-timestamp.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, jenkinsJob.currentBuildTimestampProperty().get() );
-   }//End Method
-   
-   @Test public void shouldParseInvalidTimestamp(){
-      String response = TestCommon.readFileIntoString( getClass(), "building-state-invalid-timestamp.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, jenkinsJob.currentBuildTimestampProperty().get() );
-   }//End Method
-   
-   @Test public void shouldParseMissingNumber(){
-      String response = TestCommon.readFileIntoString( getClass(), "building-state-missing-number.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( 123456, jenkinsJob.currentBuildTimestampProperty().get() );
-      Assert.assertEquals( JenkinsJob.DEFAULT_CURRENT_BUILD_NUMBER, jenkinsJob.currentBuildNumberProperty().get() );
-   }//End Method
-   
-   @Test public void shouldParseInvalidNumber(){
-      String response = TestCommon.readFileIntoString( getClass(), "building-state-invalid-number.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( 123456, jenkinsJob.currentBuildTimestampProperty().get() );
-      Assert.assertEquals( JenkinsJob.DEFAULT_CURRENT_BUILD_NUMBER, jenkinsJob.currentBuildNumberProperty().get() );
-   }//End Method
-   
-   @Test public void shouldParseBuildingStateWithoutUpdatingLastBuildNumber() {
-      String response = TestCommon.readFileIntoString( getClass(), "building-state.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
-      Assert.assertEquals( 100000, jenkinsJob.expectedBuildTimeProperty().get() );
-      Assert.assertEquals( 123456, jenkinsJob.currentBuildTimestampProperty().get() );
-      assertThat( jenkinsJob.currentBuildNumberProperty().get(), is( 45 ) );
-      assertThat( jenkinsJob.lastBuildNumberProperty(), is( not( jenkinsJob.currentBuildNumberProperty().get() ) ) );
-   }//End Method
-   
-   @Test public void shouldParseBuiltStateAndUpdateBuildNumbers() {
-      String response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      Assert.assertEquals( BuildState.Built, jenkinsJob.buildStateProperty().get() );
-      assertThat( jenkinsJob.lastBuildNumberProperty().get(), is( 456 ) );
-      assertThat( jenkinsJob.currentBuildNumberProperty().get(), is( 456 ) );
-   }//End Method
-   
-   @Test public void shouldResetProgressWhenParseBuiltState() {
-      jenkinsJob.currentBuildTimeProperty().set( 1000 );
-      jenkinsJob.buildStateProperty().set( BuildState.Building );
-      Assert.assertEquals( 1000, jenkinsJob.currentBuildTimeProperty().get() );
+      if ( timestamp == null ) {
+         verify( handler, never() ).handleBuildTimestamp( Mockito.any(), Mockito.anyLong() );
+      } else {
+         verify( handler, times( 1 ) ).handleBuildTimestamp( jenkinsJob, timestamp );
+      }
       
-      BooleanProperty builtStateHasChanged = new SimpleBooleanProperty( false );
-      jenkinsJob.buildStateProperty().addListener( ( source, old, updated ) -> 
-         builtStateHasChanged.set( true ) 
-      );
-      jenkinsJob.currentBuildTimeProperty().addListener( ( source, old, updated ) -> 
-         Assert.assertFalse( builtStateHasChanged.get() ) 
-      );
-      
-      String response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-      
-      Assert.assertEquals( 0, jenkinsJob.currentBuildTimeProperty().get() );
-      Assert.assertEquals( BuildState.Built, jenkinsJob.buildStateProperty().get() );
+      if ( number == null ) {
+         verify( handler, never() ).handleBuildNumber( Mockito.any(), Mockito.anyInt() );
+      } else {
+         verify( handler, times( 1 ) ).handleBuildNumber( jenkinsJob, number );
+      }
    }//End Method
    
-   @Test public void shouldIgnoreNullBuildInput() {
+   @Test public void shouldIgnoreBuildStateIfJobIsNull(){
+      systemUnderTest.updateBuildState( null, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( null, null, null, null );
+   }//End Method
+   
+   @Test public void shouldIgnoreBuildStateIfResponseIsNull(){
       systemUnderTest.updateBuildState( jenkinsJob, null );
+      verifyBuildingStateImportDataIsHandled( null, null, null, null );
    }//End Method
    
-   @Test public void shouldIgnoreInvalidBuildInput() {
-      systemUnderTest.updateBuildState( jenkinsJob, "anything" );
+   @Test public void shouldIgnoreResponseIfHasNoBuildingState(){
+      when( buildingStateResponse.has( BUILDING_KEY ) ).thenReturn( false );
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( null, null, null, null );
    }//End Method
    
-   @Test public void shouldIgnoreNullJenkinsJobBuildState() {
-      systemUnderTest.updateBuildState( null, "anything" );
-   }//End Method
-
-   @Test public void shouldIgnoreInvalidBuiltStateKey() {
-      String response = TestCommon.readFileIntoString( getClass(), "invalid-key.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-   }//End Method
-   
-   @Test public void shouldIgnoreInvalidBuiltStateValue() {
-      String response = TestCommon.readFileIntoString( getClass(), "invalid-value.json" );
-      systemUnderTest.updateBuildState( jenkinsJob, response );
-   }//End Method
-   
-   @Test public void shouldParseJobDetails() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details.json" );
-      assertDefaultJobDetailsImported( response );
+   @Test public void shouldIgnoreResponseIfThoughtToHaveBuildingStateButNotPresent(){
+      when( buildingStateResponse.has( BUILDING_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.getBoolean( BUILDING_KEY ) ).thenThrow( exception );
+      when( buildingStateResponse.optBoolean( BUILDING_KEY ) ).thenReturn( false );
       
-      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
-      assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron ) );
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( null, null, null, null );
    }//End Method
    
-   @Test public void shouldParseJobDetailsAndNotDuplicateCulprits() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details.json" );
-      assertDefaultJobDetailsImported( response );
-      systemUnderTest.updateJobDetails( jenkinsJob, response );
+   @Test public void shouldNotImportDurationOnlyIfNotPresent(){
+      when( buildingStateResponse.has( ESTIMATED_DURATION_KEY ) ).thenReturn( false );
       
-      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
-      assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron ) );
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, null, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER );
    }//End Method
    
-   @Test public void shouldIgnoreJobDetailsMissingNumber() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-number.json" );
-      assertJobUnchanged( response );
+   @Test public void shouldImportDurationUsingDefaultInJob(){
+      when( buildingStateResponse.has( ESTIMATED_DURATION_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optLong( ESTIMATED_DURATION_KEY, INITIAL_ESTIMATED_DURATION ) ).thenReturn( ESTIMATED_DURATION_PROVIDED );
+      
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, ESTIMATED_DURATION_PROVIDED, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER );
    }//End Method
    
-   @Test public void shouldIgnoreJobDetailsMissingResult() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-result.json" );
-      assertJobUnchanged( response );
+   @Test public void shouldNotImportTimestampOnlyIfNotPresent(){
+      when( buildingStateResponse.has( TIMESTAMP_KEY ) ).thenReturn( false );
+      
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, null, IMPORTED_BUILD_NUMBER );
    }//End Method
    
-   @Test public void shouldIgnoreJobDetailsInvalidNumber() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-invalid-number.json" );
-      assertJobUnchanged( response );
+   @Test public void shouldImportTimestampUsingDefaultInJob(){
+      when( buildingStateResponse.has( TIMESTAMP_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optLong( TIMESTAMP_KEY, INITIAL_TIMESTAMP ) ).thenReturn( TIMESTAMP_PROVIDED );
+      
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, TIMESTAMP_PROVIDED, IMPORTED_BUILD_NUMBER );
    }//End Method
    
-   @Test public void shouldIgnoreJobDetailsInvalidResult() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-invalid-results.json" );
-      assertJobUnchanged( response );
+   @Test public void shouldNotImportBuildNumberOnlyIfNotPresent(){
+      when( buildingStateResponse.has( NUMBER_KEY ) ).thenReturn( false );
+      
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, null );
    }//End Method
    
-   @Test public void shouldIgnoreNullJobDetailsInput() {
+   @Test public void shouldImportBuildNumberUsingDefaultInJob(){
+      when( buildingStateResponse.has( NUMBER_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optInt( NUMBER_KEY, INITIAL_BUILD_NUMBER ) ).thenReturn( BUILD_NUMBER_PROVIDED );
+      
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, BUILD_NUMBER_PROVIDED );
+   }//End Method
+   
+   /**
+    * Method to construct a job details response that can be dynamically updated for different test
+    * cases, breaking parts of the data structure in order to handle errors in test cases.
+    */
+   private void constructJobDetailsJsonResponseThatCanByDynamicallyUpdated(){
+      when( jobDetailsResponse.has( NUMBER_KEY ) ).thenReturn( true );
+      when( jobDetailsResponse.getInt( NUMBER_KEY ) ).thenReturn( IMPORTED_BUILD_NUMBER );
+      when( jobDetailsResponse.optInt( NUMBER_KEY, INITIAL_BUILD_NUMBER ) ).thenReturn( IMPORTED_BUILD_NUMBER );
+      
+      when( jobDetailsResponse.has( RESULT_KEY ) ).thenReturn( true );
+      when( jobDetailsResponse.getEnum( BuildResultStatus.class, RESULT_KEY ) ).thenReturn( IMPORTED_RESULT );
+      when( jobDetailsResponse.optEnum( BuildResultStatus.class, RESULT_KEY ) ).thenReturn( IMPORTED_RESULT );
+      
+      when( jobDetailsResponse.has( CULPRITS_KEY ) ).thenReturn( true );
+      when( jobDetailsResponse.getJSONArray( CULPRITS_KEY ) ).thenReturn( culpritsArray );
+      when( jobDetailsResponse.optJSONArray( CULPRITS_KEY ) ).thenReturn( culpritsArray );
+      
+      when( culpritsArray.length() ).thenReturn( 3 );
+      when( culpritsArray.getJSONObject( 0 ) ).thenReturn( firstCulprit );
+      when( culpritsArray.getJSONObject( 1 ) ).thenReturn( secondCulprit );
+      when( culpritsArray.getJSONObject( 2 ) ).thenReturn( thirdCulprit );
+      
+      when( firstCulprit.has( FULL_NAME_KEY ) ).thenReturn( true );
+      when( firstCulprit.getString( FULL_NAME_KEY ) ).thenReturn( FIRST_CULPRIT );
+      when( firstCulprit.optString( FULL_NAME_KEY ) ).thenReturn( FIRST_CULPRIT );
+      
+      when( secondCulprit.has( FULL_NAME_KEY ) ).thenReturn( true );
+      when( secondCulprit.getString( FULL_NAME_KEY ) ).thenReturn( SECOND_CULPRIT );
+      when( secondCulprit.optString( FULL_NAME_KEY ) ).thenReturn( SECOND_CULPRIT );
+      
+      when( thirdCulprit.has( FULL_NAME_KEY ) ).thenReturn( true );
+      when( thirdCulprit.getString( FULL_NAME_KEY ) ).thenReturn( THIRD_CULPRIT );
+      when( thirdCulprit.optString( FULL_NAME_KEY ) ).thenReturn( THIRD_CULPRIT );
+   }//End Method
+   
+   /**
+    * Method to verify that the job details have been handled correctly.
+    */
+   private void verifyJobDetailsDataIsImported(){
+      verify( handler ).handleBuiltJobDetails( jenkinsJob, IMPORTED_BUILD_NUMBER, IMPORTED_RESULT );
+   }//End Method
+   
+   /**
+    * Method to verify that the job details and not been handled.
+    */
+   private void verifyJobDetailsDataIsNotImported(){
+      verify( handler, never() ).handleBuiltJobDetails( Mockito.any(), Mockito.anyInt(), Mockito.any() );
+   }//End Method
+   
+   /**
+    * Method to verify that the expected culprits are imported and handled.
+    * @param startImportingCulprits whether the start of the culprits import is expected.
+    * @param userNames the user names expected to be imported.
+    */
+   private void verifyCulpritsAreImported( boolean startImportingCulprits, String... userNames ){
+      if ( startImportingCulprits ){
+         verify( handler ).startImportingJobCulprits( jenkinsJob );
+      } else {
+         verify( handler, never() ).startImportingJobCulprits( jenkinsJob );
+      }
+      verify( handler, times( userNames.length ) ).handleUserCulprit( Mockito.any(), Mockito.anyString() );
+      
+      for ( String user : userNames ) {
+         verify( handler ).handleUserCulprit( jenkinsJob, user );
+      }
+   }//End Method
+   
+   @Test public void shouldIgnoreJobDetailsIfJobIsNull(){
+      systemUnderTest.updateJobDetails( null, jobDetailsResponse );
+      verifyJobDetailsDataIsNotImported();
+   }//End Method
+   
+   @Test public void shouldIgnoreJobDetailsIfResponseIsNull(){
       systemUnderTest.updateJobDetails( jenkinsJob, null );
-      assertJobUnchanged( null );
+      verifyJobDetailsDataIsNotImported();
    }//End Method
    
-   @Test public void shouldIgnoreInvalidJobDetailsInput() {
-      systemUnderTest.updateJobDetails( jenkinsJob, "anything" );
-      assertJobUnchanged( "anything" );
+   @Test public void shouldImportJobDetails(){
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsImported();
+      verifyCulpritsAreImported( true, FIRST_CULPRIT, SECOND_CULPRIT, THIRD_CULPRIT );
    }//End Method
    
-   @Test public void shouldIgnoreNullJobDetailsJob() {
-      systemUnderTest.updateJobDetails( null, "anything" );
-      assertJobUnchanged( "anything" );
+   @Test public void shouldNotImportJobDetailsIfNoNumberPresent(){
+      when( jobDetailsResponse.has( NUMBER_KEY ) ).thenReturn( false );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsNotImported();
+      verifyCulpritsAreImported( false );
+   }//End Method
+   
+   @Test public void shouldNotImportJobDetailsIfNoResultPresent(){
+      when( jobDetailsResponse.has( RESULT_KEY ) ).thenReturn( false );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsNotImported();
+      verifyCulpritsAreImported( false );
+   }//End Method
+   
+   @Test public void shouldImportJobDetailsIfNumberThoughtButNotPresentByUsingCurrentBuildNumber(){
+      when( jobDetailsResponse.has( NUMBER_KEY ) ).thenReturn( true );
+      when( jobDetailsResponse.getInt( NUMBER_KEY ) ).thenThrow( exception );
+      when( jobDetailsResponse.optInt( NUMBER_KEY, INITIAL_BUILD_NUMBER ) ).thenReturn( IMPORTED_BUILD_NUMBER );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsImported();
+      verifyCulpritsAreImported( true, FIRST_CULPRIT, SECOND_CULPRIT, THIRD_CULPRIT );
+   }//End Method
+   
+   @Test public void shouldNotImportJobDetailsIfResultThoughtButNotPresent(){
+      when( jobDetailsResponse.has( RESULT_KEY ) ).thenReturn( true );
+      when( jobDetailsResponse.getEnum( BuildResultStatus.class, RESULT_KEY ) ).thenThrow( exception );
+      when( jobDetailsResponse.optEnum( BuildResultStatus.class, RESULT_KEY ) ).thenReturn( null );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsNotImported();
+      verifyCulpritsAreImported( false );
+   }//End Method
+   
+   @Test public void shouldNotImportCulpritsIfMissingKey(){
+      when( jobDetailsResponse.has( CULPRITS_KEY ) ).thenReturn( false );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsImported();
+      verifyCulpritsAreImported( true );
+   }//End Method
+   
+   @Test public void shouldNotImportCulpritsIfArrayNull(){
+      when( jobDetailsResponse.has( CULPRITS_KEY ) ).thenReturn( true );
+      when( jobDetailsResponse.getJSONArray( CULPRITS_KEY ) ).thenThrow( exception );
+      when( jobDetailsResponse.optJSONArray( CULPRITS_KEY ) ).thenReturn( null );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsImported();
+      verifyCulpritsAreImported( true );
+   }//End Method
+   
+   @Test public void shouldNotImportSecondCulpritWithMissingFullName(){
+      when( secondCulprit.has( FULL_NAME_KEY ) ).thenReturn( false );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsImported();
+      verifyCulpritsAreImported( true, FIRST_CULPRIT, THIRD_CULPRIT );
+   }//End Method
+   
+   @Test public void shouldNotImportSecondCulpritWithInvalidFullName(){
+      when( secondCulprit.has( FULL_NAME_KEY ) ).thenReturn( true );
+      when( secondCulprit.getString( FULL_NAME_KEY ) ).thenThrow( exception );
+      when( secondCulprit.optString( FULL_NAME_KEY ) ).thenReturn( null );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsImported();
+      verifyCulpritsAreImported( true, FIRST_CULPRIT, THIRD_CULPRIT );
+   }//End Method
+   
+   @Test public void shouldNotImportSecondCulpritThatIsMissing(){
+      when( culpritsArray.getJSONObject( 1 ) ).thenReturn( null );
+      
+      systemUnderTest.updateJobDetails( jenkinsJob, jobDetailsResponse );
+      verifyJobDetailsDataIsImported();
+      verifyCulpritsAreImported( true, FIRST_CULPRIT, THIRD_CULPRIT );
    }//End Method
    
    /**
-    * Method to assert that the {@link JenkinsJob} has not been changed when the response has been executed.
-    * @param response the {@link String} json response.
+    * Method to construct a job list response that can be dynamically updated for different test
+    * cases, breaking parts of the data structure in order to handle errors in test cases.
     */
-   private void assertJobUnchanged( String response ){
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.NOT_BUILT, jenkinsJob.lastBuildStatusProperty().get() );
-      systemUnderTest.updateJobDetails( jenkinsJob, response );
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.NOT_BUILT, jenkinsJob.lastBuildStatusProperty().get() );
-   }//End Method
-   
-   @Test public void shouldParseJobsList(){
-      String response = TestCommon.readFileIntoString( getClass(), "jobs-list.json" );
+   private void constructJobListJsonResponseThatCanByDynamicallyUpdated(){
+      when( jobsListResponse.has( JOBS_KEY ) ).thenReturn( true );
+      when( jobsListResponse.getJSONArray( JOBS_KEY ) ).thenReturn( jobsList );
+      when( jobsListResponse.optJSONArray( JOBS_KEY ) ).thenReturn( jobsList );
       
-      assertJobsImported( response, new ArrayList<>() );
-   }//End Method
-   
-   @Test public void shouldIgnoreEmptyJobsList(){
-      String response = TestCommon.readFileIntoString( getClass(), "jobs-list-empty-jobs.json" );
+      when( jobsList.length() ).thenReturn( 3 );
+      when( jobsList.getJSONObject( 0 ) ).thenReturn( firstJob );
+      when( jobsList.getJSONObject( 1 ) ).thenReturn( secondJob );
+      when( jobsList.getJSONObject( 2 ) ).thenReturn( thirdJob );
+      when( jobsList.optJSONObject( 0 ) ).thenReturn( firstJob );
+      when( jobsList.optJSONObject( 1 ) ).thenReturn( secondJob );
+      when( jobsList.optJSONObject( 2 ) ).thenReturn( thirdJob );
       
-      JenkinsDatabase database = new JenkinsDatabaseImpl();
-      systemUnderTest.importJobs( response );
-      Assert.assertTrue( database.hasNoJenkinsJobs() );
-      Assert.assertTrue( database.jenkinsJobs().isEmpty() );
-   }//End Method
-   
-   @Test public void shouldIgnoreInvalidJobNameInJobList(){
-      String response = TestCommon.readFileIntoString( getClass(), "jobs-list-invalid-name-value.json" );
+      when( firstJob.has( NAME_KEY ) ).thenReturn( true );
+      when( firstJob.getString( NAME_KEY ) ).thenReturn( FIRST_JOB );
+      when( firstJob.optString( NAME_KEY ) ).thenReturn( FIRST_JOB );
       
-      assertJobsImported( response, Arrays.asList( 0 ) );
-   }//End Method
-   
-   @Test public void shouldIgnoreMissingJobsInJobList(){
-      String response = TestCommon.readFileIntoString( getClass(), "jobs-list-missing-jobs.json" );
+      when( secondJob.has( NAME_KEY ) ).thenReturn( true );
+      when( secondJob.getString( NAME_KEY ) ).thenReturn( SECOND_JOB );
+      when( secondJob.optString( NAME_KEY ) ).thenReturn( SECOND_JOB );
       
-      JenkinsDatabase database = new JenkinsDatabaseImpl();
-      systemUnderTest.importJobs( response );
-      Assert.assertTrue( database.hasNoJenkinsJobs() );
-      Assert.assertTrue( database.jenkinsJobs().isEmpty() );
-   }//End Method
-   
-   @Test public void shouldIgnoreMissingNameKeyInJobList(){
-      String response = TestCommon.readFileIntoString( getClass(), "jobs-list-missing-name-key.json" );
-      
-      assertJobsImported( response, Arrays.asList( 2 ) );
-   }//End Method
-   
-   @Test public void shouldIgnoreMissingNameValueInJobList(){
-      String response = TestCommon.readFileIntoString( getClass(), "jobs-list-missing-name-value.json" );
-      
-      assertJobsImported( response, Arrays.asList( 5 ) );
-   }//End Method
-   
-   @Test public void shouldOnlyImportNewJobs(){
-      database.store( new JenkinsJobImpl( "ClassicStuff" ) );
-      database.store( new JenkinsJobImpl( "CommonProject" ) );
-      database.store( new JenkinsJobImpl( "JenkinsTestTracker" ) );
-      
-      String response = TestCommon.readFileIntoString( getClass(), "jobs-list.json" );
-      
-      assertJobsImported( response, new ArrayList<>() );
+      when( thirdJob.has( NAME_KEY ) ).thenReturn( true );
+      when( thirdJob.getString( NAME_KEY ) ).thenReturn( THIRD_JOB  );
+      when( thirdJob.optString( NAME_KEY ) ).thenReturn( THIRD_JOB  );
    }//End Method
    
    /**
-    * Method to assert that the expected {@link JenkinsJob}s have been imported.
-    * @param response the response from the {@link ExternalApi}.
-    * @param missingJobs the job number to exclude.
+    * Method to verify that the given jobs have been imported.
+    * @param jobNames the name of jobs expected to be imported.
     */
-   private void assertJobsImported( String response, List< Integer > missingJobs ) {
-      List< String > expected = new ArrayList<>();
-      if ( !missingJobs.contains( 0 ) ) {
-         expected.add( "ClassicStuff" );
-      }
-      if ( !missingJobs.contains( 1 ) ) {
-         expected.add( "CommonProject" );
-      }
-      if ( !missingJobs.contains( 2 ) ) {
-         expected.add( "JenkinsTestTracker" );
-      } 
-      if ( !missingJobs.contains( 3 ) ) {
-         expected.add( "MySpecialProject" );
-      }
-      if ( !missingJobs.contains( 4 ) ) {
-         expected.add( "Silly Project" );
-      }
-      if ( !missingJobs.contains( 5 ) ) {
-         expected.add( "SomeOtherTypeOfProject" );
-      }
-      if ( !missingJobs.contains( 6 ) ) {
-         expected.add( "Zebra!" );
-      }
-      
-      systemUnderTest.importJobs( response );
-      Assert.assertEquals( 7 - missingJobs.size(), database.jenkinsJobs().size() );
-      for ( int i = 0; i < 7 - missingJobs.size(); i ++ ) {
-         Assert.assertEquals( expected.get( i ), database.jenkinsJobs().get( i ).nameProperty().get() );
+   private void verifyJobsAreImported( String... jobNames ) {
+      for ( String jobName : jobNames ) {
+         verify( handler ).handleJobFound( jobName );
       }
    }//End Method
    
-   @Test public void shouldIgnoreNullDatabaseInJobList(){
-      systemUnderTest = new JsonJobImporterImpl( null, fetcher );
-      systemUnderTest.importJobs( "anything" );
-   }//End Method
-   
-   @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullFetcher(){
-      systemUnderTest = new JsonJobImporterImpl( database, null );
-   }//End Method
-   
-   @Test public void shouldIgnoreNullResponseInJobList(){
+   @Test public void shouldIgnoreJobsIfJobIsNull(){
       systemUnderTest.importJobs( null );
+      verifyJobsAreImported();
    }//End Method
    
-   @Test public void shouldIgnoreMissingButValidData(){
-      systemUnderTest.importJobs( "{ }" );
+   @Test public void shouldImportJobs(){
+      systemUnderTest.importJobs( jobsListResponse );
+      verifyJobsAreImported( FIRST_JOB, SECOND_JOB, THIRD_JOB );
    }//End Method
    
-   @Test public void shouldParseEmptyCulpritsInJobDetails() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-empty-culprits.json" );
-      assertDefaultJobDetailsImported( response );
-
-      assertThat( jenkinsJob.culprits().isEmpty(), is( true ) );
-   }//End Method
-   
-   @Test public void shouldParseMissingCulpritFullNameInJobDetails() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-culprit-full-name.json" );
-      assertDefaultJobDetailsImported( response );
-
-      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
-      assertThat( jenkinsJob.culprits(), contains( negan, aaron ) );
-   }//End Method
-   
-   @Test public void shouldParseMissingCulpritNameInJobDetails() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-culprit-name.json" );
-      assertDefaultJobDetailsImported( response );
-
-      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
-      assertThat( jenkinsJob.culprits(), contains( negan, aaron ) );
-   }//End Method
-   
-   @Test public void shouldParseMissingCulpritsInJobDetails() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-missing-culprits.json" );
-      assertDefaultJobDetailsImported( response );
-
-      assertThat( jenkinsJob.culprits().isEmpty(), is( true ) );
-   }//End Method
-   
-   @Test public void shouldParseCulpritsButIgnoredIncorrectFormatInJobDetails() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-culprit-name-format.json" );
-      assertDefaultJobDetailsImported( response );
+   @Test public void shouldNotImportJobsWhenJobsNotPresent(){
+      when( jobsListResponse.has( JOBS_KEY ) ).thenReturn( false );
       
-      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
-      assertThat( jenkinsJob.culprits(), contains( negan, aaron ) );
-   }//End Method
-
-   @Test public void shouldParseCulpritsAndRequestMissingUsersIgnoringIfNotResolvedInJobDetails() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-user-missing-from-database.json" );
-      assertDefaultJobDetailsImported( response );
-
-      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
-      assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron ) );
+      systemUnderTest.importJobs( jobsListResponse );
+      verifyJobsAreImported();
    }//End Method
    
-   @Test public void shouldParseCulpritsAndRequestMissingUsersIdentifyingIfResolvedInJobDetails() {
-      String response = TestCommon.readFileIntoString( getClass(), "job-details-user-missing-from-database.json" );
+   @Test public void shouldNotImportJobsWhenJobsThoughtPresent(){
+      when( jobsListResponse.has( JOBS_KEY ) ).thenReturn( true );
+      when( jobsListResponse.getJSONArray( JOBS_KEY ) ).thenThrow( exception );
+      when( jobsListResponse.optJSONArray( JOBS_KEY ) ).thenReturn( null );
       
-      JenkinsUser glenn = new JenkinsUserImpl( "Not going to be Glenn!" );
-      Mockito.doAnswer( invocation -> {
-         database.store( glenn );
-         return null;
-      } ).when( fetcher ).fetchUsers();
-      assertDefaultJobDetailsImported( response );
+      systemUnderTest.importJobs( jobsListResponse );
+      verifyJobsAreImported();
+   }//End Method
+   
+   @Test public void shouldNotImportSecondJobsWhenNotPresent(){
+      when( jobsList.getJSONObject( 1 ) ).thenThrow( exception );
+      when( jobsList.optJSONObject( 1 ) ).thenReturn( null );
+      
+      systemUnderTest.importJobs( jobsListResponse );
+      verifyJobsAreImported();
+   }//End Method
+   
+   @Test public void shouldNotImportSecondJobsWhenJobNameNotPresent(){
+      when( secondJob.has( NAME_KEY ) ).thenReturn( false );
+      
+      systemUnderTest.importJobs( jobsListResponse );
+      verifyJobsAreImported( FIRST_JOB, THIRD_JOB );
+   }//End Method
+   
+   @Test public void shouldNotImportSecondJobsWhenJobNameThoughtPresent(){
+      when( secondJob.has( NAME_KEY ) ).thenReturn( true );
+      when( secondJob.getString( NAME_KEY ) ).thenThrow( exception );
+      when( secondJob.optString( NAME_KEY ) ).thenReturn( null );
+      
+      systemUnderTest.importJobs( jobsListResponse );
+      verifyJobsAreImported( FIRST_JOB, THIRD_JOB );
+   }//End Method
 
-      assertThat( jenkinsJob.culprits().isEmpty(), is( false ) );
-      assertThat( jenkinsJob.culprits(), contains( lucille, negan, aaron, glenn ) );
-   }//End Method
-   
-   /**
-    * Method to assert that the default job details are imported when specifically looking at
-    * culprits parsing.
-    * @param response the response from the api.
-    */
-   private void assertDefaultJobDetailsImported( String response ) {
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.NOT_BUILT, jenkinsJob.lastBuildStatusProperty().get() );
-      systemUnderTest.updateJobDetails( jenkinsJob, response );
-      Assert.assertEquals( 22, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.SUCCESS, jenkinsJob.lastBuildStatusProperty().get() );
-   }//End Method
-   
 }//End Class

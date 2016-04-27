@@ -71,7 +71,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       digest.fetching( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
       String response = externalApi.getLastBuildBuildingState( jenkinsJob );
       digest.parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
-      jobsImporter.updateBuildState( jenkinsJob, response );
+      
+      JSONObject converted = converter.convert( response );
+      jobsImporter.updateBuildState( jenkinsJob, converted );
       digest.updated( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
    }//End Method
 
@@ -87,7 +89,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
          digest.fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
          String response = externalApi.getLastBuildJobDetails( jenkinsJob );
          digest.parsing( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-         jobsImporter.updateJobDetails( jenkinsJob, response );
+         
+         JSONObject converted = converter.convert( response );
+         jobsImporter.updateJobDetails( jenkinsJob, converted );
          digest.updated( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
       }
    }//End Method
@@ -112,7 +116,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       digest.fetching( JenkinsFetcherDigest.JOBS );
       String response = externalApi.getJobsList();
       digest.parsing( JenkinsFetcherDigest.JOBS );
-      jobsImporter.importJobs( response );
+      
+      JSONObject converted = converter.convert( response );
+      jobsImporter.importJobs( converted );
       digest.updated( JenkinsFetcherDigest.JOBS );
    }//End Method
 

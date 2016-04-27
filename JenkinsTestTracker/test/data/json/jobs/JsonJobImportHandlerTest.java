@@ -54,6 +54,14 @@ public class JsonJobImportHandlerTest {
       systemUnderTest = new JsonJobImportHandler( database, jenkinsProcessing );
    }//End Method
    
+   @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullDatabase(){
+      systemUnderTest = new JsonJobImportHandler( null, jenkinsProcessing );
+   }//End Method
+   
+   @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullFetcher(){
+      systemUnderTest = new JsonJobImportHandler( database, null );
+   }//End Method
+   
    @Test public void shouldUpdateBuildStateWhenBuilding() {
       job.buildStateProperty().set( BuildState.Built );
       systemUnderTest.handleBuildingState( job, true );

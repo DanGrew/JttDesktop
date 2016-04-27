@@ -23,17 +23,16 @@ import storage.database.JenkinsDatabase;
  */
 public class JsonJobImporterImpl implements JsonJobImporter {
    
-   private static final String BUILDING_KEY = "building";
-   private static final String ESTIMATED_DURATION_KEY = "estimatedDuration";
-   private static final String TIMESTAMP_KEY = "timestamp";
-   private static final String NUMBER_KEY = "number";
-   private static final String RESULT_KEY = "result";
-   private static final String JOBS_KEY = "jobs";
-   private static final String NAME_KEY = "name";
-   private static final String CULPRITS_KEY = "culprits";
-   private static final String FULL_NAME_KEY = "fullName";
+   static final String BUILDING_KEY = "building";
+   static final String ESTIMATED_DURATION_KEY = "estimatedDuration";
+   static final String TIMESTAMP_KEY = "timestamp";
+   static final String NUMBER_KEY = "number";
+   static final String RESULT_KEY = "result";
+   static final String JOBS_KEY = "jobs";
+   static final String NAME_KEY = "name";
+   static final String CULPRITS_KEY = "culprits";
+   static final String FULL_NAME_KEY = "fullName";
 
-   private final JenkinsDatabase database;
    private final JsonJobImportHandler handler;
    
    /**
@@ -42,68 +41,77 @@ public class JsonJobImporterImpl implements JsonJobImporter {
     * @param fetcher the {@link JenkinsFetcher} providing a feedback loop for importing.
     */
    public JsonJobImporterImpl( JenkinsDatabase database, JenkinsFetcher fetcher ) {
-      if ( fetcher == null ) throw new IllegalArgumentException( "Null fetcher provided." );
-      
-      this.database = database;
-      this.handler = new JsonJobImportHandler( database, fetcher );
+      this( new JsonJobImportHandler( database, fetcher ) );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link JsonJobImporterImpl}.
+    * @param fetcher the {@link JenkinsFetcher} providing a feedback loop for importing.
+    */
+   JsonJobImporterImpl( JsonJobImportHandler handler ) {
+      this.handler = handler;
    }//End Constructor
 
    /**
-    * Method to update the state of the build in the given {@link JenkinsJob}.
-    * @param jenkinsJob the {@link JenkinsJob} to update.
-    * @param response the {@link String} response from the {@link ExternalApi}, in json format.
+    * {@inheritDoc}
     */
-   @Override public void updateBuildState( JenkinsJob jenkinsJob, String response ) {
-      if ( response == null ) return;
+   @Override public void updateBuildState( JenkinsJob jenkinsJob, JSONObject object ) {
+      if ( jenkinsJob == null || object == null ) {
+         //not interested in empty responses and jobs
+         return;
+      }
+      
+      if ( !object.has( BUILDING_KEY ) ) {
+         //not interested in details from a response that does not have the key info we need
+         return;
+      }
+      
       try {
-         JSONObject object = new JSONObject( response );
-         if ( !object.has( BUILDING_KEY ) ) return;
-         
          boolean isBuilding = object.getBoolean( BUILDING_KEY );
          handler.handleBuildingState( jenkinsJob, isBuilding );
-         
-         if ( object.has( ESTIMATED_DURATION_KEY ) ) {
-            long estimatedDuration = object.optLong( ESTIMATED_DURATION_KEY );
-            handler.handleExpectedDuration( jenkinsJob, estimatedDuration );
-         }
-         
-         if ( object.has( TIMESTAMP_KEY ) ) {
-            long timestamp = object.optLong( TIMESTAMP_KEY );
-            handler.handleBuildTimestamp( jenkinsJob, timestamp );
-         }
-         
-         if ( object.has( NUMBER_KEY ) ) {
-            int buildNumber = object.getInt( NUMBER_KEY );
-            handler.handleBuildNumber( jenkinsJob, buildNumber );
-         }
       } catch ( JSONException exception ) {
+         //key is not present and do not want default value
          return;
+      }
+      
+      if ( object.has( ESTIMATED_DURATION_KEY ) ) {
+         long estimatedDuration = object.optLong( ESTIMATED_DURATION_KEY, jenkinsJob.expectedBuildTimeProperty().get() );
+         handler.handleExpectedDuration( jenkinsJob, estimatedDuration );
+      }
+      
+      if ( object.has( TIMESTAMP_KEY ) ) {
+         long timestamp = object.optLong( TIMESTAMP_KEY, jenkinsJob.currentBuildTimestampProperty().get() );
+         handler.handleBuildTimestamp( jenkinsJob, timestamp );
+      }
+      
+      if ( object.has( NUMBER_KEY ) ) {
+         int buildNumber = object.optInt( NUMBER_KEY, jenkinsJob.currentBuildNumberProperty().get() );
+         handler.handleBuildNumber( jenkinsJob, buildNumber );
       }
    }//End Method
 
    /**
-    * Method to update the job details in the given {@link JenkinsJob}.
-    * @param jenkinsJob the {@link JenkinsJob} to update.
-    * @param response the {@link String} response from the {@link ExternalApi}, in json format.
+    * {@inheritDoc}
     */
-   @Override public void updateJobDetails( JenkinsJob jenkinsJob, String response ) {
-      if ( response == null || jenkinsJob == null ) return;
-      try {
-         JSONObject object = new JSONObject( response );
-         
-         if ( !object.has( NUMBER_KEY ) ) return;
-         if ( !object.has( RESULT_KEY ) ) return;
-         
-         int lastBuildNumber = object.getInt( NUMBER_KEY );
-         BuildResultStatus lastBuildResult = object.getEnum( BuildResultStatus.class, RESULT_KEY );
-         
-         handler.handleBuiltJobDetails( jenkinsJob, lastBuildNumber, lastBuildResult );
-         
-         identifyCulprits( jenkinsJob, object );
-      } catch ( JSONException exception ) {
-         System.out.println( exception.getMessage() );
+   @Override public void updateJobDetails( JenkinsJob jenkinsJob, JSONObject object ) {
+      if ( jenkinsJob == null || object == null ) {
+         //not interested in empty responses and jobs
          return;
       }
+
+      if ( !object.has( NUMBER_KEY ) ) return;
+      if ( !object.has( RESULT_KEY ) ) return;
+      
+      int lastBuildNumber = object.optInt( NUMBER_KEY, jenkinsJob.currentBuildNumberProperty().get() );
+      BuildResultStatus lastBuildResult = object.optEnum( BuildResultStatus.class, RESULT_KEY );
+      if ( lastBuildResult == null ) {
+         //ignore imports where there is no status
+         return;
+      }
+      
+      handler.handleBuiltJobDetails( jenkinsJob, lastBuildNumber, lastBuildResult );
+      
+      identifyCulprits( jenkinsJob, object );
    }//End Method
    
    /**
@@ -118,56 +126,54 @@ public class JsonJobImporterImpl implements JsonJobImporter {
       if ( !object.has( CULPRITS_KEY ) ) {
          return;
       }
-      
-      try {
-         JSONArray culprits = object.getJSONArray( CULPRITS_KEY );
-         for ( int i = 0; i < culprits.length(); i++ ) {
-            
-            try {
-               JSONObject culprit = culprits.getJSONObject( i );
-               if ( !culprit.has( FULL_NAME_KEY ) ) continue;
-               
-               String userName = culprit.getString( FULL_NAME_KEY );
-               handler.handleUserCulprit( jenkinsJob, userName );
-            } catch ( JSONException exception ) {
-               System.out.println( exception.getMessage() );
-               continue;
-            }
-         }
-      } catch ( JSONException exception ) {
-         System.out.println( exception.getMessage() );
+   
+      JSONArray culprits = object.optJSONArray( CULPRITS_KEY );
+      if ( culprits == null ) {
          return;
+      }
+      
+      for ( int i = 0; i < culprits.length(); i++ ) {
+         JSONObject culprit = culprits.getJSONObject( i );
+         if ( culprit == null ) {
+            continue;
+         }
+         if ( !culprit.has( FULL_NAME_KEY ) ) {
+            continue;
+         }
+         
+         String userName = culprit.optString( FULL_NAME_KEY );
+         if ( userName == null ) {
+            continue;
+         }
+         handler.handleUserCulprit( jenkinsJob, userName );
       }
    }//End Method
    
    /**
-    * Method to import the jobs from a json {@link String} into the given {@link JenkinsDatabase}.
-    * @param response the response from the {@link ExternalApi}.
+    * {@inheritDoc}
     */
-   @Override public void importJobs( String response ) {
-      if ( response == null || database == null ) return;
-      try {
-         JSONObject object = new JSONObject( response );
-         
-         if ( !object.has( JOBS_KEY ) ) return;
-         
-         JSONArray jobs = object.getJSONArray( JOBS_KEY );
-         for ( int i = 0; i < jobs.length(); i++ ) {
-            try { //Protective wrapper for parse in constructor.
-               JSONObject job = jobs.getJSONObject( i );
-               if ( !job.has( NAME_KEY ) ) continue;
-               
-               String name = job.getString( NAME_KEY );
-               handler.handleJobFound( name );
-            } catch ( JSONException exception ) {
-               System.out.println( exception.getMessage() );
-               continue;
-            }
-         }
-      } catch ( JSONException exception ) {
-         System.out.println( exception.getMessage() );
+   @Override public void importJobs( JSONObject object ) {
+      if ( object == null || !object.has( JOBS_KEY ) ) {
          return;
       }
+         
+      JSONArray jobs = object.optJSONArray( JOBS_KEY );
+      if ( jobs == null ) {
+         return;
+      }
+      
+      for ( int i = 0; i < jobs.length(); i++ ) {
+         JSONObject job = jobs.optJSONObject( i );
+         if ( job == null || !job.has( NAME_KEY ) ) {
+            continue;
+         }
+         
+         String name = job.optString( NAME_KEY );
+         if ( name == null ) {
+            continue;
+         }
+         handler.handleJobFound( name );
+      }
    }//End Method
-
+   
 }//End Class

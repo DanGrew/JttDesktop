@@ -32,6 +32,9 @@ public class JsonJobImportHandler {
     * be updated.
     */
    JsonJobImportHandler( JenkinsDatabase database, JenkinsFetcher jenkinsFetcher ) {
+      if ( database == null ) throw new IllegalArgumentException( "Null database provided." );
+      if ( jenkinsFetcher == null ) throw new IllegalArgumentException( "Null fetcher provided." );
+      
       this.database = database;
       this.jenkinsFetcher = jenkinsFetcher;
    }//End Constructor

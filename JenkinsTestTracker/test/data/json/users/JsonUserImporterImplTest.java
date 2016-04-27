@@ -13,6 +13,7 @@ import static data.json.users.JsonUserImporterImpl.USERS_KEY;
 import static data.json.users.JsonUserImporterImpl.USER_KEY;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import storage.database.JenkinsDatabase;
@@ -131,6 +133,11 @@ public class JsonUserImporterImplTest {
       JenkinsDatabase database = new JenkinsDatabaseImpl();
       systemUnderTest = new JsonUserImporterImpl( database );
       systemUnderTest.importUsers( new JSONObject() );
+   }//End Method
+   
+   @Test public void shouldIgnoreNullJsonObject(){
+      systemUnderTest.importUsers( null );
+      verify( handler, never() ).userFound( Mockito.anyString() );
    }//End Method
    
    @Test public void shouldParseUsersList(){
