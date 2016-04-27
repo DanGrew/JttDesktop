@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Attempted to resolve issue specifically noticed on Windows, issue #95, where the split pane divider position is lost. It's not completely clear where the issue is, and having researched how the split pane works it seems to have some quirks. The issue found on Mac, with another larger screen, was going from maximised to not maximised back to maximised was resetting the divider location to the middle (ish). While this may not be the exact issue on Windows, it is definitely an issue for Mac. This has been fixed.
+
+###1.3.69 (Apr 27, 2016 10:02:36 AM)
+
 Refactored test for job importing to have more flexible test cases, mocking the structure to parse. Consequently, the careless exception catching has been removed since the parsing should now be correctly defended. No functionality/behaviour changes expected.
 
 ###1.3.68 (Apr 24, 2016 9:38:41 AM)

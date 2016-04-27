@@ -33,6 +33,9 @@ class DualBuildWallSplitter extends SplitPane {
       this.rightGridWall = right;
       this.leftGridWall = left;
       this.dividerPosition = DEFAULT_DIVIDER;
+      
+      setResizableWithParent( rightGridWall, false );
+      setResizableWithParent( leftGridWall, false );
    }//End Constructor
    
    /**

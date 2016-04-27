@@ -21,6 +21,7 @@ import buildwall.layout.GridWallImpl;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
 import graphics.PlatformDecouplerImpl;
+import javafx.scene.control.SplitPane;
 import storage.database.JenkinsDatabase;
 import storage.database.JenkinsDatabaseImpl;
 
@@ -178,6 +179,11 @@ public class DualBuildWallSplitterTest {
       
       systemUnderTest.showRightWall();
       assertDividerPosition( DualBuildWallSplitter.DEFAULT_DIVIDER );
+   }//End Method
+   
+   @Test public void shouldNotAllowWallsToResizeWithSplitPaneToRetainDividerPosition(){
+      assertThat( SplitPane.isResizableWithParent( systemUnderTest.leftGridWall() ), is( false ) );
+      assertThat( SplitPane.isResizableWithParent( systemUnderTest.rightGridWall() ), is( false ) );
    }//End Method
    
 }//End Class
