@@ -13,6 +13,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,12 +26,14 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallConfigurationImpl;
 import buildwall.configuration.BuildWallJobPolicy;
 import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
+import graphics.PlatformDecoupler;
 import graphics.TestPlatformDecouplerImpl;
 import javafx.beans.property.ObjectProperty;
 import javafx.combobox.SimplePropertyBox;
@@ -214,6 +218,19 @@ public class JobPolicyPanelTest {
          );
          assertThat( entry.getValue(), is( BuildWallJobPolicy.OnlyShowFailures ) );
       } );
+   }//End Method
+   
+   @Test public void constructionShouldBePerformedOnJavaFxThread(){
+      PlatformDecoupler decoupler = spy( new TestPlatformDecouplerImpl() );
+      DecoupledPlatformImpl.setInstance( decoupler );
+      
+      JenkinsJob first = new ArrayList<>( configuration.jobPolicies().keySet() ).iterator().next();
+      Label label = systemUnderTest.jobLabel( first );
+      
+      systemUnderTest.constructLayout();
+      
+      verify( decoupler ).run( Mockito.any() );
+      assertThat( systemUnderTest.jobLabel( first ), is( not( label ) ) );
    }//End Method
    
 }//End Class

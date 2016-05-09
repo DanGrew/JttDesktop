@@ -16,6 +16,7 @@ import java.util.Map;
 import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallJobPolicy;
 import buildwall.configuration.style.BuildWallConfigurationStyle;
+import graphics.DecoupledPlatformImpl;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.MapChangeListener.Change;
@@ -74,12 +75,14 @@ public class JobPolicyPanel extends GridPane {
     * Method to construct the layout for the {@link GridPane}.
     */
    void constructLayout(){
-      clearAndResetComponents();
-      
-      provideSetAllControl();
-      providePolicyConfigurationPerJob();
-      
-      setPadding( new Insets( INSETS ) );
+      DecoupledPlatformImpl.runLater( () -> {
+         clearAndResetComponents();
+         
+         provideSetAllControl();
+         providePolicyConfigurationPerJob();
+         
+         setPadding( new Insets( INSETS ) );
+      } );
    }//End Method
 
    /**

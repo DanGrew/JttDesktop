@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Fixed issue with Job Policy updating where the clearing of the policy config panel was not being done on the JavaFx thread which stopped the panel being updated. Redirected to JavaFx thread to resolve issue.
+
+###1.3.71 (Apr 27, 2016 4:36:47 PM)
+
 Looked at issue #110 to find the cause of the memory leak and the System Digest table appears to be fine and the immediate issue seems to be multiple digest viewers being created when only one should be. This has been addressed so that there is only one digest. There should be no difference from the users perspective other than a memory improvement. 
 
 ###1.3.70 (Apr 27, 2016 3:09:09 PM)
