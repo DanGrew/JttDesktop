@@ -17,9 +17,9 @@ import buildwall.configuration.BuildWallConfiguration;
 import buildwall.configuration.BuildWallJobPolicy;
 import buildwall.panel.JobPanelImpl;
 import graphics.DecoupledPlatformImpl;
-import javafx.collections.ListChangeListener.Change;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.MapChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
@@ -27,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import model.jobs.JenkinsJob;
 import storage.database.JenkinsDatabase;
+import utility.comparator.Comparators;
 
 /**
  * The {@link GridWallImpl} provides an implementation of the {@link BuildWall} providing
@@ -88,7 +89,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
     * Method to remove all existing panels and tidy up any references to them.
     */
    private void removalAllPanelsAndCleanUp() {
-      getChildren().forEach( node -> GridPane.clearConstraints( node ) );
+      getChildren().forEach( GridPane::clearConstraints );
       getChildren().clear();
       getRowConstraints().clear();
       getColumnConstraints().clear();
@@ -117,6 +118,9 @@ public class GridWallImpl extends GridPane implements BuildWall {
    private void constructAndRedrawPanels( List< JenkinsJob > jobsToShow, int numberOfColumns ) {
       int columnCount = 0;
       int rowCount = 0;
+      
+      jobsToShow.sort( Comparators.stringExtractionComparater( job -> job.nameProperty().get() ) );
+      
       for ( JenkinsJob job : jobsToShow ) {
          if ( columnCount == numberOfColumns ) {
             columnCount = 0;

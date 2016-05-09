@@ -152,6 +152,44 @@ public class GridWallImplTest {
       shouldDisplayAllJobsInDatabase();
    }//End Method
    
+   @Test public void shouldDisplayJobsInAlphabeticalOrder() {
+      JenkinsJob first = database.jenkinsJobs().get( 0 );
+      assertThat( systemUnderTest.getChildren().get( 3 ), is( systemUnderTest.getPanelFor( first ) ) );
+      
+      JenkinsJob second = database.jenkinsJobs().get( 1 );
+      assertThat( systemUnderTest.getChildren().get( 0 ), is( systemUnderTest.getPanelFor( second ) ) );
+
+      JenkinsJob third = database.jenkinsJobs().get( 2 );
+      assertThat( systemUnderTest.getChildren().get( 1 ), is( systemUnderTest.getPanelFor( third ) ) );
+      
+      JenkinsJob fourth = database.jenkinsJobs().get( 3 );
+      assertThat( systemUnderTest.getChildren().get( 2 ), is( systemUnderTest.getPanelFor( fourth ) ) );
+      
+      JenkinsJob fifth = database.jenkinsJobs().get( 4 );
+      assertThat( systemUnderTest.getChildren().get( 4 ), is( systemUnderTest.getPanelFor( fifth ) ) );
+   }//End Method
+   
+   @Test public void shouldDisplayJobsInAlphabeticalOrderWhenNewAdded() {
+      JenkinsJob sixth = new JenkinsJobImpl( "Better Job" );
+      database.store( sixth );
+      
+      JenkinsJob first = database.jenkinsJobs().get( 0 );
+      assertThat( systemUnderTest.getChildren().get( 4 ), is( systemUnderTest.getPanelFor( first ) ) );
+      
+      JenkinsJob second = database.jenkinsJobs().get( 1 );
+      assertThat( systemUnderTest.getChildren().get( 0 ), is( systemUnderTest.getPanelFor( second ) ) );
+
+      JenkinsJob third = database.jenkinsJobs().get( 2 );
+      assertThat( systemUnderTest.getChildren().get( 1 ), is( systemUnderTest.getPanelFor( third ) ) );
+      
+      JenkinsJob fourth = database.jenkinsJobs().get( 3 );
+      assertThat( systemUnderTest.getChildren().get( 3 ), is( systemUnderTest.getPanelFor( fourth ) ) );
+      
+      JenkinsJob fifth = database.jenkinsJobs().get( 4 );
+      assertThat( systemUnderTest.getChildren().get( 5 ), is( systemUnderTest.getPanelFor( fifth ) ) );
+      assertThat( systemUnderTest.getChildren().get( 2 ), is( systemUnderTest.getPanelFor( sixth ) ) );
+   }//End Method
+   
    @Test public void shouldClearConstraintsWhenRedrawn() {
       shouldDisplayAllJobsInDatabase();
       JobPanelImpl firstPanel = systemUnderTest.getPanelFor( database.jenkinsJobs().get( 0 ) );

@@ -2,6 +2,10 @@
 
 ### Latest Version
 
+Fixed issue where new jobs were not being added alphabetically to the build wall. While this isn't a problem, it looks odd. Simply added a sort when redrawing the panels.
+
+###1.3.72 (09/06/16)
+
 Fixed issue with Job Policy updating where the clearing of the policy config panel was not being done on the JavaFx thread which stopped the panel being updated. Redirected to JavaFx thread to resolve issue.
 
 ###1.3.71 (Apr 27, 2016 4:36:47 PM)
