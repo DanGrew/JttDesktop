@@ -139,4 +139,20 @@ public class JenkinsLoginDigestTest {
       order.verify( progressReceiver ).progress( Mockito.any(), Mockito.any(), Mockito.any() );
       order.verify( messageReceiver ).log( Mockito.any(),  Mockito.any(),  Mockito.any() );
    }//End Method
+   
+   @Test public void shouldTimeoutLogin(){
+      systemUnderTest.loginTimedOut();
+      
+      verify( progressReceiver ).progress( Mockito.any(), progressCaptor.capture(), messageCaptor.capture() );
+      assertThat( progressCaptor.getValue().getPercentage(), is( 0.0 ) );
+      assertThat( messageCaptor.getValue().getMessage(), is( JenkinsLoginDigest.WAITING_FOR_LOG_IN ) );
+      
+      verify( messageReceiver ).log( Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
+      assertThat( categoryCaptor.getValue(), is( Categories.status() ) );
+      assertThat( messageCaptor.getValue().getMessage(), is( JenkinsLoginDigest.LOGIN_PROCESS_TIMED_OUT ) );
+      
+      InOrder order = inOrder( messageReceiver, progressReceiver );
+      order.verify( progressReceiver ).progress( Mockito.any(), Mockito.any(), Mockito.any() );
+      order.verify( messageReceiver ).log( Mockito.any(),  Mockito.any(),  Mockito.any() );
+   }//End Method
 }//End Class

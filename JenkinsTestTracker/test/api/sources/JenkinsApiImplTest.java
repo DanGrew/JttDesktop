@@ -12,6 +12,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,11 +25,13 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -357,5 +361,16 @@ public class JenkinsApiImplTest {
    @Test public void shouldSubstituteSpacesInJenkinsJobs(){
       JenkinsJob jobWithSpaces = new JenkinsJobImpl( "anything with spaces" );
       Assert.assertEquals( "/job/anything%20with%20spaces", JenkinsApiImpl.extractAndPrefixJob( jobWithSpaces ) );
+   }//End Method
+   
+   @Test public void shouldApplyLoginTimeoutForLoginPeriodOnly() throws IOException{
+      HttpParams params = mock( HttpParams.class );
+      when( client.getParams() ).thenReturn( params );
+      
+      shouldAttemptLogin();
+      InOrder order = inOrder( clientHandler );
+      order.verify( clientHandler ).adjustClientTimeout( params, JenkinsApiImpl.LOGIN_TIMEOUT );
+      order.verify( clientHandler ).handleResponse( Mockito.any() );
+      order.verify( clientHandler ).resetTimeout( params );
    }//End Method
 }//End Class

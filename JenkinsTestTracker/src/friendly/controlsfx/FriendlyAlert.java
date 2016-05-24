@@ -58,6 +58,15 @@ public class FriendlyAlert extends Alert {
    }//End Method
    
    /**
+    * {@link Alert#getDialogPane()}{@link DialogPane#lookupButton(ButtonType)}.
+    * @param buttonType the {@link ButtonType} to look up.
+    * @return the {@link Node} found.
+    */
+   public Node friendly_dialogLookup( ButtonType buttonType ) {
+      return getDialogPane().lookupButton( buttonType );
+   }//End Method
+   
+   /**
     * {@link Alert#setOnCloseRequest(EventHandler)}.
     * @param handler the {@link EventHandler}.
     */

@@ -27,6 +27,9 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
@@ -36,6 +39,7 @@ import org.apache.http.util.EntityUtils;
  */
 public class ClientHandler implements ResponseHandler< String > {
 
+   static final int DEFAULT_TIMEOUT = 600000;
    private final BasicResponseHandler responseHandler;
 
    /**
@@ -62,7 +66,9 @@ public class ClientHandler implements ResponseHandler< String > {
     */
    public HttpClient constructClient( String jenkinsLocation, String user, String password ) {
       // Create your httpclient
-      DefaultHttpClient client = new DefaultHttpClient();
+      final HttpParams httpParams = new BasicHttpParams();
+      HttpConnectionParams.setSoTimeout(httpParams, DEFAULT_TIMEOUT);
+      DefaultHttpClient client = new DefaultHttpClient(httpParams);
 
       // Then provide the right credentials
       client.getCredentialsProvider().setCredentials( 
@@ -80,10 +86,9 @@ public class ClientHandler implements ResponseHandler< String > {
    /**
     * {@inheritDoc}
     */
-   @Override public String handleResponse( HttpResponse response ) throws ClientProtocolException, IOException {
+   @Override public String handleResponse( HttpResponse response ) throws IOException {
       try {
-         String stringResponse = responseHandler.handleResponse( response );
-         return stringResponse;
+         return responseHandler.handleResponse( response );
       } finally {
          if ( response.getEntity() != null ) {
             EntityUtils.consume( response.getEntity() );
@@ -93,12 +98,35 @@ public class ClientHandler implements ResponseHandler< String > {
    }//End Method
 
    /**
+    * Method to adjust the client timeout. This will change
+    * {@link HttpConnectionParams#setSoTimeout(HttpParams, int)},
+    * {@link HttpConnectionParams#setConnectionTimeout(HttpParams, int)},
+    * {@link HttpConnectionParams#setLinger(HttpParams, int)}.
+    * @param params the the {@link HttpParams} to adjust for.
+    * @param timeout the timeout in milliseconds.
+    */
+   public void adjustClientTimeout( HttpParams params, int timeout ) {
+      HttpConnectionParams.setSoTimeout( params, timeout );
+      HttpConnectionParams.setConnectionTimeout( params, timeout );
+      HttpConnectionParams.setLinger( params, timeout );
+   }//End Method
+
+   /**
+    * Method to reset the timeouts to the {@link #DEFAULT_TIMEOUT}.
+    * @see #adjustClientTimeout(HttpParams, int).
+    * @param params the {@link HttpParams} to reset.
+    */
+   public void resetTimeout( HttpParams params ) {
+      adjustClientTimeout( params, DEFAULT_TIMEOUT );
+   }//End Method
+
+   /**
     * Preemptive authentication interceptor.
     * This code was taken from an online example. 
     */
    static class PreemptiveAuth implements HttpRequestInterceptor {
 
-      public void process( HttpRequest request, HttpContext context ) throws HttpException, IOException {
+      @Override public void process( HttpRequest request, HttpContext context ) throws HttpException, IOException {
          // Get the AuthState
          AuthState authState = ( AuthState ) context.getAttribute( ClientContext.TARGET_AUTH_STATE );
 

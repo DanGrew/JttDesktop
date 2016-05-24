@@ -27,6 +27,7 @@ public class JenkinsLoginDigest extends ObjectDigestImpl {
    static final String LOG_IN_FAILED = "Log in failed. Check credentials.";
    static final String LOGIN_PROCESS_HAS_COMPLETED = "Login process has completed.";
    static final String SUCCESSFULLY_LOGGED_IN = "Successfully logged in!";
+   static final String LOGIN_PROCESS_TIMED_OUT = "Log in attempt timed out.";
    
    static final double CREDENTIALS_FORMAT_ACCEPTED_PROGRESS = 50;
 
@@ -81,6 +82,14 @@ public class JenkinsLoginDigest extends ObjectDigestImpl {
    void loginSuccessful() {
       progress( Progresses.complete(), Messages.simpleMessage( LOGIN_PROCESS_HAS_COMPLETED ) );
       log( Categories.status(), Messages.simpleMessage( SUCCESSFULLY_LOGGED_IN ) );
+   }//End Method
+
+   /**
+    * Method to handle when a login has timed out.
+    */
+   void loginTimedOut() {
+      resetLoginProgress();
+      log( Categories.status(), Messages.simpleMessage( LOGIN_PROCESS_TIMED_OUT ) );
    }//End Method
 
 }//End Class

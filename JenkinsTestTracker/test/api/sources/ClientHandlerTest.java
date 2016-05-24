@@ -8,6 +8,9 @@
  */
 package api.sources;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -19,6 +22,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,5 +93,23 @@ public class ClientHandlerTest {
       HttpResponse response = Mockito.mock( HttpResponse.class );
       systemUnderTest.handleResponse( response );
    }//End Method
-
+   
+   @Test public void adjustClientTimeoutShouldChangeTheTimeout(){
+      HttpClient client = systemUnderTest.constructClient( "anything", "else", "specific" ); 
+      
+      assertThat( HttpConnectionParams.getSoTimeout( client.getParams() ), is( ClientHandler.DEFAULT_TIMEOUT ) );
+      assertThat( HttpConnectionParams.getConnectionTimeout( client.getParams() ), is( ClientHandler.DEFAULT_TIMEOUT ) );
+      assertThat( HttpConnectionParams.getLinger( client.getParams() ), is( ClientHandler.DEFAULT_TIMEOUT ) );
+      final int timeout = 123847;
+      systemUnderTest.adjustClientTimeout( client.getParams(), timeout );
+      assertThat( HttpConnectionParams.getSoTimeout( client.getParams() ), is( timeout ) );
+      assertThat( HttpConnectionParams.getConnectionTimeout( client.getParams() ), is( timeout ) );
+      assertThat( HttpConnectionParams.getLinger( client.getParams() ), is( timeout ) );
+      
+      systemUnderTest.resetTimeout( client.getParams() );
+      assertThat( HttpConnectionParams.getSoTimeout( client.getParams() ), is( ClientHandler.DEFAULT_TIMEOUT ) );
+      assertThat( HttpConnectionParams.getConnectionTimeout( client.getParams() ), is( ClientHandler.DEFAULT_TIMEOUT ) );
+      assertThat( HttpConnectionParams.getLinger( client.getParams() ), is( ClientHandler.DEFAULT_TIMEOUT ) );  
+   }//End Method
+   
 }//End Class

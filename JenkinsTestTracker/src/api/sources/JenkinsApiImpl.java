@@ -26,6 +26,8 @@ import model.jobs.JenkinsJob;
  */
 public class JenkinsApiImpl implements ExternalApi {
 
+   static final int LOGIN_TIMEOUT = 5000;
+   
    static final String LOCATION_PREFIX = "http://";
    static final String BASE_REQUEST = "/api/json?tree=jobs[name]&pretty=true";
    static final String LAST_BUILD_BUILDING = "/lastBuild/api/json?tree=building,estimatedDuration,timestamp,number";
@@ -78,12 +80,19 @@ public class JenkinsApiImpl implements ExternalApi {
     */
    @Override public HttpClient attemptLogin( String jenkinsLocation, String user, String password ) {
       connectedClient = clientHandler.constructClient( jenkinsLocation, user, password );
-      if ( connectedClient == null ) return null;
+      if ( connectedClient == null ) {
+         return null;
+      }
+      
       this.jenkinsLocation = prefixJenkinsLocation( jenkinsLocation );
       
       HttpGet get = constructBaseRequest( jenkinsLocation );
       digest.executingLoginRequest();
+      
+      clientHandler.adjustClientTimeout( connectedClient.getParams(), LOGIN_TIMEOUT );
       String responseString = executeRequestAndUnpack( get );
+      clientHandler.resetTimeout( connectedClient.getParams() );
+      
       if ( responseString == null ) {
          digest.connectionFailed();
          connectedClient = null;

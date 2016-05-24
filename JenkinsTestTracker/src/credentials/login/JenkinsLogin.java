@@ -119,16 +119,10 @@ public class JenkinsLogin {
 
       alert.friendly_getButtonTypes().setAll( login, cancel );
       
-      alert.friendly_setOnCloseRequest( event -> {
-         ButtonType type = alert.friendly_getResult();
-         if ( type.equals( login ) ) {
-            event.consume();
-            new Thread( () -> {
-               prepareInputAndLogin( event, alert );
-               alert.friendly_separateThreadProcessingComplete();
-            } ).start();
-         }
-      } );
+      JenkinsLoginProcessor loginProcessor = new JenkinsLoginProcessor(
+               alert, login, this
+      );
+      alert.friendly_setOnCloseRequest( loginProcessor );
       
       alert.friendly_dialogSetContent( content );
    }//End Method
@@ -198,7 +192,7 @@ public class JenkinsLogin {
     * @param event the {@link DialogEvent} fired when clicking buttons.
     * @param alert the {@link FriendlyAlert} that can be closed when needed.
     */
-   private void prepareInputAndLogin( DialogEvent event, FriendlyAlert alert ){
+   void prepareInputAndLogin( DialogEvent event, FriendlyAlert alert ){
       digest.progress( Progresses.simpleProgress( LOGGIN_IN_PROGRESS ), Messages.simpleMessage( LOGGING_IN ) );
       String jenkinsLocation = jenkinsField.getText();
       if ( !validator.test( jenkinsLocation ) ) {
@@ -225,7 +219,7 @@ public class JenkinsLogin {
          alert.friendly_setOnCloseRequest( LOGIN_ACCEPTED_CLOSER );
          PlatformImpl.runLater( () -> alert.friendly_close() );
       }
-   }//End Method
+   }
    
    /**
     * Method to determine if the given {@link ButtonType} corresponds to logging in.
