@@ -8,7 +8,6 @@
  */
 package credentials.login;
 
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
@@ -51,6 +50,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogEvent;
 import javafx.scene.control.TitledPane;
@@ -99,6 +99,7 @@ public class JenkinsLoginTest {
          return content = ( Node )invocation.getArguments()[ 0 ];
       } ).when( alert ).friendly_dialogSetContent( Mockito.any() );
       
+      when( alert.friendly_dialogLookup( Mockito.any() ) ).thenReturn( new Button( "login" ) );
       PlatformImpl.runAndWait( () -> {
          /* Run the launch on PlatformImpl because its possible that two threads interact with StyleManager
           * in JavaFx at the same time and it is not thread safe in 8u40 but should be in at least 8u77. This
