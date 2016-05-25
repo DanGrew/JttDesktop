@@ -22,7 +22,9 @@ import org.junit.Test;
 
 import buildwall.configuration.style.BuildWallConfigurationStyleTest;
 import buildwall.panel.type.JobPanelDescriptionProviders;
+import graphics.DecoupledPlatformImpl;
 import graphics.JavaFxInitializer;
+import graphics.TestPlatformDecouplerImpl;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -57,8 +59,12 @@ public class BuildWallConfigurationPaneImplTest {
       }
    }
    
-   @Before public void initialiseSystemUnderTest(){
+   @BeforeClass public static void initialisePlatform(){
       JavaFxInitializer.startPlatform();
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
+   }//End Method
+   
+   @Before public void initialiseSystemUnderTest(){
       configuration = new BuildWallConfigurationImpl();
       systemUnderTest = new BuildWallConfigurationPanelImpl( TEST_TITLE, configuration );
    }//End Method

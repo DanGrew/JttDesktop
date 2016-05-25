@@ -20,8 +20,6 @@ import javafx.scene.control.DialogEvent;
  */
 public class JenkinsLoginProcessor implements EventHandler< DialogEvent > {
    
-   static final int LOGIN_TIMEOUT = 1;
-   
    private final FriendlyAlert alert;
    private final ButtonType loginButtonType;
    private final Node loginButton;

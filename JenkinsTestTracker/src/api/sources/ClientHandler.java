@@ -67,7 +67,7 @@ public class ClientHandler implements ResponseHandler< String > {
    public HttpClient constructClient( String jenkinsLocation, String user, String password ) {
       // Create your httpclient
       final HttpParams httpParams = new BasicHttpParams();
-      HttpConnectionParams.setSoTimeout(httpParams, DEFAULT_TIMEOUT);
+      resetTimeout( httpParams );
       DefaultHttpClient client = new DefaultHttpClient(httpParams);
 
       // Then provide the right credentials
