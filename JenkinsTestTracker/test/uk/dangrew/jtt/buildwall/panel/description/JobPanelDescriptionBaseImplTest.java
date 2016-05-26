@@ -220,7 +220,7 @@ public class JobPanelDescriptionBaseImplTest {
    
    @Test public void shouldFormatBuildNumberAndTimestamp(){
       assertThat( 
-               "#200 | 09:59-17/01", 
+               "#200 | 21:59-17/01", 
                is( JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( 200, 1457963846l ) ) 
       );
       assertThat( 
@@ -230,7 +230,7 @@ public class JobPanelDescriptionBaseImplTest {
    }//End Method
    
    @Test public void shouldProvideCorrectDateTimeFormat(){
-      assertThat( JobPanelDescriptionBaseImpl.formatTimestamp( 1457963846l ), is( "09:59-17/01" ) );
+      assertThat( JobPanelDescriptionBaseImpl.formatTimestamp( 1457963846l ), is( "21:59-17/01" ) );
       assertThat( JobPanelDescriptionBaseImpl.formatTimestamp( null ), is( "?-?" ) );
       assertThat( JobPanelDescriptionBaseImpl.formatTimestamp( 1460445778247L ), is( "08:22-12/04" ) );
    }//End Method
