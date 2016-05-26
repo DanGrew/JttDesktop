@@ -85,7 +85,7 @@
               <transformers>
                 <transformer>
                   <manifestEntries>
-                    <Main-Class>main.JenkinsTestTracker</Main-Class>
+                    <Main-Class>uk.dangrew.jtt.main.JenkinsTestTracker</Main-Class>
                     <Build-Number>123</Build-Number>
                   </manifestEntries>
                 </transformer>

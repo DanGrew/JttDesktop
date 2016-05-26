@@ -119,7 +119,7 @@ artifacts.archives packageTests
 //configure specific name so not '-all'
 shadowJar.archiveName = jar.archiveName.replace( '.jar', '-runnable.jar' )
 //link to main class in jar
-mainClassName = "main.JenkinsTestTracker"
+mainClassName = "uk.dangrew.jtt.main.JenkinsTestTracker"
 //bind with jar so that whenever jar is run, shadow is run
 jar.dependsOn shadowJar
 //automatic distribution options pulled in from application plugin - not interested
