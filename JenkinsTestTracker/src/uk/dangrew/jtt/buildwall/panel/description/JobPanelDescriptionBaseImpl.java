@@ -34,7 +34,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements RegisteredComponent {
 
    static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
-            .appendPattern( "hh:mm" ).appendLiteral( "-" ).appendPattern( "dd/MM" ).toFormatter();
+            .appendPattern( "HH:mm" ).appendLiteral( "-" ).appendPattern( "dd/MM" ).toFormatter();
    static final String UNKNOWN_BUILD_NUMBER = "?";
    static final String BUILD_NUMBER_PREFIX = "#";
    static final double DEFAULT_PROPERTY_OPACITY = 0.8;

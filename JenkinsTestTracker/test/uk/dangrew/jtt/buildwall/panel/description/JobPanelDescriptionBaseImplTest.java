@@ -12,6 +12,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDateTime;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,7 +23,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
@@ -461,5 +462,10 @@ public class JobPanelDescriptionBaseImplTest {
    
    @Test public void shouldProvideAssociatedConfiguration(){
       assertThat( systemUnderTest.getConfiguration(), is( configuration ) );
+   }//End Method
+   
+   @Test public void formatterShouldProvide24HourClock(){
+      String formatted = JobPanelDescriptionBaseImpl.DATE_TIME_FORMATTER.format( LocalDateTime.of( 2016, 01, 01, 14, 20, 43 ) );
+      assertThat( formatted, is( "14:20-01/01" ) );
    }//End Method
 }//End Class
