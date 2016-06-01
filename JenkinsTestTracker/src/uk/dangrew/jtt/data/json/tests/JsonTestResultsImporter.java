@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.data;
+package uk.dangrew.jtt.data.json.tests;
 
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 

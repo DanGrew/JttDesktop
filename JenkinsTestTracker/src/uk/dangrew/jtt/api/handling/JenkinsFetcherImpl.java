@@ -11,10 +11,10 @@ package uk.dangrew.jtt.api.handling;
 import org.json.JSONObject;
 
 import uk.dangrew.jtt.api.sources.ExternalApi;
-import uk.dangrew.jtt.data.JsonTestResultsImporter;
 import uk.dangrew.jtt.data.json.conversion.ApiResponseToJsonConverter;
 import uk.dangrew.jtt.data.json.jobs.JsonJobImporter;
 import uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl;
+import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporter;
 import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporterImpl;
 import uk.dangrew.jtt.data.json.users.JsonUserImporter;
 import uk.dangrew.jtt.data.json.users.JsonUserImporterImpl;

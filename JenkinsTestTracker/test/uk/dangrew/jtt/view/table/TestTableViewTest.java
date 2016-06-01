@@ -8,9 +8,6 @@
  */
 package uk.dangrew.jtt.view.table;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -22,12 +19,11 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
-import uk.dangrew.jtt.data.JsonTestResultsImporter;
+import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporter;
 import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporterImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestCaseImpl;
@@ -37,8 +33,6 @@ import uk.dangrew.jtt.model.tests.TestResultStatus;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
-import uk.dangrew.jtt.view.table.TestTableItem;
-import uk.dangrew.jtt.view.table.TestTableView;
 
 /**
  * {@link TestTableView} test.

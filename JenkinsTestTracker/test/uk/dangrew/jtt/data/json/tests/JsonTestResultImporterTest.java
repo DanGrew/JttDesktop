@@ -20,7 +20,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.data.JsonTestResultsImporter;
 import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporterImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;

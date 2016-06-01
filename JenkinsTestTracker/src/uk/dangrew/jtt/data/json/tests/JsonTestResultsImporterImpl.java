@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import uk.dangrew.jtt.data.JsonTestResultsImporter;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestCaseImpl;
