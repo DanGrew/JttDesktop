@@ -13,7 +13,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProvider;
+import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
 /**
@@ -71,11 +71,11 @@ public interface BuildWallConfiguration {
    public ObservableMap< JenkinsJob, BuildWallJobPolicy > jobPolicies();
 
    /**
-    * {@link ObjectProperty} for the type of {@link JobPanelDescriptionProvider} to use for
+    * {@link ObjectProperty} for the type of {@link JobPanelDescriptionProviders} to use for
     * the {@link JobPanelImpl}.
     * @return the {@link ObjectProperty}.
     */
-   public ObjectProperty< JobPanelDescriptionProvider > jobPanelDescriptionProvider();
+   public ObjectProperty< JobPanelDescriptionProviders > jobPanelDescriptionProvider();
 
    /**
     * Property for the detail {@link Font}.

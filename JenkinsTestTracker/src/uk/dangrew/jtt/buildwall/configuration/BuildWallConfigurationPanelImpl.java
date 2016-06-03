@@ -24,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.buildwall.configuration.components.JobPolicyPanel;
 import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
-import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProvider;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.javafx.combobox.FontFamilyPropertyBox;
 import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
@@ -329,9 +328,9 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    
    /**
     * Method to update the {@link RadioButton}s for the {@link JobPanelDescriptionProviders}.
-    * @param provider the {@link JobPanelDescriptionProvider} set in the {@link BuildWallConfiguration}.
+    * @param provider the {@link JobPanelDescriptionProviders} set in the {@link BuildWallConfiguration}.
     */
-   private void updateDescriptionTypeButton( JobPanelDescriptionProvider provider ){
+   private void updateDescriptionTypeButton( JobPanelDescriptionProviders provider ){
       simpleDescriptionButton.setSelected( JobPanelDescriptionProviders.Simple.equals( provider )  );
       defaultDescriptionButton.setSelected( JobPanelDescriptionProviders.Default.equals( provider )  );
       detailedDescriptionButton.setSelected( JobPanelDescriptionProviders.Detailed.equals( provider )  );

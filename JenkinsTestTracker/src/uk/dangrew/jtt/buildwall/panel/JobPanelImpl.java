@@ -11,7 +11,7 @@ package uk.dangrew.jtt.buildwall.panel;
 import javafx.scene.layout.StackPane;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
-import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProvider;
+import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -57,9 +57,9 @@ public class JobPanelImpl extends StackPane {
    
    /**
     * Method to update the {@link JobPanelDescriptionBaseImpl} used.
-    * @param provider the {@link JobPanelDescriptionProvider} providing the {@link JobPanelDescriptionBaseImpl}.
+    * @param provider the {@link JobPanelDescriptionProviders} providing the {@link JobPanelDescriptionBaseImpl}.
     */
-   private void updateJobPanelDescriptionType( JobPanelDescriptionProvider provider ) {
+   private void updateJobPanelDescriptionType( JobPanelDescriptionProviders provider ) {
       if ( description != null ) {
          getChildren().remove( description );
          description.detachFromSystem();

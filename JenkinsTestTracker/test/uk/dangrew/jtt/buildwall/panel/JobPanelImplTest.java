@@ -10,11 +10,10 @@ package uk.dangrew.jtt.buildwall.panel;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,12 +23,10 @@ import org.junit.Test;
 
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.panel.JobPanelImpl;
-import uk.dangrew.jtt.buildwall.panel.JobProgressImpl;
 import uk.dangrew.jtt.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.buildwall.panel.description.SimpleJobPanelDescriptionImpl;
-import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProvider;
+import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -107,34 +104,33 @@ public class JobPanelImplTest {
       JobPanelDescriptionBaseImpl initialDescription = systemUnderTest.description();
       assertThat( initialDescription.isDetached(), is( false ) );
       
-      JobPanelDescriptionProvider provider = mock( JobPanelDescriptionProvider.class );
-      SimpleJobPanelDescriptionImpl providedDescription = new SimpleJobPanelDescriptionImpl( configuration, job );
-      when( provider.constructJobDescriptionPanel( configuration, job ) ).thenReturn( providedDescription );
+      JobPanelDescriptionProviders provider = JobPanelDescriptionProviders.Simple;
       configuration.jobPanelDescriptionProvider().set( provider );
       
       JobPanelDescriptionBaseImpl updatedDescription = systemUnderTest.description();
       assertThat( updatedDescription, not( initialDescription ) );
-      assertThat( updatedDescription, is( providedDescription ) );
+      assertThat( updatedDescription, is( instanceOf( SimpleJobPanelDescriptionImpl.class ) ) );
       assertThat( initialDescription.isDetached(), is( true ) );
       assertThat( updatedDescription.isDetached(), is( false ) );
       assertThat( systemUnderTest.getChildren(), not( contains( initialDescription ) ) );
       assertThat( systemUnderTest.getChildren(), contains( systemUnderTest.progress(), updatedDescription ) );
    }//End Method
    
-   @Test public void detachShouldUnregisterForProviderChanegs(){
+   @Test public void detachShouldUnregisterForProviderChanges(){
       JobPanelDescriptionBaseImpl initialDescription = systemUnderTest.description();
       assertThat( initialDescription.isDetached(), is( false ) );
       
       systemUnderTest.detachFromSystem();
       
-      JobPanelDescriptionProvider provider = mock( JobPanelDescriptionProvider.class );
-      SimpleJobPanelDescriptionImpl providedDescription = new SimpleJobPanelDescriptionImpl( configuration, job );
-      when( provider.constructJobDescriptionPanel( configuration, job ) ).thenReturn( providedDescription );
+      JobPanelDescriptionBaseImpl updatedDescription = systemUnderTest.description();
+      assertThat( updatedDescription, is( instanceOf( DefaultJobPanelDescriptionImpl.class ) ) );
+      
+      JobPanelDescriptionProviders provider = JobPanelDescriptionProviders.Simple;
       configuration.jobPanelDescriptionProvider().set( provider );
       
-      JobPanelDescriptionBaseImpl updatedDescription = systemUnderTest.description();
-      assertThat( updatedDescription, is( initialDescription ) );
-      assertThat( systemUnderTest.getChildren(), not( contains( systemUnderTest.progress(), providedDescription ) ) );
+      JobPanelDescriptionBaseImpl newestDescription = systemUnderTest.description();
+      assertThat( newestDescription, is( instanceOf( DefaultJobPanelDescriptionImpl.class ) ) );
+      assertThat( systemUnderTest.getChildren(), not( contains( systemUnderTest.progress(), updatedDescription ) ) );
    }//End Method
    
 }//End Class
