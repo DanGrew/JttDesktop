@@ -1,0 +1,36 @@
+{"BuildWall": {
+   "JobPolicies": [
+      {
+         "Policy": "OnlyShowFailures",
+         "JobName": "JUPA"
+      },
+      {
+         "Policy": "AlwaysShow",
+         "JobName": "JTT"
+      },
+      {
+         "Policy": "OnlyShowPassing",
+         "JobName": "Digest"
+      }
+   ],
+   "Colours": {
+      "BuildTimeColour": "#7fffd4",
+      "BuildNumberColour": "#008b8b",
+      "DetailColour": "#ff6347",
+      "JobNameColour": "#ff0000"
+   },
+   "Dimensions": {
+      "DescriptionType": "Detailed",
+      "Columns": 6
+   },
+   "Fonts": {
+      "BuildNumberFamily": "Courier",
+      "JobNameFamily": "Arial",
+      "BuildTimeSize": 45,
+      "JobNameSize": 10,
+      "DetailFamily": "Helvetica",
+      "BuildNumberSize": 20,
+      "BuildTimeFamily": "Georgia",
+      "DetailSize": 5
+   }
+}}
