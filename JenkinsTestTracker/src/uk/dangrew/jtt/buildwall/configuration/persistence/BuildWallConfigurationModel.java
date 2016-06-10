@@ -26,7 +26,7 @@ import uk.dangrew.jtt.utility.conversion.ColorConverter;
  * The {@link BuildWallConfigurationModel} provides the model to read from and write to when converting
  * a {@link BuildWallConfiguration} to and from json data.
  */
-public class BuildWallConfigurationModel {
+class BuildWallConfigurationModel {
    
    private final BuildWallConfiguration configuration;
    private final JenkinsDatabase database;
@@ -40,7 +40,7 @@ public class BuildWallConfigurationModel {
     * @param configuration the {@link BuildWallConfiguration} being serialized.
     * @param database the {@link JenkinsDatabase} for accessing {@link JenkinsJob}s.
     */
-   public BuildWallConfigurationModel( BuildWallConfiguration configuration, JenkinsDatabase database ) {
+   BuildWallConfigurationModel( BuildWallConfiguration configuration, JenkinsDatabase database ) {
       if ( configuration == null || database == null ) {
          throw new NullPointerException( "Arguments must not be null." );
       }

@@ -151,7 +151,7 @@ public class BuildWallConfigurationPersistenceTest {
       verify( model ).setColumns( COLUMNS, COLUMNS_VALUE );
       verify( model ).setDescriptionType( DESCRIPTION_TYPE, DESCRIPTION_TYPE_VALUE );
       
-      verify( model ).startWritingJobs( JOB_POLICIES );
+      verify( model ).startParsingJobs( JOB_POLICIES );
       verify( model ).setJobName( JOB_NAME, JUPA_JOB_NAME_VALUE );
       verify( model ).setJobPolicy( POLICY, JUPA_JOB_POLICY_VALUE );
       verify( model ).setJobName( JOB_NAME, JTT_JOB_NAME_VALUE );
@@ -185,7 +185,7 @@ public class BuildWallConfigurationPersistenceTest {
       verify( model ).getColumns( COLUMNS );
       verify( model ).getDescriptionType( DESCRIPTION_TYPE );
       
-      verify( model ).startParsingJobs( JOB_POLICIES );
+      verify( model ).startWritingJobs( JOB_POLICIES );
       verify( model, times( 3 ) ).getJobName( JOB_NAME );
       verify( model, times( 3 ) ).getJobPolicy( POLICY );
                       
