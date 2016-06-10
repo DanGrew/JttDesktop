@@ -13,7 +13,7 @@ package uk.dangrew.jtt.utility;
  */
 public class TestableFonts {
 
-   private static final String COMMON_FONT = "Arial";
+   private static final String COMMON_FONT = "SansSerif";
    
    /**
     * Method to get the family name of a common {@link javafx.scene.text.Font} across platforms.
