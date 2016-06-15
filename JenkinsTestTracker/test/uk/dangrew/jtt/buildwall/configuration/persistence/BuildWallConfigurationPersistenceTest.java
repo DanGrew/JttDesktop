@@ -20,9 +20,9 @@ import static org.mockito.Mockito.when;
 import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_NUMBER_COLOUR;
 import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_NUMBER_FAMILY;
 import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_NUMBER_SIZE;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_TIME_COLOUR;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_TIME_FAMILY;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_TIME_SIZE;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_COLOUR;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_FAMILY;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_SIZE;
 import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_WALL;
 import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COLOURS;
 import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COLUMNS;
@@ -120,25 +120,25 @@ public class BuildWallConfigurationPersistenceTest {
       assertThat( fonts.keySet(), containsInAnyOrder( 
                JOB_NAME_FAMILY, JOB_NAME_SIZE,
                BUILD_NUMBER_FAMILY, BUILD_NUMBER_SIZE,
-               BUILD_TIME_FAMILY, BUILD_TIME_SIZE,
+               COMPLETION_ESTIMATE_FAMILY, COMPLETION_ESTIMATE_SIZE,
                DETAIL_FAMILY, DETAIL_SIZE
       ) );
       assertThat( fonts.get( JOB_NAME_FAMILY ), is( placeholder ) );
       assertThat( fonts.get( JOB_NAME_SIZE ), is( placeholder ) );
       assertThat( fonts.get( BUILD_NUMBER_FAMILY ), is( placeholder ) );
       assertThat( fonts.get( BUILD_NUMBER_SIZE ), is( placeholder ) );
-      assertThat( fonts.get( BUILD_TIME_FAMILY ), is( placeholder ) );
-      assertThat( fonts.get( BUILD_TIME_SIZE ), is( placeholder ) );
+      assertThat( fonts.get( COMPLETION_ESTIMATE_FAMILY ), is( placeholder ) );
+      assertThat( fonts.get( COMPLETION_ESTIMATE_SIZE ), is( placeholder ) );
       assertThat( fonts.get( DETAIL_FAMILY ), is( placeholder ) );
       assertThat( fonts.get( DETAIL_SIZE ), is( placeholder ) );
       
       JSONObject colours = buildWall.getJSONObject( COLOURS );
       assertThat( colours.keySet(), containsInAnyOrder( 
-               JOB_NAME_COLOUR, BUILD_NUMBER_COLOUR, BUILD_TIME_COLOUR, DETAIL_COLOUR 
+               JOB_NAME_COLOUR, BUILD_NUMBER_COLOUR, COMPLETION_ESTIMATE_COLOUR, DETAIL_COLOUR 
       ) );
       assertThat( colours.get( JOB_NAME_COLOUR ), is( placeholder ) );
       assertThat( colours.get( BUILD_NUMBER_COLOUR ), is( placeholder ) );
-      assertThat( colours.get( BUILD_TIME_COLOUR ), is( placeholder ) );
+      assertThat( colours.get( COMPLETION_ESTIMATE_COLOUR ), is( placeholder ) );
       assertThat( colours.get( DETAIL_COLOUR ), is( placeholder ) );
    }//End Method
    
@@ -163,14 +163,14 @@ public class BuildWallConfigurationPersistenceTest {
       verify( model ).setJobNameFontSize( JOB_NAME_SIZE, JOB_NAME_FONT_SIZE_VALUE );
       verify( model ).setBuildNumberFontFamily( BUILD_NUMBER_FAMILY, BUILD_NUMBER_FONT_FAMILY_VALUE );
       verify( model ).setBuildNumberFontSize( BUILD_NUMBER_SIZE, BUILD_NUMBER_FONT_SIZE_VALUE );
-      verify( model ).setCompletionEstimateFontFamily( BUILD_TIME_FAMILY, COMPLETION_ESTIMATE_FONT_FAMILY_VALUE );
-      verify( model ).setCompletionEstimateFontSize( BUILD_TIME_SIZE, COMPLETION_ESTIMATE_FONT_SIZE_VALUE );
+      verify( model ).setCompletionEstimateFontFamily( COMPLETION_ESTIMATE_FAMILY, COMPLETION_ESTIMATE_FONT_FAMILY_VALUE );
+      verify( model ).setCompletionEstimateFontSize( COMPLETION_ESTIMATE_SIZE, COMPLETION_ESTIMATE_FONT_SIZE_VALUE );
       verify( model ).setDetailFontFamily( DETAIL_FAMILY, DETAIL_FONT_FAMILY_VALUE );
       verify( model ).setDetailFontSize( DETAIL_SIZE, DETAIL_FONT_SIZE_VALUE );
       
       verify( model ).setJobNameFontColour( JOB_NAME_COLOUR, JOB_NAME_COLOUR_VALUE );
       verify( model ).setBuildNumberFontColour( BUILD_NUMBER_COLOUR, BUILD_NUMBER_COLOUR_VALUE );
-      verify( model ).setCompletionEstimateFontColour( BUILD_TIME_COLOUR, COMPLETION_ESTIMATE_COLOUR_VALUE );
+      verify( model ).setCompletionEstimateFontColour( COMPLETION_ESTIMATE_COLOUR, COMPLETION_ESTIMATE_COLOUR_VALUE );
       verify( model ).setDetailFontColour( DETAIL_COLOUR, DETAIL_COLOUR_VALUE );
       
       verifyNoMoreInteractions( model );
@@ -193,14 +193,14 @@ public class BuildWallConfigurationPersistenceTest {
       verify( model ).getJobNameFontSize( JOB_NAME_SIZE );
       verify( model ).getBuildNumberFontFamily( BUILD_NUMBER_FAMILY );
       verify( model ).getBuildNumberFontSize( BUILD_NUMBER_SIZE );
-      verify( model ).getCompletionEstimateFontFamily( BUILD_TIME_FAMILY );
-      verify( model ).getCompletionEstimateFontSize( BUILD_TIME_SIZE );
+      verify( model ).getCompletionEstimateFontFamily( COMPLETION_ESTIMATE_FAMILY );
+      verify( model ).getCompletionEstimateFontSize( COMPLETION_ESTIMATE_SIZE );
       verify( model ).getDetailFontFamily( DETAIL_FAMILY );
       verify( model ).getDetailFontSize( DETAIL_SIZE );
                       
       verify( model ).getJobNameFontColour( JOB_NAME_COLOUR );
       verify( model ).getBuildNumberFontColour( BUILD_NUMBER_COLOUR );
-      verify( model ).getCompletionEstimateFontColour( BUILD_TIME_COLOUR );
+      verify( model ).getCompletionEstimateFontColour( COMPLETION_ESTIMATE_COLOUR );
       verify( model ).getDetailFontColour( DETAIL_COLOUR );
       
       verifyNoMoreInteractions( model );

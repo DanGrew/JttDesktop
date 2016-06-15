@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.buildwall.configuration;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -18,6 +19,7 @@ import org.junit.Test;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
+import uk.dangrew.jtt.utility.synchronisation.SynchronizedObservableMap;
 
 /**
  * {@link BuildWallConfigurationImpl} test.
@@ -48,6 +50,10 @@ public class BuildWallConfigurationImplTest {
       
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_PROPERTIES_FONT, systemUnderTest.detailFont().get() );
       Assert.assertEquals( BuildWallConfigurationImpl.DEFAULT_TEXT_COLOUR, systemUnderTest.detailColour().get() );
+   }//End Method
+   
+   @Test public void shouldProvideSynchronizedMapForPolicies(){
+      assertThat( systemUnderTest.jobPolicies(), is( instanceOf( SynchronizedObservableMap.class ) ) );
    }//End Method
    
 }//End Class

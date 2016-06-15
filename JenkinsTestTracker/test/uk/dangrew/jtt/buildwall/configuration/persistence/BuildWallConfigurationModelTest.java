@@ -37,6 +37,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.utility.TestCommon;
 import uk.dangrew.jtt.utility.conversion.ColorConverter;
 
 /**
@@ -543,4 +544,13 @@ public class BuildWallConfigurationModelTest {
       configuration.detailColour().set( Color.RED );
       assertThat( systemUnderTest.getDetailFontColour( ANYTHING ), is( RED_HEX ) );  
    }//End Method
+   
+   @Test public void shouldNotConcurrentExceptionWhenIteratingOverJobPolicies() throws InterruptedException{
+      TestCommon.assertConcurrencyIsNotAnIssue( 
+               i -> configuration.jobPolicies().put( new JenkinsJobImpl( "" + i ), BuildWallJobPolicy.NeverShow ),
+               i -> systemUnderTest.startWritingJobs( ANYTHING ),
+               1000
+      );
+   }//End Method
+   
 }//End Class

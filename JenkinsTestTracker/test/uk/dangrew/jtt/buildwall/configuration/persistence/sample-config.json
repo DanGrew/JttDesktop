@@ -14,7 +14,7 @@
       }
    ],
    "Colours": {
-      "BuildTimeColour": "#7fffd4",
+      "CompletionEstimateColour": "#7fffd4",
       "BuildNumberColour": "#008b8b",
       "DetailColour": "#ff6347",
       "JobNameColour": "#ff0000"
@@ -26,11 +26,11 @@
    "Fonts": {
       "BuildNumberFamily": "Courier",
       "JobNameFamily": "Arial",
-      "BuildTimeSize": 45,
+      "CompletionEstimateSize": 45,
       "JobNameSize": 10,
       "DetailFamily": "Helvetica",
       "BuildNumberSize": 20,
-      "BuildTimeFamily": "Georgia",
+      "CompletionEstimateFamily": "Georgia",
       "DetailSize": 5
    }
 }}

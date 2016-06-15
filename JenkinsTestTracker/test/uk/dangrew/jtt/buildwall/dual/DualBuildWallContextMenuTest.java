@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,14 +33,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallContextMenu;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallContextMenuOpener;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
+import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.styling.SystemStyling;
 import viewer.basic.DigestViewer;
 
 /**
@@ -68,6 +70,7 @@ public class DualBuildWallContextMenuTest {
    @BeforeClass public static void initialisePlatform(){
       PlatformImpl.startup( () -> {} );
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
+      SystemStyling.initialise();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
@@ -213,7 +216,16 @@ public class DualBuildWallContextMenuTest {
     * Method to apply the preconditions for the digest control being testable.
     */
    private void digestControlPreconditions(){
-      display = new DualBuildWallDisplayImpl( new JenkinsDatabaseImpl() );
+      BuildWallConfigurationSessions sessions = mock( BuildWallConfigurationSessions.class );
+      BuildWallConfiguration anyConfiguration = new BuildWallConfigurationImpl();
+      when( sessions.getLeftConfiguration() ).thenReturn( anyConfiguration );
+      when( sessions.getRightConfiguration() ).thenReturn( anyConfiguration );
+      
+      display = new DualBuildWallDisplayImpl( 
+               new JenkinsDatabaseImpl(), 
+               mock( DualBuildWallConfigurationWindowController.class ),
+               sessions
+      );
       
       BorderPane parent = new BorderPane( display );
       new Scene( parent );

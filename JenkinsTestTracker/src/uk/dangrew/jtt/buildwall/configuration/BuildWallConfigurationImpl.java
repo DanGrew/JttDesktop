@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.utility.synchronisation.SynchronizedObservableMap;
 
 /**
  * The {@link BuildWallConfigurationImpl} provides an implementation of the {@link BuildWallConfiguration}.
@@ -62,7 +63,7 @@ public class BuildWallConfigurationImpl implements BuildWallConfiguration {
       
       numberOfColumns = new SimpleIntegerProperty( DEFAULT_NUMBER_OF_COLUMNS );
       
-      jobPolicies = FXCollections.observableHashMap();
+      jobPolicies = new SynchronizedObservableMap<>();
       jobPanelDescriptionProvider = new SimpleObjectProperty<>( JobPanelDescriptionProviders.Default );
       
       detailColour = new SimpleObjectProperty<>( DEFAULT_TEXT_COLOUR );

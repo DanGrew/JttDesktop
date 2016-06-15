@@ -45,15 +45,15 @@ class BuildWallConfigurationPersistence {
    static final String JOB_NAME_SIZE = "JobNameSize";
    static final String BUILD_NUMBER_FAMILY = "BuildNumberFamily";
    static final String BUILD_NUMBER_SIZE = "BuildNumberSize";
-   static final String BUILD_TIME_FAMILY = "BuildTimeFamily";
-   static final String BUILD_TIME_SIZE = "BuildTimeSize";
+   static final String COMPLETION_ESTIMATE_FAMILY = "CompletionEstimateFamily";
+   static final String COMPLETION_ESTIMATE_SIZE = "CompletionEstimateSize";
    static final String DETAIL_FAMILY = "DetailFamily";
    static final String DETAIL_SIZE = "DetailSize";
    
    static final String COLOURS = "Colours";
    static final String JOB_NAME_COLOUR = "JobNameColour";
    static final String BUILD_NUMBER_COLOUR = "BuildNumberColour";
-   static final String BUILD_TIME_COLOUR = "BuildTimeColour";
+   static final String COMPLETION_ESTIMATE_COLOUR = "CompletionEstimateColour";
    static final String DETAIL_COLOUR = "DetailColour";
    
    private final BuildWallConfigurationModel model;
@@ -105,15 +105,15 @@ class BuildWallConfigurationPersistence {
       structure.child( JOB_NAME_SIZE, FONTS );
       structure.child( BUILD_NUMBER_FAMILY, FONTS );
       structure.child( BUILD_NUMBER_SIZE, FONTS );
-      structure.child( BUILD_TIME_FAMILY, FONTS );
-      structure.child( BUILD_TIME_SIZE, FONTS );
+      structure.child( COMPLETION_ESTIMATE_FAMILY, FONTS );
+      structure.child( COMPLETION_ESTIMATE_SIZE, FONTS );
       structure.child( DETAIL_FAMILY, FONTS );
       structure.child( DETAIL_SIZE, FONTS );
       
       structure.child( COLOURS, BUILD_WALL );
       structure.child( JOB_NAME_COLOUR, COLOURS );
       structure.child( BUILD_NUMBER_COLOUR, COLOURS );
-      structure.child( BUILD_TIME_COLOUR, COLOURS );
+      structure.child( COMPLETION_ESTIMATE_COLOUR, COLOURS );
       structure.child( DETAIL_COLOUR, COLOURS );
    }//End Method
    
@@ -142,15 +142,15 @@ class BuildWallConfigurationPersistence {
       parserWithReadHandles.when( BUILD_NUMBER_FAMILY, new StringParseHandle( model::setBuildNumberFontFamily ) );
       parserWithReadHandles.when( BUILD_NUMBER_SIZE, new DoubleParseHandle( model::setBuildNumberFontSize ) );
       
-      parserWithReadHandles.when( BUILD_TIME_FAMILY, new StringParseHandle( model::setCompletionEstimateFontFamily ) );
-      parserWithReadHandles.when( BUILD_TIME_SIZE, new DoubleParseHandle( model::setCompletionEstimateFontSize ) );
+      parserWithReadHandles.when( COMPLETION_ESTIMATE_FAMILY, new StringParseHandle( model::setCompletionEstimateFontFamily ) );
+      parserWithReadHandles.when( COMPLETION_ESTIMATE_SIZE, new DoubleParseHandle( model::setCompletionEstimateFontSize ) );
       
       parserWithReadHandles.when( DETAIL_FAMILY, new StringParseHandle( model::setDetailFontFamily ) );
       parserWithReadHandles.when( DETAIL_SIZE, new DoubleParseHandle( model::setDetailFontSize ) );
       
       parserWithReadHandles.when( JOB_NAME_COLOUR, new StringParseHandle( model::setJobNameFontColour ) );
       parserWithReadHandles.when( BUILD_NUMBER_COLOUR, new StringParseHandle( model::setBuildNumberFontColour ) );
-      parserWithReadHandles.when( BUILD_TIME_COLOUR, new StringParseHandle( model::setCompletionEstimateFontColour ) );
+      parserWithReadHandles.when( COMPLETION_ESTIMATE_COLOUR, new StringParseHandle( model::setCompletionEstimateFontColour ) );
       parserWithReadHandles.when( DETAIL_COLOUR, new StringParseHandle( model::setDetailFontColour ) );
    }//End Method
    
@@ -174,15 +174,15 @@ class BuildWallConfigurationPersistence {
       parserWithWriteHandles.when( BUILD_NUMBER_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getBuildNumberFontFamily ) ) );
       parserWithWriteHandles.when( BUILD_NUMBER_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getBuildNumberFontSize ) ) );
       
-      parserWithWriteHandles.when( BUILD_TIME_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontFamily ) ) );
-      parserWithWriteHandles.when( BUILD_TIME_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontSize ) ) );
+      parserWithWriteHandles.when( COMPLETION_ESTIMATE_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontFamily ) ) );
+      parserWithWriteHandles.when( COMPLETION_ESTIMATE_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontSize ) ) );
       
       parserWithWriteHandles.when( DETAIL_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getDetailFontFamily ) ) );
       parserWithWriteHandles.when( DETAIL_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getDetailFontSize ) ) );
       
       parserWithWriteHandles.when( JOB_NAME_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getJobNameFontColour ) ) );
       parserWithWriteHandles.when( BUILD_NUMBER_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getBuildNumberFontColour ) ) );
-      parserWithWriteHandles.when( BUILD_TIME_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontColour ) ) );
+      parserWithWriteHandles.when( COMPLETION_ESTIMATE_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontColour ) ) );
       parserWithWriteHandles.when( DETAIL_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getDetailFontColour ) ) );
    }//End Method
    

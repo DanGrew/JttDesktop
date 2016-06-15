@@ -11,8 +11,8 @@ package uk.dangrew.jtt.buildwall.dual;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationPanelImpl;
+import uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
@@ -47,7 +47,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * @param database the {@link JenkinsDatabase} associated.
     */
    public DualBuildWallDisplayImpl( JenkinsDatabase database ) {
-      this( database, new DualBuildWallConfigurationWindowController() );
+      this( database, new DualBuildWallConfigurationWindowController(), new BuildWallConfigurationSessions( database ) );
    }//End Constructor
    
    /**
@@ -55,13 +55,15 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * @param database the {@link JenkinsDatabase} associated.
     * @param windowController the {@link DualBuildWallConfigurationWindowController} to use
     * to open a separate configuration window.
+    * @param sessions the {@link BuildWallConfigurationSessions} used to persist configuration.
     */
-   DualBuildWallDisplayImpl( JenkinsDatabase database, DualBuildWallConfigurationWindowController windowController ) {
+   DualBuildWallDisplayImpl( JenkinsDatabase database, DualBuildWallConfigurationWindowController windowController, BuildWallConfigurationSessions sessions ) {
       this.database = database;
-      this.rightConfiguration = new BuildWallConfigurationImpl();
-      this.leftConfiguration = new BuildWallConfigurationImpl();
       this.imageFlasherProperties = new ImageFlasherPropertiesImpl();
       this.configWindowController = windowController;
+      
+      this.rightConfiguration = sessions.getRightConfiguration();
+      this.leftConfiguration = sessions.getLeftConfiguration();
       
       applyDefaultConfigurations();
       applyPolicyUpdaters();

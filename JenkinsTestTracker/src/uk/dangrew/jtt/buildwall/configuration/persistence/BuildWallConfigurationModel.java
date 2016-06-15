@@ -109,14 +109,14 @@ class BuildWallConfigurationModel {
    /**
     * Method to indicate {@link JenkinsJob} {@link BuildWallJobPolicy}s are being written. This will
     * prepare the {@link JenkinsJob}s and {@link BuildWallJobPolicy}s to write.
-    * @param key the json key.
+    * @param keyString the json key.
     */
-   void startWritingJobs( String key ) {
+   void startWritingJobs( String keyString ) {
       clearBuffers();
       
-      configuration.jobPolicies().entrySet().forEach( entry -> {
-         jobBuffer.add( entry.getKey() );
-         policyBuffer.add( entry.getValue() );
+      configuration.jobPolicies().forEach( ( key, value ) -> {
+            jobBuffer.add( key );
+            policyBuffer.add( value );
       } );
    }//End Method
    
