@@ -11,6 +11,7 @@ package uk.dangrew.jtt.buildwall.configuration;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -43,6 +44,7 @@ import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.styling.FontFamilies;
 import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.utility.TestableFonts;
 
 /**
  * {@link BuildWallConfigurationPanelImpl} test.
@@ -130,39 +132,87 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.detailColourPicker() ) );
    }//End Method
    
-   @Test public void shouldUseInitialConfiguration(){
-      Assert.assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
-      
-      Assert.assertEquals( 
+   @Test public void numberOfColumnsShouldUseInitialConfiguration(){
+      configuration.numberOfColumns().set( 20 );
+      assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
+   }//End Method
+   
+   @Test public void jobNameFontFamilyShouldUseInitialConfiguration(){
+      configuration.jobNameFont().set( Font.font( TestableFonts.commonFont() ) );
+      assertEquals( 
                configuration.jobNameFont().get().getFamily(), 
                systemUnderTest.jobNameFontBox().getSelectionModel().getSelectedItem() 
       );
-      Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobNameColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void jobNameColourShouldUseInitialConfiguration(){
+      configuration.jobNameColour().set( Color.RED );
+      assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobNameColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void jobNameFontSizeShouldUseInitialConfiguration(){
+      configuration.jobNameFont().set( Font.font( 56 ) );
       assertThat( configuration.jobNameFont().get().getSize(), is( systemUnderTest.jobNameFontSizeSpinner().getValue().doubleValue() ) );
-      
-      Assert.assertEquals( 
+   }//End Method
+   
+   @Test public void buildNumberFontFamilyShouldUseInitialConfiguration(){
+      configuration.jobNameFont().set( Font.font( TestableFonts.commonFont() ) );
+      assertEquals( 
                configuration.buildNumberFont().get().getFamily(), 
                systemUnderTest.buildNumberFontBox().getSelectionModel().getSelectedItem() 
       );
-      Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumberColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void buildNumberColourShouldUseInitialConfiguration(){
+      configuration.buildNumberColour().set( Color.ANTIQUEWHITE );
+      assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumberColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void buildNumberFontColourShouldUseInitialConfiguration(){
+      configuration.buildNumberFont().set( Font.font( 56 ) );
       assertThat( configuration.buildNumberFont().get().getSize(), is( systemUnderTest.buildNumberFontSizeSpinner().getValue().doubleValue() ) );
-      
-      Assert.assertEquals( 
+   }//End Method
+   
+   @Test public void completionEstimateFontFamilyShouldUseInitialConfiguration(){
+      configuration.completionEstimateFont().set( Font.font( TestableFonts.commonFont() ) );
+      assertEquals( 
                configuration.completionEstimateFont().get().getFamily(), 
                systemUnderTest.completionEstimateFontBox().getSelectionModel().getSelectedItem() 
       );
-      Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void completionEstimateColourShouldUseInitialConfiguration(){
+      configuration.completionEstimateColour().set( Color.BISQUE );
+      assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void completionEstimateFontSizeShouldUseInitialConfiguration(){
+      configuration.completionEstimateFont().set( Font.font( 56 ) );
       assertThat( configuration.completionEstimateFont().get().getSize(), is( systemUnderTest.completionEstimateFontSizeSpinner().getValue().doubleValue() ) );
-      
-      Assert.assertEquals( 
+   }//End Method
+   
+   @Test public void detailFontFamilyShouldUseInitialConfiguration(){
+      configuration.detailFont().set( Font.font( TestableFonts.commonFont() ) );
+      assertEquals( 
                configuration.detailFont().get().getFamily(), 
                systemUnderTest.detailFontBox().getSelectionModel().getSelectedItem() 
       );
-      Assert.assertEquals( configuration.detailColour().get(), systemUnderTest.detailColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void detailColourShouldUseInitialConfiguration(){
+      configuration.detailColour().set( Color.BURLYWOOD );
+      assertEquals( configuration.detailColour().get(), systemUnderTest.detailColourPicker().valueProperty().get() );
+   }//End Method
+   
+   @Test public void detailFontSizeShouldUseInitialConfiguration(){
+      configuration.detailFont().set( Font.font( 56 ) );
       assertThat( configuration.detailFont().get().getSize(), is( systemUnderTest.detailFontSizeSpinner().getValue().doubleValue() ) );
-      
-      assertThat( systemUnderTest.simpleDescriptionButton().isSelected(), is( false ) );
-      assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( true ) );
+   }//End Method
+   
+   @Test public void descriptionTypeButtonsShouldUseInitialConfiguration(){
+      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
+      assertThat( systemUnderTest.simpleDescriptionButton().isSelected(), is( true ) );
+      assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( false ) );
       assertThat( systemUnderTest.detailedDescriptionButton().isSelected(), is( false ) );
    }//End Method
    

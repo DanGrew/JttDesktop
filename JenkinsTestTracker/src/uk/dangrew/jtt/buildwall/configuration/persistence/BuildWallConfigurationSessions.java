@@ -10,6 +10,7 @@ package uk.dangrew.jtt.buildwall.configuration.persistence;
 
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jupa.file.protocol.FileLocationProtocol;
@@ -59,20 +60,31 @@ public class BuildWallConfigurationSessions {
    BuildWallConfigurationSessions( JenkinsDatabase database, FileLocationProtocol leftProtocol, FileLocationProtocol rightProtocol ) {
       this.leftConfiguration = new BuildWallConfigurationImpl();
       this.leftConfigurationFileLocation = leftProtocol;
+      
+      this.rightConfiguration = new BuildWallConfigurationImpl();
+      this.rightConfigurationFileLocation = rightProtocol;
+      
+      applyDefaultConfigurations();
 
       ModelMarshaller leftMarshaller = constructMarshaller( leftConfiguration, database, leftProtocol );
       this.leftSessions = new SessionManager( leftMarshaller );
       configureSessionManager( leftConfiguration, leftSessions );
       leftMarshaller.read();
       
-      this.rightConfiguration = new BuildWallConfigurationImpl();
-      this.rightConfigurationFileLocation = rightProtocol;
-      
       ModelMarshaller rightMarshaller = constructMarshaller( rightConfiguration, database, rightProtocol );
       this.rightSessions = new SessionManager( rightMarshaller );
       configureSessionManager( rightConfiguration, rightSessions );
       rightMarshaller.read();
    }//End Constructor
+   
+   /**
+    * Method to apply the default configurations to the {@link BuildWallConfiguration}s.
+    */
+   private void applyDefaultConfigurations(){
+      rightConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
+      leftConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
+      leftConfiguration.numberOfColumns().set( 1 );
+   }//End Method
    
    /**
     * Method to construct the {@link ModelMarshaller} using {@link BuildWallConfigurationPersistence}.

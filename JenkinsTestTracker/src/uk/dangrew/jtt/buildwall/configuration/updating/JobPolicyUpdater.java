@@ -41,6 +41,9 @@ public class JobPolicyUpdater {
     * @param job the {@link JenkinsJob} to configure.
     */
    private void putInitialPolicy( BuildWallConfiguration configuration, JenkinsJob job ) {
+      if ( configuration.jobPolicies().containsKey( job ) ) {
+         return;
+      }
       configuration.jobPolicies().put( job, BuildWallJobPolicy.AlwaysShow );
    }//End Method
 

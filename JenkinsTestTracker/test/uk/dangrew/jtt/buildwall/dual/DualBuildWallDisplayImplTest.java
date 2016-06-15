@@ -329,15 +329,6 @@ public class DualBuildWallDisplayImplTest {
       assertThat( systemUnderTest.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
    }//End Method
    
-   @Test public void leftConfigurationShouldUseDefaults(){
-      assertThat( systemUnderTest.leftConfiguration().numberOfColumns().get(), is( 1 ) );
-      assertThat( systemUnderTest.leftConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Simple ) );
-   }//End Method
-   
-   @Test public void rightConfigurationShouldUseDefaults(){
-      assertThat( systemUnderTest.rightConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
-   }//End Method
-   
    @Test public void shouldAutoHideAndAutoShowRightWall(){
       assertThat( systemUnderTest.isRightWallShowing(), is( true ) );
       systemUnderTest.rightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );

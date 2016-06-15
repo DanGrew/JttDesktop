@@ -141,12 +141,12 @@ public class BuildWallConfigurationSessionsTest {
             FileLocationProtocol protocolToUse,
             FileLocationProtocol protocolToAvoid
    ) throws InterruptedException {
-      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
+      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Default );
       latch.await();
       
       verify( protocolToUse ).writeToLocation( objectCaptor.capture() );
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
-      assertThat( objectCaptor.getValue().toString(), containsString( "\"DescriptionType\":\"Simple\"" ) );
+      assertThat( objectCaptor.getValue().toString(), containsString( "\"DescriptionType\":\"Default\"" ) );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenJobAddedToPolicies() throws InterruptedException {
@@ -342,5 +342,14 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToUse ).writeToLocation( objectCaptor.capture() );
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"DetailColour\":\"" + colorConverter.colorToHex( Color.RED ) + "\"" ) );
+   }//End Method
+   
+   @Test public void leftConfigurationShouldUseDefaults(){
+      assertThat( systemUnderTest.getLeftConfiguration().numberOfColumns().get(), is( 1 ) );
+      assertThat( systemUnderTest.getLeftConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Simple ) );
+   }//End Method
+   
+   @Test public void rightConfigurationShouldUseDefaults(){
+      assertThat( systemUnderTest.getRightConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
    }//End Method
 }//End Class

@@ -18,9 +18,7 @@ import javafx.beans.property.IntegerProperty;
  */
 public class IntegerPropertySpinner extends PropertySpinner< Integer, Integer > {
    
-   private static final Function< Integer, Integer > RETURN_PARAMETER_FUNCTION = parameter -> {
-      return parameter;
-   };
+   private static final Function< Integer, Integer > RETURN_PARAMETER_FUNCTION = parameter -> parameter;
 
    /**
     * Method to bind the given {@link IntegerProperty}.

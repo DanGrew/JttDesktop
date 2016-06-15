@@ -65,7 +65,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
       this.rightConfiguration = sessions.getRightConfiguration();
       this.leftConfiguration = sessions.getLeftConfiguration();
       
-      applyDefaultConfigurations();
       applyPolicyUpdaters();
       createAndArrangeWalls();
       provideImageFlasherOverlay();
@@ -73,15 +72,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
       applyEffectsTriggers();
    }//End Constructor
 
-   /**
-    * Method to apply the default configurations to the {@link BuildWallConfiguration}s.
-    */
-   private void applyDefaultConfigurations(){
-      rightConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
-      leftConfiguration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
-      leftConfiguration.numberOfColumns().set( 1 );
-   }//End Method
-   
    /**
     * Method to set up the {@link JobPolicyUpdater}s.
     */
