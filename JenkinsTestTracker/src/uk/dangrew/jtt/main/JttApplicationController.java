@@ -20,7 +20,12 @@ import uk.dangrew.jtt.main.selector.ToolSelector;
  * The {@link JttApplicationController} is responsible for abstracting some of the 
  * launch functions away from the {@link JenkinsTestTracker}.
  */
-public class JttApplicationController {
+class JttApplicationController {
+   
+   /**
+    * Constructs a new {@link JttApplicationController}.
+    */
+   JttApplicationController() {}
 
    /**
     * Method to construct a {@link FriendlyAlert}, note that this must be done on the JavaFx
@@ -44,7 +49,7 @@ public class JttApplicationController {
     * @param login the {@link JenkinsLogin} used for logging in.
     * @return true if logged in, false otherwise.
     */
-   public boolean login( JenkinsLogin login ) {
+   boolean login( JenkinsLogin login ) {
       FriendlyAlert alert = constructAlert();
       login.configureAlert( alert );
       Optional< ButtonType > result = showAndWait( alert );
@@ -56,7 +61,7 @@ public class JttApplicationController {
     * @param selector the {@link ToolSelector} to provide an alert for.
     * @return true if selected, false if closed.
     */
-   public boolean selectTool( ToolSelector selector ) {
+   boolean selectTool( ToolSelector selector ) {
       FriendlyAlert alert = constructAlert();
       selector.configureAlert( alert );
       Optional< ButtonType > result = showAndWait( alert );
