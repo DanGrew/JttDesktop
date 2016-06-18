@@ -83,14 +83,15 @@ public class BuildWallConfigurationPersistenceTest {
    private static final String COMPLETION_ESTIMATE_COLOUR_VALUE = "#7fffd4";
    private static final String DETAIL_COLOUR_VALUE = "#ff6347";
    
-   @Mock private BuildWallConfigurationModel model;
+   @Mock private BuildWallConfigurationModel parseModel;
+   @Mock private BuildWallConfigurationModel writeModel;
    private BuildWallConfigurationPersistence systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
-      when( model.getNumberOfJobs( Mockito.anyString() ) ).thenReturn( JOB_COUNT );
+      when( writeModel.getNumberOfJobs( Mockito.anyString() ) ).thenReturn( JOB_COUNT );
       
-      systemUnderTest = new BuildWallConfigurationPersistence( model );
+      systemUnderTest = new BuildWallConfigurationPersistence( parseModel, writeModel );
    }//End Method
    
    @Test public void shouldBuildCorrectStructure() {
@@ -148,32 +149,32 @@ public class BuildWallConfigurationPersistenceTest {
       
       systemUnderTest.readHandles().parse( object );
       
-      verify( model ).setColumns( COLUMNS, COLUMNS_VALUE );
-      verify( model ).setDescriptionType( DESCRIPTION_TYPE, DESCRIPTION_TYPE_VALUE );
+      verify( parseModel ).setColumns( COLUMNS, COLUMNS_VALUE );
+      verify( parseModel ).setDescriptionType( DESCRIPTION_TYPE, DESCRIPTION_TYPE_VALUE );
       
-      verify( model ).startParsingJobs( JOB_POLICIES );
-      verify( model ).setJobName( JOB_NAME, JUPA_JOB_NAME_VALUE );
-      verify( model ).setJobPolicy( POLICY, JUPA_JOB_POLICY_VALUE );
-      verify( model ).setJobName( JOB_NAME, JTT_JOB_NAME_VALUE );
-      verify( model ).setJobPolicy( POLICY, JTT_JOB_POLICY_VALUE );
-      verify( model ).setJobName( JOB_NAME, DIGEST_JOB_NAME_VALUE );
-      verify( model ).setJobPolicy( POLICY, DIGEST_JOB_POLICY_VALUE );
+      verify( parseModel ).startParsingJobs( JOB_POLICIES );
+      verify( parseModel ).setJobName( JOB_NAME, JUPA_JOB_NAME_VALUE );
+      verify( parseModel ).setJobPolicy( POLICY, JUPA_JOB_POLICY_VALUE );
+      verify( parseModel ).setJobName( JOB_NAME, JTT_JOB_NAME_VALUE );
+      verify( parseModel ).setJobPolicy( POLICY, JTT_JOB_POLICY_VALUE );
+      verify( parseModel ).setJobName( JOB_NAME, DIGEST_JOB_NAME_VALUE );
+      verify( parseModel ).setJobPolicy( POLICY, DIGEST_JOB_POLICY_VALUE );
       
-      verify( model ).setJobNameFontFamily( JOB_NAME_FAMILY, JOB_NAME_FONT_FAMILY_VALUE );
-      verify( model ).setJobNameFontSize( JOB_NAME_SIZE, JOB_NAME_FONT_SIZE_VALUE );
-      verify( model ).setBuildNumberFontFamily( BUILD_NUMBER_FAMILY, BUILD_NUMBER_FONT_FAMILY_VALUE );
-      verify( model ).setBuildNumberFontSize( BUILD_NUMBER_SIZE, BUILD_NUMBER_FONT_SIZE_VALUE );
-      verify( model ).setCompletionEstimateFontFamily( COMPLETION_ESTIMATE_FAMILY, COMPLETION_ESTIMATE_FONT_FAMILY_VALUE );
-      verify( model ).setCompletionEstimateFontSize( COMPLETION_ESTIMATE_SIZE, COMPLETION_ESTIMATE_FONT_SIZE_VALUE );
-      verify( model ).setDetailFontFamily( DETAIL_FAMILY, DETAIL_FONT_FAMILY_VALUE );
-      verify( model ).setDetailFontSize( DETAIL_SIZE, DETAIL_FONT_SIZE_VALUE );
+      verify( parseModel ).setJobNameFontFamily( JOB_NAME_FAMILY, JOB_NAME_FONT_FAMILY_VALUE );
+      verify( parseModel ).setJobNameFontSize( JOB_NAME_SIZE, JOB_NAME_FONT_SIZE_VALUE );
+      verify( parseModel ).setBuildNumberFontFamily( BUILD_NUMBER_FAMILY, BUILD_NUMBER_FONT_FAMILY_VALUE );
+      verify( parseModel ).setBuildNumberFontSize( BUILD_NUMBER_SIZE, BUILD_NUMBER_FONT_SIZE_VALUE );
+      verify( parseModel ).setCompletionEstimateFontFamily( COMPLETION_ESTIMATE_FAMILY, COMPLETION_ESTIMATE_FONT_FAMILY_VALUE );
+      verify( parseModel ).setCompletionEstimateFontSize( COMPLETION_ESTIMATE_SIZE, COMPLETION_ESTIMATE_FONT_SIZE_VALUE );
+      verify( parseModel ).setDetailFontFamily( DETAIL_FAMILY, DETAIL_FONT_FAMILY_VALUE );
+      verify( parseModel ).setDetailFontSize( DETAIL_SIZE, DETAIL_FONT_SIZE_VALUE );
       
-      verify( model ).setJobNameFontColour( JOB_NAME_COLOUR, JOB_NAME_COLOUR_VALUE );
-      verify( model ).setBuildNumberFontColour( BUILD_NUMBER_COLOUR, BUILD_NUMBER_COLOUR_VALUE );
-      verify( model ).setCompletionEstimateFontColour( COMPLETION_ESTIMATE_COLOUR, COMPLETION_ESTIMATE_COLOUR_VALUE );
-      verify( model ).setDetailFontColour( DETAIL_COLOUR, DETAIL_COLOUR_VALUE );
+      verify( parseModel ).setJobNameFontColour( JOB_NAME_COLOUR, JOB_NAME_COLOUR_VALUE );
+      verify( parseModel ).setBuildNumberFontColour( BUILD_NUMBER_COLOUR, BUILD_NUMBER_COLOUR_VALUE );
+      verify( parseModel ).setCompletionEstimateFontColour( COMPLETION_ESTIMATE_COLOUR, COMPLETION_ESTIMATE_COLOUR_VALUE );
+      verify( parseModel ).setDetailFontColour( DETAIL_COLOUR, DETAIL_COLOUR_VALUE );
       
-      verifyNoMoreInteractions( model );
+      verifyNoMoreInteractions( parseModel );
    }//End Method
    
    @Test public void writeShouldInvokeHandles(){
@@ -181,29 +182,29 @@ public class BuildWallConfigurationPersistenceTest {
       systemUnderTest.structure().build( object );
       systemUnderTest.writeHandles().parse( object );
       
-      verify( model ).getNumberOfJobs( JOB_POLICIES );
-      verify( model ).getColumns( COLUMNS );
-      verify( model ).getDescriptionType( DESCRIPTION_TYPE );
+      verify( writeModel ).getNumberOfJobs( JOB_POLICIES );
+      verify( writeModel ).getColumns( COLUMNS );
+      verify( writeModel ).getDescriptionType( DESCRIPTION_TYPE );
       
-      verify( model ).startWritingJobs( JOB_POLICIES );
-      verify( model, times( 3 ) ).getJobName( JOB_NAME );
-      verify( model, times( 3 ) ).getJobPolicy( POLICY );
+      verify( writeModel ).startWritingJobs( JOB_POLICIES );
+      verify( writeModel, times( 3 ) ).getJobName( JOB_NAME );
+      verify( writeModel, times( 3 ) ).getJobPolicy( POLICY );
                       
-      verify( model ).getJobNameFontFamily( JOB_NAME_FAMILY );
-      verify( model ).getJobNameFontSize( JOB_NAME_SIZE );
-      verify( model ).getBuildNumberFontFamily( BUILD_NUMBER_FAMILY );
-      verify( model ).getBuildNumberFontSize( BUILD_NUMBER_SIZE );
-      verify( model ).getCompletionEstimateFontFamily( COMPLETION_ESTIMATE_FAMILY );
-      verify( model ).getCompletionEstimateFontSize( COMPLETION_ESTIMATE_SIZE );
-      verify( model ).getDetailFontFamily( DETAIL_FAMILY );
-      verify( model ).getDetailFontSize( DETAIL_SIZE );
+      verify( writeModel ).getJobNameFontFamily( JOB_NAME_FAMILY );
+      verify( writeModel ).getJobNameFontSize( JOB_NAME_SIZE );
+      verify( writeModel ).getBuildNumberFontFamily( BUILD_NUMBER_FAMILY );
+      verify( writeModel ).getBuildNumberFontSize( BUILD_NUMBER_SIZE );
+      verify( writeModel ).getCompletionEstimateFontFamily( COMPLETION_ESTIMATE_FAMILY );
+      verify( writeModel ).getCompletionEstimateFontSize( COMPLETION_ESTIMATE_SIZE );
+      verify( writeModel ).getDetailFontFamily( DETAIL_FAMILY );
+      verify( writeModel ).getDetailFontSize( DETAIL_SIZE );
                       
-      verify( model ).getJobNameFontColour( JOB_NAME_COLOUR );
-      verify( model ).getBuildNumberFontColour( BUILD_NUMBER_COLOUR );
-      verify( model ).getCompletionEstimateFontColour( COMPLETION_ESTIMATE_COLOUR );
-      verify( model ).getDetailFontColour( DETAIL_COLOUR );
+      verify( writeModel ).getJobNameFontColour( JOB_NAME_COLOUR );
+      verify( writeModel ).getBuildNumberFontColour( BUILD_NUMBER_COLOUR );
+      verify( writeModel ).getCompletionEstimateFontColour( COMPLETION_ESTIMATE_COLOUR );
+      verify( writeModel ).getDetailFontColour( DETAIL_COLOUR );
       
-      verifyNoMoreInteractions( model );
+      verifyNoMoreInteractions( writeModel );
    }//End Method
    
    @Test public void regularConstructorShouldCreateModelFromParameters(){

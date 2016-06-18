@@ -56,10 +56,11 @@ class BuildWallConfigurationPersistence {
    static final String COMPLETION_ESTIMATE_COLOUR = "CompletionEstimateColour";
    static final String DETAIL_COLOUR = "DetailColour";
    
-   private final BuildWallConfigurationModel model;
    private final JsonStructure structure;
    private final JsonParser parserWithReadHandles;
+   private final BuildWallConfigurationModel parseModel;
    private final JsonParser parserWithWriteHandles;
+   private final BuildWallConfigurationModel writeModel;
    
    /**
     * Constructs a new {@link BuildWallConfigurationPersistence}.
@@ -67,17 +68,19 @@ class BuildWallConfigurationPersistence {
     * @param database the {@link JenkinsDatabase} for accessing {@link uk.dangrew.jtt.model.jobs.JenkinsJob}s.
     */
    BuildWallConfigurationPersistence( BuildWallConfiguration configuration, JenkinsDatabase database ) {
-      this( new BuildWallConfigurationModel( configuration, database ) );
+      this( new BuildWallConfigurationModel( configuration, database ), new BuildWallConfigurationModel( configuration, database ) );
    }//End Constructor
    
    /**
     * Constructs a new {@link BuildWallConfigurationPersistence}.
-    * @param model the {@link BuildWallConfigurationModel} to use for {@link JsonParser}s and the {@link JsonStructure}.
+    * @param parseModel the {@link BuildWallConfigurationModel} to use for parsing in to.
+    * @param writeModel the {@link BuildWallConfigurationModel} to use for writing from.
     */
-   BuildWallConfigurationPersistence( BuildWallConfigurationModel model ) {
-      this.model = model;
+   BuildWallConfigurationPersistence( BuildWallConfigurationModel parseModel, BuildWallConfigurationModel writeModel ) {
       this.structure = new JsonStructure();
+      this.parseModel = parseModel;
       this.parserWithReadHandles = new JsonParser();
+      this.writeModel = writeModel;
       this.parserWithWriteHandles = new JsonParser();
       
       constructStructure();
@@ -95,7 +98,7 @@ class BuildWallConfigurationPersistence {
       structure.child( COLUMNS, DIMENSIONS );
       structure.child( DESCRIPTION_TYPE, DIMENSIONS );
 
-      structure.array( JOB_POLICIES, BUILD_WALL, model::getNumberOfJobs );
+      structure.array( JOB_POLICIES, BUILD_WALL, writeModel::getNumberOfJobs );
       structure.child( JOB, JOB_POLICIES );
       structure.child( JOB_NAME, JOB );
       structure.child( POLICY, JOB );
@@ -121,69 +124,69 @@ class BuildWallConfigurationPersistence {
     * Method to construct the {@link JsonParser} for reading.
     */
    private void constructReadHandles(){
-      parserWithReadHandles.when( COLUMNS, new IntegerParseHandle( model::setColumns ) );
+      parserWithReadHandles.when( COLUMNS, new IntegerParseHandle( parseModel::setColumns ) );
       parserWithReadHandles.when( 
                DESCRIPTION_TYPE, 
-               new EnumParseHandle<>( JobPanelDescriptionProviders.class, model::setDescriptionType ) 
+               new EnumParseHandle<>( JobPanelDescriptionProviders.class, parseModel::setDescriptionType ) 
       );
       
       parserWithReadHandles.when( JOB_POLICIES, new StringParseHandle( new JsonArrayWithObjectParseHandler<>( 
-               null, null, model::startParsingJobs, null ) 
+               null, null, parseModel::startParsingJobs, null ) 
       ) );
       
-      parserWithReadHandles.when( JOB_NAME, new StringParseHandle( model::setJobName ) );
+      parserWithReadHandles.when( JOB_NAME, new StringParseHandle( parseModel::setJobName ) );
       parserWithReadHandles.when( POLICY, new EnumParseHandle<>( 
-               BuildWallJobPolicy.class, model::setJobPolicy 
+               BuildWallJobPolicy.class, parseModel::setJobPolicy 
       ) );
       
-      parserWithReadHandles.when( JOB_NAME_FAMILY, new StringParseHandle( model::setJobNameFontFamily ) );
-      parserWithReadHandles.when( JOB_NAME_SIZE, new DoubleParseHandle( model::setJobNameFontSize ) );
+      parserWithReadHandles.when( JOB_NAME_FAMILY, new StringParseHandle( parseModel::setJobNameFontFamily ) );
+      parserWithReadHandles.when( JOB_NAME_SIZE, new DoubleParseHandle( parseModel::setJobNameFontSize ) );
       
-      parserWithReadHandles.when( BUILD_NUMBER_FAMILY, new StringParseHandle( model::setBuildNumberFontFamily ) );
-      parserWithReadHandles.when( BUILD_NUMBER_SIZE, new DoubleParseHandle( model::setBuildNumberFontSize ) );
+      parserWithReadHandles.when( BUILD_NUMBER_FAMILY, new StringParseHandle( parseModel::setBuildNumberFontFamily ) );
+      parserWithReadHandles.when( BUILD_NUMBER_SIZE, new DoubleParseHandle( parseModel::setBuildNumberFontSize ) );
       
-      parserWithReadHandles.when( COMPLETION_ESTIMATE_FAMILY, new StringParseHandle( model::setCompletionEstimateFontFamily ) );
-      parserWithReadHandles.when( COMPLETION_ESTIMATE_SIZE, new DoubleParseHandle( model::setCompletionEstimateFontSize ) );
+      parserWithReadHandles.when( COMPLETION_ESTIMATE_FAMILY, new StringParseHandle( parseModel::setCompletionEstimateFontFamily ) );
+      parserWithReadHandles.when( COMPLETION_ESTIMATE_SIZE, new DoubleParseHandle( parseModel::setCompletionEstimateFontSize ) );
       
-      parserWithReadHandles.when( DETAIL_FAMILY, new StringParseHandle( model::setDetailFontFamily ) );
-      parserWithReadHandles.when( DETAIL_SIZE, new DoubleParseHandle( model::setDetailFontSize ) );
+      parserWithReadHandles.when( DETAIL_FAMILY, new StringParseHandle( parseModel::setDetailFontFamily ) );
+      parserWithReadHandles.when( DETAIL_SIZE, new DoubleParseHandle( parseModel::setDetailFontSize ) );
       
-      parserWithReadHandles.when( JOB_NAME_COLOUR, new StringParseHandle( model::setJobNameFontColour ) );
-      parserWithReadHandles.when( BUILD_NUMBER_COLOUR, new StringParseHandle( model::setBuildNumberFontColour ) );
-      parserWithReadHandles.when( COMPLETION_ESTIMATE_COLOUR, new StringParseHandle( model::setCompletionEstimateFontColour ) );
-      parserWithReadHandles.when( DETAIL_COLOUR, new StringParseHandle( model::setDetailFontColour ) );
+      parserWithReadHandles.when( JOB_NAME_COLOUR, new StringParseHandle( parseModel::setJobNameFontColour ) );
+      parserWithReadHandles.when( BUILD_NUMBER_COLOUR, new StringParseHandle( parseModel::setBuildNumberFontColour ) );
+      parserWithReadHandles.when( COMPLETION_ESTIMATE_COLOUR, new StringParseHandle( parseModel::setCompletionEstimateFontColour ) );
+      parserWithReadHandles.when( DETAIL_COLOUR, new StringParseHandle( parseModel::setDetailFontColour ) );
    }//End Method
    
    /**
     * Method to construct the {@link JsonParser} for writing.
     */
    private void constructuWriteHandles(){
-      parserWithWriteHandles.when( COLUMNS, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getColumns ) ) );
-      parserWithWriteHandles.when( DESCRIPTION_TYPE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getDescriptionType ) ) );
+      parserWithWriteHandles.when( COLUMNS, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getColumns ) ) );
+      parserWithWriteHandles.when( DESCRIPTION_TYPE, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getDescriptionType ) ) );
       
       parserWithWriteHandles.when( JOB_POLICIES, new JsonWriteHandleImpl( new JsonArrayWithObjectWriteHandler( 
-               null, null, model::startWritingJobs, null 
+               null, null, writeModel::startWritingJobs, null 
       ) ) );
       
-      parserWithWriteHandles.when( JOB_NAME, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getJobName ) ) );
-      parserWithWriteHandles.when( POLICY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getJobPolicy ) ) );
+      parserWithWriteHandles.when( JOB_NAME, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getJobName ) ) );
+      parserWithWriteHandles.when( POLICY, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getJobPolicy ) ) );
       
-      parserWithWriteHandles.when( JOB_NAME_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getJobNameFontFamily ) ) );
-      parserWithWriteHandles.when( JOB_NAME_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getJobNameFontSize ) ) );
+      parserWithWriteHandles.when( JOB_NAME_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getJobNameFontFamily ) ) );
+      parserWithWriteHandles.when( JOB_NAME_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getJobNameFontSize ) ) );
       
-      parserWithWriteHandles.when( BUILD_NUMBER_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getBuildNumberFontFamily ) ) );
-      parserWithWriteHandles.when( BUILD_NUMBER_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getBuildNumberFontSize ) ) );
+      parserWithWriteHandles.when( BUILD_NUMBER_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getBuildNumberFontFamily ) ) );
+      parserWithWriteHandles.when( BUILD_NUMBER_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getBuildNumberFontSize ) ) );
       
-      parserWithWriteHandles.when( COMPLETION_ESTIMATE_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontFamily ) ) );
-      parserWithWriteHandles.when( COMPLETION_ESTIMATE_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontSize ) ) );
+      parserWithWriteHandles.when( COMPLETION_ESTIMATE_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getCompletionEstimateFontFamily ) ) );
+      parserWithWriteHandles.when( COMPLETION_ESTIMATE_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getCompletionEstimateFontSize ) ) );
       
-      parserWithWriteHandles.when( DETAIL_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getDetailFontFamily ) ) );
-      parserWithWriteHandles.when( DETAIL_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getDetailFontSize ) ) );
+      parserWithWriteHandles.when( DETAIL_FAMILY, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getDetailFontFamily ) ) );
+      parserWithWriteHandles.when( DETAIL_SIZE, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getDetailFontSize ) ) );
       
-      parserWithWriteHandles.when( JOB_NAME_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getJobNameFontColour ) ) );
-      parserWithWriteHandles.when( BUILD_NUMBER_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getBuildNumberFontColour ) ) );
-      parserWithWriteHandles.when( COMPLETION_ESTIMATE_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getCompletionEstimateFontColour ) ) );
-      parserWithWriteHandles.when( DETAIL_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( model::getDetailFontColour ) ) );
+      parserWithWriteHandles.when( JOB_NAME_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getJobNameFontColour ) ) );
+      parserWithWriteHandles.when( BUILD_NUMBER_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getBuildNumberFontColour ) ) );
+      parserWithWriteHandles.when( COMPLETION_ESTIMATE_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getCompletionEstimateFontColour ) ) );
+      parserWithWriteHandles.when( DETAIL_COLOUR, new JsonWriteHandleImpl( new JsonValueWriteHandler( writeModel::getDetailFontColour ) ) );
    }//End Method
    
    JsonStructure structure(){
