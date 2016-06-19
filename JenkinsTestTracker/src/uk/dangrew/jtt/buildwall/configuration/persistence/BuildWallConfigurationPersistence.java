@@ -18,7 +18,7 @@ import uk.dangrew.jupa.json.parse.handle.type.DoubleParseHandle;
 import uk.dangrew.jupa.json.parse.handle.type.EnumParseHandle;
 import uk.dangrew.jupa.json.parse.handle.type.IntegerParseHandle;
 import uk.dangrew.jupa.json.parse.handle.type.StringParseHandle;
-import uk.dangrew.jupa.json.write.JsonStructure;
+import uk.dangrew.jupa.json.structure.JsonStructure;
 import uk.dangrew.jupa.json.write.handle.key.JsonArrayWithObjectWriteHandler;
 import uk.dangrew.jupa.json.write.handle.key.JsonValueWriteHandler;
 import uk.dangrew.jupa.json.write.handle.type.JsonWriteHandleImpl;

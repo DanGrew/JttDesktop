@@ -20,7 +20,7 @@ import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
-import uk.dangrew.jupa.file.protocol.JarLocationProtocol;
+import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 import uk.dangrew.jupa.json.marshall.ModelMarshaller;
 
 /**
@@ -47,7 +47,7 @@ public class BuildWallConfigurationPersistenceE2ETest {
                systemUnderTest.structure(), 
                systemUnderTest.readHandles(),
                systemUnderTest.writeHandles(),
-               new JarLocationProtocol( "bwcp.json", getClass() )
+               new JarJsonPersistingProtocol( "bwcp.json", getClass() )
       );
       
       marshaller.write();

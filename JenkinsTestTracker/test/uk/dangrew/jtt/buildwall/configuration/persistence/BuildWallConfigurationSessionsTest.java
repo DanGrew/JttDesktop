@@ -40,8 +40,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.utility.TestableFonts;
 import uk.dangrew.jtt.utility.conversion.ColorConverter;
-import uk.dangrew.jupa.file.protocol.FileLocationProtocol;
-import uk.dangrew.jupa.file.protocol.JarLocationProtocol;
+import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 
 /**
  * {@link BuildWallConfigurationSessions} test.
@@ -49,8 +48,8 @@ import uk.dangrew.jupa.file.protocol.JarLocationProtocol;
 public class BuildWallConfigurationSessionsTest {
 
    @Mock private JenkinsDatabase database;
-   @Mock private FileLocationProtocol leftProtocol;
-   @Mock private FileLocationProtocol rightProtocol;
+   @Mock private JarJsonPersistingProtocol leftProtocol;
+   @Mock private JarJsonPersistingProtocol rightProtocol;
    @Captor private ArgumentCaptor< JSONObject > objectCaptor;
    
    private ColorConverter colorConverter;
@@ -83,12 +82,12 @@ public class BuildWallConfigurationSessionsTest {
       systemUnderTest = new BuildWallConfigurationSessions( database );
       assertThat( 
                systemUnderTest.leftConfigurationFileLocation().getLocation(), 
-               is( new JarLocationProtocol( FOLDER_NAME, LEFT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class ).getLocation() ) 
+               is( new JarJsonPersistingProtocol( FOLDER_NAME, LEFT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class ).getLocation() ) 
       );
       
       assertThat( 
                systemUnderTest.rightConfigurationFileLocation().getLocation(), 
-               is( new JarLocationProtocol( FOLDER_NAME, RIGHT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class ).getLocation() ) 
+               is( new JarJsonPersistingProtocol( FOLDER_NAME, RIGHT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class ).getLocation() ) 
       );
    }//End Method
    
@@ -117,8 +116,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToNumberOfColumnsChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.numberOfColumns().set( 20 );
       latch.await();
@@ -138,8 +137,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToDescriptionTypeChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Default );
       latch.await();
@@ -159,8 +158,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToJobPolicyChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.jobPolicies().put( new JenkinsJobImpl( "SomeJob" ), BuildWallJobPolicy.OnlyShowFailures );
       latch.await();
@@ -182,8 +181,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToJobNameFontChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.jobNameFont().set( Font.font( TestableFonts.commonFont(), 14 ) );
       latch.await();
@@ -204,8 +203,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToBuildNumberFontChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.buildNumberFont().set( Font.font( TestableFonts.commonFont(), 14 ) );
       latch.await();
@@ -226,8 +225,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToCompletionEstimateFontChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.completionEstimateFont().set( Font.font( TestableFonts.commonFont(), 14 ) );
       latch.await();
@@ -248,8 +247,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToDetailFontChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.detailFont().set( Font.font( TestableFonts.commonFont(), 14 ) );
       latch.await();
@@ -270,8 +269,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToJobNameColourChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.jobNameColour().set( Color.RED );
       latch.await();
@@ -291,8 +290,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToBuildNumberColourChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.buildNumberColour().set( Color.RED );
       latch.await();
@@ -312,8 +311,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToCompletionEstimateColourChange(
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.completionEstimateColour().set( Color.RED );
       latch.await();
@@ -333,8 +332,8 @@ public class BuildWallConfigurationSessionsTest {
    
    private void assertResponseToDetailColourChange( 
             BuildWallConfiguration configuration, 
-            FileLocationProtocol protocolToUse,
-            FileLocationProtocol protocolToAvoid
+            JarJsonPersistingProtocol protocolToUse,
+            JarJsonPersistingProtocol protocolToAvoid
    ) throws InterruptedException {
       configuration.detailColour().set( Color.RED );
       latch.await();

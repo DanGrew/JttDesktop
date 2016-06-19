@@ -13,10 +13,10 @@ import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jupa.file.protocol.FileLocationProtocol;
-import uk.dangrew.jupa.file.protocol.JarLocationProtocol;
+import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 import uk.dangrew.jupa.json.marshall.ModelMarshaller;
 import uk.dangrew.jupa.json.session.SessionManager;
+import uk.dangrew.sd.logging.location.FileLocationProtocol;
 
 /**
  * The {@link BuildWallConfigurationSessions} provides the {@link BuildWallConfiguration}s for the
@@ -30,10 +30,10 @@ public class BuildWallConfigurationSessions {
    
    private final BuildWallConfiguration leftConfiguration;
    private final SessionManager leftSessions;
-   private final FileLocationProtocol leftConfigurationFileLocation;
+   private final JarJsonPersistingProtocol leftConfigurationFileLocation;
    private final BuildWallConfiguration rightConfiguration;
    private final SessionManager rightSessions;
-   private final FileLocationProtocol rightConfigurationFileLocation;
+   private final JarJsonPersistingProtocol rightConfigurationFileLocation;
    
    /**
     * Constructs a new {@link BuildWallConfigurationSessions}.
@@ -42,10 +42,10 @@ public class BuildWallConfigurationSessions {
    public BuildWallConfigurationSessions( JenkinsDatabase database ) {
       this( 
                database, 
-               new JarLocationProtocol( 
+               new JarJsonPersistingProtocol( 
                         FOLDER_NAME, LEFT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class 
                ),
-               new JarLocationProtocol( 
+               new JarJsonPersistingProtocol( 
                         FOLDER_NAME, RIGHT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class 
                ) 
       );
@@ -54,10 +54,10 @@ public class BuildWallConfigurationSessions {
    /**
     * Constructs a new {@link BuildWallConfigurationSessions}.
     * @param database the {@link JenkinsDatabase} for accessing {@link uk.dangrew.jtt.model.jobs.JenkinsJob} information.
-    * @param leftProtocol the {@link FileLocationProtocol} for the left {@link BuildWallConfiguration}.
-    * @param rightProtocol the {@link FileLocationProtocol} for the right {@link BuildWallConfiguration}.
+    * @param leftProtocol the {@link JarJsonPersistingProtocol} for the left {@link BuildWallConfiguration}.
+    * @param rightProtocol the {@link JarJsonPersistingProtocol} for the right {@link BuildWallConfiguration}.
     */
-   BuildWallConfigurationSessions( JenkinsDatabase database, FileLocationProtocol leftProtocol, FileLocationProtocol rightProtocol ) {
+   BuildWallConfigurationSessions( JenkinsDatabase database, JarJsonPersistingProtocol leftProtocol, JarJsonPersistingProtocol rightProtocol ) {
       this.leftConfiguration = new BuildWallConfigurationImpl();
       this.leftConfigurationFileLocation = leftProtocol;
       
@@ -90,13 +90,13 @@ public class BuildWallConfigurationSessions {
     * Method to construct the {@link ModelMarshaller} using {@link BuildWallConfigurationPersistence}.
     * @param configuration the {@link BuildWallConfiguration} to persist.
     * @param database the {@link JenkinsDatabase} for persisting {@link uk.dangrew.jtt.model.jobs.JenkinsJob}s.
-    * @param locationProtocol the {@link FileLocationProtocol} for the persistence.
+    * @param locationProtocol the {@link JarJsonPersistingProtocol} for the persistence.
     * @return the {@link ModelMarshaller} constructed.
     */
    private ModelMarshaller constructMarshaller( 
             BuildWallConfiguration configuration, 
             JenkinsDatabase database, 
-            FileLocationProtocol locationProtocol 
+            JarJsonPersistingProtocol locationProtocol 
    ){
       BuildWallConfigurationPersistence persistence = new BuildWallConfigurationPersistence( configuration, database );
       return new ModelMarshaller( 
