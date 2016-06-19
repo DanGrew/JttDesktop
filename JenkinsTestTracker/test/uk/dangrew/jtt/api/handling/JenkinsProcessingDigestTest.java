@@ -22,21 +22,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import core.category.Category;
-import core.lockdown.DigestManager;
-import core.lockdown.DigestMessageReceiver;
-import core.lockdown.DigestMessageReceiverImpl;
-import core.lockdown.DigestProgressReceiver;
-import core.lockdown.DigestProgressReceiverImpl;
-import core.message.Message;
-import core.progress.Progress;
-import core.progress.Progresses;
-import core.source.Source;
-import uk.dangrew.jtt.api.handling.JenkinsFetcherDigest;
-import uk.dangrew.jtt.api.handling.JenkinsProcessingDigest;
-import uk.dangrew.jtt.api.handling.JenkinsProcessingImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.sd.core.category.Category;
+import uk.dangrew.sd.core.lockdown.DigestManager;
+import uk.dangrew.sd.core.lockdown.DigestMessageReceiver;
+import uk.dangrew.sd.core.lockdown.DigestMessageReceiverImpl;
+import uk.dangrew.sd.core.lockdown.DigestProgressReceiver;
+import uk.dangrew.sd.core.lockdown.DigestProgressReceiverImpl;
+import uk.dangrew.sd.core.message.Message;
+import uk.dangrew.sd.core.progress.Progress;
+import uk.dangrew.sd.core.progress.Progresses;
+import uk.dangrew.sd.core.source.Source;
 
 /**
  * {@link JenkinsProcessingDigest} test.
@@ -69,7 +66,7 @@ public class JenkinsProcessingDigestTest {
    
    @Test public void shouldProvideConstantName() {
       systemUnderTest.log( mock( Category.class ), mock( Message.class ) );
-      verify( messageReceiver ).log( sourceCaptor.capture(), Mockito.any(), Mockito.any() );
+      verify( messageReceiver ).log( Mockito.any(), sourceCaptor.capture(), Mockito.any(), Mockito.any() );
       assertThat( sourceCaptor.getValue().getIdentifier(), is( JenkinsProcessingDigest.JENKINS_PROCESSING_NAME ) );
       
       systemUnderTest.progress( mock( Progress.class ), mock( Message.class ) );

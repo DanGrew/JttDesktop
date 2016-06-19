@@ -18,9 +18,8 @@ import org.junit.Test;
 
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.buildwall.dual.WrappedSystemDigest;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import viewer.basic.DigestViewer;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * WrappedSystemDigest test.

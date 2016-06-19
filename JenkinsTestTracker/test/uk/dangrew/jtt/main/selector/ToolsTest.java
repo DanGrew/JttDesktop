@@ -11,7 +11,6 @@ package uk.dangrew.jtt.main.selector;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -29,12 +28,11 @@ import uk.dangrew.jtt.buildwall.layout.BuildWallDisplayImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.main.selector.Tools;
 import uk.dangrew.jtt.shortcuts.keyboard.KeyBoardShortcuts;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
 import uk.dangrew.jtt.view.table.TestTableView;
-import viewer.basic.DigestViewer;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * {@link Tools} test.

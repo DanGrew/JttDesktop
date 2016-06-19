@@ -8,11 +8,11 @@
  */
 package uk.dangrew.jtt.api.handling;
 
-import core.message.Messages;
-import core.progress.Progresses;
-import core.source.SourceImpl;
-import digest.object.ObjectDigestImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.sd.core.message.Messages;
+import uk.dangrew.sd.core.progress.Progresses;
+import uk.dangrew.sd.core.source.SourceImpl;
+import uk.dangrew.sd.digest.object.ObjectDigestImpl;
 
 /**
  * {@link JenkinsProcessingDigest} provides an {@link ObjectDigestImpl} for the {@link JenkinsProcessing}.

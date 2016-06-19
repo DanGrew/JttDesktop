@@ -12,7 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Pair;
-import viewer.basic.DigestViewer;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * This provides a mechanism for identifying the system digest

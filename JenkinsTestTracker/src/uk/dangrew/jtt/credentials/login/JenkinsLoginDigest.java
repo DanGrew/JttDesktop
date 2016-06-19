@@ -8,11 +8,11 @@
  */
 package uk.dangrew.jtt.credentials.login;
 
-import core.category.Categories;
-import core.message.Messages;
-import core.progress.Progresses;
-import core.source.SourceImpl;
-import digest.object.ObjectDigestImpl;
+import uk.dangrew.sd.core.category.Categories;
+import uk.dangrew.sd.core.message.Messages;
+import uk.dangrew.sd.core.progress.Progresses;
+import uk.dangrew.sd.core.source.SourceImpl;
+import uk.dangrew.sd.digest.object.ObjectDigestImpl;
 
 /**
  * The {@link JenkinsLoginDigest} provides an {@link ObjectDigest} for the

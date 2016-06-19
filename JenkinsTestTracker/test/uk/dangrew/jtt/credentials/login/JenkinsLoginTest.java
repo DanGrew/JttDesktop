@@ -32,8 +32,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.sun.javafx.application.PlatformImpl;
 
-import core.message.Message;
-import core.progress.Progress;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -52,14 +50,14 @@ import javafx.stage.Modality;
 import uk.dangrew.jtt.api.sources.ClientHandler;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.api.sources.JenkinsApiImpl;
-import uk.dangrew.jtt.credentials.login.JenkinsLogin;
-import uk.dangrew.jtt.credentials.login.JenkinsLoginDigest;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin.InputValidator;
 import uk.dangrew.jtt.friendly.controlsfx.FriendlyAlert;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
-import viewer.basic.DigestViewer;
+import uk.dangrew.sd.core.message.Message;
+import uk.dangrew.sd.core.progress.Progress;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * {@link JenkinsLogin} test.

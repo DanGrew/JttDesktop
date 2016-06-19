@@ -11,7 +11,6 @@ package uk.dangrew.jtt.model.jobs;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -20,9 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.dangrew.jtt.api.handling.BuildState;
-import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestCaseImpl;
 import uk.dangrew.jtt.model.tests.TestClass;

@@ -8,10 +8,10 @@
  */
 package uk.dangrew.jtt.api.sources;
 
-import core.category.Categories;
-import core.message.Messages;
-import core.source.SourceImpl;
-import digest.object.ObjectDigestImpl;
+import uk.dangrew.sd.core.category.Categories;
+import uk.dangrew.sd.core.message.Messages;
+import uk.dangrew.sd.core.source.SourceImpl;
+import uk.dangrew.sd.digest.object.ObjectDigestImpl;
 
 /**
  * The {@link JenkinsApiDigest} provides an {@link ObjectDigestImpl} specifically for the {@link JenkinsApiImpl}.

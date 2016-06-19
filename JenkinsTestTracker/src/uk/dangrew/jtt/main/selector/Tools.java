@@ -18,7 +18,7 @@ import uk.dangrew.jtt.buildwall.layout.BuildWallDisplayImpl;
 import uk.dangrew.jtt.shortcuts.keyboard.KeyBoardShortcuts;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.view.table.TestTableView;
-import viewer.basic.DigestViewer;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * {@link Tools} provides the types of tools available to launch.

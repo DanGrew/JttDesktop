@@ -21,17 +21,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import core.category.Categories;
-import core.category.Category;
-import core.lockdown.DigestMessageReceiver;
-import core.lockdown.DigestMessageReceiverImpl;
-import core.lockdown.DigestProgressReceiver;
-import core.lockdown.DigestProgressReceiverImpl;
-import core.message.Message;
-import core.progress.Progress;
-import core.source.Source;
-import uk.dangrew.jtt.api.sources.JenkinsApiDigest;
-import uk.dangrew.jtt.api.sources.JenkinsApiImpl;
+import uk.dangrew.sd.core.category.Categories;
+import uk.dangrew.sd.core.category.Category;
+import uk.dangrew.sd.core.lockdown.DigestMessageReceiver;
+import uk.dangrew.sd.core.lockdown.DigestMessageReceiverImpl;
+import uk.dangrew.sd.core.lockdown.DigestProgressReceiver;
+import uk.dangrew.sd.core.lockdown.DigestProgressReceiverImpl;
+import uk.dangrew.sd.core.message.Message;
+import uk.dangrew.sd.core.progress.Progress;
+import uk.dangrew.sd.core.source.Source;
 
 /**
  * {@link JenkinsApiDigest} test.
@@ -55,7 +53,7 @@ public class JenkinsApiDigestTest {
    
    @Test public void shouldProvideConstantName() {
       systemUnderTest.log( mock( Category.class ), mock( Message.class ) );
-      verify( messageReceiver ).log( sourceCaptor.capture(), Mockito.any(), Mockito.any() );
+      verify( messageReceiver ).log( Mockito.any(), sourceCaptor.capture(), Mockito.any(), Mockito.any() );
       assertThat( sourceCaptor.getValue().getIdentifier(), is( JenkinsApiDigest.JENKINS_API_CONNECTION ) );
       
       systemUnderTest.progress( mock( Progress.class ), mock( Message.class ) );
@@ -65,7 +63,7 @@ public class JenkinsApiDigestTest {
    
    @Test public void shouldHandleExecuteLoginRequest(){
       systemUnderTest.executingLoginRequest();
-      verify( messageReceiver ).log( Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
+      verify( messageReceiver ).log( Mockito.any(), Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
       
       assertThat( categoryCaptor.getValue(), is( Categories.processingSequence() ) );
       assertThat( messageCaptor.getValue().getMessage(), is( JenkinsApiDigest.EXECUTING_BASE_LOGIN_REQUEST ) );
@@ -73,7 +71,7 @@ public class JenkinsApiDigestTest {
    
    @Test public void shouldHandleConnectionFailed(){
       systemUnderTest.connectionFailed();
-      verify( messageReceiver ).log( Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
+      verify( messageReceiver ).log( Mockito.any(), Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
       
       assertThat( categoryCaptor.getValue(), is( Categories.error() ) );
       assertThat( messageCaptor.getValue().getMessage(), is( JenkinsApiDigest.CLIENT_FAILED_TO_CONNECT ) );
@@ -81,7 +79,7 @@ public class JenkinsApiDigestTest {
    
    @Test public void shouldHandleConnectionSuccess(){
       systemUnderTest.connectionSuccess();
-      verify( messageReceiver ).log( Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
+      verify( messageReceiver ).log( Mockito.any(), Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
       
       assertThat( categoryCaptor.getValue(), is( Categories.status() ) );
       assertThat( messageCaptor.getValue().getMessage(), is( JenkinsApiDigest.CLIENT_CONNECTED ) );
@@ -93,7 +91,7 @@ public class JenkinsApiDigestTest {
       Mockito.when( exception.getMessage() ).thenReturn( exceptionMessage );
       
       systemUnderTest.connectionException( exception );
-      verify( messageReceiver ).log( Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
+      verify( messageReceiver ).log( Mockito.any(), Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
       
       assertThat( categoryCaptor.getValue(), is( Categories.error() ) );
       assertThat( messageCaptor.getValue().getMessage(), is( exception.getMessage() ) );
@@ -101,7 +99,7 @@ public class JenkinsApiDigestTest {
    
    @Test public void shouldHandleHandlingResponse(){
       systemUnderTest.handlingResponse();
-      verify( messageReceiver ).log( Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
+      verify( messageReceiver ).log( Mockito.any(), Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
       
       assertThat( categoryCaptor.getValue(), is( Categories.processingSequence() ) );
       assertThat( messageCaptor.getValue().getMessage(), is( JenkinsApiDigest.HANDLING_RESPONSE_FOR_REQUEST ) );
@@ -109,7 +107,7 @@ public class JenkinsApiDigestTest {
    
    @Test public void shouldHandleResponseReady(){
       systemUnderTest.responseReady();
-      verify( messageReceiver ).log( Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
+      verify( messageReceiver ).log( Mockito.any(), Mockito.any(), categoryCaptor.capture(), messageCaptor.capture() );
       
       assertThat( categoryCaptor.getValue(), is( Categories.processingSequence() ) );
       assertThat( messageCaptor.getValue().getMessage(), is( JenkinsApiDigest.RESPONSE_READY ) );

@@ -42,7 +42,7 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
-import viewer.basic.DigestViewer;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * {@link DualBuildWallContextMenu} test.

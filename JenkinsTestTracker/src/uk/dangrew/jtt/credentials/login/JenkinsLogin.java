@@ -16,8 +16,6 @@ import org.controlsfx.validation.Validator;
 
 import com.sun.javafx.application.PlatformImpl;
 
-import core.message.Messages;
-import core.progress.Progresses;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,7 +32,9 @@ import javafx.stage.Modality;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.friendly.controlsfx.FriendlyAlert;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
-import viewer.basic.DigestViewer;
+import uk.dangrew.sd.core.message.Messages;
+import uk.dangrew.sd.core.progress.Progresses;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * The {@link JenkinsLogin} provides a {@link GridPane} for a user logging into a

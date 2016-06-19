@@ -8,7 +8,7 @@
  */
 package uk.dangrew.jtt.main.digest;
 
-import viewer.basic.DigestViewer;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * The {@link SystemDigestController} is responsible for the digest elements of the

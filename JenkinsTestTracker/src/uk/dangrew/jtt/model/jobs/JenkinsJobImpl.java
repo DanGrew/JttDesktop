@@ -8,11 +8,9 @@
  */
 package uk.dangrew.jtt.model.jobs;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -37,7 +35,6 @@ public class JenkinsJobImpl implements JenkinsJob {
    private LongProperty expectedBuildTime;
    private LongProperty currentBuildTime;
    private LongProperty currentBuildTimestamp;
-   private BooleanProperty testResultsAreSynchronized;
    private ObservableList< JenkinsUser > culprits;
    private ObservableList< TestCase > failingTestCases;
    
@@ -57,7 +54,6 @@ public class JenkinsJobImpl implements JenkinsJob {
       expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
       currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
       currentBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
-      testResultsAreSynchronized = new SimpleBooleanProperty( DEFAULT_TEST_RESULTS_ARE_SYNC );
       culprits = FXCollections.observableArrayList();
       failingTestCases = FXCollections.observableArrayList();
    }//End Constructor
