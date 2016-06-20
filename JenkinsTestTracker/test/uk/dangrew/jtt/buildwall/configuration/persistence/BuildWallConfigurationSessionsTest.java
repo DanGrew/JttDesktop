@@ -11,6 +11,7 @@ package uk.dangrew.jtt.buildwall.configuration.persistence;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -125,6 +127,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToUse ).writeToLocation( objectCaptor.capture() );
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"Columns\":20" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenDescriptionTypeChanged() throws InterruptedException {
@@ -146,6 +150,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToUse ).writeToLocation( objectCaptor.capture() );
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"DescriptionType\":\"Default\"" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenJobAddedToPolicies() throws InterruptedException {
@@ -169,6 +175,8 @@ public class BuildWallConfigurationSessionsTest {
       assertThat( objectCaptor.getValue().toString(), containsString( 
                "{\"Policy\":\"OnlyShowFailures\",\"JobName\":\"SomeJob\"}" 
       ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenJobNameFontChanged() throws InterruptedException {
@@ -191,6 +199,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"JobNameFamily\":\"" + TestableFonts.commonFont() + "\"" ) );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"JobNameSize\":14" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenBuildNumberFontChanged() throws InterruptedException {
@@ -213,6 +223,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"BuildNumberFamily\":\"" + TestableFonts.commonFont() + "\"" ) );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"BuildNumberSize\":14" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenCompletionEstimateFontChanged() throws InterruptedException {
@@ -235,6 +247,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"CompletionEstimateFamily\":\"" + TestableFonts.commonFont() + "\"" ) );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"CompletionEstimateSize\":14" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenDetailFontChanged() throws InterruptedException {
@@ -257,6 +271,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"DetailFamily\":\"" + TestableFonts.commonFont() + "\"" ) );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"DetailSize\":14" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenJobNameColourChanged() throws InterruptedException {
@@ -278,6 +294,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToUse ).writeToLocation( objectCaptor.capture() );
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"JobNameColour\":\"" + colorConverter.colorToHex( Color.RED ) + "\"" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenBuildNumberColourChanged() throws InterruptedException {
@@ -299,6 +317,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToUse ).writeToLocation( objectCaptor.capture() );
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"BuildNumberColour\":\"" + colorConverter.colorToHex( Color.RED ) + "\"" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenCompletionEstimateColourChanged() throws InterruptedException {
@@ -320,6 +340,8 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToUse ).writeToLocation( objectCaptor.capture() );
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"CompletionEstimateColour\":\"" + colorConverter.colorToHex( Color.RED ) + "\"" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
    }//End Method
    
    @Test public void leftShouldTriggerWriteWhenDetailColourChanged() throws InterruptedException {
@@ -341,6 +363,18 @@ public class BuildWallConfigurationSessionsTest {
       verify( protocolToUse ).writeToLocation( objectCaptor.capture() );
       verify( protocolToAvoid, never() ).writeToLocation( Mockito.any() );
       assertThat( objectCaptor.getValue().toString(), containsString( "\"DetailColour\":\"" + colorConverter.colorToHex( Color.RED ) + "\"" ) );
+      
+      verifyReadAlwaysHappensBeforeWrite( protocolToUse );
+   }//End Method
+   
+   /**
+    * Method to verify that read always happens before write on the given {@link JarJsonPersistingProtocol}.
+    * @param protocolToUse the {@link JarJsonPersistingProtocol} to verify.
+    */
+   private void verifyReadAlwaysHappensBeforeWrite( JarJsonPersistingProtocol protocolToUse ){
+      InOrder order = inOrder( protocolToUse );
+      order.verify( protocolToUse ).readFromLocation();
+      order.verify( protocolToUse ).writeToLocation( Mockito.any() );
    }//End Method
    
    @Test public void leftConfigurationShouldUseDefaults(){
@@ -351,4 +385,5 @@ public class BuildWallConfigurationSessionsTest {
    @Test public void rightConfigurationShouldUseDefaults(){
       assertThat( systemUnderTest.getRightConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
    }//End Method
+   
 }//End Class

@@ -17,6 +17,8 @@ import org.junit.Test;
 
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.BuildWallJobPolicy;
+import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
@@ -52,6 +54,7 @@ public class BuildWallConfigurationPersistenceE2ETest {
       
       marshaller.write();
       configuration.numberOfColumns().set( 20 );
+      configuration.jobPolicies().put( new JenkinsJobImpl( "something added" ), BuildWallJobPolicy.OnlyShowFailures );
       marshaller.read();
       
       assertThat( configuration.numberOfColumns().get(), is( 6 ) );

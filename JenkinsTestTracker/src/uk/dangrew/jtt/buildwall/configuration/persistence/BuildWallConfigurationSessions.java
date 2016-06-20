@@ -67,14 +67,14 @@ public class BuildWallConfigurationSessions {
       applyDefaultConfigurations();
 
       ModelMarshaller leftMarshaller = constructMarshaller( leftConfiguration, database, leftProtocol );
+      leftMarshaller.read();
       this.leftSessions = new SessionManager( leftMarshaller );
       configureSessionManager( leftConfiguration, leftSessions );
-      leftMarshaller.read();
       
       ModelMarshaller rightMarshaller = constructMarshaller( rightConfiguration, database, rightProtocol );
+      rightMarshaller.read();
       this.rightSessions = new SessionManager( rightMarshaller );
       configureSessionManager( rightConfiguration, rightSessions );
-      rightMarshaller.read();
    }//End Constructor
    
    /**
