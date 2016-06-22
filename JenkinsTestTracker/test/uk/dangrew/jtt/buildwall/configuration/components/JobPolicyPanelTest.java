@@ -27,6 +27,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
@@ -37,7 +39,7 @@ import junitparams.Parameters;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallJobPolicy;
-import uk.dangrew.jtt.buildwall.configuration.components.JobPolicyPanel;
+import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecoupler;
@@ -54,6 +56,7 @@ import uk.dangrew.jtt.utility.comparator.Comparators;
 @RunWith( JUnitParamsRunner.class )
 public class JobPolicyPanelTest {
    
+   @Spy private BuildWallConfigurationStyle styling;
    private BuildWallConfiguration configuration; 
    private JobPolicyPanel systemUnderTest;
    
@@ -62,12 +65,14 @@ public class JobPolicyPanelTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
+      MockitoAnnotations.initMocks( this );
+      
       configuration = new BuildWallConfigurationImpl();
       for ( int i = 0; i < 10; i++ ) {
          configuration.jobPolicies().put( new JenkinsJobImpl( "job " + i ), BuildWallJobPolicy.values()[ i % 3 ] );
       }
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new JobPolicyPanel( configuration );
+      systemUnderTest = new JobPolicyPanel( configuration, styling );
    }//End Method
    
    @Ignore //For manual inspection.
@@ -234,4 +239,7 @@ public class JobPolicyPanelTest {
       assertThat( systemUnderTest.jobLabel( first ), is( not( label ) ) );
    }//End Method
    
+   @Test public void shouldApplyStylingToPanel(){
+      verify( styling ).configureColumnConstraints( systemUnderTest );
+   }//End Method
 }//End Class

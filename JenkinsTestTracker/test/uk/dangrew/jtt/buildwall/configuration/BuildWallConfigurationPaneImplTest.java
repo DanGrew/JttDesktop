@@ -99,16 +99,19 @@ public class BuildWallConfigurationPaneImplTest {
       TitledPane dimensionsPane = systemUnderTest.dimensionsPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( dimensionsPane ) );
       
-      GridPane dimensionsContent = ( GridPane )dimensionsPane.getContent();
-      Assert.assertTrue( dimensionsContent.getChildren().contains( systemUnderTest.columnsSpinner() ) );
-      Assert.assertTrue( dimensionsContent.getChildren().contains( systemUnderTest.simpleDescriptionButton() ) );
-      Assert.assertTrue( dimensionsContent.getChildren().contains( systemUnderTest.defaultDescriptionButton() ) );
-      Assert.assertTrue( dimensionsContent.getChildren().contains( systemUnderTest.detailedDescriptionButton() ) );
-      
       TitledPane fontPane = systemUnderTest.fontPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( fontPane ) );
       
       GridPane fontContent = ( GridPane )fontPane.getContent();
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontLabel() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontSizeLabel() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontLabel() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontSizeLabel() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontLabel() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontSizeLabel() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.detailFontLabel() ) );
+      Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.detailFontSizeLabel() ) );
+      
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.jobNameFontBox() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.buildNumberFontBox() ) );
       Assert.assertTrue( fontContent.getChildren().contains( systemUnderTest.completionEstimateFontBox() ) );
@@ -130,11 +133,11 @@ public class BuildWallConfigurationPaneImplTest {
       Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.buildNumberColourPicker() ) );
       Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.completionEstimateColourPicker() ) );
       Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.detailColourPicker() ) );
-   }//End Method
-   
-   @Test public void numberOfColumnsShouldUseInitialConfiguration(){
-      configuration.numberOfColumns().set( 20 );
-      assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
+      
+      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.jobNameColourLabel() ) );
+      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.buildNumberColourLabel() ) );
+      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.completionEstimateColourLabel() ) );
+      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.detailColourLabel() ) );
    }//End Method
    
    @Test public void jobNameFontFamilyShouldUseInitialConfiguration(){
@@ -207,37 +210,6 @@ public class BuildWallConfigurationPaneImplTest {
    @Test public void detailFontSizeShouldUseInitialConfiguration(){
       configuration.detailFont().set( Font.font( 56 ) );
       assertThat( configuration.detailFont().get().getSize(), is( systemUnderTest.detailFontSizeSpinner().getValue().doubleValue() ) );
-   }//End Method
-   
-   @Test public void descriptionTypeButtonsShouldUseInitialConfiguration(){
-      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
-      assertThat( systemUnderTest.simpleDescriptionButton().isSelected(), is( true ) );
-      assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( false ) );
-      assertThat( systemUnderTest.detailedDescriptionButton().isSelected(), is( false ) );
-   }//End Method
-   
-   @Test public void shouldUpdateColumnsSpinnerWhenConfigurationChanges(){
-      Assert.assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
-      configuration.numberOfColumns().set( 100 );
-      Assert.assertEquals( 100, systemUnderTest.columnsSpinner().getValue().intValue() );
-   }//End Method
-   
-   @Test public void shouldUpdateConfigurationWhenColumnsSpinnerChanges(){
-      Assert.assertEquals( configuration.numberOfColumns().get(), systemUnderTest.columnsSpinner().getValue().intValue() );
-      systemUnderTest.columnsSpinner().getValueFactory().setValue( 100 );
-      Assert.assertEquals( 100, configuration.numberOfColumns().get() );
-   }//End Method
-   
-   @Test public void columnsSpinnerShouldBeBound(){
-      IntegerSpinnerValueFactory factory = ( IntegerSpinnerValueFactory )systemUnderTest.columnsSpinner().getValueFactory();
-      Assert.assertEquals( 
-               BuildWallConfigurationPanelImpl.MINIMUM_COLUMNS, 
-               factory.getMin() 
-      );
-      Assert.assertEquals( 
-               BuildWallConfigurationPanelImpl.MAXIMUM_COLUMNS, 
-               factory.getMax() 
-      );
    }//End Method
    
    @Test public void shouldUpdateJobNameFontFromConfiguration(){
@@ -466,7 +438,6 @@ public class BuildWallConfigurationPaneImplTest {
    }//End Method
    
    @Test public void eachSpinnerShouldBeEditable(){
-      assertThat( systemUnderTest.columnsSpinner().isEditable(), is( true ) );
       assertThat( systemUnderTest.jobNameFontSizeSpinner().isEditable(), is( true ) );
       assertThat( systemUnderTest.buildNumberFontSizeSpinner().isEditable(), is( true ) );
       assertThat( systemUnderTest.completionEstimateFontSizeSpinner().isEditable(), is( true ) );
@@ -474,10 +445,6 @@ public class BuildWallConfigurationPaneImplTest {
    }//End Method
    
    @Test public void eachSpinnerShouldAcceptInvalidInput(){
-      assertThat( 
-               systemUnderTest.columnsSpinner().getValueFactory().getConverter().fromString( "anything" ), 
-               is( systemUnderTest.columnsSpinner().getValue() ) 
-      );
       assertThat( 
                systemUnderTest.jobNameFontSizeSpinner().getValueFactory().getConverter().fromString( "anything" ), 
                is( systemUnderTest.jobNameFontSizeSpinner().getValue() ) 
@@ -498,8 +465,6 @@ public class BuildWallConfigurationPaneImplTest {
    
    @Test public void shouldUseBoldLabels(){
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.titleLabel().getFont().getStyle() ) );
-      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.columnsSpinnerLabel().getFont().getStyle() ) );
-      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.desriptionTypeLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.jobNameFontLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.jobNameColourLabel().getFont().getStyle() ) );
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.jobNameFontSizeLabel().getFont().getStyle() ) );
@@ -546,57 +511,6 @@ public class BuildWallConfigurationPaneImplTest {
       );
    }//End Method
    
-   @Test public void simpleDescriptionShouldUpdateConfiguration(){
-      systemUnderTest.defaultDescriptionButton().getOnAction().handle( new ActionEvent() );
-      assertThat( configuration.jobPanelDescriptionProvider().get(), not( JobPanelDescriptionProviders.Simple ) );
-      
-      systemUnderTest.simpleDescriptionButton().getOnAction().handle( new ActionEvent() );
-      assertThat( configuration.jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Simple ) );
-      assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( false ) );
-   }//End Method
-   
-   @Test public void defaultDescriptionShouldUpdateConfiguration(){
-      systemUnderTest.simpleDescriptionButton().getOnAction().handle( new ActionEvent() );
-      assertThat( configuration.jobPanelDescriptionProvider().get(), not( JobPanelDescriptionProviders.Default ) );
-      
-      systemUnderTest.defaultDescriptionButton().getOnAction().handle( new ActionEvent() );
-      assertThat( configuration.jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Default ) );
-      assertThat( systemUnderTest.simpleDescriptionButton().isSelected(), is( false ) );
-   }//End Method
-   
-   @Test public void detailedDescriptionShouldUpdateConfiguration(){
-      systemUnderTest.simpleDescriptionButton().getOnAction().handle( new ActionEvent() );
-      assertThat( configuration.jobPanelDescriptionProvider().get(), not( JobPanelDescriptionProviders.Detailed ) );
-      
-      systemUnderTest.detailedDescriptionButton().getOnAction().handle( new ActionEvent() );
-      assertThat( configuration.jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
-      assertThat( systemUnderTest.simpleDescriptionButton().isSelected(), is( false ) );
-   }//End Method
-   
-   @Test public void configurationShouldUpdateSimpleDescription(){
-      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Default );
-      assertThat( systemUnderTest.simpleDescriptionButton().isSelected(), is( false ) );
-      
-      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
-      assertThat( systemUnderTest.simpleDescriptionButton().isSelected(), is( true ) );
-   }//End Method
-   
-   @Test public void configurationShouldUpdateDefaultDescription(){
-      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
-      assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( false ) );
-      
-      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Default );
-      assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( true ) );
-   }//End Method
-   
-   @Test public void configurationShouldUpdateDetailedDescription(){
-      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Simple );
-      assertThat( systemUnderTest.detailedDescriptionButton().isSelected(), is( false ) );
-      
-      configuration.jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
-      assertThat( systemUnderTest.detailedDescriptionButton().isSelected(), is( true ) );
-   }//End Method
-   
    @Test public void shouldCreateTitleWithExpectedProperties(){
       Label titleLabel = systemUnderTest.titleLabel();
       assertThat( titleLabel.getFont().getSize(), closeTo( BuildWallConfigurationStyleTest.TITLE_FONT_SIZE, TestCommon.precision() ) );
@@ -613,5 +527,36 @@ public class BuildWallConfigurationPaneImplTest {
       assertThat( systemUnderTest.jobPoliciesPane().isExpanded(), is( false ) );
       assertThat( systemUnderTest.fontPane().isExpanded(), is( true ) );
       assertThat( systemUnderTest.colourPane().isExpanded(), is( true ) );
+   }//End Method
+   
+   @Test public void componentsShouldSpreadToTheWidth(){
+      assertThat( systemUnderTest.jobNameFontBox().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.buildNumberFontBox().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.completionEstimateFontBox().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.detailFontBox().getMaxWidth(), is( Double.MAX_VALUE ) );
+      
+      assertThat( systemUnderTest.jobNameColourPicker().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.buildNumberColourPicker().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.completionEstimateColourPicker().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.detailColourPicker().getMaxWidth(), is( Double.MAX_VALUE ) );
+      
+      assertThat( systemUnderTest.jobNameFontSizeSpinner().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.buildNumberFontSizeSpinner().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.completionEstimateFontSizeSpinner().getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( systemUnderTest.detailFontSizeSpinner().getMaxWidth(), is( Double.MAX_VALUE ) );
+   }//End Method
+   
+   @Test public void colourPickersShouldTakeConfiguredValueInitially(){
+      configuration.jobNameColour().set( Color.RED );
+      configuration.buildNumberColour().set( Color.RED );
+      configuration.completionEstimateColour().set( Color.RED );
+      configuration.detailColour().set( Color.RED );
+      
+      systemUnderTest = new BuildWallConfigurationPanelImpl( TEST_TITLE, configuration );
+      
+      assertThat( systemUnderTest.jobNameColourPicker().getValue(), is( Color.RED ) );
+      assertThat( systemUnderTest.buildNumberColourPicker().getValue(), is( Color.RED ) );
+      assertThat( systemUnderTest.completionEstimateColourPicker().getValue(), is( Color.RED ) );
+      assertThat( systemUnderTest.detailColourPicker().getValue(), is( Color.RED ) );
    }//End Method
 }//End Class

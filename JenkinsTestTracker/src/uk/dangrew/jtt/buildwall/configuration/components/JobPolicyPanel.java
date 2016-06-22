@@ -53,13 +53,23 @@ public class JobPolicyPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration}.
     */
    public JobPolicyPanel( BuildWallConfiguration configuration ) {
+      this( configuration, new BuildWallConfigurationStyle() );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link JobPolicyPanel}.
+    * @param configuration the {@link BuildWallConfiguration}.
+    * @param styling the {@link BuildWallConfigurationStyle} to apply.
+    */
+   JobPolicyPanel( BuildWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
       this.configuration = configuration;
-      this.styling = new BuildWallConfigurationStyle();
+      this.styling = styling;
       
       labels = new HashMap<>();
       boxes = new HashMap<>();
       properties = new HashMap<>();
       
+      styling.configureColumnConstraints( this );
       constructLayout();
       
       configuration.jobPolicies().addListener( ( Change< ? extends JenkinsJob, ? extends BuildWallJobPolicy > change ) -> {
