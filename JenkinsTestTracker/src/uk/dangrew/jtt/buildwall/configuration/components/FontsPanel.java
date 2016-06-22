@@ -29,25 +29,25 @@ public class FontsPanel extends GridPane {
    static final int MAXIMUM_FONT_SIZE = 500;
    static final int MINIMUM_FONT_SIZE = 1;
    
-   private Label jobNameFontLabel;
-   private Label buildNumberFontLabel;
-   private Label completionEstimateFontLabel;
-   private Label detailFontLabel;
+   private final Label jobNameFontLabel;
+   private final Label buildNumberFontLabel;
+   private final Label completionEstimateFontLabel;
+   private final Label detailFontLabel;
    
-   private Label jobNameFontSizeLabel;
-   private Label buildNumberFontSizeLabel;
-   private Label completionEstimateFontSizeLabel;
-   private Label detailFontSizeLabel;
+   private final Label jobNameFontSizeLabel;
+   private final Label buildNumberFontSizeLabel;
+   private final Label completionEstimateFontSizeLabel;
+   private final Label detailFontSizeLabel;
    
-   private FontFamilyPropertyBox jobNameFontBox;
-   private FontFamilyPropertyBox buildNumberFontBox;
-   private FontFamilyPropertyBox completionEstimateFontBox;
-   private FontFamilyPropertyBox detailFontBox;
+   private final FontFamilyPropertyBox jobNameFontBox;
+   private final FontFamilyPropertyBox buildNumberFontBox;
+   private final FontFamilyPropertyBox completionEstimateFontBox;
+   private final FontFamilyPropertyBox detailFontBox;
    
-   private PropertySpinner< Integer, Font > jobNameFontSizeSpinner;
-   private PropertySpinner< Integer, Font > buildNumberFontSizeSpinner;
-   private PropertySpinner< Integer, Font > completionEstimateFontSizeSpinner;
-   private PropertySpinner< Integer, Font > detailFontSizeSpinner;
+   private final PropertySpinner< Integer, Font > jobNameFontSizeSpinner;
+   private final PropertySpinner< Integer, Font > buildNumberFontSizeSpinner;
+   private final PropertySpinner< Integer, Font > completionEstimateFontSizeSpinner;
+   private final PropertySpinner< Integer, Font > detailFontSizeSpinner;
   
    /**
     * Constructs a new {@link FontsPanel}.

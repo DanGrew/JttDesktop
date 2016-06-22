@@ -8,15 +8,12 @@
  */
 package uk.dangrew.jtt.buildwall.configuration;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
+import uk.dangrew.jtt.buildwall.configuration.components.ColoursPanel;
 import uk.dangrew.jtt.buildwall.configuration.components.DimensionsPanel;
 import uk.dangrew.jtt.buildwall.configuration.components.FontsPanel;
 import uk.dangrew.jtt.buildwall.configuration.components.JobPolicyPanel;
@@ -37,16 +34,6 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
    private TitledPane jobPoliciesPane;
    private TitledPane fontPane;
    private TitledPane colourPane;
-   
-   private Label jobNameColourLabel;
-   private Label buildNumberColourLabel;
-   private Label completionEstimateColourLabel;
-   private Label detailColourLabel;
-   
-   private ColorPicker jobNameColourPicker;
-   private ColorPicker buildNumberColourPicker;
-   private ColorPicker completionEstimateColourPicker;
-   private ColorPicker detailColourPicker;
    
    /**
     * Constructs a new {@link BuildWallConfigurationPanelImpl}.
@@ -125,53 +112,11 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     * Method to construct the {@link TitledPane} for configuring {@link Color}s.
     */
    private void constructColourItemPane() {
-      GridPane content = new GridPane();
+      ColoursPanel coloursPanel = new ColoursPanel( configuration );
       
-      jobNameColourLabel = styling.createBoldLabel( "Job Name" );
-      content.add( jobNameColourLabel, 0, 0 );
-      
-      jobNameColourPicker = new ColorPicker();
-      configureColorPicker( jobNameColourPicker, configuration.jobNameColour() );
-      content.add( jobNameColourPicker, 1, 0 );
-      
-      buildNumberColourLabel = styling.createBoldLabel( "Build Number" );
-      content.add( buildNumberColourLabel, 0, 1 );
-      
-      buildNumberColourPicker = new ColorPicker();
-      configureColorPicker( buildNumberColourPicker, configuration.buildNumberColour() );
-      content.add( buildNumberColourPicker, 1, 1 );
-      
-      completionEstimateColourLabel = styling.createBoldLabel( "Build Time" );
-      content.add( completionEstimateColourLabel, 0, 2 );
-      
-      completionEstimateColourPicker = new ColorPicker();
-      configureColorPicker( completionEstimateColourPicker, configuration.completionEstimateColour() );
-      content.add( completionEstimateColourPicker, 1, 2 );
-      
-      detailColourLabel = styling.createBoldLabel( "Detail" );
-      content.add( detailColourLabel, 0, 3 );
-      
-      detailColourPicker = new ColorPicker();
-      configureColorPicker( detailColourPicker, configuration.detailColour() );
-      content.add( detailColourPicker, 1, 3 );
-      
-      styling.configureColumnConstraints( content );
-      
-      colourPane = new TitledPane( "Colours", content );
+      colourPane = new TitledPane( "Colours", coloursPanel );
       colourPane.setExpanded( true );
       add( colourPane, 0, 4 );
-   }//End Method
-   
-   /**
-    * Method to configure a {@link ColorPicker} to synchronise with the given property.
-    * @param colorPicker the {@link ColorPicker} for changing the {@link Color}.
-    * @param colorProperty the property being configured.
-    */
-   private void configureColorPicker( ColorPicker colorPicker, ObjectProperty< Color > colorProperty ){
-      colorPicker.setMaxWidth( Double.MAX_VALUE );
-      colorPicker.valueProperty().set( colorProperty.get() );
-      colorPicker.valueProperty().addListener( ( source, old, updated ) -> colorProperty.set( updated ) );
-      colorProperty.addListener( ( source, old, updated ) -> colorPicker.valueProperty().set( updated ) );
    }//End Method
    
    TitledPane fontPane() {
@@ -180,38 +125,6 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
 
    TitledPane colourPane() {
       return colourPane;
-   }//End Method
-
-   ColorPicker jobNameColourPicker() {
-      return jobNameColourPicker;
-   }//End Method
-
-   ColorPicker buildNumberColourPicker() {
-      return buildNumberColourPicker;
-   }//End Method
-
-   ColorPicker completionEstimateColourPicker() {
-      return completionEstimateColourPicker;
-   }//End Method
-   
-   ColorPicker detailColourPicker() {
-      return detailColourPicker;
-   }//End Method
-
-   Labeled jobNameColourLabel() {
-      return jobNameColourLabel;
-   }//End Method
-
-   Labeled buildNumberColourLabel() {
-      return buildNumberColourLabel;
-   }//End Method
-
-   Labeled completionEstimateColourLabel() {
-      return completionEstimateColourLabel;
-   }//End Method
-   
-   Labeled detailColourLabel() {
-      return detailColourLabel;
    }//End Method
 
    TitledPane dimensionsPane() {

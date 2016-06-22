@@ -95,113 +95,10 @@ public class BuildWallConfigurationPaneImplTest {
       
       TitledPane colourPane = systemUnderTest.colourPane();
       Assert.assertTrue( systemUnderTest.getChildren().contains( colourPane ) );
-      
-      GridPane colourContent = ( GridPane )colourPane.getContent();
-      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.jobNameColourPicker() ) );
-      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.buildNumberColourPicker() ) );
-      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.completionEstimateColourPicker() ) );
-      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.detailColourPicker() ) );
-      
-      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.jobNameColourLabel() ) );
-      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.buildNumberColourLabel() ) );
-      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.completionEstimateColourLabel() ) );
-      Assert.assertTrue( colourContent.getChildren().contains( systemUnderTest.detailColourLabel() ) );
-   }//End Method
-   
-   @Test public void jobNameColourShouldUseInitialConfiguration(){
-      configuration.jobNameColour().set( Color.RED );
-      assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobNameColourPicker().valueProperty().get() );
-   }//End Method
-   
-   @Test public void buildNumberColourShouldUseInitialConfiguration(){
-      configuration.buildNumberColour().set( Color.ANTIQUEWHITE );
-      assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumberColourPicker().valueProperty().get() );
-   }//End Method
-   
-   @Test public void completionEstimateColourShouldUseInitialConfiguration(){
-      configuration.completionEstimateColour().set( Color.BISQUE );
-      assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
-   }//End Method
-   
-   @Test public void detailColourShouldUseInitialConfiguration(){
-      configuration.detailColour().set( Color.BURLYWOOD );
-      assertEquals( configuration.detailColour().get(), systemUnderTest.detailColourPicker().valueProperty().get() );
-   }//End Method
-   
-   @Test public void shouldUpdateJobNameColourFromConfiguration(){
-      configuration.jobNameColour().set( Color.BISQUE );
-      Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobNameColourPicker().valueProperty().get() );
-      
-      configuration.jobNameColour().set( Color.DARKORCHID );
-      Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobNameColourPicker().valueProperty().get() );
-      
-      configuration.jobNameColour().set( Color.MOCCASIN );
-      Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobNameColourPicker().valueProperty().get() );
-   }//End Method
-   
-   @Test public void shouldSetJobNameColourInConfiguration(){
-      Assert.assertNotEquals( Color.AQUA, configuration.jobNameColour().get() );
-      systemUnderTest.jobNameColourPicker().valueProperty().set( Color.AQUA );
-      Assert.assertEquals( Color.AQUA, configuration.jobNameColour().get() );
-   }//End Method
-
-   @Test public void shouldUpdateBuildNumberColourFromConfiguration(){
-      configuration.buildNumberColour().set( Color.BISQUE );
-      Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumberColourPicker().valueProperty().get() );
-      
-      configuration.buildNumberColour().set( Color.DARKORCHID );
-      Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumberColourPicker().valueProperty().get() );
-      
-      configuration.buildNumberColour().set( Color.MOCCASIN );
-      Assert.assertEquals( configuration.buildNumberColour().get(), systemUnderTest.buildNumberColourPicker().valueProperty().get() );
-   }//End Method
-   
-   @Test public void shouldSetBuildNumberColourInConfiguration(){
-      Assert.assertNotEquals( Color.AQUA, configuration.buildNumberColour().get() );
-      systemUnderTest.buildNumberColourPicker().valueProperty().set( Color.AQUA );
-      Assert.assertEquals( Color.AQUA, configuration.buildNumberColour().get() );
-   }//End Method
-   
-   @Test public void shouldUpdateCompletionEstimateColourFromConfiguration(){
-      configuration.completionEstimateColour().set( Color.BISQUE );
-      Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
-      
-      configuration.completionEstimateColour().set( Color.DARKORCHID );
-      Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
-      
-      configuration.completionEstimateColour().set( Color.MOCCASIN );
-      Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimateColourPicker().valueProperty().get() );
-   }//End Method
-   
-   @Test public void shouldSetCompletionEstimateColourInConfiguration(){
-      Assert.assertNotEquals( Color.AQUA, configuration.completionEstimateColour().get() );
-      systemUnderTest.completionEstimateColourPicker().valueProperty().set( Color.AQUA );
-      Assert.assertEquals( Color.AQUA, configuration.completionEstimateColour().get() );
-   }//End Method
-   
-   @Test public void shouldUpdateDetailColourFromConfiguration(){
-      configuration.detailColour().set( Color.BISQUE );
-      Assert.assertEquals( configuration.detailColour().get(), systemUnderTest.detailColourPicker().valueProperty().get() );
-      
-      configuration.detailColour().set( Color.DARKORCHID );
-      Assert.assertEquals( configuration.detailColour().get(), systemUnderTest.detailColourPicker().valueProperty().get() );
-      
-      configuration.detailColour().set( Color.MOCCASIN );
-      Assert.assertEquals( configuration.detailColour().get(), systemUnderTest.detailColourPicker().valueProperty().get() );
-   }//End Method
-   
-   @Test public void shouldSetCulpritsColourInConfiguration(){
-      Assert.assertNotEquals( Color.AQUA, configuration.detailColour().get() );
-      systemUnderTest.detailColourPicker().valueProperty().set( Color.AQUA );
-      Assert.assertEquals( Color.AQUA, configuration.detailColour().get() );
    }//End Method
    
    @Test public void shouldUseBoldLabels(){
       Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.titleLabel().getFont().getStyle() ) );
-      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.jobNameColourLabel().getFont().getStyle() ) );
-      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.buildNumberColourLabel().getFont().getStyle() ) );
-      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.completionEstimateColourLabel().getFont().getStyle() ) );
-      Assert.assertEquals( FontWeight.BOLD, FontWeight.findByName( systemUnderTest.detailColourLabel().getFont().getStyle() ) );
    }//End Method
    
    @Test public void eachPaneShouldCoverEntireWidth() {
@@ -254,24 +151,4 @@ public class BuildWallConfigurationPaneImplTest {
       assertThat( systemUnderTest.colourPane().isExpanded(), is( true ) );
    }//End Method
    
-   @Test public void componentsShouldSpreadToTheWidth(){
-      assertThat( systemUnderTest.jobNameColourPicker().getMaxWidth(), is( Double.MAX_VALUE ) );
-      assertThat( systemUnderTest.buildNumberColourPicker().getMaxWidth(), is( Double.MAX_VALUE ) );
-      assertThat( systemUnderTest.completionEstimateColourPicker().getMaxWidth(), is( Double.MAX_VALUE ) );
-      assertThat( systemUnderTest.detailColourPicker().getMaxWidth(), is( Double.MAX_VALUE ) );
-   }//End Method
-   
-   @Test public void colourPickersShouldTakeConfiguredValueInitially(){
-      configuration.jobNameColour().set( Color.RED );
-      configuration.buildNumberColour().set( Color.RED );
-      configuration.completionEstimateColour().set( Color.RED );
-      configuration.detailColour().set( Color.RED );
-      
-      systemUnderTest = new BuildWallConfigurationPanelImpl( TEST_TITLE, configuration );
-      
-      assertThat( systemUnderTest.jobNameColourPicker().getValue(), is( Color.RED ) );
-      assertThat( systemUnderTest.buildNumberColourPicker().getValue(), is( Color.RED ) );
-      assertThat( systemUnderTest.completionEstimateColourPicker().getValue(), is( Color.RED ) );
-      assertThat( systemUnderTest.detailColourPicker().getValue(), is( Color.RED ) );
-   }//End Method
 }//End Class
