@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -30,6 +31,7 @@ public class ConfigurationTreeControllerTest {
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
+      MockitoAnnotations.initMocks( this );
       systemUnderTest = new ConfigurationTreeController( content );
    }//End Method
    
