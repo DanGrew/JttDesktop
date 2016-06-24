@@ -9,7 +9,6 @@
 package uk.dangrew.jtt.buildwall.dual;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
@@ -18,9 +17,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallConfigurer;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -31,8 +27,6 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
 public class DualBuildWallConfigurerTest {
    
    private BorderPane display;
-   private BuildWallConfiguration leftConfiguration;
-   private BuildWallConfiguration rightConfiguration;
    private ImageFlasherProperties imageFlasherProperties;
    private DualBuildWallConfigurer systemUnderTest;
    
@@ -42,79 +36,13 @@ public class DualBuildWallConfigurerTest {
    
    @Before public void initialiseSystemUnderTest(){
       display = new BorderPane();
-      leftConfiguration = new BuildWallConfigurationImpl();
-      rightConfiguration = new BuildWallConfigurationImpl();
       imageFlasherProperties = new ImageFlasherPropertiesImpl();
-      systemUnderTest = new DualBuildWallConfigurer( display, leftConfiguration, rightConfiguration, imageFlasherProperties );
+      systemUnderTest = new DualBuildWallConfigurer( display, imageFlasherProperties );
    }//End Method
 
    @Test public void displayIntiallyShouldHaveNoConfiguration() {
       assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
       assertThat( display.getRight(), is( nullValue() ) );
-   }//End Method
-   
-   @Test public void showRightShouldAddConfigToRight() {
-      systemUnderTest.showRightConfiguration();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      assertThat( display.getRight(), is( notNullValue() ) );
-      assertThat( display.getRight(), is( systemUnderTest.scroller() ) );
-      assertThat( systemUnderTest.scroller().getContent(), is( systemUnderTest.rightConfigurationPanel() ) );
-   }//End Method
-   
-   @Test public void showLeftShouldAddConfigToRight() {
-      systemUnderTest.showLeftConfiguration();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      assertThat( display.getRight(), is( notNullValue() ) );
-      assertThat( display.getRight(), is( systemUnderTest.scroller() ) );
-      assertThat( systemUnderTest.scroller().getContent(), is( systemUnderTest.leftConfigurationPanel() ) );
-   }//End Method
-   
-   @Test public void showRightWhenLeftShownShouldReplace() {
-      showLeftShouldAddConfigToRight();
-      showRightShouldAddConfigToRight();
-   }//End Method
-   
-   @Test public void showLeftWhenRightShownShouldReplace() {
-      showRightShouldAddConfigToRight();
-      showLeftShouldAddConfigToRight();
-   }//End Method
-   
-   @Test public void hideShouldHideRight() {
-      showRightShouldAddConfigToRight();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      systemUnderTest.hideConfiguration();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
-   }//End Method
-   
-   @Test public void hideShouldHideLeft() {
-      showLeftShouldAddConfigToRight();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      systemUnderTest.hideConfiguration();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
-   }//End Method
-   
-   @Test public void hideRightWallWhenLeftShownShouldDoNothing() {
-      showLeftShouldAddConfigToRight();
-      systemUnderTest.hideRightWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-   }//End Method
-   
-   @Test public void hideLeftWallWhenRightShownShouldDoNothing() {
-      showRightShouldAddConfigToRight();
-      systemUnderTest.hideLeftWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-   }//End Method
-   
-   @Test public void hideRightWallWhenRightShownShouldHideConfiguration() {
-      showRightShouldAddConfigToRight();
-      systemUnderTest.hideRightWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
-   }//End Method
-   
-   @Test public void hideLeftWallWhenLeftShownShouldHideConfiguration() {
-      showLeftShouldAddConfigToRight();
-      systemUnderTest.hideLeftWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
    }//End Method
    
    @Test public void showFlasherConfigShouldShowPanelOnRight(){

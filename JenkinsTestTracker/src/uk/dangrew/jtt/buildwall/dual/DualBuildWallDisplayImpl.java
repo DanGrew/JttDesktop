@@ -11,7 +11,6 @@ package uk.dangrew.jtt.buildwall.dual;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationPanelImpl;
 import uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImpl;
@@ -104,7 +103,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Method to apply the controls for configuration.
     */
    private void applyConfigurationControls(){
-      buildWallConfigurer = new DualBuildWallConfigurer( buildWallPane, leftConfiguration, rightConfiguration, imageFlasherProperties );
+      buildWallConfigurer = new DualBuildWallConfigurer( buildWallPane, imageFlasherProperties );
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
       
       configWindowController.associateWithConfiguration( 
@@ -130,20 +129,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
    }//End Method
    
    /**
-    * Method to show the {@link BuildWallConfiguration} for the right {@link GridWallImpl}.
-    */
-   public void showRightConfiguration(){
-      buildWallConfigurer.showRightConfiguration();
-   }//End Method
-
-   /**
-    * Method to show the {@link BuildWallConfiguration} for the left {@link GridWallImpl}.
-    */
-   public void showLeftConfiguration(){
-      buildWallConfigurer.showLeftConfiguration();
-   }//End Method
-   
-   /**
     * Method to show the {@link ImageFlasherConfiguration} for the {@link DualBuildWallDisplayImpl}.
     */
    public void showImageFlasherConfiguration(){
@@ -161,7 +146,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Method to hide the right {@link GridWallImpl}. The configuration will be hidden is for this {@link GridWallImpl}.
     */
    public void hideRightWall() {
-      buildWallConfigurer.hideRightWall();
       buildWallSplitter.hideRightWall();
    }//End Method
    
@@ -186,7 +170,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Method to hide the left {@link GridWallImpl}. The configuration will be hidden is for this {@link GridWallImpl}.
     */
    public void hideLeftWall() {
-      buildWallConfigurer.hideLeftWall();
       buildWallSplitter.hideLeftWall();
    }//End Method
    
@@ -249,20 +232,12 @@ public class DualBuildWallDisplayImpl extends StackPane {
       return buildWallSplitter.leftGridWall();
    }//End Method
    
-   BuildWallConfigurationPanelImpl rightConfigurationPanel(){
-      return buildWallConfigurer.rightConfigurationPanel();
-   }//End Method
-   
-   BuildWallConfigurationPanelImpl leftConfigurationPanel(){
-      return buildWallConfigurer.leftConfigurationPanel();
-   }//End Method
-
    BuildWallConfiguration rightConfiguration() {
-      return buildWallConfigurer.rightConfiguration();
+      return rightConfiguration;
    }//End Method
    
    BuildWallConfiguration leftConfiguration() {
-      return buildWallConfigurer.leftConfiguration();
+      return leftConfiguration;
    }//End Method
    
    ImageFlasherProperties imageFlasherConfiguration(){

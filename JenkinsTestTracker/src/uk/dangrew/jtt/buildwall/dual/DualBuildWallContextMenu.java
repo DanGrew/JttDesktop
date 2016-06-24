@@ -23,8 +23,6 @@ public class DualBuildWallContextMenu extends ContextMenu {
    static final String SHOW_LEFT = "Show Left";
    static final String HIDE_RIGHT = "Hide Right";
    static final String HIDE_LEFT = "Hide Left";
-   static final String CONFIGURE_RIGHT = "Configure Right";
-   static final String CONFIGURE_LEFT = "Configure Left";
    static final String CONFIGURE_IMAGE_FLASHER = "Configure Image Flasher";
    static final String HIDE_CONFIGURATION = "Hide Configuration";
    static final String OPEN_CONFIGURATION_WINDOW = "Open Configuration Window";
@@ -67,12 +65,6 @@ public class DualBuildWallContextMenu extends ContextMenu {
       leftWallControl = new MenuItem( HIDE_LEFT );
       leftWallControl.setOnAction( event -> controlLeftWall( display, leftWallControl ) );
       
-      MenuItem configureRight = new MenuItem( CONFIGURE_RIGHT );
-      configureRight.setOnAction( event -> display.showRightConfiguration() );
-      
-      MenuItem configureLeft = new MenuItem( CONFIGURE_LEFT );
-      configureLeft.setOnAction( event -> display.showLeftConfiguration() );
-      
       imageFlasherControl = new MenuItem( CONFIGURE_IMAGE_FLASHER );
       imageFlasherControl.setOnAction( event -> display.showImageFlasherConfiguration() );
       
@@ -83,8 +75,6 @@ public class DualBuildWallContextMenu extends ContextMenu {
             leftWallControl, 
             rightWallControl,
             new SeparatorMenuItem(),
-            configureLeft,
-            configureRight,
             imageFlasherControl,
             hideConfig
       );

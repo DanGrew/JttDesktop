@@ -33,7 +33,6 @@ import org.mockito.MockitoAnnotations;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
@@ -41,9 +40,6 @@ import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallConfigurationWindowController;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallContextMenuOpener;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
@@ -128,7 +124,6 @@ public class DualBuildWallDisplayImplTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
          systemUnderTest = new DualBuildWallDisplayImpl( database );
-         systemUnderTest.showRightConfiguration();
          systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
       } );
@@ -207,7 +202,6 @@ public class DualBuildWallDisplayImplTest {
    @Test public void menuStressing() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
-         systemUnderTest.showRightConfiguration();
          systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
       } );
@@ -223,22 +217,6 @@ public class DualBuildWallDisplayImplTest {
    @Test public void shouldInitialseWithNoConfiguration(){
       assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
       assertThat( systemUnderTest.buildWallPane().getRight(), nullValue() );
-   }//End Method
-   
-   @Test public void shouldShowConfigurationPanelsIndividuallyAlwaysInsideScroller(){
-      systemUnderTest.showRightConfiguration();
-      assertThat( systemUnderTest.rightConfigurationPanel(), notNullValue() );
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      assertThat( systemUnderTest.buildWallPane().getRight(), instanceOf( ScrollPane.class ) );
-      ScrollPane scroller = ( ScrollPane ) systemUnderTest.buildWallPane().getRight();
-      assertThat( scroller.getContent(), is( systemUnderTest.rightConfigurationPanel() ) );
-      
-      systemUnderTest.showLeftConfiguration();
-      assertThat( systemUnderTest.leftConfigurationPanel(), notNullValue() );
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      assertThat( systemUnderTest.buildWallPane().getRight(), instanceOf( ScrollPane.class ) );
-      scroller = ( ScrollPane ) systemUnderTest.buildWallPane().getRight();
-      assertThat( scroller.getContent(), is( systemUnderTest.leftConfigurationPanel() ) );
    }//End Method
    
    @Test public void shouldEnsureConfigurationIsUpdatedInitiallyAndWhenDatabaseIsUpdatedForBothWallsIndividually(){
@@ -285,34 +263,6 @@ public class DualBuildWallDisplayImplTest {
       assertSplitPaneItems( systemUnderTest.leftGridWall(), systemUnderTest.rightGridWall() );
    }//End Method
 
-   @Test public void shouldHideConfigIfWallHiddenRightWall(){
-      systemUnderTest.showRightConfiguration();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      systemUnderTest.hideRightWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
-      
-      systemUnderTest.showRightWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
-      
-      systemUnderTest.showLeftConfiguration();
-      systemUnderTest.hideRightWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-   }//End Method
-
-   @Test public void shouldHideConfigIfWallHiddenLeftWall(){
-      systemUnderTest.showLeftConfiguration();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-      systemUnderTest.hideLeftWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
-      
-      systemUnderTest.showLeftWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( false ) );
-      
-      systemUnderTest.showRightConfiguration();
-      systemUnderTest.hideLeftWall();
-      assertThat( systemUnderTest.isConfigurationShowing(), is( true ) );
-   }//End Method
-   
    @Test public void multipleShowsShouldNotMultipleAdd(){
       assertSplitPaneItems( systemUnderTest.leftGridWall(), systemUnderTest.rightGridWall() );
       systemUnderTest.showRightWall();

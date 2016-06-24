@@ -53,14 +53,12 @@ public class DualBuildWallContextMenuTest {
    private static final int CONTROL_LEFT = 0;
    private static final int CONTROL_RIGHT = 1;
    private static final int FIRST_SEPARATOR = 2;
-   private static final int CONFIGURE_LEFT = 3;
-   private static final int CONFIGURE_RIGHT = 4;
-   private static final int CONFIGURE_IMAGE_FLASHER = 5;
-   private static final int HIDE_CONFIG = 6;
-   private static final int SECOND_SEPARATOR = 7;
-   private static final int CONFIG_WINDOW = 8;
-   private static final int THIRD_SEPARATOR = 9;
-   private static final int CANCEL = 10;
+   private static final int CONFIGURE_IMAGE_FLASHER = 3;
+   private static final int HIDE_CONFIG = 4;
+   private static final int SECOND_SEPARATOR = 5;
+   private static final int CONFIG_WINDOW = 6;
+   private static final int THIRD_SEPARATOR = 7;
+   private static final int CANCEL = 8;
    
    @Mock private DualBuildWallDisplayImpl display;
    @Mock private BorderPane buildWallPane;
@@ -103,15 +101,13 @@ public class DualBuildWallContextMenuTest {
       assertThat( retrieveMenuItem( CONTROL_LEFT ).getText(), is( DualBuildWallContextMenu.HIDE_LEFT ) );
       assertThat( retrieveMenuItem( CONTROL_RIGHT ).getText(), is( DualBuildWallContextMenu.HIDE_RIGHT ) );
       assertThat( retrieveMenuItem( FIRST_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
-      assertThat( retrieveMenuItem( CONFIGURE_LEFT ).getText(), is( DualBuildWallContextMenu.CONFIGURE_LEFT ) );
-      assertThat( retrieveMenuItem( CONFIGURE_RIGHT ).getText(), is( DualBuildWallContextMenu.CONFIGURE_RIGHT ) );
       assertThat( retrieveMenuItem( CONFIGURE_IMAGE_FLASHER ).getText(), is( DualBuildWallContextMenu.CONFIGURE_IMAGE_FLASHER ) );
       assertThat( retrieveMenuItem( HIDE_CONFIG ).getText(), is( DualBuildWallContextMenu.HIDE_CONFIGURATION ) );
       assertThat( retrieveMenuItem( SECOND_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
       assertThat( retrieveMenuItem( CONFIG_WINDOW ).getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
       assertThat( retrieveMenuItem( THIRD_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
       assertThat( retrieveMenuItem( CANCEL ).getText(), is( DualBuildWallContextMenu.CANCEL ) );
-      assertThat( systemUnderTest.getItems(), hasSize( 11 ) );
+      assertThat( systemUnderTest.getItems(), hasSize( 9 ) );
    }//End Method
    
    /**
@@ -157,19 +153,6 @@ public class DualBuildWallContextMenuTest {
       controWindow.getOnAction().handle( new ActionEvent() );
       verify( display ).hideConfigurationWindow();
       assertThat( controWindow.getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
-   }//End Method
-   
-   @Test public void shouldShowConfiguration() {
-      MenuItem leftConfig = retrieveMenuItem( CONFIGURE_LEFT );
-      MenuItem rightConfig = retrieveMenuItem( CONFIGURE_RIGHT );
-      
-      leftConfig.getOnAction().handle( new ActionEvent() );
-      verify( display ).showLeftConfiguration();
-      assertThat( leftConfig.getText(), is( DualBuildWallContextMenu.CONFIGURE_LEFT ) );
-      
-      rightConfig.getOnAction().handle( new ActionEvent() );
-      verify( display ).showRightConfiguration();
-      assertThat( rightConfig.getText(), is( DualBuildWallContextMenu.CONFIGURE_RIGHT ) );
    }//End Method
    
    @Test public void shouldShowImageFlasherConfiguration() {
