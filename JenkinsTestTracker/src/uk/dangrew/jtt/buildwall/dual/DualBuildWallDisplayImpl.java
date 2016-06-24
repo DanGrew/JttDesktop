@@ -108,7 +108,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
       
       configWindowController.associateWithConfiguration( 
-               leftConfiguration, imageFlasherProperties, rightConfiguration 
+               leftConfiguration, rightConfiguration 
       );
    }//End Method
    

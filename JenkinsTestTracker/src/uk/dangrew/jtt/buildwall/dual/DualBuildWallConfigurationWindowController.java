@@ -13,8 +13,7 @@ import com.sun.javafx.application.PlatformImpl;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.window.DualBuildWallConfigurationWindow;
-import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
+import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 
 /**
  * The {@link DualBuildWallConfigurationWindowController} is responsible for controlling a
@@ -22,6 +21,9 @@ import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
  * the {@link PlatformImpl} {@link Thread} therefore some of these calls are run later.
  */
 public class DualBuildWallConfigurationWindowController {
+   
+   static final double HEIGHT = 400;
+   static final double WIDTH = 800;
    
    private Stage configurationWindowStage;
    
@@ -41,15 +43,17 @@ public class DualBuildWallConfigurationWindowController {
     */
    void associateWithConfiguration(
             BuildWallConfiguration leftConfiguration,
-            ImageFlasherProperties imageFlasherProperties,
             BuildWallConfiguration rightConfiguration
    ) {
-         DualBuildWallConfigurationWindow configurationWindow = new DualBuildWallConfigurationWindow( 
-                  leftConfiguration, imageFlasherProperties, rightConfiguration 
+         ConfigurationTreePane configurationWindow = new ConfigurationTreePane( 
+                  leftConfiguration, rightConfiguration 
          );
          Scene configurationScene = new Scene( configurationWindow );
          PlatformImpl.runAndWait( () -> {
             configurationWindowStage = new Stage();
+            configurationWindowStage.setWidth( WIDTH );
+            configurationWindowStage.setHeight( HEIGHT );
+            configurationWindowStage.setFullScreen( false );
             configurationWindowStage.setScene( configurationScene );
          } );
    }//End Constructor

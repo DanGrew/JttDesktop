@@ -26,6 +26,7 @@ import uk.dangrew.jtt.buildwall.configuration.window.DualBuildWallConfigurationW
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallConfigurationWindowController;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
+import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
@@ -37,7 +38,6 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 public class DualBuildWallConfigurationWindowControllerTest {
    
    private BuildWallConfiguration rightConfig;
-   private ImageFlasherProperties imageConfig;
    private BuildWallConfiguration leftConfig;
    private DualBuildWallConfigurationWindowController systemUnderTest;
    
@@ -47,7 +47,6 @@ public class DualBuildWallConfigurationWindowControllerTest {
    
    @Before public void initialiseSystemUnderTest(){
       rightConfig = new BuildWallConfigurationImpl();
-      imageConfig = new ImageFlasherPropertiesImpl();
       leftConfig = new BuildWallConfigurationImpl();
       
       for ( int i = 0; i < 10; i++ ) {
@@ -57,7 +56,7 @@ public class DualBuildWallConfigurationWindowControllerTest {
       
       JavaFxInitializer.startPlatform();
       systemUnderTest = new DualBuildWallConfigurationWindowController();
-      systemUnderTest.associateWithConfiguration( leftConfig, imageConfig, rightConfig );
+      systemUnderTest.associateWithConfiguration( leftConfig, rightConfig );
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowShowIfNotAssociated(){
@@ -82,7 +81,7 @@ public class DualBuildWallConfigurationWindowControllerTest {
    @Test public void stageShouldHaveConfigurationWindowWithinScene(){
       assertThat( systemUnderTest.stage().getScene(), is( notNullValue() ) );
       assertThat( systemUnderTest.stage().getScene().getRoot(), is( notNullValue() ) );
-      assertThat( systemUnderTest.stage().getScene().getRoot(), instanceOf( DualBuildWallConfigurationWindow.class ) );
+      assertThat( systemUnderTest.stage().getScene().getRoot(), instanceOf( ConfigurationTreePane.class ) );
    }//End Method
    
    @Test public void stageShouldBeHiddenInitially(){
@@ -106,4 +105,9 @@ public class DualBuildWallConfigurationWindowControllerTest {
       assertThat( systemUnderTest.isConfigurationWindowShowing(), is( false ) );
    }//End Method
 
+   @Test public void shouldSizeStageAndMakeNotFullScreen(){
+      assertThat( systemUnderTest.stage().isFullScreen(), is( false ) );
+      assertThat( systemUnderTest.stage().widthProperty().get(), is( DualBuildWallConfigurationWindowController.WIDTH ) );
+      assertThat( systemUnderTest.stage().heightProperty().get(), is( DualBuildWallConfigurationWindowController.HEIGHT ) );
+   }//End Method
 }//End Class

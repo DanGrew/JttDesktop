@@ -401,7 +401,6 @@ public class DualBuildWallDisplayImplTest {
    @Test public void shouldAssociateConfigurationWindowController(){
       verify( windowController ).associateWithConfiguration( 
                systemUnderTest.leftConfiguration(), 
-               systemUnderTest.imageFlasherConfiguration(), 
                systemUnderTest.rightConfiguration() 
       );
    }//End Method

@@ -41,7 +41,7 @@ public class ConfigurationTreeContent extends BorderPane {
    /**
     * Method to set the content to display in an appropriate way for configuring.
     * @param title the {@link Node} describing the title of the configuration.
-    * @param content the {@link Node} providing the confgiuration options.
+    * @param content the {@link Node} providing the configuration options.
     */
    public void setContent( Node title, Node content ) {
       top.setCenter( title );
