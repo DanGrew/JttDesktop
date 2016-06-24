@@ -242,4 +242,9 @@ public class JobPolicyPanelTest {
    @Test public void shouldApplyStylingToPanel(){
       verify( styling ).configureColumnConstraints( systemUnderTest );
    }//End Method
+   
+   @Test public void shouldDetermineWhetherItHasGivenConfiguration(){
+      assertThat( systemUnderTest.hasConfiguration( configuration ), is( true ) );
+      assertThat( systemUnderTest.hasConfiguration( new BuildWallConfigurationImpl() ), is( false ) );
+   }//End Method
 }//End Class

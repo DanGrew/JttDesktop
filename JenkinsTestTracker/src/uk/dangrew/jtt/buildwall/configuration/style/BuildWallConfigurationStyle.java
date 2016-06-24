@@ -58,6 +58,18 @@ public class BuildWallConfigurationStyle {
    }//End Method
    
    /**
+    * Method to create a new {@link Label} with the given text that is wrapped
+    * across lines.
+    * @param text the {@link String} text on the {@link Label}.
+    * @return the {@link Label}.
+    */
+   public Label createWrappedTextLabel( String text ) {
+      Label label = new Label( text );
+      label.setWrapText( true );
+      return label;
+   }//End Method
+   
+   /**
     * Method to configure an {@link IntegerPropertySpinner} for the given property and range.
     * @param spinner the {@link IntegerPropertySpinner} to configure.
     * @param property the {@link IntegerProperty} to bind to.

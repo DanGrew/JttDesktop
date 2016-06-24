@@ -103,6 +103,15 @@ public class DimensionsPanel extends GridPane {
       defaultDescriptionButton.setSelected( JobPanelDescriptionProviders.Default.equals( provider )  );
       detailedDescriptionButton.setSelected( JobPanelDescriptionProviders.Detailed.equals( provider )  );
    }//End Method
+   
+   /**
+    * Method to determine whether the given {@link BuildWallConfiguration} is associated.
+    * @param configuration the {@link BuildWallConfiguration} in question.
+    * @return true if associated.
+    */
+   public boolean hasConfiguration( BuildWallConfiguration configuration ) {
+      return this.configuration.equals( configuration );
+   }//End Method
 
    Spinner< Integer > columnsSpinner() {
       return columnsSpinner;

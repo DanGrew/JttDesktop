@@ -23,6 +23,8 @@ import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
  */
 public class ColoursPanel extends GridPane {
    
+   private final BuildWallConfiguration configuration;
+   
    private final Label jobNameColourLabel;
    private final Label buildNumberColourLabel;
    private final Label completionEstimateColourLabel;
@@ -47,6 +49,8 @@ public class ColoursPanel extends GridPane {
     * @param styling the {@link BuildWallConfigurationStyle} to apply.
     */
    ColoursPanel( BuildWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
+      this.configuration = configuration;
+      
       jobNameColourLabel = styling.createBoldLabel( "Job Name" );
       add( jobNameColourLabel, 0, 0 );
       
@@ -88,6 +92,15 @@ public class ColoursPanel extends GridPane {
       colorPicker.valueProperty().set( colorProperty.get() );
       colorPicker.valueProperty().addListener( ( source, old, updated ) -> colorProperty.set( updated ) );
       colorProperty.addListener( ( source, old, updated ) -> colorPicker.valueProperty().set( updated ) );
+   }//End Method
+   
+   /**
+    * Method to determine whether the given {@link BuildWallConfiguration} is associated.
+    * @param configuration the {@link BuildWallConfiguration} in question.
+    * @return true if associated.
+    */
+   public boolean hasConfiguration( BuildWallConfiguration configuration ) {
+      return this.configuration.equals( configuration );
    }//End Method
    
    ColorPicker jobNameColourPicker() {

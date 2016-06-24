@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -161,6 +162,15 @@ public class BuildWallConfigurationStyleTest {
       ColumnConstraints second = grid.getColumnConstraints().get( 1 );
       assertThat( second.getPercentWidth(), is( BuildWallConfigurationStyle.CONTROLS_PERCENTAGE_WIDTH ) );
       assertThat( second.getHgrow(), is( Priority.ALWAYS ) );
+   }//End Method
+   
+   @Test public void shouldProvideUniqueLabelWithWrappedText(){
+      final String anyText = "anything that should be wrapped";
+      Label label = systemUnderTest.createWrappedTextLabel( anyText );
+      
+      assertThat( label.getText(), is( anyText ) );
+      assertThat( label.isWrapText(), is( true ) );
+      assertThat( systemUnderTest.createWrappedTextLabel( anyText ), is( not( label ) ) );
    }//End Method
 
 }//End Class

@@ -29,6 +29,8 @@ public class FontsPanel extends GridPane {
    static final int MAXIMUM_FONT_SIZE = 500;
    static final int MINIMUM_FONT_SIZE = 1;
    
+   private final BuildWallConfiguration configuration;
+   
    private final Label jobNameFontLabel;
    private final Label buildNumberFontLabel;
    private final Label completionEstimateFontLabel;
@@ -63,6 +65,8 @@ public class FontsPanel extends GridPane {
     * @param styling the {@link BuildWallConfigurationStyle} to use for style.
     */
    FontsPanel( BuildWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
+      this.configuration = configuration;
+      
       jobNameFontLabel = styling.createBoldLabel( "Job Name Font" );
       add( jobNameFontLabel, 0, 0 );
       jobNameFontBox = new FontFamilyPropertyBox( configuration.jobNameFont() );
@@ -128,6 +132,15 @@ public class FontsPanel extends GridPane {
       );
       spinner.setMaxWidth( Double.MAX_VALUE );
       spinner.setEditable( true );
+   }//End Method
+   
+   /**
+    * Method to determine whether the given {@link BuildWallConfiguration} is associated.
+    * @param configuration the {@link BuildWallConfiguration} in question.
+    * @return true if associated.
+    */
+   public boolean hasConfiguration( BuildWallConfiguration configuration ) {
+      return this.configuration.equals( configuration );
    }//End Method
 
    Label jobNameFontLabel() {

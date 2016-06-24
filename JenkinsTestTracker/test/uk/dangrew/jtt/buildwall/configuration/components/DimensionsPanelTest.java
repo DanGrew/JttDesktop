@@ -191,4 +191,9 @@ public class DimensionsPanelTest {
       assertThat( systemUnderTest.defaultDescriptionButton().isSelected(), is( true ) );
       assertThat( systemUnderTest.detailedDescriptionButton().isSelected(), is( false ) );
    }//End Method
+
+   @Test public void shouldDetermineWhetherItHasGivenConfiguration(){
+      assertThat( systemUnderTest.hasConfiguration( configuration ), is( true ) );
+      assertThat( systemUnderTest.hasConfiguration( new BuildWallConfigurationImpl() ), is( false ) );
+   }//End Method
 }//End Constructor

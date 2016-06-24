@@ -327,4 +327,9 @@ public class FontsPanelTest {
       assertThat( systemUnderTest.detailFontSizeSpinner().getMaxWidth(), is( Double.MAX_VALUE ) );
    }//End Method
    
+   @Test public void shouldDetermineWhetherItHasGivenConfiguration(){
+      assertThat( systemUnderTest.hasConfiguration( configuration ), is( true ) );
+      assertThat( systemUnderTest.hasConfiguration( new BuildWallConfigurationImpl() ), is( false ) );
+   }//End Method
+   
 }//End Class

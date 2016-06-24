@@ -161,6 +161,15 @@ public class JobPolicyPanel extends GridPane {
       }
    }//End Method
 
+   /**
+    * Method to determine whether the given {@link BuildWallConfiguration} is associated.
+    * @param configuration the {@link BuildWallConfiguration} in question.
+    * @return true if associated.
+    */
+   public boolean hasConfiguration( BuildWallConfiguration configuration ) {
+      return this.configuration.equals( configuration );
+   }//End Method
+   
    Label jobLabel( JenkinsJob job ) {
       return labels.get( job );
    }//End Method
