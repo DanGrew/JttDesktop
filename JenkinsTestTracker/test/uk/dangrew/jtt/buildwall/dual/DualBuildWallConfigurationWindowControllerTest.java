@@ -22,6 +22,8 @@ import com.sun.javafx.application.PlatformImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -33,6 +35,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
  */
 public class DualBuildWallConfigurationWindowControllerTest {
    
+   private DualConfiguration dualConfig;
    private BuildWallConfiguration rightConfig;
    private BuildWallConfiguration leftConfig;
    private DualBuildWallConfigurationWindowController systemUnderTest;
@@ -42,6 +45,7 @@ public class DualBuildWallConfigurationWindowControllerTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
+      dualConfig = new DualConfigurationImpl();
       rightConfig = new BuildWallConfigurationImpl();
       leftConfig = new BuildWallConfigurationImpl();
       
@@ -52,7 +56,7 @@ public class DualBuildWallConfigurationWindowControllerTest {
       
       JavaFxInitializer.startPlatform();
       systemUnderTest = new DualBuildWallConfigurationWindowController();
-      systemUnderTest.associateWithConfiguration( leftConfig, rightConfig );
+      systemUnderTest.associateWithConfiguration( dualConfig, leftConfig, rightConfig );
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowShowIfNotAssociated(){

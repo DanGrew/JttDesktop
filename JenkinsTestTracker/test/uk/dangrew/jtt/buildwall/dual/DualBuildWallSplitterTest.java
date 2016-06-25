@@ -8,17 +8,21 @@
  */
 package uk.dangrew.jtt.buildwall.dual;
 
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static uk.dangrew.jtt.utility.TestCommon.precision;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallSplitter;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -31,6 +35,7 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
  */
 public class DualBuildWallSplitterTest {
 
+   private DualConfiguration configuration;
    private GridWallImpl right;
    private GridWallImpl left;
    private DualBuildWallSplitter systemUnderTest;
@@ -42,9 +47,10 @@ public class DualBuildWallSplitterTest {
    
    @Before public void initialiseSystemUnderTest(){
       JenkinsDatabase database = new JenkinsDatabaseImpl();
+      configuration = new DualConfigurationImpl();
       right = new GridWallImpl( new BuildWallConfigurationImpl(), database );
       left = new GridWallImpl( new BuildWallConfigurationImpl(), database );
-      systemUnderTest = new DualBuildWallSplitter( left, right );
+      systemUnderTest = new DualBuildWallSplitter( configuration, left, right );
    }//End Method
    
    /**
@@ -179,7 +185,7 @@ public class DualBuildWallSplitterTest {
       assertDividerPosition();
       
       systemUnderTest.showRightWall();
-      assertDividerPosition( DualBuildWallSplitter.DEFAULT_DIVIDER );
+      assertDividerPosition( configuration.dividerPositionProperty().get() );
    }//End Method
    
    @Test public void shouldNotAllowWallsToResizeWithSplitPaneToRetainDividerPosition(){
@@ -187,4 +193,31 @@ public class DualBuildWallSplitterTest {
       assertThat( SplitPane.isResizableWithParent( systemUnderTest.rightGridWall() ), is( false ) );
    }//End Method
    
+   @Test public void shouldUpdateConfigurationWhenDividerPositionChanges(){
+      systemUnderTest.setDividerPositions( 0.8 );
+      assertThat( configuration.dividerPositionProperty().get(), is( closeTo( 0.8, precision() ) ) );
+      
+      systemUnderTest.setDividerPositions( 0.2 );
+      assertThat( configuration.dividerPositionProperty().get(), is( closeTo( 0.2, precision() ) ) );
+   }//End Method
+   
+   @Test public void shouldUpdateDividerWhenConfigurationChanges(){
+      configuration.dividerPositionProperty().set( 0.8 );
+      assertDividerPosition( 0.8 );
+      
+      configuration.dividerPositionProperty().set( 0.2 );
+      assertDividerPosition( 0.2 );
+   }//End Method
+   
+   @Test public void shouldUpdateOrientationWhenConfigurationChanges(){
+      assertThat( systemUnderTest.getOrientation(), is( Orientation.HORIZONTAL ) );
+      configuration.dividerOrientationProperty().set( Orientation.VERTICAL );
+      assertThat( systemUnderTest.getOrientation(), is( Orientation.VERTICAL ) );
+   }//End Method
+   
+   @Test public void shouldInitiallyUseConfigurationOrientation(){
+      configuration.dividerOrientationProperty().set( Orientation.VERTICAL );
+      systemUnderTest = new DualBuildWallSplitter( configuration, left, right );
+      assertThat( systemUnderTest.getOrientation(), is( Orientation.VERTICAL ) );
+   }//End Method
 }//End Class

@@ -23,7 +23,7 @@ public class DualPropertiesTreeItem extends SimpleConfigurationItem {
    static final String NAME = "Dual Properties";
    static final String TITLE = "Configuring the Dual Wall properties";
    static final String DESCRIPTION = 
-            "The following properties apply to the dual wall as a whole and control"
+            "The following properties apply to the dual wall as a whole and control "
             + "how it is displayed.";
    
    private final DualConfiguration configuration;

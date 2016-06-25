@@ -12,6 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
@@ -28,6 +30,7 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 public class DualBuildWallDisplayImpl extends StackPane {
    
    private final JenkinsDatabase database;
+   private final DualConfiguration dualConfiguration;
    private final BuildWallConfiguration rightConfiguration;
    private final BuildWallConfiguration leftConfiguration;
    private final ImageFlasherProperties imageFlasherProperties;
@@ -58,6 +61,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
    DualBuildWallDisplayImpl( JenkinsDatabase database, DualBuildWallConfigurationWindowController windowController, BuildWallConfigurationSessions sessions ) {
       this.database = database;
       this.imageFlasherProperties = new ImageFlasherPropertiesImpl();
+      this.dualConfiguration = new DualConfigurationImpl();
       this.configWindowController = windowController;
       
       this.rightConfiguration = sessions.getRightConfiguration();
@@ -85,7 +89,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
       rightGridWall = new GridWallImpl( rightConfiguration, database );
       leftGridWall = new GridWallImpl( leftConfiguration, database );
       
-      buildWallSplitter = new DualBuildWallSplitter( leftGridWall, rightGridWall );
+      buildWallSplitter = new DualBuildWallSplitter( dualConfiguration, leftGridWall, rightGridWall );
       buildWallPane = new BorderPane();
       buildWallPane.setCenter( buildWallSplitter );
       getChildren().add( buildWallPane );
@@ -107,7 +111,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
       
       configWindowController.associateWithConfiguration( 
-               leftConfiguration, rightConfiguration 
+               dualConfiguration, leftConfiguration, rightConfiguration 
       );
    }//End Method
    
@@ -230,6 +234,10 @@ public class DualBuildWallDisplayImpl extends StackPane {
    
    GridWallImpl leftGridWall(){
       return buildWallSplitter.leftGridWall();
+   }//End Method
+   
+   DualConfiguration dualConfiguration(){
+      return dualConfiguration;
    }//End Method
    
    BuildWallConfiguration rightConfiguration() {

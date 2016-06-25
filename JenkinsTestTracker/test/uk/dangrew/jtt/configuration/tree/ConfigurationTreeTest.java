@@ -27,9 +27,12 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.BuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.ColoursTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DimensionsTreeItem;
+import uk.dangrew.jtt.buildwall.configuration.tree.item.DualPropertiesTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
@@ -44,6 +47,7 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 public class ConfigurationTreeTest {
 
    @Mock private ConfigurationTreeController controller;
+   private DualConfiguration dualConfiguration;
    private BuildWallConfiguration leftConfiguration;
    private BuildWallConfiguration rightConfiguration;
    private ConfigurationTree systemUnderTest;
@@ -53,9 +57,10 @@ public class ConfigurationTreeTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       MockitoAnnotations.initMocks( this );
+      dualConfiguration = new DualConfigurationImpl();
       leftConfiguration = new BuildWallConfigurationImpl();
       rightConfiguration = new BuildWallConfigurationImpl();
-      systemUnderTest = new ConfigurationTree( controller, leftConfiguration, rightConfiguration );
+      systemUnderTest = new ConfigurationTree( controller, dualConfiguration, leftConfiguration, rightConfiguration );
    }//End Method
 
    @Test public void shouldOnlyAllowSingleItemSelections(){
@@ -79,32 +84,42 @@ public class ConfigurationTreeTest {
       return parent.getChildren().get( index ).getValue();
    }//End Method
    
-   @Test public void buildWallRootsShouldBePresentAndExpanded(){
+   @Test public void buildWallRootShouldBePresentAndExpanded(){
       TreeItem< ConfigurationItem > root = systemUnderTest.getRoot();
-      assertThat( root.getChildren(), hasSize( 2 ) );
+      assertThat( root.getChildren(), hasSize( 1 ) );
       
-      assertThat( getItem( root, 0 ), is( instanceOf( BuildWallRootItem.class ) ) );
-      assertThat( root.getChildren().get( 0 ).getChildren(), hasSize( 4 ) );
+      assertThat( getItem( root, 0 ), is( systemUnderTest.dualWallRoot().getValue() ) );
+   }//End Method
+   
+   @Test public void dualWallRootShouldBePresentAndExpanded(){
+      TreeItem< ConfigurationItem > dualWallRoot = systemUnderTest.dualWallRoot();
+      assertThat( dualWallRoot.isExpanded(), is( true ) );
       
-      getItem( root, 0 ).handleBeingSelected();
+      assertThat( dualWallRoot.getChildren().get( 0 ).getChildren(), hasSize( 0 ) );
+      getItem( dualWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
+      assertThat( getItem( dualWallRoot, 0 ), is( instanceOf( DualPropertiesTreeItem.class ) ) );
       
-      assertThat( getItem( root, 1 ), is( instanceOf( BuildWallRootItem.class ) ) );
-      assertThat( root.getChildren().get( 1 ).getChildren(), hasSize( 4 ) );
-      
-      getItem( root, 1 ).handleBeingSelected();
+      assertThat( dualWallRoot.getChildren().get( 1 ).getChildren(), hasSize( 4 ) );
+      getItem( dualWallRoot, 1 ).handleBeingSelected();
       verify( controller, times( 2 ) ).displayContent( Mockito.any(), Mockito.any() );
+      assertThat( getItem( dualWallRoot, 1 ), is( instanceOf( BuildWallRootItem.class ) ) );
+      
+      assertThat( dualWallRoot.getChildren().get( 2 ).getChildren(), hasSize( 4 ) );
+      getItem( dualWallRoot, 2 ).handleBeingSelected();
+      verify( controller, times( 3 ) ).displayContent( Mockito.any(), Mockito.any() );
+      assertThat( getItem( dualWallRoot, 2 ), is( instanceOf( BuildWallRootItem.class ) ) );
    }//End Method
    
    @Test public void dimensionItemsShouldBePresentAndAssociated(){
-      TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.getRoot().getChildren().get( 0 );
+      TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 1 );
       assertThat( getItem( leftBuildWallRoot, 0 ), is( instanceOf( DimensionsTreeItem.class ) ) );
       assertThat( getItem( leftBuildWallRoot, 0 ).isAssociatedWith( leftConfiguration ), is( true ) );
       
       getItem( leftBuildWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       
-      TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.getRoot().getChildren().get( 1 );
+      TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 2 );
       assertThat( getItem( rightBuildWallRoot, 0 ), is( instanceOf( DimensionsTreeItem.class ) ) );
       assertThat( getItem( rightBuildWallRoot, 0 ).isAssociatedWith( rightConfiguration ), is( true ) );
       
@@ -113,14 +128,14 @@ public class ConfigurationTreeTest {
    }//End Method
    
    @Test public void policyItemsShouldBePresentAndAssociated(){
-      TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.getRoot().getChildren().get( 0 );
+      TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 1 );
       assertThat( getItem( leftBuildWallRoot, 1 ), is( instanceOf( JobPolicyTreeItem.class ) ) );
       assertThat( getItem( leftBuildWallRoot, 1 ).isAssociatedWith( leftConfiguration ), is( true ) );
       
       getItem( leftBuildWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       
-      TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.getRoot().getChildren().get( 1 );
+      TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 2 );
       assertThat( getItem( rightBuildWallRoot, 1 ), is( instanceOf( JobPolicyTreeItem.class ) ) );
       assertThat( getItem( rightBuildWallRoot, 1 ).isAssociatedWith( rightConfiguration ), is( true ) );
       
@@ -129,14 +144,14 @@ public class ConfigurationTreeTest {
    }//End Method
    
    @Test public void fontItemsShouldBePresentAndAssociated(){
-      TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.getRoot().getChildren().get( 0 );
+      TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 1 );
       assertThat( getItem( leftBuildWallRoot, 2 ), is( instanceOf( FontsTreeItem.class ) ) );
       assertThat( getItem( leftBuildWallRoot, 2 ).isAssociatedWith( leftConfiguration ), is( true ) );
       
       getItem( leftBuildWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       
-      TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.getRoot().getChildren().get( 1 );
+      TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 2 );
       assertThat( getItem( rightBuildWallRoot, 2 ), is( instanceOf( FontsTreeItem.class ) ) );
       assertThat( getItem( rightBuildWallRoot, 2 ).isAssociatedWith( rightConfiguration ), is( true ) );
       
@@ -145,14 +160,14 @@ public class ConfigurationTreeTest {
    }//End Method
    
    @Test public void colourItemsShouldBePresentAndAssociated(){
-      TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.getRoot().getChildren().get( 0 );
+      TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 1 );
       assertThat( getItem( leftBuildWallRoot, 3 ), is( instanceOf( ColoursTreeItem.class ) ) );
       assertThat( getItem( leftBuildWallRoot, 3 ).isAssociatedWith( leftConfiguration ), is( true ) );
       
       getItem( leftBuildWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       
-      TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.getRoot().getChildren().get( 1 );
+      TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 2 );
       assertThat( getItem( rightBuildWallRoot, 3 ), is( instanceOf( ColoursTreeItem.class ) ) );
       assertThat( getItem( rightBuildWallRoot, 3 ).isAssociatedWith( rightConfiguration ), is( true ) );
       

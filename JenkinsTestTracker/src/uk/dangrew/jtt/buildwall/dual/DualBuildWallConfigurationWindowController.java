@@ -13,6 +13,7 @@ import com.sun.javafx.application.PlatformImpl;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 
 /**
@@ -37,16 +38,17 @@ public class DualBuildWallConfigurationWindowController {
    
    /**
     * Constructs a new {@link DualBuildWallConfigurationWindowController}.
+    * @param dualConfiguration the {@link DualConfiguration} for configuring.
     * @param leftConfiguration the {@link BuildWallConfiguration} for the left wall.
-    * @param imageFlasherProperties the {@link ImageFlasherProperties}.
     * @param rightConfiguration the {@link BuildWallConfiguration} for the right wall.
     */
    void associateWithConfiguration(
+            DualConfiguration dualConfiguration,
             BuildWallConfiguration leftConfiguration,
             BuildWallConfiguration rightConfiguration
    ) {
          ConfigurationTreePane configurationWindow = new ConfigurationTreePane( 
-                  leftConfiguration, rightConfiguration 
+                  dualConfiguration, leftConfiguration, rightConfiguration 
          );
          Scene configurationScene = new Scene( configurationWindow );
          PlatformImpl.runAndWait( () -> {

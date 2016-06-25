@@ -22,6 +22,8 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
 import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -32,6 +34,7 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
  */
 public class ConfigurationTreePaneTest {
 
+   private DualConfiguration dualConfiguration;
    private BuildWallConfiguration leftConfiguration;
    private BuildWallConfiguration rightConfiguration;
    private ConfigurationTreePane systemUnderTest;
@@ -40,15 +43,16 @@ public class ConfigurationTreePaneTest {
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
+      dualConfiguration = new DualConfigurationImpl();
       leftConfiguration = new BuildWallConfigurationImpl();
       rightConfiguration = new BuildWallConfigurationImpl();
       
-      systemUnderTest = new ConfigurationTreePane( leftConfiguration, rightConfiguration );
+      systemUnderTest = new ConfigurationTreePane( dualConfiguration, leftConfiguration, rightConfiguration );
    }//End Method
    
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> new ConfigurationTreePane( leftConfiguration, rightConfiguration ) );
+      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
       
       Thread.sleep( 1000000 );
    }//End Method

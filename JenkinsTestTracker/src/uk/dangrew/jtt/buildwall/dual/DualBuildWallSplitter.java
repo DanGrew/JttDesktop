@@ -9,7 +9,9 @@
 package uk.dangrew.jtt.buildwall.dual;
 
 import javafx.scene.control.SplitPane;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
+import uk.dangrew.jtt.javafx.splitpane.SplitPaneDividerPositionListener;
 
 /**
  * {@link DualBuildWallSplitter} is responsible for handling the splitting of a left
@@ -18,24 +20,30 @@ import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
  */
 class DualBuildWallSplitter extends SplitPane {
 
-   static final double DEFAULT_DIVIDER = 0.5;
+   private final DualConfiguration configuration;
    private final GridWallImpl rightGridWall;
    private final GridWallImpl leftGridWall;
-   private double dividerPosition;
    
    /**
     * Constructs a new {@link DualBuildWallSplitter}.
+    * @param configuration the {@link DualConfiguration} for controlling the split.
     * @param left the left {@link GridWallImpl}.
     * @param right the right {@link GridWallImpl}.
     */
-   DualBuildWallSplitter( GridWallImpl left, GridWallImpl right ) {
+   DualBuildWallSplitter( DualConfiguration configuration, GridWallImpl left, GridWallImpl right ) {
       super( left, right );
+      this.configuration = configuration;
       this.rightGridWall = right;
       this.leftGridWall = left;
-      this.dividerPosition = DEFAULT_DIVIDER;
       
       setResizableWithParent( rightGridWall, false );
       setResizableWithParent( leftGridWall, false );
+      
+      configuration.dividerPositionProperty().addListener( ( source, old, updated ) -> restoreDividerPosition() );
+      new SplitPaneDividerPositionListener( this, this::updateDividerPosition );
+      
+      configuration.dividerOrientationProperty().addListener( ( source, old, updated ) -> updateOrientation() );
+      updateOrientation();
    }//End Constructor
    
    /**
@@ -46,7 +54,7 @@ class DualBuildWallSplitter extends SplitPane {
       if ( getItems().size() != 2 ) {
          return;
       }
-      dividerPosition = getDividerPositions()[ 0 ];
+      configuration.dividerPositionProperty().set( getDividerPositions()[ 0 ] );
    }//End Method
    
    /**
@@ -57,7 +65,7 @@ class DualBuildWallSplitter extends SplitPane {
       if ( getItems().size() != 2 ) {
          return;
       }
-      setDividerPositions( dividerPosition );
+      setDividerPositions( configuration.dividerPositionProperty().get() );
    }//End Method
    
    /**
@@ -110,6 +118,13 @@ class DualBuildWallSplitter extends SplitPane {
     */
    boolean isLeftWallShowing(){
       return getItems().contains( leftGridWall );
+   }//End Method
+   
+   /**
+    * Method to update the {@link javafx.geometry.Orientation} of the {@link SplitPane}.
+    */
+   private void updateOrientation() {
+      setOrientation( configuration.dividerOrientationProperty().get() );
    }//End Method
    
    GridWallImpl rightGridWall(){

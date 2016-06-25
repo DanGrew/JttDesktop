@@ -13,28 +13,28 @@ import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
 
 /**
- * the {@link BuildWallDescriptionPanel} provides a simple panel that describes what the
- * configuration of build walls is.
+ * the {@link DualBuildWallDescriptionPanel} provides a simple panel that describes what the
+ * configuration of the dual build wall is.
  */
-public class BuildWallDescriptionPanel extends GridPane {
+public class DualBuildWallDescriptionPanel extends GridPane {
    
    static final String FIRST_SENTENCE = 
             "This area of the configuration allows you to customise how the "
-            + "an individual build wall looks and behaves. ";
+            + "dual build wall looks and behaves. ";
    static final String SECOND_PARAGRAPH = 
-            "There are two separate build walls in the dual (as the name suggests!) "
-            + "that allow you to have two streams of information, or methods of handling "
-            + "state change on the builds. Both the left and right walls are configured "
-            + "individually and persisted individually.";
+            "The dual wall itself has properties to control the layout of the "
+            + "walls within it such as orientation. The individual walls themselves "
+            + "can be configured. That will be the most useful area to consider "
+            + "since it allows you to customise the content of the walls.";
 
    private final Label firstSentence;
    private final Label firstGap;
    private final Label secondParagraph;
    
    /**
-    * Constructs a new {@link BuildWallDescriptionPanel}.
+    * Constructs a new {@link DualBuildWallDescriptionPanel}.
     */
-   public BuildWallDescriptionPanel() {
+   public DualBuildWallDescriptionPanel() {
       BuildWallConfigurationStyle styling = new BuildWallConfigurationStyle();
       
       add( 

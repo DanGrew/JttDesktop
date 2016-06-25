@@ -12,9 +12,12 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.BuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.ColoursTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DimensionsTreeItem;
+import uk.dangrew.jtt.buildwall.configuration.tree.item.DualBuildWallRootItem;
+import uk.dangrew.jtt.buildwall.configuration.tree.item.DualPropertiesTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
@@ -26,30 +29,54 @@ import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
 public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    private final ConfigurationTreeController controller;
+   private final TreeItem< ConfigurationItem > root;
+   private final TreeItem< ConfigurationItem > dualWallRoot;
    
    /**
     * Constructs a new {@link ConfigurationTree}.
     * @param controller the {@link ConfigurationTreeController} use to control the
     * overall {@link ConfigurationTreePane}.
+    * @param dualConfiguration the {@link DualConfiguration}.
     * @param leftConfiguration the left {@link BuildWallConfiguration}.
     * @param rightConfiguration the right {@link BuildWallConfiguration}.
     */
    public ConfigurationTree( 
             ConfigurationTreeController controller, 
+            DualConfiguration dualConfiguration,
             BuildWallConfiguration leftConfiguration, 
             BuildWallConfiguration rightConfiguration 
    ) {
       this.controller = controller;
       
-      TreeItem< ConfigurationItem > root = new TreeItem<>( new ConfigurationRootItem() );
-      insertBuildWallConfiguration( root, "Left", leftConfiguration );
-      insertBuildWallConfiguration( root, "Right", rightConfiguration );
+      root = new TreeItem<>( new ConfigurationRootItem() );
+      
+      dualWallRoot = new TreeItem<>( new DualBuildWallRootItem( controller ) );
+      dualWallRoot.setExpanded( true );
+      root.getChildren().add( dualWallRoot );
+      
+      insertDualProperties( dualWallRoot, dualConfiguration );
+      insertBuildWallConfiguration( dualWallRoot, "Left", leftConfiguration );
+      insertBuildWallConfiguration( dualWallRoot, "Right", rightConfiguration );
       setRoot( root );
       setShowRoot( false );
       
       getSelectionModel().setSelectionMode( SelectionMode.SINGLE );
       getSelectionModel().selectedItemProperty().addListener( ( source, old, updated ) -> updated.getValue().handleBeingSelected() );
    }//End Constructor
+   
+   /**
+    * Method to insert the {@link DualConfiguration} items into the given root.
+    * @param root the {@link TreeItem} root to insert in to.
+    * @param configuration the {@link DualConfiguration} to configure.
+    */
+   private void insertDualProperties( TreeItem< ConfigurationItem > root, DualConfiguration configuration ){
+      TreeItem<ConfigurationItem> dualProperties = new TreeItem<>(  
+               new DualPropertiesTreeItem( controller, configuration ) 
+      );
+      dualProperties.setExpanded( true );  
+      
+      root.getChildren().add( dualProperties );
+   }//End Method
    
    /**
     * Method to insert the {@link TreeItem}s for the given {@link BuildWallConfiguration} to the root.
@@ -84,6 +111,14 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       buildWallRoot.getChildren().add( colours );
       
       root.getChildren().add( buildWallRoot );
+   }//End Method
+   
+   TreeItem< ConfigurationItem > root(){
+      return root;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > dualWallRoot(){
+      return dualWallRoot;
    }//End Method
    
 }//End Class
