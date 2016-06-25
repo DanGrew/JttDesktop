@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.panel.description;
 
 import javafx.geometry.HPos;
 import javafx.scene.layout.ColumnConstraints;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
 /**

@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.panel.type;
 
 import java.util.function.BiFunction;
 
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.DetailedJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;

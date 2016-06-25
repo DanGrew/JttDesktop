@@ -21,8 +21,8 @@ import org.mockito.Spy;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 

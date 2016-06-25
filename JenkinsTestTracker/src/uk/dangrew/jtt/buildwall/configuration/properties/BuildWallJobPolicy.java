@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.buildwall.configuration;
+package uk.dangrew.jtt.buildwall.configuration.properties;
 
 import java.util.function.Predicate;
 

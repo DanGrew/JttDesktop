@@ -18,7 +18,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerBindingImpl;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;

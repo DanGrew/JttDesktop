@@ -10,9 +10,9 @@ package uk.dangrew.jtt.buildwall.layout;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationPanelImpl;
+import uk.dangrew.jtt.buildwall.configuration.components.BuildWallConfigurationPanelImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 

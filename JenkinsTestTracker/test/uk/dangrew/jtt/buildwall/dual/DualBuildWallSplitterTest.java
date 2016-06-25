@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javafx.scene.control.SplitPane;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallSplitter;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;

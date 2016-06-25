@@ -21,8 +21,8 @@ import org.junit.Test;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;

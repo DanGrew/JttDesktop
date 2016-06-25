@@ -8,8 +8,8 @@
  */
 package uk.dangrew.jtt.buildwall.configuration.tree.item;
 
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.components.JobPolicyPanel;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;

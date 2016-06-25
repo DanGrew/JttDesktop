@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationPanelImpl;
+import uk.dangrew.jtt.buildwall.configuration.components.BuildWallConfigurationPanelImpl;
 import uk.dangrew.jtt.buildwall.layout.BuildWallDisplayImpl;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;

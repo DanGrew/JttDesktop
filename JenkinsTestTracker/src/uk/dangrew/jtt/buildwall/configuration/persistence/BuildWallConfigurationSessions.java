@@ -8,8 +8,8 @@
  */
 package uk.dangrew.jtt.buildwall.configuration.persistence;
 
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;

@@ -12,7 +12,7 @@ import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 
 /**

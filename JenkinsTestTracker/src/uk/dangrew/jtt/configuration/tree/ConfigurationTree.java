@@ -11,7 +11,7 @@ package uk.dangrew.jtt.configuration.tree;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.BuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.ColoursTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DimensionsTreeItem;

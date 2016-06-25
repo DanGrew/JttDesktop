@@ -10,8 +10,8 @@ package uk.dangrew.jtt.buildwall.dual;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;

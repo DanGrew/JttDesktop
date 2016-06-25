@@ -21,8 +21,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.buildwall.panel.description.SimpleJobPanelDescriptionImpl;
