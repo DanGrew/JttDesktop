@@ -19,11 +19,8 @@ import org.junit.Test;
 
 import com.sun.javafx.application.PlatformImpl;
 
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -35,9 +32,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
  */
 public class DualBuildWallConfigurationWindowControllerTest {
    
-   private DualConfiguration dualConfig;
-   private BuildWallConfiguration rightConfig;
-   private BuildWallConfiguration leftConfig;
+   private SystemConfiguration systemConfiguration;
    private DualBuildWallConfigurationWindowController systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
@@ -45,18 +40,16 @@ public class DualBuildWallConfigurationWindowControllerTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      dualConfig = new DualConfigurationImpl();
-      rightConfig = new BuildWallConfigurationImpl();
-      leftConfig = new BuildWallConfigurationImpl();
+      systemConfiguration = new SystemConfiguration();
       
       for ( int i = 0; i < 10; i++ ) {
-         rightConfig.jobPolicies().put( new JenkinsJobImpl( "job " + i ), BuildWallJobPolicy.values()[ i % 3 ] );
+         systemConfiguration.getRightConfiguration().jobPolicies().put( new JenkinsJobImpl( "job " + i ), BuildWallJobPolicy.values()[ i % 3 ] );
       }
-      leftConfig.jobPolicies().putAll( rightConfig.jobPolicies() );
+      systemConfiguration.getLeftConfiguration().jobPolicies().putAll( systemConfiguration.getRightConfiguration().jobPolicies() );
       
       JavaFxInitializer.startPlatform();
       systemUnderTest = new DualBuildWallConfigurationWindowController();
-      systemUnderTest.associateWithConfiguration( dualConfig, leftConfig, rightConfig );
+      systemUnderTest.associateWithConfiguration( systemConfiguration );
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowShowIfNotAssociated(){

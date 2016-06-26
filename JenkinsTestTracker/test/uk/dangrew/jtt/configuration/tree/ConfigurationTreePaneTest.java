@@ -20,11 +20,8 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
 import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -34,20 +31,16 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
  */
 public class ConfigurationTreePaneTest {
 
-   private DualConfiguration dualConfiguration;
-   private BuildWallConfiguration leftConfiguration;
-   private BuildWallConfiguration rightConfiguration;
+   private SystemConfiguration systemConfiguration;
    private ConfigurationTreePane systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
-      dualConfiguration = new DualConfigurationImpl();
-      leftConfiguration = new BuildWallConfigurationImpl();
-      rightConfiguration = new BuildWallConfigurationImpl();
+      systemConfiguration = new SystemConfiguration();
       
-      systemUnderTest = new ConfigurationTreePane( dualConfiguration, leftConfiguration, rightConfiguration );
+      systemUnderTest = new ConfigurationTreePane( systemConfiguration );
    }//End Method
    
    @Ignore

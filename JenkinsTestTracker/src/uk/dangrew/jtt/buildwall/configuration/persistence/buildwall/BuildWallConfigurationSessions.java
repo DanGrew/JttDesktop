@@ -9,7 +9,6 @@
 package uk.dangrew.jtt.buildwall.configuration.persistence.buildwall;
 
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
@@ -38,13 +37,21 @@ public class BuildWallConfigurationSessions {
    /**
     * Constructs a new {@link BuildWallConfigurationSessions}.
     * @param database the {@link JenkinsDatabase} for accessing {@link uk.dangrew.jtt.model.jobs.JenkinsJob} information.
+    * @param leftConfiguration the {@link BuildWallConfiguration} for the left panel.
+    * @param rightConfiguration the {@link BuildWallConfiguration} for the right panel.
     */
-   public BuildWallConfigurationSessions( JenkinsDatabase database ) {
+   public BuildWallConfigurationSessions( 
+            JenkinsDatabase database, 
+            BuildWallConfiguration leftConfiguration, 
+            BuildWallConfiguration rightConfiguration 
+   ) {
       this( 
                database, 
+               leftConfiguration,
                new JarJsonPersistingProtocol( 
                         FOLDER_NAME, LEFT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class 
                ),
+               rightConfiguration, 
                new JarJsonPersistingProtocol( 
                         FOLDER_NAME, RIGHT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class 
                ) 
@@ -57,11 +64,17 @@ public class BuildWallConfigurationSessions {
     * @param leftProtocol the {@link JarJsonPersistingProtocol} for the left {@link BuildWallConfiguration}.
     * @param rightProtocol the {@link JarJsonPersistingProtocol} for the right {@link BuildWallConfiguration}.
     */
-   BuildWallConfigurationSessions( JenkinsDatabase database, JarJsonPersistingProtocol leftProtocol, JarJsonPersistingProtocol rightProtocol ) {
-      this.leftConfiguration = new BuildWallConfigurationImpl();
+   BuildWallConfigurationSessions( 
+            JenkinsDatabase database, 
+            BuildWallConfiguration leftConfiguration, 
+            JarJsonPersistingProtocol leftProtocol, 
+            BuildWallConfiguration rightConfiguration, 
+            JarJsonPersistingProtocol rightProtocol 
+   ) {
+      this.leftConfiguration = leftConfiguration;
       this.leftConfigurationFileLocation = leftProtocol;
       
-      this.rightConfiguration = new BuildWallConfigurationImpl();
+      this.rightConfiguration = rightConfiguration;
       this.rightConfigurationFileLocation = rightProtocol;
       
       applyDefaultConfigurations();
@@ -127,22 +140,6 @@ public class BuildWallConfigurationSessions {
       session.triggerWriteOnChange( configuration.buildNumberColour() );
       session.triggerWriteOnChange( configuration.completionEstimateColour() );
       session.triggerWriteOnChange( configuration.detailColour() );
-   }//End Method
-   
-   /**
-    * Getter for the right {@link BuildWallConfiguration}.
-    * @return the {@link BuildWallConfiguration}.
-    */
-   public BuildWallConfiguration getRightConfiguration(){
-      return rightConfiguration;
-   }//End Method
-   
-   /**
-    * Getter for the left {@link BuildWallConfiguration}.
-    * @return the {@link BuildWallConfiguration}.
-    */
-   public BuildWallConfiguration getLeftConfiguration(){
-      return leftConfiguration;
    }//End Method
    
    /**

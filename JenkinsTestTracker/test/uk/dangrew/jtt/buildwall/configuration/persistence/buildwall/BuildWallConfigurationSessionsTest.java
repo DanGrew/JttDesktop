@@ -34,8 +34,8 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
@@ -67,10 +67,10 @@ public class BuildWallConfigurationSessionsTest {
       MockitoAnnotations.initMocks( this );
       colorConverter = new ColorConverter();
       
-      systemUnderTest = new BuildWallConfigurationSessions( database, leftProtocol, rightProtocol );
+      leftConfiguration = new BuildWallConfigurationImpl();
+      rightConfiguration = new BuildWallConfigurationImpl();
       
-      leftConfiguration = systemUnderTest.getLeftConfiguration();
-      rightConfiguration = systemUnderTest.getRightConfiguration();
+      systemUnderTest = new BuildWallConfigurationSessions( database, leftConfiguration, leftProtocol, rightConfiguration, rightProtocol );
       
       latch = new CountDownLatch( 1 );
       when( leftProtocol.writeToLocation( Mockito.any() ) ).thenAnswer( invocation -> { latch.countDown(); return true; } );
@@ -82,7 +82,7 @@ public class BuildWallConfigurationSessionsTest {
    }//End Method
    
    @Test public void publicConstructorShouldDefineCorrectFileLocations(){
-      systemUnderTest = new BuildWallConfigurationSessions( database );
+      systemUnderTest = new BuildWallConfigurationSessions( database, leftConfiguration, rightConfiguration );
       assertThat( 
                systemUnderTest.leftConfigurationFileLocation().getLocation(), 
                is( new JarJsonPersistingProtocol( FOLDER_NAME, LEFT_BUILD_WALL_FILE_NAME, JenkinsTestTracker.class ).getLocation() ) 
@@ -379,12 +379,12 @@ public class BuildWallConfigurationSessionsTest {
    }//End Method
    
    @Test public void leftConfigurationShouldUseDefaults(){
-      assertThat( systemUnderTest.getLeftConfiguration().numberOfColumns().get(), is( 1 ) );
-      assertThat( systemUnderTest.getLeftConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Simple ) );
+      assertThat( leftConfiguration.numberOfColumns().get(), is( 1 ) );
+      assertThat( leftConfiguration.jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Simple ) );
    }//End Method
    
    @Test public void rightConfigurationShouldUseDefaults(){
-      assertThat( systemUnderTest.getRightConfiguration().jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
+      assertThat( rightConfiguration.jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
    }//End Method
    
 }//End Class

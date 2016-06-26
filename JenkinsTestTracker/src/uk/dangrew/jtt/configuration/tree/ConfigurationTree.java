@@ -22,6 +22,7 @@ import uk.dangrew.jtt.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 
 /**
  * The {@link ConfigurationTree} provides a {@link TreeView} for {@link ConfigurationItem}s.
@@ -36,15 +37,11 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
     * Constructs a new {@link ConfigurationTree}.
     * @param controller the {@link ConfigurationTreeController} use to control the
     * overall {@link ConfigurationTreePane}.
-    * @param dualConfiguration the {@link DualConfiguration}.
-    * @param leftConfiguration the left {@link BuildWallConfiguration}.
-    * @param rightConfiguration the right {@link BuildWallConfiguration}.
+    * @param systemConfiguration the {@link SystemConfiguration}.
     */
    public ConfigurationTree( 
             ConfigurationTreeController controller, 
-            DualConfiguration dualConfiguration,
-            BuildWallConfiguration leftConfiguration, 
-            BuildWallConfiguration rightConfiguration 
+            SystemConfiguration systemConfiguration 
    ) {
       this.controller = controller;
       
@@ -54,9 +51,9 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       dualWallRoot.setExpanded( true );
       root.getChildren().add( dualWallRoot );
       
-      insertDualProperties( dualWallRoot, dualConfiguration );
-      insertBuildWallConfiguration( dualWallRoot, "Left", leftConfiguration );
-      insertBuildWallConfiguration( dualWallRoot, "Right", rightConfiguration );
+      insertDualProperties( dualWallRoot, systemConfiguration.getDualConfiguration() );
+      insertBuildWallConfiguration( dualWallRoot, "Left", systemConfiguration.getLeftConfiguration() );
+      insertBuildWallConfiguration( dualWallRoot, "Right", systemConfiguration.getRightConfiguration() );
       setRoot( root );
       setShowRoot( false );
       

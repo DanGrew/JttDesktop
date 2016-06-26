@@ -11,9 +11,6 @@ package uk.dangrew.jtt.buildwall.dual;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
@@ -21,6 +18,7 @@ import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.configuration.ImageFlasherConfigurationPanel;
 import uk.dangrew.jtt.buildwall.effects.triggers.JobFailureTrigger;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
@@ -30,9 +28,9 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 public class DualBuildWallDisplayImpl extends StackPane {
    
    private final JenkinsDatabase database;
-   private final DualConfiguration dualConfiguration;
-   private final BuildWallConfiguration rightConfiguration;
-   private final BuildWallConfiguration leftConfiguration;
+
+   private final SystemConfiguration systemConfiguration;
+   
    private final ImageFlasherProperties imageFlasherProperties;
    private final DualBuildWallConfigurationWindowController configWindowController;
 
@@ -46,26 +44,39 @@ public class DualBuildWallDisplayImpl extends StackPane {
    /**
     * Constructs a new {@link BuildWallDisplayImpl}.
     * @param database the {@link JenkinsDatabase} associated.
+    * @param systemConfiguration the {@link SystemConfiguration}.
     */
-   public DualBuildWallDisplayImpl( JenkinsDatabase database ) {
-      this( database, new DualBuildWallConfigurationWindowController(), new BuildWallConfigurationSessions( database ) );
+   public DualBuildWallDisplayImpl( JenkinsDatabase database, SystemConfiguration systemConfiguration ) {
+      this( 
+               database, 
+               systemConfiguration, 
+               new DualBuildWallConfigurationWindowController(), 
+               new BuildWallConfigurationSessions( 
+                        database, 
+                        systemConfiguration.getLeftConfiguration(), 
+                        systemConfiguration.getRightConfiguration() 
+               )
+      );
    }//End Constructor
    
    /**
     * Constructs a new {@link BuildWallDisplayImpl}.
     * @param database the {@link JenkinsDatabase} associated.
+    * @param systemConfiguration the {@link SystemConfiguration}.
     * @param windowController the {@link DualBuildWallConfigurationWindowController} to use
     * to open a separate configuration window.
     * @param sessions the {@link BuildWallConfigurationSessions} used to persist configuration.
     */
-   DualBuildWallDisplayImpl( JenkinsDatabase database, DualBuildWallConfigurationWindowController windowController, BuildWallConfigurationSessions sessions ) {
+   DualBuildWallDisplayImpl( 
+            JenkinsDatabase database, 
+            SystemConfiguration systemConfiguration, 
+            DualBuildWallConfigurationWindowController windowController, 
+            BuildWallConfigurationSessions sessions 
+   ) {
       this.database = database;
+      this.systemConfiguration = systemConfiguration;
       this.imageFlasherProperties = new ImageFlasherPropertiesImpl();
-      this.dualConfiguration = new DualConfigurationImpl();
       this.configWindowController = windowController;
-      
-      this.rightConfiguration = sessions.getRightConfiguration();
-      this.leftConfiguration = sessions.getLeftConfiguration();
       
       applyPolicyUpdaters();
       createAndArrangeWalls();
@@ -78,18 +89,18 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Method to set up the {@link JobPolicyUpdater}s.
     */
    private void applyPolicyUpdaters(){
-      new JobPolicyUpdater( database, rightConfiguration );
-      new JobPolicyUpdater( database, leftConfiguration );
+      new JobPolicyUpdater( database, systemConfiguration.getRightConfiguration() );
+      new JobPolicyUpdater( database, systemConfiguration.getLeftConfiguration() );
    }//End Method
    
    /**
     * Method to create the {@link GridWallImpl}s and arrange them.
     */
    private void createAndArrangeWalls(){
-      rightGridWall = new GridWallImpl( rightConfiguration, database );
-      leftGridWall = new GridWallImpl( leftConfiguration, database );
+      rightGridWall = new GridWallImpl( systemConfiguration.getRightConfiguration(), database );
+      leftGridWall = new GridWallImpl( systemConfiguration.getLeftConfiguration(), database );
       
-      buildWallSplitter = new DualBuildWallSplitter( dualConfiguration, leftGridWall, rightGridWall );
+      buildWallSplitter = new DualBuildWallSplitter( systemConfiguration.getDualConfiguration(), leftGridWall, rightGridWall );
       buildWallPane = new BorderPane();
       buildWallPane.setCenter( buildWallSplitter );
       getChildren().add( buildWallPane );
@@ -111,7 +122,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
       
       configWindowController.associateWithConfiguration( 
-               dualConfiguration, leftConfiguration, rightConfiguration 
+               systemConfiguration
       );
    }//End Method
    
@@ -236,16 +247,8 @@ public class DualBuildWallDisplayImpl extends StackPane {
       return buildWallSplitter.leftGridWall();
    }//End Method
    
-   DualConfiguration dualConfiguration(){
-      return dualConfiguration;
-   }//End Method
-   
-   BuildWallConfiguration rightConfiguration() {
-      return rightConfiguration;
-   }//End Method
-   
-   BuildWallConfiguration leftConfiguration() {
-      return leftConfiguration;
+   SystemConfiguration systemConfiguration(){
+      return systemConfiguration;
    }//End Method
    
    ImageFlasherProperties imageFlasherConfiguration(){

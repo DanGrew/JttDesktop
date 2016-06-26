@@ -11,9 +11,8 @@ package uk.dangrew.jtt.configuration.tree;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
 import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 
 /**
  * The {@link ConfigurationTreePane} brings together the {@link ConfigurationTree} and
@@ -23,15 +22,13 @@ public class ConfigurationTreePane extends BorderPane {
    
    /**
     * Constructs a new {@link ConfigurationTreePane}.
-    * @param dualConfiguration the {@link DualConfiguration} for configuring the dual wall itself.
-    * @param leftConfiguration the {@link BuildWallConfiguration} for the left wall.
-    * @param rightConfiguration the {@link BuildWallConfiguration} for the right wall.
+    * @param systemConfiguration the {@link SystemConfiguration}.
     */
-   public ConfigurationTreePane( DualConfiguration dualConfiguration, BuildWallConfiguration leftConfiguration, BuildWallConfiguration rightConfiguration ) {
+   public ConfigurationTreePane( SystemConfiguration systemConfiguration ) {
       ConfigurationTreeContent content = new ConfigurationTreeContent();
       
       ConfigurationTreeController controller = new ConfigurationTreeController( content );
-      ConfigurationTree tree = new ConfigurationTree( controller, dualConfiguration, leftConfiguration, rightConfiguration );
+      ConfigurationTree tree = new ConfigurationTree( controller, systemConfiguration );
       
       tree.getSelectionModel().select( 0 );
       setLeft( tree );

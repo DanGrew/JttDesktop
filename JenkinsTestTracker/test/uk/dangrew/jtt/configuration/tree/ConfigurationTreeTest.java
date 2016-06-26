@@ -25,10 +25,6 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.BuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.ColoursTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DimensionsTreeItem;
@@ -37,6 +33,7 @@ import uk.dangrew.jtt.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -47,9 +44,7 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 public class ConfigurationTreeTest {
 
    @Mock private ConfigurationTreeController controller;
-   private DualConfiguration dualConfiguration;
-   private BuildWallConfiguration leftConfiguration;
-   private BuildWallConfiguration rightConfiguration;
+   private SystemConfiguration systemConfiguration;
    private ConfigurationTree systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
@@ -57,10 +52,8 @@ public class ConfigurationTreeTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       MockitoAnnotations.initMocks( this );
-      dualConfiguration = new DualConfigurationImpl();
-      leftConfiguration = new BuildWallConfigurationImpl();
-      rightConfiguration = new BuildWallConfigurationImpl();
-      systemUnderTest = new ConfigurationTree( controller, dualConfiguration, leftConfiguration, rightConfiguration );
+      systemConfiguration = new SystemConfiguration();
+      systemUnderTest = new ConfigurationTree( controller, systemConfiguration );
    }//End Method
 
    @Test public void shouldOnlyAllowSingleItemSelections(){
@@ -99,6 +92,7 @@ public class ConfigurationTreeTest {
       getItem( dualWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       assertThat( getItem( dualWallRoot, 0 ), is( instanceOf( DualPropertiesTreeItem.class ) ) );
+      assertThat( getItem( dualWallRoot, 0 ).isAssociatedWith( systemConfiguration.getDualConfiguration() ), is( true ) );
       
       assertThat( dualWallRoot.getChildren().get( 1 ).getChildren(), hasSize( 4 ) );
       getItem( dualWallRoot, 1 ).handleBeingSelected();
@@ -114,14 +108,14 @@ public class ConfigurationTreeTest {
    @Test public void dimensionItemsShouldBePresentAndAssociated(){
       TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 1 );
       assertThat( getItem( leftBuildWallRoot, 0 ), is( instanceOf( DimensionsTreeItem.class ) ) );
-      assertThat( getItem( leftBuildWallRoot, 0 ).isAssociatedWith( leftConfiguration ), is( true ) );
+      assertThat( getItem( leftBuildWallRoot, 0 ).isAssociatedWith( systemConfiguration.getLeftConfiguration() ), is( true ) );
       
       getItem( leftBuildWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       
       TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 2 );
       assertThat( getItem( rightBuildWallRoot, 0 ), is( instanceOf( DimensionsTreeItem.class ) ) );
-      assertThat( getItem( rightBuildWallRoot, 0 ).isAssociatedWith( rightConfiguration ), is( true ) );
+      assertThat( getItem( rightBuildWallRoot, 0 ).isAssociatedWith( systemConfiguration.getRightConfiguration() ), is( true ) );
       
       getItem( leftBuildWallRoot, 1 ).handleBeingSelected();
       verify( controller, times( 2 ) ).displayContent( Mockito.any(), Mockito.any() );
@@ -130,14 +124,14 @@ public class ConfigurationTreeTest {
    @Test public void policyItemsShouldBePresentAndAssociated(){
       TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 1 );
       assertThat( getItem( leftBuildWallRoot, 1 ), is( instanceOf( JobPolicyTreeItem.class ) ) );
-      assertThat( getItem( leftBuildWallRoot, 1 ).isAssociatedWith( leftConfiguration ), is( true ) );
+      assertThat( getItem( leftBuildWallRoot, 1 ).isAssociatedWith( systemConfiguration.getLeftConfiguration() ), is( true ) );
       
       getItem( leftBuildWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       
       TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 2 );
       assertThat( getItem( rightBuildWallRoot, 1 ), is( instanceOf( JobPolicyTreeItem.class ) ) );
-      assertThat( getItem( rightBuildWallRoot, 1 ).isAssociatedWith( rightConfiguration ), is( true ) );
+      assertThat( getItem( rightBuildWallRoot, 1 ).isAssociatedWith( systemConfiguration.getRightConfiguration() ), is( true ) );
       
       getItem( leftBuildWallRoot, 1 ).handleBeingSelected();
       verify( controller, times( 2 ) ).displayContent( Mockito.any(), Mockito.any() );
@@ -146,14 +140,14 @@ public class ConfigurationTreeTest {
    @Test public void fontItemsShouldBePresentAndAssociated(){
       TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 1 );
       assertThat( getItem( leftBuildWallRoot, 2 ), is( instanceOf( FontsTreeItem.class ) ) );
-      assertThat( getItem( leftBuildWallRoot, 2 ).isAssociatedWith( leftConfiguration ), is( true ) );
+      assertThat( getItem( leftBuildWallRoot, 2 ).isAssociatedWith( systemConfiguration.getLeftConfiguration() ), is( true ) );
       
       getItem( leftBuildWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       
       TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 2 );
       assertThat( getItem( rightBuildWallRoot, 2 ), is( instanceOf( FontsTreeItem.class ) ) );
-      assertThat( getItem( rightBuildWallRoot, 2 ).isAssociatedWith( rightConfiguration ), is( true ) );
+      assertThat( getItem( rightBuildWallRoot, 2 ).isAssociatedWith( systemConfiguration.getRightConfiguration() ), is( true ) );
       
       getItem( leftBuildWallRoot, 1 ).handleBeingSelected();
       verify( controller, times( 2 ) ).displayContent( Mockito.any(), Mockito.any() );
@@ -162,14 +156,14 @@ public class ConfigurationTreeTest {
    @Test public void colourItemsShouldBePresentAndAssociated(){
       TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 1 );
       assertThat( getItem( leftBuildWallRoot, 3 ), is( instanceOf( ColoursTreeItem.class ) ) );
-      assertThat( getItem( leftBuildWallRoot, 3 ).isAssociatedWith( leftConfiguration ), is( true ) );
+      assertThat( getItem( leftBuildWallRoot, 3 ).isAssociatedWith( systemConfiguration.getLeftConfiguration() ), is( true ) );
       
       getItem( leftBuildWallRoot, 0 ).handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
       
       TreeItem< ConfigurationItem > rightBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( 2 );
       assertThat( getItem( rightBuildWallRoot, 3 ), is( instanceOf( ColoursTreeItem.class ) ) );
-      assertThat( getItem( rightBuildWallRoot, 3 ).isAssociatedWith( rightConfiguration ), is( true ) );
+      assertThat( getItem( rightBuildWallRoot, 3 ).isAssociatedWith( systemConfiguration.getRightConfiguration() ), is( true ) );
       
       getItem( leftBuildWallRoot, 1 ).handleBeingSelected();
       verify( controller, times( 2 ) ).displayContent( Mockito.any(), Mockito.any() );

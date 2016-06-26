@@ -37,13 +37,11 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -66,8 +64,7 @@ public class DualBuildWallDisplayImplTest {
    private JenkinsDatabase database;
    private DualBuildWallDisplayImpl systemUnderTest;
 
-   private BuildWallConfiguration leftConfiguration;
-   private BuildWallConfiguration rightConfiguration;
+   private SystemConfiguration systemConfiguration;
    
    @BeforeClass public static void initialiseStylings(){
       SystemStyling.initialise();
@@ -108,15 +105,12 @@ public class DualBuildWallDisplayImplTest {
       
       JavaFxInitializer.startPlatform();
       
-      leftConfiguration = new BuildWallConfigurationImpl();
-      when( sessions.getLeftConfiguration() ).thenReturn( leftConfiguration );
-      rightConfiguration = new BuildWallConfigurationImpl();
-      when( sessions.getRightConfiguration() ).thenReturn( rightConfiguration );
+      systemConfiguration = new SystemConfiguration();
       
-      systemUnderTest = new DualBuildWallDisplayImpl( database, windowController, sessions );
+      systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration, windowController, sessions );
       
-      systemUnderTest.leftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
-      systemUnderTest.rightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
+      systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
+      systemConfiguration.getRightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
       PlatformImpl.runAndWait( () -> {} );
    }//End Method
    
@@ -124,7 +118,7 @@ public class DualBuildWallDisplayImplTest {
    @Test public void manualInspection() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
-         systemUnderTest = new DualBuildWallDisplayImpl( database );
+         systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration );
          systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
       } );
@@ -142,15 +136,15 @@ public class DualBuildWallDisplayImplTest {
       Thread.sleep( 4000 );
 
       PlatformImpl.runAndWait( () -> {
-         systemUnderTest.rightConfiguration().jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Default );
-         for ( Entry< JenkinsJob, BuildWallJobPolicy > entry : systemUnderTest.rightConfiguration().jobPolicies().entrySet() ) {
+         systemConfiguration.getRightConfiguration().jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Default );
+         for ( Entry< JenkinsJob, BuildWallJobPolicy > entry : systemConfiguration.getRightConfiguration().jobPolicies().entrySet() ) {
             entry.setValue( BuildWallJobPolicy.NeverShow );
          }
       } );
       
       PlatformImpl.runAndWait( () -> {
-         systemUnderTest.rightConfiguration().jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
-         for ( Entry< JenkinsJob, BuildWallJobPolicy > entry : systemUnderTest.rightConfiguration().jobPolicies().entrySet() ) {
+         systemConfiguration.getRightConfiguration().jobPanelDescriptionProvider().set( JobPanelDescriptionProviders.Detailed );
+         for ( Entry< JenkinsJob, BuildWallJobPolicy > entry : systemConfiguration.getRightConfiguration().jobPolicies().entrySet() ) {
             entry.setValue( BuildWallJobPolicy.AlwaysShow );
          }
       } );
@@ -164,36 +158,36 @@ public class DualBuildWallDisplayImplTest {
       Thread.sleep( 4000 );
 
       PlatformImpl.runAndWait( () -> {
-         systemUnderTest.rightConfiguration().jobPolicies().entrySet()
+         systemConfiguration.getRightConfiguration().jobPolicies().entrySet()
             .forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
       } );
       
       Thread.sleep( 4000 );
 
       PlatformImpl.runAndWait( () -> {
-         systemUnderTest.rightConfiguration().jobPolicies().entrySet()
+         systemConfiguration.getRightConfiguration().jobPolicies().entrySet()
             .forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
       } );
       
       Thread.sleep( 4000 );
 
       PlatformImpl.runAndWait( () -> {
-         systemUnderTest.rightConfiguration().jobPolicies().entrySet()
+         systemConfiguration.getRightConfiguration().jobPolicies().entrySet()
             .forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
       } );
       
       Thread.sleep( 4000 );
 
       PlatformImpl.runAndWait( () -> {
-         systemUnderTest.leftConfiguration().jobPolicies().entrySet()
+         systemConfiguration.getLeftConfiguration().jobPolicies().entrySet()
             .forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
       } );
       
       Thread.sleep( 4000 );
 
       PlatformImpl.runAndWait( () -> {
-         systemUnderTest.rightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
-         systemUnderTest.leftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+         systemConfiguration.getRightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+         systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
       } );
       
       Thread.sleep( 10000000 );
@@ -222,13 +216,13 @@ public class DualBuildWallDisplayImplTest {
    
    @Test public void shouldEnsureConfigurationIsUpdatedInitiallyAndWhenDatabaseIsUpdatedForBothWallsIndividually(){
       assertThat( database.jenkinsJobs().size(), is( 15 ) );
-      assertThat( systemUnderTest.rightConfiguration().jobPolicies().size(), is( 15 ) );
-      assertThat( systemUnderTest.leftConfiguration().jobPolicies().size(), is( 15 ) );
+      assertThat( systemConfiguration.getRightConfiguration().jobPolicies().size(), is( 15 ) );
+      assertThat( systemConfiguration.getLeftConfiguration().jobPolicies().size(), is( 15 ) );
       
       JenkinsJob job = new JenkinsJobImpl( "something-else" );
       database.store( job );
-      assertThat( systemUnderTest.rightConfiguration().jobPolicies().containsKey( job ), is( true ) );
-      assertThat( systemUnderTest.leftConfiguration().jobPolicies().containsKey( job ), is( true ) );
+      assertThat( systemConfiguration.getRightConfiguration().jobPolicies().containsKey( job ), is( true ) );
+      assertThat( systemConfiguration.getLeftConfiguration().jobPolicies().containsKey( job ), is( true ) );
    }//End Method
    
    @Test public void shouldProvideGridWallsInSplitPaneForManualSplitting(){
@@ -282,22 +276,22 @@ public class DualBuildWallDisplayImplTest {
    
    @Test public void shouldAutoHideAndAutoShowRightWall(){
       assertThat( systemUnderTest.isRightWallShowing(), is( true ) );
-      systemUnderTest.rightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      systemConfiguration.getRightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
       PlatformImpl.runAndWait( () -> {} );
       assertThat( systemUnderTest.isRightWallShowing(), is( false ) );
       
-      systemUnderTest.rightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      systemConfiguration.getRightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
       PlatformImpl.runAndWait( () -> {} );
       assertThat( systemUnderTest.isRightWallShowing(), is( true ) );
    }//End Method
    
    @Test public void shouldLeftHideAndAutoShowLeftWall(){
       assertThat( systemUnderTest.isLeftWallShowing(), is( true ) );
-      systemUnderTest.leftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
       PlatformImpl.runAndWait( () -> {} );
       assertThat( systemUnderTest.isLeftWallShowing(), is( false ) );
       
-      systemUnderTest.leftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
       PlatformImpl.runAndWait( () -> {} );
       assertThat( systemUnderTest.isLeftWallShowing(), is( true ) );
    }//End Method
@@ -306,10 +300,10 @@ public class DualBuildWallDisplayImplTest {
       final double dividerLocation = 0.8;
       systemUnderTest.splitPane().setDividerPosition( 0, dividerLocation );
       
-      systemUnderTest.leftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
       PlatformImpl.runAndWait( () -> {} );
       
-      systemUnderTest.leftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
       PlatformImpl.runAndWait( () -> {} );
       
       assertThat( systemUnderTest.splitPane().getDividerPositions()[ 0 ], closeTo( dividerLocation, TestCommon.precision() ) );
@@ -319,10 +313,10 @@ public class DualBuildWallDisplayImplTest {
       final double dividerLocation = 0.8;
       systemUnderTest.splitPane().setDividerPosition( 0, dividerLocation );
       
-      systemUnderTest.rightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
+      systemConfiguration.getRightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
       PlatformImpl.runAndWait( () -> {} );
       
-      systemUnderTest.rightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
+      systemConfiguration.getRightConfiguration().jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
       PlatformImpl.runAndWait( () -> {} );
       
       assertThat( systemUnderTest.splitPane().getDividerPositions()[ 0 ], closeTo( dividerLocation, TestCommon.precision() ) );
@@ -351,9 +345,7 @@ public class DualBuildWallDisplayImplTest {
    
    @Test public void shouldAssociateConfigurationWindowController(){
       verify( windowController ).associateWithConfiguration( 
-               systemUnderTest.dualConfiguration(),
-               systemUnderTest.leftConfiguration(), 
-               systemUnderTest.rightConfiguration() 
+               systemConfiguration 
       );
    }//End Method
    
@@ -381,8 +373,4 @@ public class DualBuildWallDisplayImplTest {
       verify( windowController, times( 3 ) ).isConfigurationWindowShowing();
    }//End Method
    
-   @Test public void shouldUseSessionsConfiguration(){
-      assertThat( systemUnderTest.leftConfiguration(), is( leftConfiguration ) );
-      assertThat( systemUnderTest.rightConfiguration(), is( rightConfiguration ) );
-   }//End Method
 }//End Class

@@ -34,8 +34,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -90,7 +89,7 @@ public class DualBuildWallContextMenuTest {
    private void fullLaunch(){
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
-         display = new DualBuildWallDisplayImpl( new JenkinsDatabaseImpl() );
+         display = new DualBuildWallDisplayImpl( new JenkinsDatabaseImpl(), new SystemConfiguration() );
          opener = new DualBuildWallContextMenuOpener( display, systemUnderTest );
          display.setOnContextMenuRequested( opener );
          return display; 
@@ -200,12 +199,11 @@ public class DualBuildWallContextMenuTest {
     */
    private void digestControlPreconditions(){
       BuildWallConfigurationSessions sessions = mock( BuildWallConfigurationSessions.class );
-      BuildWallConfiguration anyConfiguration = new BuildWallConfigurationImpl();
-      when( sessions.getLeftConfiguration() ).thenReturn( anyConfiguration );
-      when( sessions.getRightConfiguration() ).thenReturn( anyConfiguration );
+      SystemConfiguration systemConfiguration = new SystemConfiguration();
       
       display = new DualBuildWallDisplayImpl( 
-               new JenkinsDatabaseImpl(), 
+               new JenkinsDatabaseImpl(),
+               systemConfiguration,
                mock( DualBuildWallConfigurationWindowController.class ),
                sessions
       );
