@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.buildwall.configuration.persistence;
+package uk.dangrew.jtt.buildwall.configuration.persistence.buildwall;
 
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationModel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;

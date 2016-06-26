@@ -36,7 +36,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
-import uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions;
+import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;

@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.buildwall.configuration.persistence;
+package uk.dangrew.jtt.buildwall.configuration.persistence.buildwall;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;

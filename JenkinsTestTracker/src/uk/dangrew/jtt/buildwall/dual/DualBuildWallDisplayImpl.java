@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.dual;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions;
+import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;

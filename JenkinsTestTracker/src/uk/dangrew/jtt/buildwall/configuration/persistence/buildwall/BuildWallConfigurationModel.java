@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.buildwall.configuration.persistence;
+package uk.dangrew.jtt.buildwall.configuration.persistence.buildwall;
 
 import java.util.ArrayList;
 import java.util.List;

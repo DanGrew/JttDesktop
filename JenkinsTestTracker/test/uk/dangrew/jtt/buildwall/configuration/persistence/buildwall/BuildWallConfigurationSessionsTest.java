@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.buildwall.configuration.persistence;
+package uk.dangrew.jtt.buildwall.configuration.persistence.buildwall;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -15,9 +15,9 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions.FOLDER_NAME;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions.LEFT_BUILD_WALL_FILE_NAME;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationSessions.RIGHT_BUILD_WALL_FILE_NAME;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions.FOLDER_NAME;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions.LEFT_BUILD_WALL_FILE_NAME;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions.RIGHT_BUILD_WALL_FILE_NAME;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -34,6 +34,7 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;

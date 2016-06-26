@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.buildwall.configuration.persistence;
+package uk.dangrew.jtt.buildwall.configuration.persistence.buildwall;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
@@ -17,27 +17,27 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_NUMBER_COLOUR;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_NUMBER_FAMILY;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_NUMBER_SIZE;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_COLOUR;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_FAMILY;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_SIZE;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.BUILD_WALL;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COLOURS;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.COLUMNS;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.DESCRIPTION_TYPE;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.DETAIL_COLOUR;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.DETAIL_FAMILY;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.DETAIL_SIZE;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.DIMENSIONS;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.FONTS;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.JOB_NAME;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.JOB_NAME_COLOUR;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.JOB_NAME_FAMILY;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.JOB_NAME_SIZE;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.JOB_POLICIES;
-import static uk.dangrew.jtt.buildwall.configuration.persistence.BuildWallConfigurationPersistence.POLICY;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.BUILD_NUMBER_COLOUR;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.BUILD_NUMBER_FAMILY;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.BUILD_NUMBER_SIZE;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.BUILD_WALL;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.COLOURS;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.COLUMNS;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_COLOUR;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_FAMILY;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.COMPLETION_ESTIMATE_SIZE;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.DESCRIPTION_TYPE;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.DETAIL_COLOUR;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.DETAIL_FAMILY;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.DETAIL_SIZE;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.DIMENSIONS;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.FONTS;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.JOB_NAME;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.JOB_NAME_COLOUR;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.JOB_NAME_FAMILY;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.JOB_NAME_SIZE;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.JOB_POLICIES;
+import static uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence.POLICY;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,6 +47,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationModel;
+import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
