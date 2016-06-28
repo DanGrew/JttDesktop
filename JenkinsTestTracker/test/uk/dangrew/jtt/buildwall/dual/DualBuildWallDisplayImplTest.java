@@ -37,6 +37,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
+import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
@@ -61,6 +62,7 @@ public class DualBuildWallDisplayImplTest {
 
    @Mock private DualBuildWallConfigurationWindowController windowController;
    @Mock private BuildWallConfigurationSessions sessions;
+   @Mock private DualWallConfigurationSessions dualSessions;
    private JenkinsDatabase database;
    private DualBuildWallDisplayImpl systemUnderTest;
 
@@ -107,7 +109,7 @@ public class DualBuildWallDisplayImplTest {
       
       systemConfiguration = new SystemConfiguration();
       
-      systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration, windowController, sessions );
+      systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration, windowController, sessions, dualSessions );
       
       systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
       systemConfiguration.getRightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );

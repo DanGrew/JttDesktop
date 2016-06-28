@@ -19,24 +19,24 @@ import org.junit.Test;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
- * {@link DualConfigurationImpl} test.
+ * {@link DualWallConfigurationImpl} test.
  */
 public class DualConfigurationImplTest {
 
-   private DualConfiguration systemUnderTest;
+   private DualWallConfiguration systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      systemUnderTest = new DualConfigurationImpl();
+      systemUnderTest = new DualWallConfigurationImpl();
    }//End Method
    
    @Test public void shouldProvideDividerPositionProperty() {
       assertThat( systemUnderTest.dividerPositionProperty(), is( notNullValue() ) );
-      assertThat( systemUnderTest.dividerPositionProperty().get(), is( closeTo( DualConfigurationImpl.DEFAULT_DIVIDER_POSITION, TestCommon.precision() ) ) );
+      assertThat( systemUnderTest.dividerPositionProperty().get(), is( closeTo( DualWallConfigurationImpl.DEFAULT_DIVIDER_POSITION, TestCommon.precision() ) ) );
    }//End Method
    
    @Test public void shouldProvideDividerOrientationProperty() {
       assertThat( systemUnderTest.dividerOrientationProperty(), is( notNullValue() ) );
-      assertThat( systemUnderTest.dividerOrientationProperty().get(), is( DualConfigurationImpl.DEFAULT_DIVIDER_ORIENTATION ) );
+      assertThat( systemUnderTest.dividerOrientationProperty().get(), is( DualWallConfigurationImpl.DEFAULT_DIVIDER_ORIENTATION ) );
    }//End Method
 
 }//End Class

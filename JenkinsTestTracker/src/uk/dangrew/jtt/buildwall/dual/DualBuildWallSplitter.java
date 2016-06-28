@@ -9,7 +9,7 @@
 package uk.dangrew.jtt.buildwall.dual;
 
 import javafx.scene.control.SplitPane;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.javafx.splitpane.SplitPaneDividerPositionListener;
 
@@ -20,17 +20,17 @@ import uk.dangrew.jtt.javafx.splitpane.SplitPaneDividerPositionListener;
  */
 class DualBuildWallSplitter extends SplitPane {
 
-   private final DualConfiguration configuration;
+   private final DualWallConfiguration configuration;
    private final GridWallImpl rightGridWall;
    private final GridWallImpl leftGridWall;
    
    /**
     * Constructs a new {@link DualBuildWallSplitter}.
-    * @param configuration the {@link DualConfiguration} for controlling the split.
+    * @param configuration the {@link DualWallConfiguration} for controlling the split.
     * @param left the left {@link GridWallImpl}.
     * @param right the right {@link GridWallImpl}.
     */
-   DualBuildWallSplitter( DualConfiguration configuration, GridWallImpl left, GridWallImpl right ) {
+   DualBuildWallSplitter( DualWallConfiguration configuration, GridWallImpl left, GridWallImpl right ) {
       super( left, right );
       this.configuration = configuration;
       this.rightGridWall = right;
@@ -40,6 +40,7 @@ class DualBuildWallSplitter extends SplitPane {
       setResizableWithParent( leftGridWall, false );
       
       configuration.dividerPositionProperty().addListener( ( source, old, updated ) -> restoreDividerPosition() );
+      restoreDividerPosition();
       new SplitPaneDividerPositionListener( this, this::updateDividerPosition );
       
       configuration.dividerOrientationProperty().addListener( ( source, old, updated ) -> updateOrientation() );

@@ -15,9 +15,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Orientation;
 
 /**
- * {@link DualConfigurationImpl} provides a basic implementation of {@link DualConfiguration}.
+ * {@link DualConfigurationImpl} provides a basic implementation of {@link DualWallConfiguration}.
  */
-public class DualConfigurationImpl implements DualConfiguration{
+public class DualWallConfigurationImpl implements DualWallConfiguration{
    
    static final double DEFAULT_DIVIDER_POSITION = 0.5;
    static final Orientation DEFAULT_DIVIDER_ORIENTATION = Orientation.HORIZONTAL;
@@ -28,7 +28,7 @@ public class DualConfigurationImpl implements DualConfiguration{
    /**
     * Constructs a new {@link DualConfigurationImpl}.
     */
-   public DualConfigurationImpl() {
+   public DualWallConfigurationImpl() {
       this.dividerPositionProperty = new SimpleDoubleProperty( DEFAULT_DIVIDER_POSITION );
       this.dividerOrientationProperty = new SimpleObjectProperty< Orientation >( DEFAULT_DIVIDER_ORIENTATION );
    }//End Constructor

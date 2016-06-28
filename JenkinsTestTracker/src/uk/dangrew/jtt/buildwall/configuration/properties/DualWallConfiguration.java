@@ -13,10 +13,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Orientation;
 
 /**
- * {@link DualConfiguration} provides the interface for the configurable properties of
+ * {@link DualWallConfiguration} provides the interface for the configurable properties of
  * the {@link uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl}.
  */
-public interface DualConfiguration {
+public interface DualWallConfiguration {
 
    /** 
     * Accesses the property for controlling the divider position.

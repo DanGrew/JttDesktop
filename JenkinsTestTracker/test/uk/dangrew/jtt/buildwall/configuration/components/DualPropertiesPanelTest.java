@@ -26,8 +26,8 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 
@@ -36,14 +36,14 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
  */
 public class DualPropertiesPanelTest {
    
-   private DualConfiguration configuration;
+   private DualWallConfiguration configuration;
    @Spy private BuildWallConfigurationStyle styling;
    private DualPropertiesPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      configuration = new DualConfigurationImpl();
+      configuration = new DualWallConfigurationImpl();
       systemUnderTest = new DualPropertiesPanel( configuration, styling );
    }//End Method
 
@@ -183,6 +183,6 @@ public class DualPropertiesPanelTest {
 
    @Test public void shouldDetermineWhetherItHasGivenConfiguration(){
       assertThat( systemUnderTest.hasConfiguration( configuration ), is( true ) );
-      assertThat( systemUnderTest.hasConfiguration( new DualConfigurationImpl() ), is( false ) );
+      assertThat( systemUnderTest.hasConfiguration( new DualWallConfigurationImpl() ), is( false ) );
    }//End Method
 }//End Constructor

@@ -9,7 +9,7 @@
 package uk.dangrew.jtt.buildwall.configuration.tree.item;
 
 import uk.dangrew.jtt.buildwall.configuration.components.DualPropertiesPanel;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
@@ -26,14 +26,14 @@ public class DualPropertiesTreeItem extends SimpleConfigurationItem {
             "The following properties apply to the dual wall as a whole and control "
             + "how it is displayed.";
    
-   private final DualConfiguration configuration;
+   private final DualWallConfiguration configuration;
    
    /**
     * Constructs a new {@link DualPropertiesTreeItem}.
     * @param controller the {@link ConfigurationTreeController} for controlling the configuration.
-    * @param configuration the {@link DualConfiguration} associated.
+    * @param configuration the {@link DualWallConfiguration} associated.
     */
-   public DualPropertiesTreeItem( ConfigurationTreeController controller, DualConfiguration configuration ) {
+   public DualPropertiesTreeItem( ConfigurationTreeController controller, DualWallConfiguration configuration ) {
       super( 
                NAME, 
                new SimpleConfigurationTitle( TITLE, DESCRIPTION ),

@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
 import uk.dangrew.jtt.javafx.spinner.DoublePropertySpinner;
 
@@ -27,7 +27,7 @@ public class DualPropertiesPanel extends GridPane {
    static final double MAXIMUM_POSITION = 1;
    static final double POSITION_INTERVAL = 0.005;
    
-   private final DualConfiguration configuration;
+   private final DualWallConfiguration configuration;
    
    private final Label positionLabel;
    private final DoublePropertySpinner positionSpinner;
@@ -38,18 +38,18 @@ public class DualPropertiesPanel extends GridPane {
    
    /**
     * Constructs a new {@link DualPropertiesPanel}.
-    * @param configuration the {@link DualConfiguration} associated, to configure.
+    * @param configuration the {@link DualWallConfiguration} associated, to configure.
     */
-   public DualPropertiesPanel( DualConfiguration configuration ) {
+   public DualPropertiesPanel( DualWallConfiguration configuration ) {
       this( configuration, new BuildWallConfigurationStyle() );
    }//End Constructor
    
    /**
     * Constructs a new {@link DualPropertiesPanel}.
-    * @param configuration the {@link DualConfiguration} associated, to configure.
+    * @param configuration the {@link DualWallConfiguration} associated, to configure.
     * @param styling the {@link BuildWallConfigurationStyle} to apply.
     */
-   DualPropertiesPanel( DualConfiguration configuration, BuildWallConfigurationStyle styling ) {
+   DualPropertiesPanel( DualWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
       this.configuration = configuration;
       
       positionLabel = styling.createBoldLabel( "Divider Position" );
@@ -110,7 +110,7 @@ public class DualPropertiesPanel extends GridPane {
     * @param configuration the {@link DualConfiguration} in question.
     * @return true if associated.
     */
-   public boolean hasConfiguration( DualConfiguration configuration ) {
+   public boolean hasConfiguration( DualWallConfiguration configuration ) {
       return this.configuration.equals( configuration );
    }//End Method
 

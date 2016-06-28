@@ -21,8 +21,8 @@ import org.junit.Test;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -35,7 +35,7 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
  */
 public class DualBuildWallSplitterTest {
 
-   private DualConfiguration configuration;
+   private DualWallConfiguration configuration;
    private GridWallImpl right;
    private GridWallImpl left;
    private DualBuildWallSplitter systemUnderTest;
@@ -47,7 +47,7 @@ public class DualBuildWallSplitterTest {
    
    @Before public void initialiseSystemUnderTest(){
       JenkinsDatabase database = new JenkinsDatabaseImpl();
-      configuration = new DualConfigurationImpl();
+      configuration = new DualWallConfigurationImpl();
       right = new GridWallImpl( new BuildWallConfigurationImpl(), database );
       left = new GridWallImpl( new BuildWallConfigurationImpl(), database );
       systemUnderTest = new DualBuildWallSplitter( configuration, left, right );
@@ -207,6 +207,12 @@ public class DualBuildWallSplitterTest {
       
       configuration.dividerPositionProperty().set( 0.2 );
       assertDividerPosition( 0.2 );
+   }//End Method
+   
+   @Test public void shouldUseInitialConfiguration(){
+      configuration.dividerPositionProperty().set( 0.8 );
+      systemUnderTest = new DualBuildWallSplitter( configuration, left, right );
+      assertDividerPosition( 0.8 );
    }//End Method
    
    @Test public void shouldUpdateOrientationWhenConfigurationChanges(){

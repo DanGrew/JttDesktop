@@ -22,8 +22,8 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
 import uk.dangrew.jtt.buildwall.configuration.components.DualPropertiesPanel;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfigurationImpl;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -33,7 +33,7 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
  */
 public class DualPropertiesTreeItemTest {
 
-   private DualConfiguration configuration;
+   private DualWallConfiguration configuration;
    @Mock private ConfigurationTreeController controller;
    @Captor private ArgumentCaptor< Node > contentTitleCaptor;
    @Captor private ArgumentCaptor< Node > contentCaptor;
@@ -43,7 +43,7 @@ public class DualPropertiesTreeItemTest {
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      configuration = new DualConfigurationImpl();
+      configuration = new DualWallConfigurationImpl();
       systemUnderTest = new DualPropertiesTreeItem( controller, configuration );
    }//End Method
    

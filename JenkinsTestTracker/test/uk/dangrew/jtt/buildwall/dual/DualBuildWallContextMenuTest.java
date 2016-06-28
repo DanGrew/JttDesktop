@@ -34,6 +34,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
+import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -199,13 +200,15 @@ public class DualBuildWallContextMenuTest {
     */
    private void digestControlPreconditions(){
       BuildWallConfigurationSessions sessions = mock( BuildWallConfigurationSessions.class );
+      DualWallConfigurationSessions dualSessions = mock( DualWallConfigurationSessions.class );
       SystemConfiguration systemConfiguration = new SystemConfiguration();
       
       display = new DualBuildWallDisplayImpl( 
                new JenkinsDatabaseImpl(),
                systemConfiguration,
                mock( DualBuildWallConfigurationWindowController.class ),
-               sessions
+               sessions,
+               dualSessions
       );
       
       BorderPane parent = new BorderPane( display );

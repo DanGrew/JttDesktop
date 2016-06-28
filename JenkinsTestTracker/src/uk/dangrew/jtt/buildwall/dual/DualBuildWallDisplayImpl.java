@@ -11,6 +11,7 @@ package uk.dangrew.jtt.buildwall.dual;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
+import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
@@ -55,7 +56,8 @@ public class DualBuildWallDisplayImpl extends StackPane {
                         database, 
                         systemConfiguration.getLeftConfiguration(), 
                         systemConfiguration.getRightConfiguration() 
-               )
+               ),
+               new DualWallConfigurationSessions( systemConfiguration.getDualConfiguration() )
       );
    }//End Constructor
    
@@ -65,13 +67,15 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * @param systemConfiguration the {@link SystemConfiguration}.
     * @param windowController the {@link DualBuildWallConfigurationWindowController} to use
     * to open a separate configuration window.
-    * @param sessions the {@link BuildWallConfigurationSessions} used to persist configuration.
+    * @param wallSessions the {@link BuildWallConfigurationSessions} used to persist configuration.
+    * @param dualSessions the {@link DualWallConfigurationSessions} used to persist {@link uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration}.
     */
    DualBuildWallDisplayImpl( 
             JenkinsDatabase database, 
             SystemConfiguration systemConfiguration, 
             DualBuildWallConfigurationWindowController windowController, 
-            BuildWallConfigurationSessions sessions 
+            BuildWallConfigurationSessions wallSessions,
+            DualWallConfigurationSessions dualSessions
    ) {
       this.database = database;
       this.systemConfiguration = systemConfiguration;

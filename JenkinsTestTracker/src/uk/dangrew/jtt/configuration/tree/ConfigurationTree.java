@@ -12,7 +12,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.properties.DualConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.BuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.ColoursTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DimensionsTreeItem;
@@ -66,7 +66,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
     * @param root the {@link TreeItem} root to insert in to.
     * @param configuration the {@link DualConfiguration} to configure.
     */
-   private void insertDualProperties( TreeItem< ConfigurationItem > root, DualConfiguration configuration ){
+   private void insertDualProperties( TreeItem< ConfigurationItem > root, DualWallConfiguration configuration ){
       TreeItem<ConfigurationItem> dualProperties = new TreeItem<>(  
                new DualPropertiesTreeItem( controller, configuration ) 
       );
