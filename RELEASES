@@ -1,3 +1,7 @@
-Release: "1.4.103"
-Download: "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.103/JenkinsTestTracker-1.4.103.jar"
-Description: "This is the first downloadable for testing purposes."
+Release, "1.4.103"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.103/JenkinsTestTracker-1.4.103.jar"
+Description, "This is the first downloadable for testing purposes."
+
+Release, "1.4.106 (Jun 28, 2016 7:22:08 AM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.106/JenkinsTestTracker-1.4.106.jar"
+Description, "Implemented persistence object along with model to support read and write of dual wall configuration. Hooked up to dual wall display in same way as the individual wall persistence. Dual wall configuration is now persisted between runs. Refactored dual configuration to follow naming convention to avoid confusion in future. Resolved an issue with the split in the dual wall not checking initial divider position from configuration."
