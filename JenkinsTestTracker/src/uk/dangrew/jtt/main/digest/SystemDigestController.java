@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.main.digest;
 
+import java.time.LocalDateTime;
+
 import uk.dangrew.jtt.main.JenkinsTestTracker;
 import uk.dangrew.jtt.utility.time.DefaultTimestampProvider;
 import uk.dangrew.jtt.utility.time.TimestampProvider;
@@ -24,6 +26,7 @@ public class SystemDigestController {
    
    static final String LOG_FILE_SUFFIX = "-log.txt";
    static final String FOLDER_NAME = "uk.dangrew.jtt.logs";
+   
    private final DigestViewer digestViewer;
    private final JarLoggingProtocol protocol;
    
@@ -42,7 +45,7 @@ public class SystemDigestController {
     */
    SystemDigestController( TimestampProvider timestampProvider, ThreadedWrapper threadWrapper, DigestFileLogger logger ) {
       this.digestViewer = new DigestViewer( 600, 200 );
-      this.protocol = new JarLoggingProtocol( FOLDER_NAME, timestampProvider.get().toString() + LOG_FILE_SUFFIX, JenkinsTestTracker.class );
+      this.protocol = new JarLoggingProtocol( FOLDER_NAME, makeFilePrefix( timestampProvider.get() ) + LOG_FILE_SUFFIX, JenkinsTestTracker.class );
       logger.setFileLocation( protocol );
       threadWrapper.wrap( logger, -1 );
    }//End Constructor
@@ -61,6 +64,15 @@ public class SystemDigestController {
     */
    public String getLoggingLocation(){
       return protocol.getLocation();
+   }//End Method
+
+   /**
+    * Method to make a prefix for the file to log to given the {@link LocalDateTime} for now.
+    * @param localDateTime the {@link LocalDateTime} to make for.
+    * @return the {@link String} prefix.
+    */
+   String makeFilePrefix( LocalDateTime localDateTime ) {
+      return localDateTime.toString().replace( ":", "-" ).replace( "T", "at" );
    }//End Method
    
 }//End Class

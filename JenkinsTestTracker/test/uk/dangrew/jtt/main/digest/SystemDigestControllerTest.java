@@ -10,6 +10,7 @@ package uk.dangrew.jtt.main.digest;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
@@ -61,8 +62,15 @@ public class SystemDigestControllerTest {
       
       assertThat( systemUnderTest.getLoggingLocation(), is( protocolCaptor.getValue().getLocation() ) );
       assertThat( systemUnderTest.getLoggingLocation(), containsString( 
-               SystemDigestController.FOLDER_NAME + "/" + timestampProvider.get().toString() + SystemDigestController.LOG_FILE_SUFFIX 
+               SystemDigestController.FOLDER_NAME + "/" + systemUnderTest.makeFilePrefix( timestampProvider.get() ) + SystemDigestController.LOG_FILE_SUFFIX 
       ) );
+   }//End Method
+   
+   @Test public void shouldMakeFilePrefixCompatibleWithAllOperatingSystems(){
+      assertThat( systemUnderTest.makeFilePrefix( timestampProvider.get() ), is( "-999999999-01-01at00-00" ) );
+      String current = systemUnderTest.makeFilePrefix( LocalDateTime.now() );
+      assertThat( current, containsString( "at" ) );
+      assertThat( current, not( containsString( ":" ) ) );
    }//End Method
 
 }//End Class
