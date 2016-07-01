@@ -115,6 +115,14 @@ task packageTests(type: Jar) {
 }
 artifacts.archives packageTests
 
+//task to write the version number to the version file
+task versioning << {
+   File file = new File( "${projectDir}/src/uk/dangrew/jtt/VERSION" )
+   print( file.absolutePath )
+   file.write( version )
+}
+compileJava.dependsOn versioning
+
 /*
  * SHADOW: configure runnable element
  */
