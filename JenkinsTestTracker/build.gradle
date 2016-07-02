@@ -121,7 +121,7 @@ task versioning << {
    print( file.absolutePath )
    file.write( version )
 }
-compileJava.finalizedBy( versioning )
+processResources.finalizedBy( versioning )
 
 /*
  * SHADOW: configure runnable element
