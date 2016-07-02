@@ -117,11 +117,11 @@ artifacts.archives packageTests
 
 //task to write the version number to the version file
 task versioning << {
-   File file = new File( "${sourceSets.main.output.resourcesDir}/uk/dangrew/jtt/VERSION" )
+   File file = new File( "${projectDir}/src/uk/dangrew/jtt/VERSION" )
    print( file.absolutePath )
    file.write( version )
 }
-processResources.finalizedBy( versioning )
+processResources.dependsOn versioning 
 
 /*
  * SHADOW: configure runnable element
