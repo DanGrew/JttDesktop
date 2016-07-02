@@ -117,17 +117,18 @@ artifacts.archives packageTests
 
 //task to write the version number to the version file
 task versioning << {
-   File file = new File( "${projectDir}/src/uk/dangrew/jtt/VERSION" )
+   File file = new File( "${sourceSets.main.output.resourcesDir}/uk/dangrew/jtt/VERSION" )
    print( file.absolutePath )
    file.write( version )
 }
-compileJava.dependsOn versioning
+compileJava.finalizedBy( versioning )
 
 /*
  * SHADOW: configure runnable element
  */
 //configure specific name so not '-all'
 shadowJar.archiveName = jar.archiveName.replace( '.jar', '-runnable.jar' )
+shadowJar.outputs.upToDateWhen { false }
 //link to main class in jar
 mainClassName = "uk.dangrew.jtt.main.JenkinsTestTracker"
 //bind with jar so that whenever jar is run, shadow is run
