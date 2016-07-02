@@ -29,6 +29,7 @@ public class Versioning {
    public Versioning() {
       BasicStringIO stringIO = new BasicStringIO();
       File versionFile = new File( getClass().getResource( VERSION_FILE_NAME ).getFile() );
+      System.out.println( versionFile.getAbsolutePath() );
       version = stringIO.read( versionFile );
    }//End Constructor
    

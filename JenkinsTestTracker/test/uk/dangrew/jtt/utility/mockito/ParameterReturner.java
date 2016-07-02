@@ -17,7 +17,10 @@ import org.mockito.stubbing.Answer;
  * The {@link ParameterReturner} is responsible for defining an {@link Answer} that provides
  * a parameter back as a response.
  * @param <TypeT> the parameter type.
+ * 
+ * @deprecated use that provided by JUPA.
  */
+@Deprecated
 public class ParameterReturner< TypeT > implements Answer< TypeT >{
    
    private final Class< TypeT > classType;
