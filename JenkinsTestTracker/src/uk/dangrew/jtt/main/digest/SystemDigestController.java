@@ -24,6 +24,7 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
  */
 public class SystemDigestController {
    
+   static final long FILE_SIZE_LIMIT = 104857600L;
    static final String LOG_FILE_SUFFIX = "-log.txt";
    static final String FOLDER_NAME = "uk.dangrew.jtt.logs";
    
@@ -46,6 +47,7 @@ public class SystemDigestController {
    SystemDigestController( TimestampProvider timestampProvider, ThreadedWrapper threadWrapper, DigestFileLogger logger ) {
       this.digestViewer = new DigestViewer( 600, 200 );
       this.protocol = new JarLoggingProtocol( FOLDER_NAME, makeFilePrefix( timestampProvider.get() ) + LOG_FILE_SUFFIX, JenkinsTestTracker.class );
+      this.protocol.setFileSizeLimit( FILE_SIZE_LIMIT );
       logger.setFileLocation( protocol );
       threadWrapper.wrap( logger, -1 );
    }//End Constructor

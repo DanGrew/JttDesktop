@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.buildwall.layout.BuildWallDisplayImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.releases.ReleasesWrapper;
 import uk.dangrew.jtt.shortcuts.keyboard.KeyBoardShortcuts;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.view.table.TestTableView;
@@ -44,9 +45,13 @@ public enum Tools {
          ( database, digest ) -> {
             DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( database, new SystemConfiguration() );
             BorderPane digestWrapper = new BorderPane( dualWall );
+            
+            ReleasesWrapper releaseNotifier = new ReleasesWrapper();
+            releaseNotifier.setContent( digestWrapper );
+            
             digestWrapper.setTop( new TitledPane( "System Digest", digest ) );
             dualWall.initialiseContextMenu();
-            return new Scene( digestWrapper, 500, 500 );
+            return new Scene( releaseNotifier, 500, 500 );
          }
    );
    

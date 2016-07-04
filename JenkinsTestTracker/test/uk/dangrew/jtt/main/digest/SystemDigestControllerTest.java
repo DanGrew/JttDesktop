@@ -64,6 +64,7 @@ public class SystemDigestControllerTest {
       assertThat( systemUnderTest.getLoggingLocation(), containsString( 
                SystemDigestController.FOLDER_NAME + "/" + systemUnderTest.makeFilePrefix( timestampProvider.get() ) + SystemDigestController.LOG_FILE_SUFFIX 
       ) );
+      assertThat( protocolCaptor.getValue().getFileSizeLimit(), is( SystemDigestController.FILE_SIZE_LIMIT ) );
    }//End Method
    
    @Test public void shouldMakeFilePrefixCompatibleWithAllOperatingSystems(){

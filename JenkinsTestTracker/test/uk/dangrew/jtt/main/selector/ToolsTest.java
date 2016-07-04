@@ -28,6 +28,7 @@ import uk.dangrew.jtt.buildwall.layout.BuildWallDisplayImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
+import uk.dangrew.jtt.releases.ReleasesWrapper;
 import uk.dangrew.jtt.shortcuts.keyboard.KeyBoardShortcuts;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
@@ -92,17 +93,17 @@ public class ToolsTest {
       assertThat( scene, notNullValue() );
       
       assertThat( scene.getRoot(), notNullValue() );
-      assertThat( scene.getRoot(), instanceOf( BorderPane.class ) );
+      assertThat( scene.getRoot(), instanceOf( ReleasesWrapper.class ) );
       
-      BorderPane wrapper = ( BorderPane ) scene.getRoot();
+      BorderPane wrapperPane = ( BorderPane ) ( ( ReleasesWrapper ) scene.getRoot() ).getContent();
       
-      DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) wrapper.getCenter();
+      DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) wrapperPane.getCenter();
       assertThat( display.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
       DualBuildWallContextMenuOpener opener = ( DualBuildWallContextMenuOpener ) display.getOnContextMenuRequested();
       assertThat( opener.isSystemDigestControllable(), is( true ) );
       
-      assertThat( wrapper.getTop(), instanceOf( TitledPane.class ) );
-      TitledPane titledPane = ( TitledPane )wrapper.getTop();
+      assertThat( wrapperPane.getTop(), instanceOf( TitledPane.class ) );
+      TitledPane titledPane = ( TitledPane )wrapperPane.getTop();
       assertThat( titledPane.getContent(), is( digestViewer ) );
       
       assertThat( scene.getWidth(), is( 500.0 ) );
