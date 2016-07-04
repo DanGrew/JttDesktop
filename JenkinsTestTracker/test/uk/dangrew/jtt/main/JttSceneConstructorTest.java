@@ -35,6 +35,7 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
 import uk.dangrew.jtt.main.selector.ToolSelector;
 import uk.dangrew.jtt.main.selector.Tools;
+import uk.dangrew.jtt.releases.ReleasesWrapper;
 import uk.dangrew.jtt.view.table.TestTableView;
 
 /**
@@ -98,8 +99,8 @@ public class JttSceneConstructorTest {
       verify( controller, times( 1 ) ).login( Mockito.any() );
       verify( controller, times( 1 ) ).selectTool( Mockito.any() );
 
-      assertThat( scene.getRoot(), instanceOf( BorderPane.class ) );
-      BorderPane wrapper = ( BorderPane ) scene.getRoot();
+      assertThat( scene.getRoot(), instanceOf( ReleasesWrapper.class ) );
+      BorderPane wrapper = ( BorderPane ) ( ( ReleasesWrapper )scene.getRoot() ).getContent();
       assertThat( wrapper.getCenter(), instanceOf( DualBuildWallDisplayImpl.class ) );
       assertThat( wrapper.getTop(), instanceOf( TitledPane.class ) );
       assertThat( scene.getAccelerators().isEmpty(), is( true ) );
