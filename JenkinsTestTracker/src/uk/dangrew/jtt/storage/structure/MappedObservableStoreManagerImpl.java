@@ -14,6 +14,7 @@ import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import uk.dangrew.jtt.utility.observable.PrivatelyModifiableObservableListImpl;
+import uk.dangrew.jtt.utility.synchronisation.SynchronizedObservableList;
 
 /**
  * The {@link MappedObservableStoreManagerImpl} provides an implementation of the {@link ObjectStoreManager} that
@@ -32,7 +33,7 @@ public class MappedObservableStoreManagerImpl< KeyTypeT, ObjectTypeT > implement
     */
    public MappedObservableStoreManagerImpl() {
       objectMap = new HashMap<>();
-      objectList = FXCollections.observableArrayList();
+      objectList = new SynchronizedObservableList<>( FXCollections.observableArrayList() );
       publiclyAvailableObjectList = new PrivatelyModifiableObservableListImpl<>( objectList );
    }//End Constructor
    

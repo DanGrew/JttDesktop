@@ -20,14 +20,12 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.api.handling.JenkinsFetcher;
-import uk.dangrew.jtt.api.handling.JenkinsProcessingDigest;
-import uk.dangrew.jtt.api.handling.JenkinsProcessingImpl;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.utility.TestCommon;
 
 /**
  * {@link JenkinsProcessingImpl} test.
@@ -171,32 +169,40 @@ public class JenkinsProcessingImplTest {
       verify( fetcher, never() ).updateTestResults( thirdJob );
    }//End Method
    
-//   @Test public void shouldFetchTestResultsForJobsSuccessWhenWasUnstableAndBuildNumberChanged(){
-//      firstJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
-//      
-//      doAnswer( invocation -> { 
-//         firstJob.lastBuildNumberProperty().set( 10 );
-//         firstJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-//         return null;
-//      } ).when( fetcher ).updateJobDetails( firstJob );
-//      
-//      doAnswer( invocation -> { 
-//         secondJob.lastBuildNumberProperty().set( 10 );
-//         secondJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-//         return null;
-//      } ).when( fetcher ).updateJobDetails( secondJob );
-//      
-//      doAnswer( invocation -> { 
-//         thirdJob.lastBuildNumberProperty().set( 10 );
-//         thirdJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
-//         return null;
-//      } ).when( fetcher ).updateJobDetails( thirdJob );
-//      
-//      systemUnderTest.fetchJobsAndUpdateDetails();
-//      
-//      verify( fetcher, times( 1 ) ).updateTestResults( firstJob );
-//      verify( fetcher, never() ).updateTestResults( secondJob );
-//      verify( fetcher, never() ).updateTestResults( thirdJob );
-//   }
+   @Test public void shouldFetchTestResultsForJobsSuccessWhenWasUnstableAndBuildNumberChanged(){
+      firstJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      
+      doAnswer( invocation -> { 
+         firstJob.lastBuildNumberProperty().set( 10 );
+         firstJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+         return null;
+      } ).when( fetcher ).updateJobDetails( firstJob );
+      
+      doAnswer( invocation -> { 
+         secondJob.lastBuildNumberProperty().set( 10 );
+         secondJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+         return null;
+      } ).when( fetcher ).updateJobDetails( secondJob );
+      
+      doAnswer( invocation -> { 
+         thirdJob.lastBuildNumberProperty().set( 10 );
+         thirdJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+         return null;
+      } ).when( fetcher ).updateJobDetails( thirdJob );
+      
+      systemUnderTest.fetchJobsAndUpdateDetails();
+      
+      verify( fetcher, times( 1 ) ).updateTestResults( firstJob );
+      verify( fetcher, never() ).updateTestResults( secondJob );
+      verify( fetcher, never() ).updateTestResults( thirdJob );
+   }//End Method
+   
+   @Test public void shouldNotConcurrentModificationWithJobChanges(){
+      TestCommon.assertConcurrencyIsNotAnIssue( 
+               count -> systemUnderTest.fetchJobsAndUpdateDetails(), 
+               count -> database.store( new JenkinsJobImpl( "" + count ) ), 
+               10 
+      );
+   }//End Method
    
 }//End Class

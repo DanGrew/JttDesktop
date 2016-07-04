@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Consumer;
 
 import javafx.beans.InvalidationListener;
 import javafx.collections.ListChangeListener;
@@ -279,4 +280,10 @@ public class PrivatelyModifiableObservableListImpl< ObjectTypeT > implements Obs
       backingList.removeListener( listener );
    }//End Method
 
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void forEach( Consumer< ? super ObjectTypeT > action ) {
+      backingList.forEach( action );
+   }//End Method
 }//End Class

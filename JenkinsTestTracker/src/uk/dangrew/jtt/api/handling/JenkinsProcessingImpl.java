@@ -89,8 +89,7 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
       fetchJobs();
       
       digest.startUpdatingJobs( database.jenkinsJobs().size() );
-      for ( JenkinsJob job : database.jenkinsJobs() ) {
-         
+      database.jenkinsJobs().forEach( job -> {
          int previousBuildNumber = job.lastBuildNumberProperty().get();
          BuildResultStatus previousStatus = job.lastBuildStatusProperty().get();
          
@@ -98,7 +97,7 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
          digest.updatedJob( job );
          
          updateTestsIfStateChanged( job, previousBuildNumber, previousStatus );
-      }
+      } );
       digest.jobsUpdated();
    }//End Method
 

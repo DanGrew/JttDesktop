@@ -8,8 +8,11 @@
  */
 package uk.dangrew.jtt.utility.observable;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -149,6 +152,14 @@ public class PrivatelyModifiableObservableListImplTest {
       String[] value = new String[ 0 ];
       systemUnderTest.toArray( value );
       Mockito.verify( backingList ).toArray( value );
+      Mockito.verifyNoMoreInteractions( backingList );
+   }//End Method
+   
+   @Test public void safe_foreach() {
+      @SuppressWarnings("unchecked") Consumer< String > consumer = mock( Consumer.class );
+      
+      systemUnderTest.forEach( consumer );
+      Mockito.verify( backingList ).forEach( consumer );
       Mockito.verifyNoMoreInteractions( backingList );
    }//End Method
    
