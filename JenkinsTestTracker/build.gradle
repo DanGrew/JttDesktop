@@ -117,7 +117,7 @@ artifacts.archives packageTests
 
 //task to write the version number to the version file
 task versioning << {
-   File file = new File( "${projectDir}/src/uk/dangrew/jtt/VERSION" )
+   File file = new File( "${projectDir}/src/uk/dangrew/jtt/versioning/VERSION" )
    if ( file.exists() ) {
 	   print( file.absolutePath )
 	   file.write( version )
