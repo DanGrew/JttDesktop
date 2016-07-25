@@ -117,19 +117,19 @@ public class JenkinsApiImpl implements ExternalApi {
          digest.responseReady();
          return responseString;
       } catch ( HttpResponseException exception ) {
-         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (HttpResponseException):" );
+//         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (HttpResponseException):" );
          if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
-         exception.printStackTrace();
+//         exception.printStackTrace();
          digest.connectionException( exception );
       } catch ( ClientProtocolException exception ) {
-         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (ClientProtocolException):" );
+//         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (ClientProtocolException):" );
          if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
          exception.printStackTrace();
          digest.connectionException( exception );
       } catch ( IOException exception ) {
-         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (IOException):" );
+//         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (IOException):" );
          if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
-         exception.printStackTrace();
+//         exception.printStackTrace();
          digest.connectionException( exception );
       }
       return null;

@@ -9,13 +9,16 @@
 package uk.dangrew.jtt.releases;
 
 import java.util.Timer;
+import java.util.function.Supplier;
 
+import uk.dangrew.jtt.main.JenkinsTestTracker;
 import uk.dangrew.jtt.versioning.Versioning;
 import uk.dangrew.jupa.update.download.NotificationScheduler;
 import uk.dangrew.jupa.update.download.ReleaseAvailableTask;
 import uk.dangrew.jupa.update.download.ReleasesDownloader;
-import uk.dangrew.jupa.update.view.ReleaseNotificationPanel;
-import uk.dangrew.jupa.update.view.ReleaseNotificationTimeout;
+import uk.dangrew.jupa.update.launch.BasicSystemHandover;
+import uk.dangrew.jupa.update.view.panel.ReleaseNotificationPanel;
+import uk.dangrew.jupa.update.view.panel.ReleaseNotificationTimeout;
 
 /**
  * The {@link ReleasesWrapper} provides a {@link ReleaseNotificationPanel} that captures the releases configuration
@@ -35,23 +38,26 @@ public class ReleasesWrapper extends ReleaseNotificationPanel {
     * Constructs a new {@link ReleasesWrapper}.
     */
    public ReleasesWrapper() {
-      this( new ReleasesDownloader( RELEASES_LOCATION ), new Versioning(), new ReleaseNotificationTimeout() );
+      this( new ReleasesDownloader( RELEASES_LOCATION ), new Versioning(), () -> new ReleaseNotificationTimeout() );
    }//End Constructor
    
    /**
     * Constructs a new {@link ReleasesWrapper}.
     * @param downloader the {@link ReleasesDownloader} to download with.
     * @param versioning the {@link Versioning} to use for this softwares version.
-    * @param timeout the {@link ReleaseNotificationTimeout} for hidhing the notification.
+    * @param timeoutSupplier the {@link ReleaseNotificationTimeout} supplier for hiding the notification.
     */
-   ReleasesWrapper( ReleasesDownloader downloader, Versioning versioning, ReleaseNotificationTimeout timeout ) {
+   ReleasesWrapper( ReleasesDownloader downloader, Versioning versioning, Supplier< ReleaseNotificationTimeout > timeoutSupplier ) {
+      super( 
+               new BasicSystemHandover( JenkinsTestTracker.class ) 
+      );
       this.downloader = new ReleasesDownloader( RELEASES_LOCATION );
       this.task = new ReleaseAvailableTask( versioning.getVersionNumber(), downloader, this );
       this.scheduler = new NotificationScheduler( task, NOTIFICATION_PERIOD );
       
       this.showingProperty().addListener( ( source, old, updated ) -> {
          if ( updated ) {
-            timeout.schedule( new Timer(), NOTIFICATION_TIMEOUT, this );
+            timeoutSupplier.get().schedule( new Timer(), NOTIFICATION_TIMEOUT, this );
          }
       } );
    }//End Constructor

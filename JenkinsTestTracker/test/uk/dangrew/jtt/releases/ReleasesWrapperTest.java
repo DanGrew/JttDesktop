@@ -15,22 +15,27 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.function.Supplier;
+
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import javafx.scene.control.Button;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.versioning.Versioning;
 import uk.dangrew.jupa.update.download.ReleasesDownloader;
-import uk.dangrew.jupa.update.view.ReleaseNotificationTimeout;
+import uk.dangrew.jupa.update.view.panel.ReleaseNotificationTimeout;
 
 /**
  * {@link ReleasesWrapper} test.
  */
 public class ReleasesWrapperTest {
 
+   private Supplier< ReleaseNotificationTimeout> timeoutSupplier;
    @Mock private ReleaseNotificationTimeout timeout;
    @Mock private Versioning versioning;
    @Mock private ReleasesDownloader downloader;
@@ -39,8 +44,22 @@ public class ReleasesWrapperTest {
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
+      timeoutSupplier = () -> timeout;
       when( versioning.getVersionNumber() ).thenReturn( "some version" );
-      systemUnderTest = new ReleasesWrapper( downloader, versioning, timeout );
+      systemUnderTest = new ReleasesWrapper( downloader, versioning, timeoutSupplier );
+   }//End Method
+   
+   @Ignore
+   @Test public void manual() throws InterruptedException{
+      JavaFxInitializer.launchInWindow( () -> {
+         ReleasesWrapper wrapper = new ReleasesWrapper();
+         Button button = new Button();
+         button.setMaxHeight( Double.MAX_VALUE );
+         button.setMaxWidth( Double.MAX_VALUE );
+         wrapper.setContent( button );
+         return wrapper;
+      } );
+      Thread.sleep( 10000000 );
    }//End Method
    
    @Test public void downloaderShouldUseLocationAssociated() {

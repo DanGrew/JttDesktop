@@ -28,10 +28,10 @@ import javafx.stage.WindowEvent;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.javafx.platform.PlatformLifecycle;
-import uk.dangrew.jtt.javafx.platform.PlatformLifecycleImpl;
 import uk.dangrew.jtt.styling.BuildWallStyles;
 import uk.dangrew.jtt.styling.SystemStyling;
+import uk.dangrew.jupa.javafx.platform.PlatformLifecycle;
+import uk.dangrew.jupa.javafx.platform.PlatformLifecycleImpl;
 
 /**
  * {@link JenkinsTestTracker} test.
