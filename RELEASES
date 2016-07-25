@@ -1,14 +1,19 @@
+Release, "1.4.119"
+Date, "(Jul 6, 2016 9:29:43 AM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.119/JenkinsTestTracker-1.4.119-runnable.jar"
+Description, "The JUPA changes for identifying newer releases has been integrated with the dual build wall so that notifications now pop up if there are new versions available. The version number file is used in this mechanism to determine what versions are newer. In future updates this information will be used to auto update to a newer version."
+
 Release, "1.4.113"
 Date, "(Jul 2, 2016 3:54:12 PM)"
-Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.113/JenkinsTestTracker-1.4.113.jar"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.113/JenkinsTestTracker-1.4.113-runnable.jar"
 Description, "Resolved issue with saving version number completing issue 133. Now each release has a version number file so it can determine which version is running."
 
 Release, "1.4.108"
 Date, "(Jun 30, 2016 6:51:32 PM)"
-Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.108/JenkinsTestTracker-1.4.108.jar"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.108/JenkinsTestTracker-1.4.108-runnable.jar"
 Description, "Windows doesn't support files with : in the name so this has been changed to remove them from the file name constructed. This is an important change for windows users (obviously)."
 
 Release, "1.4.106"
 Date, "(Jun 28, 2016 7:22:08 AM)"
-Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.106/JenkinsTestTracker-1.4.106.jar"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.106/JenkinsTestTracker-1.4.106-runnable.jar"
 Description, "Implemented persistence object along with model to support read and write of dual wall configuration. Hooked up to dual wall display in same way as the individual wall persistence. Dual wall configuration is now persisted between runs. Refactored dual configuration to follow naming convention to avoid confusion in future. Resolved an issue with the split in the dual wall not checking initial divider position from configuration."
