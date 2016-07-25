@@ -1,3 +1,8 @@
+Release, "1.4.120"
+Date, "(Jul 25, 2016 6:06:19 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.120/JenkinsTestTracker-1.4.120-runnable.jar"
+Description, "This version supports automatic upgrades so that when a new version is found, it can be downloaded and started."
+
 Release, "1.4.119"
 Date, "(Jul 6, 2016 9:29:43 AM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.119/JenkinsTestTracker-1.4.119-runnable.jar"
