@@ -23,6 +23,7 @@ import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.configuration.system.SystemVersionItem;
 
 /**
  * The {@link ConfigurationTree} provides a {@link TreeView} for {@link ConfigurationItem}s.
@@ -31,6 +32,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    private final ConfigurationTreeController controller;
    private final TreeItem< ConfigurationItem > root;
+   private final TreeItem< ConfigurationItem > systemVersion;
    private final TreeItem< ConfigurationItem > dualWallRoot;
    
    /**
@@ -46,6 +48,10 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       this.controller = controller;
       
       root = new TreeItem<>( new ConfigurationRootItem() );
+      
+      systemVersion = new TreeItem<>( new SystemVersionItem( controller ) );
+      systemVersion.setExpanded( true );
+      root.getChildren().add( systemVersion );
       
       dualWallRoot = new TreeItem<>( new DualBuildWallRootItem( controller ) );
       dualWallRoot.setExpanded( true );
@@ -112,6 +118,10 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    TreeItem< ConfigurationItem > root(){
       return root;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > systemVersion(){
+      return systemVersion;
    }//End Method
    
    TreeItem< ConfigurationItem > dualWallRoot(){

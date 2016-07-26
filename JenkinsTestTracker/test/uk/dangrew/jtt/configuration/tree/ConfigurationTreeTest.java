@@ -28,12 +28,14 @@ import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.BuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.ColoursTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DimensionsTreeItem;
+import uk.dangrew.jtt.buildwall.configuration.tree.item.DualBuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DualPropertiesTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.configuration.system.SystemVersionItem;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -79,9 +81,15 @@ public class ConfigurationTreeTest {
    
    @Test public void buildWallRootShouldBePresentAndExpanded(){
       TreeItem< ConfigurationItem > root = systemUnderTest.getRoot();
-      assertThat( root.getChildren(), hasSize( 1 ) );
+      assertThat( root.getChildren(), hasSize( 2 ) );
       
-      assertThat( getItem( root, 0 ), is( systemUnderTest.dualWallRoot().getValue() ) );
+      assertThat( getItem( root, 0 ), is( systemUnderTest.systemVersion().getValue() ) );
+      assertThat( systemUnderTest.systemVersion().isExpanded(), is( true ) );
+      assertThat( systemUnderTest.systemVersion().getValue(), is( instanceOf( SystemVersionItem.class ) ) );
+      
+      assertThat( getItem( root, 1 ), is( systemUnderTest.dualWallRoot().getValue() ) );
+      assertThat( systemUnderTest.dualWallRoot().isExpanded(), is( true ) );
+      assertThat( systemUnderTest.dualWallRoot().getValue(), is( instanceOf( DualBuildWallRootItem.class ) ) );
    }//End Method
    
    @Test public void dualWallRootShouldBePresentAndExpanded(){
