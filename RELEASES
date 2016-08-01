@@ -1,3 +1,8 @@
+Release, "1.4.123"
+Date, "(Jul 26, 2016 7:26:44 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.123/JenkinsTestTracker-1.4.123-runnable.jar"
+Description, "The version number is now displayed in the configuration window for tracking which version is being used and which to upgrade to."
+
 Release, "1.4.120"
 Date, "(Jul 25, 2016 6:06:19 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.120/JenkinsTestTracker-1.4.120-runnable.jar"
