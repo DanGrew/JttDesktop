@@ -26,10 +26,9 @@ import uk.dangrew.jtt.javafx.spinner.DoublePropertySpinner;
 import uk.dangrew.jtt.javafx.spinner.IntegerPropertySpinner;
 
 /**
- * The {@link BuildWallConfigurationStyle} provides the common styling options for 
- * the {@link BuildWallConfigurationPanelImpl}.
+ * The {@link JavaFxStyle} provides the common styling options for JavaFx elements.
  */
-public class BuildWallConfigurationStyle {
+public class JavaFxStyle {
 
    static final int TITLE_FONT_SIZE = 30;
    static final double LABEL_PERCENTAGE_WIDTH = 40;

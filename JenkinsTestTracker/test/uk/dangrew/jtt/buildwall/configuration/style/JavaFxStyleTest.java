@@ -31,7 +31,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.javafx.spinner.DefensiveDoubleSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
@@ -40,21 +40,21 @@ import uk.dangrew.jtt.javafx.spinner.IntegerPropertySpinner;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
- * {@link BuildWallConfigurationStyle} test.
+ * {@link JavaFxStyle} test.
  */
-public class BuildWallConfigurationStyleTest {
+public class JavaFxStyleTest {
 
-   public static final int TITLE_FONT_SIZE = BuildWallConfigurationStyle.TITLE_FONT_SIZE;
-   public static final double LABEL_PERCENTAGE_WIDTH = BuildWallConfigurationStyle.LABEL_PERCENTAGE_WIDTH;
-   public static final double CONTROLS_PERCENTAGE_WIDTH = BuildWallConfigurationStyle.CONTROLS_PERCENTAGE_WIDTH;
-   private BuildWallConfigurationStyle systemUnderTest;
+   public static final int TITLE_FONT_SIZE = JavaFxStyle.TITLE_FONT_SIZE;
+   public static final double LABEL_PERCENTAGE_WIDTH = JavaFxStyle.LABEL_PERCENTAGE_WIDTH;
+   public static final double CONTROLS_PERCENTAGE_WIDTH = JavaFxStyle.CONTROLS_PERCENTAGE_WIDTH;
+   private JavaFxStyle systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
       JavaFxInitializer.startPlatform();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      systemUnderTest = new BuildWallConfigurationStyle();
+      systemUnderTest = new JavaFxStyle();
    }//End Method
    
    @Test public void shouldProvideLabelWithBoldFont() {
@@ -156,11 +156,11 @@ public class BuildWallConfigurationStyleTest {
       assertThat( grid.getColumnConstraints(), hasSize( 2 ) );
       
       ColumnConstraints first = grid.getColumnConstraints().get( 0 );
-      assertThat( first.getPercentWidth(), is( BuildWallConfigurationStyle.LABEL_PERCENTAGE_WIDTH ) );
+      assertThat( first.getPercentWidth(), is( JavaFxStyle.LABEL_PERCENTAGE_WIDTH ) );
       assertThat( first.getHgrow(), is( Priority.ALWAYS ) );
       
       ColumnConstraints second = grid.getColumnConstraints().get( 1 );
-      assertThat( second.getPercentWidth(), is( BuildWallConfigurationStyle.CONTROLS_PERCENTAGE_WIDTH ) );
+      assertThat( second.getPercentWidth(), is( JavaFxStyle.CONTROLS_PERCENTAGE_WIDTH ) );
       assertThat( second.getHgrow(), is( Priority.ALWAYS ) );
    }//End Method
    
