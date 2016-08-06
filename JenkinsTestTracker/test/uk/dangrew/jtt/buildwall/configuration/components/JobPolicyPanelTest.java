@@ -39,7 +39,7 @@ import junitparams.Parameters;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecoupler;
@@ -56,7 +56,7 @@ import uk.dangrew.jtt.utility.comparator.Comparators;
 @RunWith( JUnitParamsRunner.class )
 public class JobPolicyPanelTest {
    
-   @Spy private BuildWallConfigurationStyle styling;
+   @Spy private JavaFxStyle styling;
    private BuildWallConfiguration configuration; 
    private JobPolicyPanel systemUnderTest;
    

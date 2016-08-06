@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 
 /**
@@ -31,7 +31,7 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
  */
 public class ColoursPanelTest {
 
-   @Spy private BuildWallConfigurationStyle styling;
+   @Spy private JavaFxStyle styling;
    private BuildWallConfiguration configuration;
    private ColoursPanel systemUnderTest;
    

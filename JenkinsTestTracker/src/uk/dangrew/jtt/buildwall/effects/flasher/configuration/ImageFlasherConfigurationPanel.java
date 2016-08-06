@@ -18,7 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser.ExtensionFilter;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.javafx.spinner.DoublePropertySpinner;
@@ -48,7 +48,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
    static final String SELECT_IMAGE_TEXT = "<click here>";
    static final double INSETS = 10;
    
-   private final BuildWallConfigurationStyle styling;
+   private final JavaFxStyle styling;
    private final ImageFlasherProperties properties;
    
    private Label titleLabel;
@@ -91,7 +91,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
    ImageFlasherConfigurationPanel( String title, ImageFlasherProperties properties, FriendlyFileChooser fileChooser ) {
       this.properties = properties;
       this.imageChooser = fileChooser;
-      this.styling = new BuildWallConfigurationStyle();
+      this.styling = new JavaFxStyle();
       
       provideTitle( title );
       provideImageConfiguration();

@@ -36,7 +36,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser.ExtensionFilter;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyleTest;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyleTest;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
@@ -334,7 +334,7 @@ public class ImageFlasherConfigurationPanelTest {
    
    @Test public void shouldCreateTitleWithExpectedProperties(){
       Label titleLabel = systemUnderTest.titleLabel();
-      assertThat( titleLabel.getFont().getSize(), closeTo( BuildWallConfigurationStyleTest.TITLE_FONT_SIZE, TestCommon.precision() ) );
+      assertThat( titleLabel.getFont().getSize(), closeTo( JavaFxStyleTest.TITLE_FONT_SIZE, TestCommon.precision() ) );
       assertThat( GridPane.getColumnIndex( titleLabel ), is( 0 ) );
       assertThat( GridPane.getRowIndex( titleLabel ), is( 0 ) );
       assertThat( GridPane.getColumnSpan( titleLabel ), is( 2 ) );

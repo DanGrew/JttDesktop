@@ -23,7 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.styling.FontFamilies;
 import uk.dangrew.jtt.utility.TestableFonts;
@@ -37,7 +37,7 @@ public class FontsPanelTest {
    private static final String TEST_FONT_FAMILY_B = FontFamilies.getUsableFontFamilies().get( 10 );
    private static final String TEST_FONT_FAMILY_C = FontFamilies.getUsableFontFamilies().get( 5 );
    
-   @Spy private BuildWallConfigurationStyle styling;
+   @Spy private JavaFxStyle styling;
    private BuildWallConfiguration configuration;
    private FontsPanel systemUnderTest;
    

@@ -31,7 +31,7 @@ import uk.dangrew.jtt.buildwall.configuration.components.BuildWallConfigurationP
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyleTest;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyleTest;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
@@ -122,7 +122,7 @@ public class BuildWallConfigurationPaneImplTest {
     */
    private void assertColumnConstraints( GridPane grid ){
       Assert.assertEquals( 
-               BuildWallConfigurationStyleTest.CONTROLS_PERCENTAGE_WIDTH, 
+               JavaFxStyleTest.CONTROLS_PERCENTAGE_WIDTH, 
                grid.getColumnConstraints().get( 1 ).getPercentWidth(),
                TestCommon.precision()
       );
@@ -137,7 +137,7 @@ public class BuildWallConfigurationPaneImplTest {
    
    @Test public void shouldCreateTitleWithExpectedProperties(){
       Label titleLabel = systemUnderTest.titleLabel();
-      assertThat( titleLabel.getFont().getSize(), closeTo( BuildWallConfigurationStyleTest.TITLE_FONT_SIZE, TestCommon.precision() ) );
+      assertThat( titleLabel.getFont().getSize(), closeTo( JavaFxStyleTest.TITLE_FONT_SIZE, TestCommon.precision() ) );
       assertThat( GridPane.getColumnIndex( titleLabel ), is( 0 ) );
       assertThat( GridPane.getRowIndex( titleLabel ), is( 0 ) );
       assertThat( GridPane.getColumnSpan( titleLabel ), is( 2 ) );

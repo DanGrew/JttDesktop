@@ -14,7 +14,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.javafx.spinner.DoublePropertySpinner;
 
 /**
@@ -41,7 +41,7 @@ public class DualPropertiesPanel extends GridPane {
     * @param configuration the {@link DualWallConfiguration} associated, to configure.
     */
    public DualPropertiesPanel( DualWallConfiguration configuration ) {
-      this( configuration, new BuildWallConfigurationStyle() );
+      this( configuration, new JavaFxStyle() );
    }//End Constructor
    
    /**
@@ -49,7 +49,7 @@ public class DualPropertiesPanel extends GridPane {
     * @param configuration the {@link DualWallConfiguration} associated, to configure.
     * @param styling the {@link BuildWallConfigurationStyle} to apply.
     */
-   DualPropertiesPanel( DualWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
+   DualPropertiesPanel( DualWallConfiguration configuration, JavaFxStyle styling ) {
       this.configuration = configuration;
       
       positionLabel = styling.createBoldLabel( "Divider Position" );

@@ -14,7 +14,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 
 /**
  * The {@link BuildWallConfigurationPanelImpl} provides a {@link GridPane} for configuring
@@ -22,7 +22,7 @@ import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
  */
 public class BuildWallConfigurationPanelImpl extends GridPane {
    
-   private BuildWallConfigurationStyle styling;
+   private JavaFxStyle styling;
    private BuildWallConfiguration configuration;
    
    private Label titleLabel;
@@ -39,7 +39,7 @@ public class BuildWallConfigurationPanelImpl extends GridPane {
     */
    public BuildWallConfigurationPanelImpl( String title, BuildWallConfiguration configuration ) {
       this.configuration = configuration;
-      this.styling = new BuildWallConfigurationStyle();
+      this.styling = new JavaFxStyle();
       
       constructTitle( title );
       constructDimensions();

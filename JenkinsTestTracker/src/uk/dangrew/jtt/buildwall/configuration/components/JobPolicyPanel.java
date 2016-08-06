@@ -25,7 +25,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.javafx.combobox.SimplePropertyBox;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -38,7 +38,7 @@ import uk.dangrew.jtt.utility.comparator.Comparators;
 public class JobPolicyPanel extends GridPane {
    
    static final double INSETS = 10;
-   private BuildWallConfigurationStyle styling;
+   private JavaFxStyle styling;
    private BuildWallConfiguration configuration;
    
    private Map< JenkinsJob, Label > labels;
@@ -53,15 +53,15 @@ public class JobPolicyPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration}.
     */
    public JobPolicyPanel( BuildWallConfiguration configuration ) {
-      this( configuration, new BuildWallConfigurationStyle() );
+      this( configuration, new JavaFxStyle() );
    }//End Constructor
    
    /**
     * Constructs a new {@link JobPolicyPanel}.
     * @param configuration the {@link BuildWallConfiguration}.
-    * @param styling the {@link BuildWallConfigurationStyle} to apply.
+    * @param styling the {@link JavaFxStyle} to apply.
     */
-   JobPolicyPanel( BuildWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
+   JobPolicyPanel( BuildWallConfiguration configuration, JavaFxStyle styling ) {
       this.configuration = configuration;
       this.styling = styling;
       

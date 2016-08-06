@@ -28,7 +28,7 @@ import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 
 /**
@@ -37,7 +37,7 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
 public class DualPropertiesPanelTest {
    
    private DualWallConfiguration configuration;
-   @Spy private BuildWallConfigurationStyle styling;
+   @Spy private JavaFxStyle styling;
    private DualPropertiesPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){

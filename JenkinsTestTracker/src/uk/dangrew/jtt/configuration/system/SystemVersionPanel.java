@@ -10,7 +10,7 @@ package uk.dangrew.jtt.configuration.system;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.versioning.Versioning;
 
 /**
@@ -36,7 +36,7 @@ public class SystemVersionPanel extends GridPane {
     * Constructs a new {@link SystemVersionPanel}.
     */
    public SystemVersionPanel() {
-      BuildWallConfigurationStyle styling = new BuildWallConfigurationStyle();
+      JavaFxStyle styling = new JavaFxStyle();
       Versioning versionig = new Versioning();
       
       add( 

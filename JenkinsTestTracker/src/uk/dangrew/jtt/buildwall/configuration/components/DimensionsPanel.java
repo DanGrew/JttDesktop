@@ -13,7 +13,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.javafx.spinner.IntegerPropertySpinner;
 
@@ -41,7 +41,7 @@ public class DimensionsPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} associated, to configure.
     */
    public DimensionsPanel( BuildWallConfiguration configuration ) {
-      this( configuration, new BuildWallConfigurationStyle() );
+      this( configuration, new JavaFxStyle() );
    }//End Constructor
    
    /**
@@ -49,7 +49,7 @@ public class DimensionsPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} associated, to configure.
     * @param styling the {@link BuildWallConfigurationStyle} to apply.
     */
-   DimensionsPanel( BuildWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
+   DimensionsPanel( BuildWallConfiguration configuration, JavaFxStyle styling ) {
       this.configuration = configuration;
       
       columnsLabel = styling.createBoldLabel( "Columns" );

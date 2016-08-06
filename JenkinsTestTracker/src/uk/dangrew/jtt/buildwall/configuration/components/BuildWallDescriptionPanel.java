@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.configuration.components;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 
 /**
  * the {@link BuildWallDescriptionPanel} provides a simple panel that describes what the
@@ -35,7 +35,7 @@ public class BuildWallDescriptionPanel extends GridPane {
     * Constructs a new {@link BuildWallDescriptionPanel}.
     */
    public BuildWallDescriptionPanel() {
-      BuildWallConfigurationStyle styling = new BuildWallConfigurationStyle();
+      JavaFxStyle styling = new JavaFxStyle();
       
       add( 
                firstSentence = styling.createWrappedTextLabel( FIRST_SENTENCE ), 

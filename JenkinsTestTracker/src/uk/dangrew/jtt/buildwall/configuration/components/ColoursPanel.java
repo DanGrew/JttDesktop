@@ -15,7 +15,7 @@ import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 
 /**
  * The {@link ColoursPanel} provides a panel for configuring the colours in the system and 
@@ -40,7 +40,7 @@ public class ColoursPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} to configure.
     */
    public ColoursPanel( BuildWallConfiguration configuration ) {
-      this( configuration, new BuildWallConfigurationStyle() );
+      this( configuration, new JavaFxStyle() );
    }//End Constructor
    
    /**
@@ -48,7 +48,7 @@ public class ColoursPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} to configure.
     * @param styling the {@link BuildWallConfigurationStyle} to apply.
     */
-   ColoursPanel( BuildWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
+   ColoursPanel( BuildWallConfiguration configuration, JavaFxStyle styling ) {
       this.configuration = configuration;
       
       jobNameColourLabel = styling.createBoldLabel( "Job Name" );

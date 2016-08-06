@@ -26,7 +26,7 @@ import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 
@@ -36,7 +36,7 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
 public class DimensionsPanelTest {
    
    private BuildWallConfiguration configuration;
-   @Spy private BuildWallConfigurationStyle styling;
+   @Spy private JavaFxStyle styling;
    private DimensionsPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){

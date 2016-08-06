@@ -15,7 +15,7 @@ import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.javafx.combobox.FontFamilyPropertyBox;
 import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.PropertySpinner;
@@ -56,7 +56,7 @@ public class FontsPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} associated to be configured.
     */
    public FontsPanel( BuildWallConfiguration configuration) {
-      this( configuration, new BuildWallConfigurationStyle() );
+      this( configuration, new JavaFxStyle() );
    }//End Constructor
    
    /**
@@ -64,7 +64,7 @@ public class FontsPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} associated to be configured.
     * @param styling the {@link BuildWallConfigurationStyle} to use for style.
     */
-   FontsPanel( BuildWallConfiguration configuration, BuildWallConfigurationStyle styling ) {
+   FontsPanel( BuildWallConfiguration configuration, JavaFxStyle styling ) {
       this.configuration = configuration;
       
       jobNameFontLabel = styling.createBoldLabel( "Job Name Font" );

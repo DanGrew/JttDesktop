@@ -12,7 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 
 /**
  * The {@link SimpleConfigurationTitle} provides a simple implementation of a title and 
@@ -31,16 +31,16 @@ public class SimpleConfigurationTitle extends VBox {
     * @param description the {@link String} description.
     */
    public SimpleConfigurationTitle( String title, String description ) {
-      this( title, description, new BuildWallConfigurationStyle() );
+      this( title, description, new JavaFxStyle() );
    }//End Constructor
    
    /**
     * Constructs a new {@link SimpleConfigurationTitle}.
     * @param title the {@link String} title.
     * @param description the {@link String} description.
-    * @param styling the {@link BuildWallConfigurationStyle} to use.
+    * @param styling the {@link JavaFxStyle} to use.
     */
-   SimpleConfigurationTitle( String title, String description, BuildWallConfigurationStyle styling ) {
+   SimpleConfigurationTitle( String title, String description, JavaFxStyle styling ) {
       if ( title == null ) {
          throw new IllegalArgumentException( "Title string must not be null." );
       }

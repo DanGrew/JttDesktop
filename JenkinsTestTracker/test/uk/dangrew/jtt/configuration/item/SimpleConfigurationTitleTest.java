@@ -23,7 +23,7 @@ import org.mockito.MockitoAnnotations;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import uk.dangrew.jtt.buildwall.configuration.style.BuildWallConfigurationStyle;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.utility.TestCommon;
 
@@ -37,7 +37,7 @@ public class SimpleConfigurationTitleTest {
    
    private Label boldLabel;
    private Label wrappedLabel;
-   @Mock private BuildWallConfigurationStyle styling;
+   @Mock private JavaFxStyle styling;
    private SimpleConfigurationTitle systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
