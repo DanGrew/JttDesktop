@@ -29,8 +29,6 @@ import javafx.scene.control.ButtonType;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin;
 import uk.dangrew.jtt.friendly.controlsfx.FriendlyAlert;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.main.JttApplicationController;
-import uk.dangrew.jtt.main.selector.ToolSelector;
 
 /**
  * {@link JttApplicationController} test.
@@ -96,37 +94,4 @@ public class JttApplicationControllerIT {
       verify( login, times( 2 ) ).configureAlert( loginAlert );
    }//End Method
    
-   @Test public void shouldProvideToolsChoiceFunction(){
-      //this test will use only one method fully...
-      ToolSelector selector = mock( ToolSelector.class );
-      systemUnderTest = Mockito.mock( JttApplicationController.class );
-      //...the tools selector method...
-      doCallRealMethod().when( systemUnderTest ).selectTool( selector );
-      
-      //...we will intercept the alerts because alerts are nasty...
-      FriendlyAlert selectorAlert = mock( FriendlyAlert.class );
-      when( systemUnderTest.constructAlert() ).thenReturn( selectorAlert );
-      //...providing junk as a response...
-      when( systemUnderTest.showAndWait( selectorAlert ) ).thenReturn( Optional.of( new ButtonType( "anything" ) ) );
-      
-      //...we shall fix the result...
-      when( selector.isLaunchResult( Mockito.any() ) ).thenReturn( true );
-      assertThat( systemUnderTest.selectTool( selector ), is( true ) );
-      
-      //...for both answers...
-      when( selector.isLaunchResult( Mockito.any() ) ).thenReturn( false );
-      assertThat( systemUnderTest.selectTool( selector ), is( false ) );
-      
-      //...and because we don't like spying, verify no further interactions...
-      //...where we expect 2 for each, one for each login...
-      verify( systemUnderTest, times( 2 ) ).constructAlert();
-      verify( systemUnderTest, times( 2 ) ).showAndWait( selectorAlert );
-      verify( systemUnderTest, times( 2 ) ).selectTool( selector );
-      //...and ansolutely NOTHING else...
-      verifyNoMoreInteractions( systemUnderTest );
-      
-      //...finally verifying the alert was configured both times.
-      verify( selector, times( 2 ) ).configureAlert( selectorAlert );
-   }//End Method
-
 }//End Class

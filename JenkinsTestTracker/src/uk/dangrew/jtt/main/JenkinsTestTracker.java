@@ -42,6 +42,7 @@ public class JenkinsTestTracker extends Application {
       
       stage.setOnCloseRequest( event -> PlatformLifecycle.shutdown() );
       stage.setScene( scene );
+      stage.setMaximized( true );
       stage.show();
    }//End Method
    

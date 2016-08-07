@@ -14,7 +14,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin;
 import uk.dangrew.jtt.friendly.controlsfx.FriendlyAlert;
-import uk.dangrew.jtt.main.selector.ToolSelector;
 
 /**
  * The {@link JttApplicationController} is responsible for abstracting some of the 
@@ -56,16 +55,4 @@ class JttApplicationController {
       return login.isLoginResult( result.get() );
    }//End Method
 
-   /**
-    * Method to let the user select the {@link Tools} to use.
-    * @param selector the {@link ToolSelector} to provide an alert for.
-    * @return true if selected, false if closed.
-    */
-   boolean selectTool( ToolSelector selector ) {
-      FriendlyAlert alert = constructAlert();
-      selector.configureAlert( alert );
-      Optional< ButtonType > result = showAndWait( alert );
-      return selector.isLaunchResult( result.get() );
-   }//End Method
-   
 }//End Class

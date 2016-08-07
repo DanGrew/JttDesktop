@@ -108,4 +108,10 @@ public class JenkinsTestTrackerIT {
       DecoupledPlatformImpl.runLater( () -> {} );
    }//End Method
    
+   @Test public void stageShouldBeMaximised(){
+      constructorWillProvideScene();
+      launchApplication();
+      assertThat( stage.isMaximized(), is( true ) );
+   }//End Method
+   
 }//End Class

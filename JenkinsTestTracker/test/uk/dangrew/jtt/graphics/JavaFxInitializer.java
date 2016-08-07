@@ -37,6 +37,7 @@ public class JavaFxInitializer extends Application {
       Scene scene = new Scene( content, 400, 400 );
       stage.setScene( scene );
       stage.show();
+      stage.setMaximized( true );
       JavaFxInitializer.stage = stage;
    }//End Method
       

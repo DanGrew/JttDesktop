@@ -15,8 +15,8 @@ import uk.dangrew.jtt.api.sources.JenkinsApiImpl;
 import uk.dangrew.jtt.core.JenkinsTestTrackerCoreImpl;
 import uk.dangrew.jtt.core.JttSystemCoreImpl;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin;
+import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
-import uk.dangrew.jtt.main.selector.ToolSelector;
 
 /**
  * The {@link JttSceneConstructor} is responsible for constructing the {@link Scene}
@@ -55,13 +55,9 @@ public class JttSceneConstructor {
          return null;
       }
       
-      ToolSelector selector = new ToolSelector();
-      if ( !controller.selectTool( selector ) ) {
-         return null;
-      }
-      
       JenkinsTestTrackerCoreImpl core = new JttSystemCoreImpl( api );
-      return selector.getSelectedTool().construct( core.getJenkinsDatabase(), digestController.getDigestViewer() );
+      EnvironmentWindow window = new EnvironmentWindow( core.getJenkinsDatabase(), digestController.getDigestViewer() );
+      return new Scene( window );
    }//End Method
    
 }//End Class
