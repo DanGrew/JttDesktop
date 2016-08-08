@@ -20,7 +20,7 @@ import uk.dangrew.jtt.buildwall.effects.flasher.configuration.ImageFlasherConfig
 import uk.dangrew.jtt.buildwall.effects.triggers.JobFailureTrigger;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.environment.preferences.ConfigurationWindowController;
+import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
@@ -34,7 +34,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
    private final SystemConfiguration systemConfiguration;
    
    private final ImageFlasherProperties imageFlasherProperties;
-   private final ConfigurationWindowController configWindowController;
+   private final PreferenceWindowController configWindowController;
 
    private BorderPane buildWallPane;
    private DualBuildWallSplitter buildWallSplitter;
@@ -52,7 +52,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
       this( 
                database, 
                systemConfiguration, 
-               new ConfigurationWindowController(), 
+               new PreferenceWindowController(), 
                new BuildWallConfigurationSessions( 
                         database, 
                         systemConfiguration.getLeftConfiguration(), 
@@ -66,7 +66,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Constructs a new {@link BuildWallDisplayImpl}.
     * @param database the {@link JenkinsDatabase} associated.
     * @param systemConfiguration the {@link SystemConfiguration}.
-    * @param windowController the {@link ConfigurationWindowController} to use
+    * @param windowController the {@link PreferenceWindowController} to use
     * to open a separate configuration window.
     * @param wallSessions the {@link BuildWallConfigurationSessions} used to persist configuration.
     * @param dualSessions the {@link DualWallConfigurationSessions} used to persist {@link uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration}.
@@ -74,7 +74,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
    DualBuildWallDisplayImpl( 
             JenkinsDatabase database, 
             SystemConfiguration systemConfiguration, 
-            ConfigurationWindowController windowController, 
+            PreferenceWindowController windowController, 
             BuildWallConfigurationSessions wallSessions,
             DualWallConfigurationSessions dualSessions
    ) {

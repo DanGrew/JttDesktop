@@ -36,7 +36,7 @@ import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.environment.preferences.ConfigurationWindowController;
+import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -207,7 +207,7 @@ public class DualBuildWallContextMenuTest {
       display = new DualBuildWallDisplayImpl( 
                new JenkinsDatabaseImpl(),
                systemConfiguration,
-               mock( ConfigurationWindowController.class ),
+               mock( PreferenceWindowController.class ),
                sessions,
                dualSessions
       );

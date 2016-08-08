@@ -43,7 +43,7 @@ import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.environment.preferences.ConfigurationWindowController;
+import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -61,7 +61,7 @@ import uk.dangrew.jtt.utility.TestCommon;
  */
 public class DualBuildWallDisplayImplTest {
 
-   @Mock private ConfigurationWindowController windowController;
+   @Mock private PreferenceWindowController windowController;
    @Mock private BuildWallConfigurationSessions sessions;
    @Mock private DualWallConfigurationSessions dualSessions;
    private JenkinsDatabase database;

@@ -22,19 +22,19 @@ import com.sun.javafx.application.PlatformImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
-import uk.dangrew.jtt.environment.preferences.ConfigurationWindowController;
+import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 
 /**
- * {@link ConfigurationWindowController} test.
+ * {@link PreferenceWindowController} test.
  */
-public class ConfigurationWindowControllerTest {
+public class PreferenceWindowControllerTest {
    
    private SystemConfiguration systemConfiguration;
-   private ConfigurationWindowController systemUnderTest;
+   private PreferenceWindowController systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
@@ -49,22 +49,22 @@ public class ConfigurationWindowControllerTest {
       systemConfiguration.getLeftConfiguration().jobPolicies().putAll( systemConfiguration.getRightConfiguration().jobPolicies() );
       
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new ConfigurationWindowController();
+      systemUnderTest = new PreferenceWindowController();
       systemUnderTest.associateWithConfiguration( systemConfiguration );
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowShowIfNotAssociated(){
-      systemUnderTest = new ConfigurationWindowController();
+      systemUnderTest = new PreferenceWindowController();
       systemUnderTest.showConfigurationWindow();
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowHideIfNotAssociated(){
-      systemUnderTest = new ConfigurationWindowController();
+      systemUnderTest = new PreferenceWindowController();
       systemUnderTest.hideConfigurationWindow();
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowIsShowingCheckIfNotAssociated(){
-      systemUnderTest = new ConfigurationWindowController();
+      systemUnderTest = new PreferenceWindowController();
       systemUnderTest.isConfigurationWindowShowing();
    }//End Method
    
@@ -101,7 +101,7 @@ public class ConfigurationWindowControllerTest {
 
    @Test public void shouldSizeStageAndMakeNotFullScreen(){
       assertThat( systemUnderTest.stage().isFullScreen(), is( false ) );
-      assertThat( systemUnderTest.stage().widthProperty().get(), is( ConfigurationWindowController.WIDTH ) );
-      assertThat( systemUnderTest.stage().heightProperty().get(), is( ConfigurationWindowController.HEIGHT ) );
+      assertThat( systemUnderTest.stage().widthProperty().get(), is( PreferenceWindowController.WIDTH ) );
+      assertThat( systemUnderTest.stage().heightProperty().get(), is( PreferenceWindowController.HEIGHT ) );
    }//End Method
 }//End Class

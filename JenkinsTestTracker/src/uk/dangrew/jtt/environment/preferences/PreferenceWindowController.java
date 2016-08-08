@@ -16,11 +16,11 @@ import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 
 /**
- * The {@link DualBuildWallConfigurationWindowController} is responsible for controlling a
+ * The {@link PreferenceWindowController} is responsible for controlling a
  * {@link DualBuildWallConfigurationWindow} in a separate {@link Stage}. Note that this requires
  * the {@link PlatformImpl} {@link Thread} therefore some of these calls are run later.
  */
-public class ConfigurationWindowController {
+public class PreferenceWindowController {
    
    static final double HEIGHT = 400;
    static final double WIDTH = 800;
@@ -28,12 +28,12 @@ public class ConfigurationWindowController {
    private Stage configurationWindowStage;
    
    /**
-    * Constructs a new {@link DualBuildWallConfigurationWindowController}.
+    * Constructs a new {@link PreferenceWindowController}.
     * {@link #associateWithConfiguration(BuildWallConfiguration, ImageFlasherProperties, BuildWallConfiguration)}
     * should be called to initialise this object. This is broken down to allow more flexibility with construction
     * since this is a heavy setup and sometimes may not be required.
     */
-   public ConfigurationWindowController() {}//End Constructor
+   public PreferenceWindowController() {}//End Constructor
    
    /**
     * Constructs a new {@link DualBuildWallConfigurationWindowController}.
