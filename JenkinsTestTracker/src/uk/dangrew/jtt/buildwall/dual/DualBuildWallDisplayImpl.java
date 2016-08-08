@@ -20,6 +20,7 @@ import uk.dangrew.jtt.buildwall.effects.flasher.configuration.ImageFlasherConfig
 import uk.dangrew.jtt.buildwall.effects.triggers.JobFailureTrigger;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.environment.preferences.ConfigurationWindowController;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**

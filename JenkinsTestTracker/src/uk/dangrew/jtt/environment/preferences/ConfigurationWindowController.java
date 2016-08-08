@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.buildwall.dual;
+package uk.dangrew.jtt.environment.preferences;
 
 import com.sun.javafx.application.PlatformImpl;
 
@@ -33,13 +33,13 @@ public class ConfigurationWindowController {
     * should be called to initialise this object. This is broken down to allow more flexibility with construction
     * since this is a heavy setup and sometimes may not be required.
     */
-   ConfigurationWindowController() {}//End Constructor
+   public ConfigurationWindowController() {}//End Constructor
    
    /**
     * Constructs a new {@link DualBuildWallConfigurationWindowController}.
     * @param systemConfiguration the {@link SystemConfiguration}.
     */
-   void associateWithConfiguration(
+   public void associateWithConfiguration(
             SystemConfiguration systemConfiguration
    ) {
          ConfigurationTreePane configurationWindow = new ConfigurationTreePane( 
@@ -67,7 +67,7 @@ public class ConfigurationWindowController {
    /**
     * Method to show the {@link DualBuildWallConfigurationWindow}.
     */
-   void showConfigurationWindow(){
+   public void showConfigurationWindow(){
       verifyState();
       PlatformImpl.runLater( () -> configurationWindowStage.show() );
    }//End Method
@@ -75,7 +75,7 @@ public class ConfigurationWindowController {
    /**
     * Method to hide the {@link DualBuildWallConfigurationWindow}.
     */
-   void hideConfigurationWindow(){
+   public void hideConfigurationWindow(){
       verifyState();
       PlatformImpl.runLater( () -> configurationWindowStage.hide() );
    }//End Method
@@ -84,7 +84,7 @@ public class ConfigurationWindowController {
     * Method to determine whether the {@link DualBuildWallConfigurationWindow} is showing.
     * @return true if showing, false otherwise.
     */
-   boolean isConfigurationWindowShowing(){
+   public boolean isConfigurationWindowShowing(){
       verifyState();
       return configurationWindowStage.isShowing();
    }//End Method
