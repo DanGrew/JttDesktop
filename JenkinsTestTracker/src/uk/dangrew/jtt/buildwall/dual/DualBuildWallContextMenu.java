@@ -28,8 +28,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
    static final String HIDE_LEFT = "Hide Left";
    static final String CONFIGURE_IMAGE_FLASHER = "Configure Image Flasher";
    static final String HIDE_CONFIGURATION = "Hide Configuration";
-   static final String OPEN_CONFIGURATION_WINDOW = "Open Configuration Window";
-   static final String CLOSE_CONFIGURATION_WINDOW = "Close Configuration Window";
+   static final String PREFERENCES = "Preferences";
    static final String SHOW_DIGEST = "Show Digest";
    static final String HIDE_DIGEST = "Hide Digest";
    static final String CANCEL = "Cancel";
@@ -90,7 +89,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
     * Method to apply the configuration window controls.
     */
    private void applyConfigWindowControl() {
-      configWindowControl = new MenuItem( OPEN_CONFIGURATION_WINDOW );
+      configWindowControl = new MenuItem( PREFERENCES );
       configWindowControl.setOnAction( event -> controlConfigWindow( configWindowControl ) );
       
       getItems().addAll( 
@@ -163,13 +162,8 @@ public class DualBuildWallContextMenu extends ContextMenu {
     * @param configWindowControl the {@link MenuItem} to update.
     */
    private void controlConfigWindow( MenuItem configWindowControl ) {
-      if ( configWindowControl.getText() == OPEN_CONFIGURATION_WINDOW ) {
-         prefernceOpener.fire( new Event< Void, WindowPolicy >( null, WindowPolicy.Open ) );
-         configWindowControl.setText( CLOSE_CONFIGURATION_WINDOW );
-      } else {
-         prefernceOpener.fire( new Event< Void, WindowPolicy >( null, WindowPolicy.Close ) );
-         configWindowControl.setText( OPEN_CONFIGURATION_WINDOW );
-      }
+      prefernceOpener.fire( new Event< Void, WindowPolicy >( null, WindowPolicy.Open ) );
+      configWindowControl.setText( PREFERENCES );
    }//End Method
    
    /**
@@ -228,12 +222,6 @@ public class DualBuildWallContextMenu extends ContextMenu {
          leftWallControl.setText( HIDE_LEFT );
       } else {
          leftWallControl.setText( SHOW_LEFT );
-      }
-      
-      if ( display.isConfigurationWindowShowing() ) {
-         configWindowControl.setText( CLOSE_CONFIGURATION_WINDOW );
-      } else {
-         configWindowControl.setText( OPEN_CONFIGURATION_WINDOW );
       }
    }//End Method
    

@@ -69,7 +69,10 @@ public class PreferenceWindowController {
     */
    public void showConfigurationWindow(){
       verifyState();
-      PlatformImpl.runLater( () -> configurationWindowStage.show() );
+      PlatformImpl.runLater( () -> { 
+         configurationWindowStage.show();
+         configurationWindowStage.toFront();
+      } );
    }//End Method
    
    /**

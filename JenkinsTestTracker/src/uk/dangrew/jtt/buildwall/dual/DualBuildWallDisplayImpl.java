@@ -34,7 +34,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
    private final SystemConfiguration systemConfiguration;
    
    private final ImageFlasherProperties imageFlasherProperties;
-   private final PreferenceWindowController configWindowController;
 
    private BorderPane buildWallPane;
    private DualBuildWallSplitter buildWallSplitter;
@@ -52,7 +51,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
       this( 
                database, 
                systemConfiguration, 
-               new PreferenceWindowController(), 
                new BuildWallConfigurationSessions( 
                         database, 
                         systemConfiguration.getLeftConfiguration(), 
@@ -66,22 +64,18 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Constructs a new {@link BuildWallDisplayImpl}.
     * @param database the {@link JenkinsDatabase} associated.
     * @param systemConfiguration the {@link SystemConfiguration}.
-    * @param windowController the {@link PreferenceWindowController} to use
-    * to open a separate configuration window.
     * @param wallSessions the {@link BuildWallConfigurationSessions} used to persist configuration.
     * @param dualSessions the {@link DualWallConfigurationSessions} used to persist {@link uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration}.
     */
    DualBuildWallDisplayImpl( 
             JenkinsDatabase database, 
             SystemConfiguration systemConfiguration, 
-            PreferenceWindowController windowController, 
             BuildWallConfigurationSessions wallSessions,
             DualWallConfigurationSessions dualSessions
    ) {
       this.database = database;
       this.systemConfiguration = systemConfiguration;
       this.imageFlasherProperties = new ImageFlasherPropertiesImpl();
-      this.configWindowController = windowController;
       
       applyPolicyUpdaters();
       createAndArrangeWalls();
@@ -125,10 +119,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
    private void applyConfigurationControls(){
       buildWallConfigurer = new DualBuildWallConfigurer( buildWallPane, imageFlasherProperties );
       new DualBuildWallAutoHider( this, leftGridWall.emptyProperty(), rightGridWall.emptyProperty() );
-      
-      configWindowController.associateWithConfiguration( 
-               systemConfiguration
-      );
    }//End Method
    
    /**
@@ -216,28 +206,6 @@ public class DualBuildWallDisplayImpl extends StackPane {
     */
    public boolean isConfigurationShowing(){
       return buildWallConfigurer.isConfigurationShowing();
-   }//End Method
-   
-   /**
-    * Method to show the {@link DualBuildWallConfigurationWindow}.
-    */
-   public void showConfigurationWindow(){
-      configWindowController.showConfigurationWindow();
-   }//End Method
-   
-   /**
-    * Method to hide the {@link DualBuildWallConfigurationWindow}.
-    */
-   public void hideConfigurationWindow(){
-      configWindowController.hideConfigurationWindow();
-   }//End Method
-   
-   /**
-    * Method to detemrine whether the {@link DualBuildWallConfigurationWindow} is showing.
-    * @return true if showing, false otherwise.
-    */
-   public boolean isConfigurationWindowShowing(){
-      return configWindowController.isConfigurationWindowShowing();
    }//End Method
    
    BorderPane buildWallPane(){

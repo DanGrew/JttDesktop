@@ -71,6 +71,7 @@ public class LaunchOptionsTest {
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       SystemStyling.initialise();
       MockitoAnnotations.initMocks( this );
+      configuration = new SystemConfiguration();
       window = spy( new EnvironmentWindowWithExposedWidth( database, digest ) );
       database = new JenkinsDatabaseImpl();
       systemUnderTest = new LaunchOptions( window, configuration, database, digest );

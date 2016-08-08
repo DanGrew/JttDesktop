@@ -61,7 +61,6 @@ import uk.dangrew.jtt.utility.TestCommon;
  */
 public class DualBuildWallDisplayImplTest {
 
-   @Mock private PreferenceWindowController windowController;
    @Mock private BuildWallConfigurationSessions sessions;
    @Mock private DualWallConfigurationSessions dualSessions;
    private JenkinsDatabase database;
@@ -110,7 +109,7 @@ public class DualBuildWallDisplayImplTest {
       
       systemConfiguration = new SystemConfiguration();
       
-      systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration, windowController, sessions, dualSessions );
+      systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration, sessions, dualSessions );
       
       systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
       systemConfiguration.getRightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
@@ -345,35 +344,4 @@ public class DualBuildWallDisplayImplTest {
       database.jenkinsJobs().get( 0 ).lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( true ) );
    }//End Method
-   
-   @Test public void shouldAssociateConfigurationWindowController(){
-      verify( windowController ).associateWithConfiguration( 
-               systemConfiguration 
-      );
-   }//End Method
-   
-   @Test public void shouldRedirectShowConfigurationWindow(){
-      systemUnderTest.showConfigurationWindow();
-      verify( windowController ).showConfigurationWindow();
-   }//End Method
-   
-   @Test public void shouldRedirectHideConfigurationWindow(){
-      systemUnderTest.hideConfigurationWindow();
-      verify( windowController ).hideConfigurationWindow();
-   }//End Method
-   
-   @Test public void shouldRedirectIsShowingConfigurationWindow(){
-      when( windowController.isConfigurationWindowShowing() ).thenReturn( false );
-      assertThat( systemUnderTest.isConfigurationWindowShowing(), is( false ) );
-      verify( windowController, times( 1 ) ).isConfigurationWindowShowing();
-      
-      when( windowController.isConfigurationWindowShowing() ).thenReturn( true );
-      assertThat( systemUnderTest.isConfigurationWindowShowing(), is( true ) );
-      verify( windowController, times( 2 ) ).isConfigurationWindowShowing();
-      
-      when( windowController.isConfigurationWindowShowing() ).thenReturn( false );
-      assertThat( systemUnderTest.isConfigurationWindowShowing(), is( false ) );
-      verify( windowController, times( 3 ) ).isConfigurationWindowShowing();
-   }//End Method
-   
 }//End Class

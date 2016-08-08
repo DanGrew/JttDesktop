@@ -108,7 +108,7 @@ public class DualBuildWallContextMenuTest {
       assertThat( retrieveMenuItem( CONFIGURE_IMAGE_FLASHER ).getText(), is( DualBuildWallContextMenu.CONFIGURE_IMAGE_FLASHER ) );
       assertThat( retrieveMenuItem( HIDE_CONFIG ).getText(), is( DualBuildWallContextMenu.HIDE_CONFIGURATION ) );
       assertThat( retrieveMenuItem( SECOND_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
-      assertThat( retrieveMenuItem( CONFIG_WINDOW ).getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
+      assertThat( retrieveMenuItem( CONFIG_WINDOW ).getText(), is( DualBuildWallContextMenu.PREFERENCES ) );
       assertThat( retrieveMenuItem( THIRD_SEPARATOR ), instanceOf( SeparatorMenuItem.class ) );
       assertThat( retrieveMenuItem( CANCEL ).getText(), is( DualBuildWallContextMenu.CANCEL ) );
       assertThat( systemUnderTest.getItems(), hasSize( 9 ) );
@@ -150,7 +150,6 @@ public class DualBuildWallContextMenuTest {
    @Test public void shouldControlConfigWindow() {
       MenuItem controWindow = retrieveMenuItem( CONFIG_WINDOW );
       
-      
       EventAssertions.assertEventRaised( 
                () -> new PreferencesOpenEvent(), 
                () -> controWindow.getOnAction().handle( new ActionEvent() ), 
@@ -158,15 +157,12 @@ public class DualBuildWallContextMenuTest {
                WindowPolicy.Open
       );
       
-      assertThat( controWindow.getText(), is( DualBuildWallContextMenu.CLOSE_CONFIGURATION_WINDOW ) );
-      
       EventAssertions.assertEventRaised( 
                () -> new PreferencesOpenEvent(), 
                () -> controWindow.getOnAction().handle( new ActionEvent() ), 
                null, 
-               WindowPolicy.Close
+               WindowPolicy.Open
       );
-      assertThat( controWindow.getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
    }//End Method
    
    @Test public void shouldShowImageFlasherConfiguration() {
@@ -220,7 +216,6 @@ public class DualBuildWallContextMenuTest {
       display = new DualBuildWallDisplayImpl( 
                new JenkinsDatabaseImpl(),
                systemConfiguration,
-               mock( PreferenceWindowController.class ),
                sessions,
                dualSessions
       );
@@ -278,19 +273,6 @@ public class DualBuildWallContextMenuTest {
       when( display.isLeftWallShowing() ).thenReturn( true );
       systemUnderTest.resetMenuOptions();
       assertThat( controLeft.getText(), is( DualBuildWallContextMenu.HIDE_LEFT ) );
-   }//End Method
-   
-   @Test public void shouldUpdateTextBasedOnConfigWindowState(){
-      MenuItem configWindow = retrieveMenuItem( CONFIG_WINDOW );
-      assertThat( configWindow.getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
-      
-      when( display.isConfigurationWindowShowing() ).thenReturn( true );
-      systemUnderTest.resetMenuOptions();
-      assertThat( configWindow.getText(), is( DualBuildWallContextMenu.CLOSE_CONFIGURATION_WINDOW ) );
-      
-      when( display.isConfigurationWindowShowing() ).thenReturn( false );
-      systemUnderTest.resetMenuOptions();
-      assertThat( configWindow.getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
    }//End Method
 
 }//End Class
