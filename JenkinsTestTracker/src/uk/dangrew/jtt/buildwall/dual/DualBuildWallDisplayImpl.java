@@ -33,7 +33,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
    private final SystemConfiguration systemConfiguration;
    
    private final ImageFlasherProperties imageFlasherProperties;
-   private final DualBuildWallConfigurationWindowController configWindowController;
+   private final ConfigurationWindowController configWindowController;
 
    private BorderPane buildWallPane;
    private DualBuildWallSplitter buildWallSplitter;
@@ -51,7 +51,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
       this( 
                database, 
                systemConfiguration, 
-               new DualBuildWallConfigurationWindowController(), 
+               new ConfigurationWindowController(), 
                new BuildWallConfigurationSessions( 
                         database, 
                         systemConfiguration.getLeftConfiguration(), 
@@ -65,7 +65,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Constructs a new {@link BuildWallDisplayImpl}.
     * @param database the {@link JenkinsDatabase} associated.
     * @param systemConfiguration the {@link SystemConfiguration}.
-    * @param windowController the {@link DualBuildWallConfigurationWindowController} to use
+    * @param windowController the {@link ConfigurationWindowController} to use
     * to open a separate configuration window.
     * @param wallSessions the {@link BuildWallConfigurationSessions} used to persist configuration.
     * @param dualSessions the {@link DualWallConfigurationSessions} used to persist {@link uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration}.
@@ -73,7 +73,7 @@ public class DualBuildWallDisplayImpl extends StackPane {
    DualBuildWallDisplayImpl( 
             JenkinsDatabase database, 
             SystemConfiguration systemConfiguration, 
-            DualBuildWallConfigurationWindowController windowController, 
+            ConfigurationWindowController windowController, 
             BuildWallConfigurationSessions wallSessions,
             DualWallConfigurationSessions dualSessions
    ) {

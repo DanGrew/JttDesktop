@@ -28,12 +28,12 @@ import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 
 /**
- * {@link DualBuildWallConfigurationWindowController} test.
+ * {@link ConfigurationWindowController} test.
  */
-public class DualBuildWallConfigurationWindowControllerTest {
+public class ConfigurationWindowControllerTest {
    
    private SystemConfiguration systemConfiguration;
-   private DualBuildWallConfigurationWindowController systemUnderTest;
+   private ConfigurationWindowController systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
@@ -48,22 +48,22 @@ public class DualBuildWallConfigurationWindowControllerTest {
       systemConfiguration.getLeftConfiguration().jobPolicies().putAll( systemConfiguration.getRightConfiguration().jobPolicies() );
       
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new DualBuildWallConfigurationWindowController();
+      systemUnderTest = new ConfigurationWindowController();
       systemUnderTest.associateWithConfiguration( systemConfiguration );
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowShowIfNotAssociated(){
-      systemUnderTest = new DualBuildWallConfigurationWindowController();
+      systemUnderTest = new ConfigurationWindowController();
       systemUnderTest.showConfigurationWindow();
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowHideIfNotAssociated(){
-      systemUnderTest = new DualBuildWallConfigurationWindowController();
+      systemUnderTest = new ConfigurationWindowController();
       systemUnderTest.hideConfigurationWindow();
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowIsShowingCheckIfNotAssociated(){
-      systemUnderTest = new DualBuildWallConfigurationWindowController();
+      systemUnderTest = new ConfigurationWindowController();
       systemUnderTest.isConfigurationWindowShowing();
    }//End Method
    
@@ -100,7 +100,7 @@ public class DualBuildWallConfigurationWindowControllerTest {
 
    @Test public void shouldSizeStageAndMakeNotFullScreen(){
       assertThat( systemUnderTest.stage().isFullScreen(), is( false ) );
-      assertThat( systemUnderTest.stage().widthProperty().get(), is( DualBuildWallConfigurationWindowController.WIDTH ) );
-      assertThat( systemUnderTest.stage().heightProperty().get(), is( DualBuildWallConfigurationWindowController.HEIGHT ) );
+      assertThat( systemUnderTest.stage().widthProperty().get(), is( ConfigurationWindowController.WIDTH ) );
+      assertThat( systemUnderTest.stage().heightProperty().get(), is( ConfigurationWindowController.HEIGHT ) );
    }//End Method
 }//End Class

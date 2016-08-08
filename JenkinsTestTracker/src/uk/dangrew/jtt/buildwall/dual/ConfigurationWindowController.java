@@ -20,7 +20,7 @@ import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
  * {@link DualBuildWallConfigurationWindow} in a separate {@link Stage}. Note that this requires
  * the {@link PlatformImpl} {@link Thread} therefore some of these calls are run later.
  */
-public class DualBuildWallConfigurationWindowController {
+public class ConfigurationWindowController {
    
    static final double HEIGHT = 400;
    static final double WIDTH = 800;
@@ -33,7 +33,7 @@ public class DualBuildWallConfigurationWindowController {
     * should be called to initialise this object. This is broken down to allow more flexibility with construction
     * since this is a heavy setup and sometimes may not be required.
     */
-   DualBuildWallConfigurationWindowController() {}//End Constructor
+   ConfigurationWindowController() {}//End Constructor
    
    /**
     * Constructs a new {@link DualBuildWallConfigurationWindowController}.

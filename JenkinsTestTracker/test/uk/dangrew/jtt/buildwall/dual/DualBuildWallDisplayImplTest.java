@@ -60,7 +60,7 @@ import uk.dangrew.jtt.utility.TestCommon;
  */
 public class DualBuildWallDisplayImplTest {
 
-   @Mock private DualBuildWallConfigurationWindowController windowController;
+   @Mock private ConfigurationWindowController windowController;
    @Mock private BuildWallConfigurationSessions sessions;
    @Mock private DualWallConfigurationSessions dualSessions;
    private JenkinsDatabase database;

@@ -206,7 +206,7 @@ public class DualBuildWallContextMenuTest {
       display = new DualBuildWallDisplayImpl( 
                new JenkinsDatabaseImpl(),
                systemConfiguration,
-               mock( DualBuildWallConfigurationWindowController.class ),
+               mock( ConfigurationWindowController.class ),
                sessions,
                dualSessions
       );
