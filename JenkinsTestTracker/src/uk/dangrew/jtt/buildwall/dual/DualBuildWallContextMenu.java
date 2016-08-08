@@ -12,6 +12,9 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
+import uk.dangrew.jtt.environment.preferences.WindowPolicy;
+import uk.dangrew.jtt.event.structure.Event;
 
 /**
  * The {@link DualBuildWallContextMenu} provides a {@link ContextMenu} that allows
@@ -39,6 +42,8 @@ public class DualBuildWallContextMenu extends ContextMenu {
    private final DualBuildWallDisplayImpl display;
    private final WrappedSystemDigest wrappedDigest;
    
+   private final PreferencesOpenEvent prefernceOpener;
+   
    /**
     * Constructs a new {@link DualBuildWallContextMenu}.
     * @param display the {@link DualBuildWallDisplayImpl} to control. 
@@ -46,6 +51,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
    DualBuildWallContextMenu( DualBuildWallDisplayImpl display ) {
       this.display = display;
       this.wrappedDigest = new WrappedSystemDigest( display.getParent() );
+      this.prefernceOpener = new PreferencesOpenEvent();
       
       applyControls();
       applyConfigWindowControl();
@@ -158,10 +164,10 @@ public class DualBuildWallContextMenu extends ContextMenu {
     */
    private void controlConfigWindow( MenuItem configWindowControl ) {
       if ( configWindowControl.getText() == OPEN_CONFIGURATION_WINDOW ) {
-         display.showConfigurationWindow();
+         prefernceOpener.fire( new Event< Void, WindowPolicy >( null, WindowPolicy.Open ) );
          configWindowControl.setText( CLOSE_CONFIGURATION_WINDOW );
       } else {
-         display.hideConfigurationWindow();
+         prefernceOpener.fire( new Event< Void, WindowPolicy >( null, WindowPolicy.Close ) );
          configWindowControl.setText( OPEN_CONFIGURATION_WINDOW );
       }
    }//End Method

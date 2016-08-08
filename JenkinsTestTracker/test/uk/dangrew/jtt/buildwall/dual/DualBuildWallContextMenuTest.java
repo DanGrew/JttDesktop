@@ -37,6 +37,9 @@ import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallCon
 import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
+import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
+import uk.dangrew.jtt.environment.preferences.WindowPolicy;
+import uk.dangrew.jtt.event.structure.EventAssertions;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -147,12 +150,22 @@ public class DualBuildWallContextMenuTest {
    @Test public void shouldControlConfigWindow() {
       MenuItem controWindow = retrieveMenuItem( CONFIG_WINDOW );
       
-      controWindow.getOnAction().handle( new ActionEvent() );
-      verify( display ).showConfigurationWindow();
+      
+      EventAssertions.assertEventRaised( 
+               () -> new PreferencesOpenEvent(), 
+               () -> controWindow.getOnAction().handle( new ActionEvent() ), 
+               null, 
+               WindowPolicy.Open
+      );
+      
       assertThat( controWindow.getText(), is( DualBuildWallContextMenu.CLOSE_CONFIGURATION_WINDOW ) );
       
-      controWindow.getOnAction().handle( new ActionEvent() );
-      verify( display ).hideConfigurationWindow();
+      EventAssertions.assertEventRaised( 
+               () -> new PreferencesOpenEvent(), 
+               () -> controWindow.getOnAction().handle( new ActionEvent() ), 
+               null, 
+               WindowPolicy.Close
+      );
       assertThat( controWindow.getText(), is( DualBuildWallContextMenu.OPEN_CONFIGURATION_WINDOW ) );
    }//End Method
    
