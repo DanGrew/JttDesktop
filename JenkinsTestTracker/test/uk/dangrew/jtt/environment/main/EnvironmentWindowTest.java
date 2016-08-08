@@ -10,6 +10,7 @@ package uk.dangrew.jtt.environment.main;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -58,6 +59,10 @@ public class EnvironmentWindowTest {
       assertThat( systemUnderTest.hiddenSidesPane().getContent(), is( instanceOf( CenterScreenWrapper.class ) ) );
       CenterScreenWrapper wrapper = ( CenterScreenWrapper ) systemUnderTest.hiddenSidesPane().getContent();
       assertThat( wrapper.getCenter(), is( instanceOf( LaunchOptions.class ) ) );
+   }//End Method
+   
+   @Test public void shouldHavePreferenceOpener(){
+      assertThat( systemUnderTest.preferenceOpener(), is( notNullValue() ) );
    }//End Method
    
 }//End Class

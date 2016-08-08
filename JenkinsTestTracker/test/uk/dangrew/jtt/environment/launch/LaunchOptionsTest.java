@@ -28,6 +28,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallContextMenuOpener;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -44,6 +45,7 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
 public class LaunchOptionsTest {
    
    private EnvironmentWindowWithExposedWidth window;
+   private SystemConfiguration configuration;
    private JenkinsDatabase database;
    @Mock private DigestViewer digest;
    @Captor private ArgumentCaptor< Node > contentCaptor;
@@ -71,7 +73,7 @@ public class LaunchOptionsTest {
       MockitoAnnotations.initMocks( this );
       window = spy( new EnvironmentWindowWithExposedWidth( database, digest ) );
       database = new JenkinsDatabaseImpl();
-      systemUnderTest = new LaunchOptions( window, database, digest );
+      systemUnderTest = new LaunchOptions( window, configuration, database, digest );
    }//End Method
 
    @Ignore

@@ -29,6 +29,7 @@ public class LaunchOptions extends VBox {
    static final double BUTTON_SPACING = 10;
    
    private final EnvironmentWindow window;
+   private final SystemConfiguration configuration;
    private final JenkinsDatabase database;
    private final DigestViewer digest;
    
@@ -38,11 +39,13 @@ public class LaunchOptions extends VBox {
    /**
     * Constructs a new {@link LaunchOptions}.
     * @param window the {@link EnvironmentWindow} to update based on launch.
+    * @param configuration the {@link SystemConfiguration} to use in the launch.
     * @param database the {@link JenkinsDatabase} for the system.
     * @param digest the {@link DigestViewer} for the system.
     */
-   public LaunchOptions( EnvironmentWindow window, JenkinsDatabase database, DigestViewer digest ) {
+   public LaunchOptions( EnvironmentWindow window, SystemConfiguration configuration, JenkinsDatabase database, DigestViewer digest ) {
       this.window = window;
+      this.configuration = configuration;
       this.database = database;
       this.digest = digest;
       
@@ -63,7 +66,7 @@ public class LaunchOptions extends VBox {
     * Method to launch the {@link DualBuildWallDisplayImpl} and place it in the {@link EnvironmentWindow}.
     */
    private void launchBuildWall(){
-      DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( database, new SystemConfiguration() );
+      DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( database, configuration );
       BorderPane digestWrapper = new BorderPane( dualWall );
       
       ReleasesWrapper releaseNotifier = new ReleasesWrapper();

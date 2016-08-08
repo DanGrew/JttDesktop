@@ -12,6 +12,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
+import uk.dangrew.jtt.environment.preferences.WindowPolicy;
+import uk.dangrew.jtt.event.structure.Event;
 
 /**
  * {@link EnvironmentMenuBar} provides a {@link MenuBar} for the {@link EnvironmentWindow}.
@@ -34,7 +37,9 @@ public class EnvironmentMenuBar extends MenuBar {
       
       applicationMenu = new Menu( JENKINS_TEST_TRACKER_MENU );
       
+      PreferencesOpenEvent preferenceOpener = new PreferencesOpenEvent();
       preferences = new MenuItem( PREFERENCES_MENU );
+      preferences.setOnAction( event -> preferenceOpener.fire( new Event<>( null, WindowPolicy.Open ) ) );
       about = new MenuItem( ABOUT_MENU );
       applicationMenu.getItems().addAll( preferences, new SeparatorMenuItem(), about );
       

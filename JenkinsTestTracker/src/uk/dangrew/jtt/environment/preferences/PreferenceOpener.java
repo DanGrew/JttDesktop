@@ -43,7 +43,19 @@ public class PreferenceOpener {
     * Handler for the event when received.
     * @param event the {@link Event} fired.
     */
-   private void eventFired( Event< Void, Void > event ) {
-      controller.showConfigurationWindow();
+   private void eventFired( Event< Void, WindowPolicy > event ) {
+      if ( event.getValue() == null ) {
+         return;
+      }
+      switch ( event.getValue() ) {
+         case Close:
+            controller.hideConfigurationWindow();
+            break;
+         case Open:
+            controller.showConfigurationWindow();
+            break;
+         default:
+            break;
+      }
    }//End Method
 }//End Class
