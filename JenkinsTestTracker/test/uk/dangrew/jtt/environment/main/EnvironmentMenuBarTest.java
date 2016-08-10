@@ -16,6 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.event.ActionEvent;
+import uk.dangrew.jtt.configuration.tree.ConfigurationTreeItems;
+import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.event.structure.EventAssertions;
@@ -58,8 +60,16 @@ public class EnvironmentMenuBarTest {
                () -> new PreferencesOpenEvent(), 
                () -> systemUnderTest.preferences().getOnAction().handle( new ActionEvent() ), 
                null,
-               WindowPolicy.Open 
+               new PreferenceBehaviour( WindowPolicy.Open, null ) 
       );
    }//End Method
    
+   @Test public void aboutShouldOpenPreferencesWindowWithEventAndSelectVersion(){
+      EventAssertions.assertEventRaised( 
+               () -> new PreferencesOpenEvent(), 
+               () -> systemUnderTest.about().getOnAction().handle( new ActionEvent() ), 
+               null,
+               new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.SystemVersion ) 
+      );
+   }//End Method
 }//End Class

@@ -191,50 +191,64 @@ public class ConfigurationTreeTest {
    @Test public void shouldSelectRoots(){
       systemUnderTest.select( ConfigurationTreeItems.SystemVersion );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.systemVersion() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.SystemVersion ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.DualWallRoot );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.dualWallRoot() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( true ) );
    }//End Method
    
    @Test public void shouldSelectDualWallProperties(){
       systemUnderTest.select( ConfigurationTreeItems.DualWallProperties );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.dualWallProperties() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallProperties ), is( true ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( false ) );
    }//End Method
    
    @Test public void shouldSelectWallRoots(){
       systemUnderTest.select( ConfigurationTreeItems.LeftWallRoot );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.LeftWallRoot ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.RightWallRoot );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.RightWallRoot ), is( true ) );
    }//End Method
    
    @Test public void shouldSelectLeftSubItems(){
       systemUnderTest.select( ConfigurationTreeItems.LeftDimension );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot().getChildren().get( 0 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.LeftDimension ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.LeftJobPolicies );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot().getChildren().get( 1 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.LeftJobPolicies ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.LeftFonts );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot().getChildren().get( 2 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.LeftFonts ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.LeftColours );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot().getChildren().get( 3 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.LeftColours ), is( true ) );
    }//End Method
    
    @Test public void shouldSelectRightSubItems(){
       systemUnderTest.select( ConfigurationTreeItems.RightDimension );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 0 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.RightDimension ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.RightJobPolicies );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 1 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.RightJobPolicies ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.RightFonts );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 2 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.RightFonts ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.RightColours );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 3 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.RightColours ), is( true ) );
    }//End Method
    
    @Test public void shouldIgnoreNullSelect(){

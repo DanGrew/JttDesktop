@@ -154,6 +154,17 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    }//End Method
    
    /**
+    * Method to determine whether the given {@link ConfigurationTreeItems} is selected.
+    * @param item the {@link ConfigurationTreeItems} in question.
+    * @return true if selected.
+    */
+   public boolean isSelected( ConfigurationTreeItems item ) {
+      TreeItem< ConfigurationItem > treeItem = itemMapping.get( item );
+      TreeItem< ConfigurationItem > selected = getSelectionModel().getSelectedItem();
+      return treeItem == selected;
+   }//End Method
+   
+   /**
     * Method to select the item associated with the given {@link ConfigurationTreeItems}.
     * @param item the {@link ConfigurationTreeItems} to select.
     */

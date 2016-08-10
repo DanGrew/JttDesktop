@@ -36,7 +36,7 @@ import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
+import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.event.structure.EventAssertions;
@@ -154,14 +154,14 @@ public class DualBuildWallContextMenuTest {
                () -> new PreferencesOpenEvent(), 
                () -> controWindow.getOnAction().handle( new ActionEvent() ), 
                null, 
-               WindowPolicy.Open
+               new PreferenceBehaviour( WindowPolicy.Open, null )
       );
       
       EventAssertions.assertEventRaised( 
                () -> new PreferencesOpenEvent(), 
                () -> controWindow.getOnAction().handle( new ActionEvent() ), 
                null, 
-               WindowPolicy.Open
+               new PreferenceBehaviour( WindowPolicy.Open, null )
       );
    }//End Method
    

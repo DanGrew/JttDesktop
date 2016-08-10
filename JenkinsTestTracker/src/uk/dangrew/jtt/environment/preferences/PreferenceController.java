@@ -56,11 +56,11 @@ public class PreferenceController {
     * Handler for the event when received.
     * @param event the {@link Event} fired.
     */
-   private void eventFired( Event< Void, WindowPolicy > event ) {
+   private void eventFired( Event< Void, PreferenceBehaviour > event ) {
       if ( event.getValue() == null ) {
          return;
       }
-      switch ( event.getValue() ) {
+      switch ( event.getValue().getWindowPolicy() ) {
          case Close:
             controller.hideConfigurationWindow();
             break;
@@ -70,6 +70,11 @@ public class PreferenceController {
          default:
             break;
       }
+      
+      if ( event.getValue().getSelection() == null ) {
+         return;
+      }
+      tree.select( event.getValue().getSelection() );
    }//End Method
    
    /**

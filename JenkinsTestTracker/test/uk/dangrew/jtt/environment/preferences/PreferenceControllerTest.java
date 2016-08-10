@@ -25,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.configuration.tree.ConfigurationTreeItems;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
@@ -59,12 +60,12 @@ public class PreferenceControllerTest {
    }//End Method
    
    @Test public void shouldTriggerOpeningOfWindowWhenEventReceived() {
-      new PreferencesOpenEvent().fire( new Event<>( null, WindowPolicy.Open ) );
+      new PreferencesOpenEvent().fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
       verify( controller ).showConfigurationWindow();
    }//End Method
    
    @Test public void shouldTriggerClosingOfWindowWhenEventReceived() {
-      new PreferencesOpenEvent().fire( new Event<>( null, WindowPolicy.Close ) );
+      new PreferencesOpenEvent().fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Close, null ) ) );
       verify( controller ).hideConfigurationWindow();
    }//End Method
    
@@ -76,14 +77,14 @@ public class PreferenceControllerTest {
    
    @Test public void shouldTriggerOpeningOfWindowWhenEventReceivedMultipleTimes() {
       PreferencesOpenEvent event = new PreferencesOpenEvent();
-      event.fire( new Event<>( null, WindowPolicy.Open ) );
-      event.fire( new Event<>( null, WindowPolicy.Open ) );
+      event.fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
+      event.fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
       verify( controller, times( 2 ) ).showConfigurationWindow();
    }//End Method
    
    @Test public void shouldTriggerOpeningOfWindowFromMultipleEventSources() {
-      new PreferencesOpenEvent().fire( new Event<>( null, WindowPolicy.Open ) );
-      new PreferencesOpenEvent().fire( new Event<>( null, WindowPolicy.Open ) );
+      new PreferencesOpenEvent().fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
+      new PreferencesOpenEvent().fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
       verify( controller, times( 2 ) ).showConfigurationWindow();
    }//End Method
 
@@ -94,4 +95,17 @@ public class PreferenceControllerTest {
       systemUnderTest.displayContent( titleNode, contentNode );
       verify( content ).setContent( titleNode, contentNode );
    }//End Method   
+   
+   @Test public void shouldSelectInTreeWhenProvided(){
+      new PreferencesOpenEvent().fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.LeftWallRoot ) ) );
+      assertThat( systemUnderTest.tree().isSelected( ConfigurationTreeItems.LeftWallRoot ), is( true ) );
+   }//End Method
+   
+   @Test public void shouldNotSelectInTreeWhenNotProvided(){
+      new PreferencesOpenEvent().fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.LeftWallRoot ) ) );
+      assertThat( systemUnderTest.tree().isSelected( ConfigurationTreeItems.LeftWallRoot ), is( true ) );
+      
+      new PreferencesOpenEvent().fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
+      assertThat( systemUnderTest.tree().isSelected( ConfigurationTreeItems.LeftWallRoot ), is( true ) );
+   }//End Method
 }//End Class

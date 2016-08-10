@@ -12,6 +12,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import uk.dangrew.jtt.configuration.tree.ConfigurationTreeItems;
+import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.event.structure.Event;
@@ -39,8 +41,13 @@ public class EnvironmentMenuBar extends MenuBar {
       
       PreferencesOpenEvent preferenceOpener = new PreferencesOpenEvent();
       preferences = new MenuItem( PREFERENCES_MENU );
-      preferences.setOnAction( event -> preferenceOpener.fire( new Event<>( null, WindowPolicy.Open ) ) );
+      preferences.setOnAction( event -> preferenceOpener.fire( 
+               new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) 
+      ) );
       about = new MenuItem( ABOUT_MENU );
+      about.setOnAction( event -> preferenceOpener.fire( 
+               new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.SystemVersion ) ) 
+      ) );
       applicationMenu.getItems().addAll( preferences, new SeparatorMenuItem(), about );
       
       getMenus().add( applicationMenu );

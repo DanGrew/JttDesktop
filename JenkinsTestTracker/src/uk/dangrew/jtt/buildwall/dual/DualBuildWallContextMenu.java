@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.event.structure.Event;
@@ -162,7 +163,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
     * @param configWindowControl the {@link MenuItem} to update.
     */
    private void controlConfigWindow( MenuItem configWindowControl ) {
-      prefernceOpener.fire( new Event< Void, WindowPolicy >( null, WindowPolicy.Open ) );
+      prefernceOpener.fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
       configWindowControl.setText( PREFERENCES );
    }//End Method
    

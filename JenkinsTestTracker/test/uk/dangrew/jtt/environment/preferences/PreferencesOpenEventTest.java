@@ -14,12 +14,12 @@ import uk.dangrew.jtt.event.structure.EventManager;
 /**
  * {@link PreferencesOpenEvent} test.
  */
-public class PreferencesOpenEventTest extends AbstractEventManagerTest< Void, WindowPolicy > {
+public class PreferencesOpenEventTest extends AbstractEventManagerTest< Void, PreferenceBehaviour > {
 
    /**
     * {@inheritDoc}
     */
-   @Override protected EventManager< Void, WindowPolicy > constructSut() {
+   @Override protected EventManager< Void, PreferenceBehaviour > constructSut() {
       return new PreferencesOpenEvent();
    }//End Method
 }//End Class
