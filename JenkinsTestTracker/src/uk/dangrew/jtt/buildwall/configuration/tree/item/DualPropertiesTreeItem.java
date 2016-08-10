@@ -12,7 +12,7 @@ import uk.dangrew.jtt.buildwall.configuration.components.DualPropertiesPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
 /**
  * The {@link DualPropertiesTreeItem} provides the configuration items for the properties related
@@ -30,10 +30,10 @@ public class DualPropertiesTreeItem extends SimpleConfigurationItem {
    
    /**
     * Constructs a new {@link DualPropertiesTreeItem}.
-    * @param controller the {@link ConfigurationTreeController} for controlling the configuration.
+    * @param controller the {@link PreferenceController} for controlling the configuration.
     * @param configuration the {@link DualWallConfiguration} associated.
     */
-   public DualPropertiesTreeItem( ConfigurationTreeController controller, DualWallConfiguration configuration ) {
+   public DualPropertiesTreeItem( PreferenceController controller, DualWallConfiguration configuration ) {
       super( 
                NAME, 
                new SimpleConfigurationTitle( TITLE, DESCRIPTION ),

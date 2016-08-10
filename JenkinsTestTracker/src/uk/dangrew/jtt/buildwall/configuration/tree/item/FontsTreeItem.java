@@ -12,7 +12,7 @@ import uk.dangrew.jtt.buildwall.configuration.components.FontsPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
 /**
  * The {@link FontsTreeItem} provides the configuration items for the {@link javafx.scene.text.Font} related
@@ -30,10 +30,10 @@ public class FontsTreeItem extends SimpleConfigurationItem {
    
    /**
     * Constructs a new {@link FontsTreeItem}.
-    * @param controller the {@link ConfigurationTreeController} for controlling the configuration.
+    * @param controller the {@link PreferenceController} for controlling the configuration.
     * @param configuration the {@link BuildWallConfiguration} associated.
     */
-   public FontsTreeItem( ConfigurationTreeController controller, BuildWallConfiguration configuration ) {
+   public FontsTreeItem( PreferenceController controller, BuildWallConfiguration configuration ) {
       super( 
                NAME, 
                new SimpleConfigurationTitle( TITLE, DESCRIPTION ), 

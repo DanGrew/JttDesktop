@@ -12,7 +12,7 @@ import uk.dangrew.jtt.buildwall.configuration.components.ColoursPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
 /**
  * The {@link ColoursTreeItem} provides the configuration items for the colour related
@@ -30,10 +30,10 @@ public class ColoursTreeItem extends SimpleConfigurationItem {
    
    /**
     * Constructs a new {@link ColoursTreeItem}.
-    * @param controller the {@link ConfigurationTreeController} for controlling the configuration.
+    * @param controller the {@link PreferenceController} for controlling the configuration.
     * @param configuration the {@link BuildWallConfiguration} associated.
     */
-   public ColoursTreeItem( ConfigurationTreeController controller, BuildWallConfiguration configuration ) {
+   public ColoursTreeItem( PreferenceController controller, BuildWallConfiguration configuration ) {
       super( 
                NAME, 
                new SimpleConfigurationTitle( TITLE, DESCRIPTION ), 

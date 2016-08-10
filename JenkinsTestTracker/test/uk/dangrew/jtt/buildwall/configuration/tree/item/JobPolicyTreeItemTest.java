@@ -25,7 +25,7 @@ import uk.dangrew.jtt.buildwall.configuration.components.JobPolicyPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -36,7 +36,7 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 public class JobPolicyTreeItemTest {
 
    private BuildWallConfiguration configuration;
-   @Mock private ConfigurationTreeController controller;
+   @Mock private PreferenceController controller;
    @Captor private ArgumentCaptor< Node > contentTitleCaptor;
    @Captor private ArgumentCaptor< Node > contentCaptor;
    

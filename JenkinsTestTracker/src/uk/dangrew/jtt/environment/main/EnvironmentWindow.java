@@ -15,7 +15,7 @@ import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.environment.layout.CenterScreenWrapper;
-import uk.dangrew.jtt.environment.preferences.PreferenceOpener;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
@@ -28,7 +28,7 @@ public class EnvironmentWindow extends BorderPane {
    private final HiddenSidesPane content;
    private final CenterScreenWrapper center;
    private final SystemConfiguration configuration;
-   private final PreferenceOpener preferenceOpener;
+   private final PreferenceController preferenceOpener;
    
    /**
     * Constructs a new {@link EnvironmentWindow}.
@@ -39,7 +39,7 @@ public class EnvironmentWindow extends BorderPane {
       this.content = new HiddenSidesPane();
       
       this.configuration = new SystemConfiguration();
-      this.preferenceOpener = new PreferenceOpener( configuration );
+      this.preferenceOpener = new PreferenceController( configuration );
       
       EnvironmentMenuBar menuBar = new EnvironmentMenuBar();
       content.setTop( menuBar );
@@ -61,7 +61,7 @@ public class EnvironmentWindow extends BorderPane {
       return content;
    }//End Method
    
-   PreferenceOpener preferenceOpener(){
+   PreferenceController preferenceOpener(){
       return preferenceOpener;
    }//End Method
 

@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
 /**
  * {@link SimpleConfigurationItem} test.
@@ -28,14 +28,14 @@ public class SimpleConfigurationItemTest {
    private static final String NAME = "any name";
    
    @Mock private Node contentTitle;
-   @Mock private ConfigurationTreeController controller;
+   @Mock private PreferenceController controller;
    @Mock private Node content;
    
    /** Test extension for providing the inherited functionality.**/
    private static class TestConfigurationItem extends SimpleConfigurationItem {
 
       /** Constructor required by parent.**/
-      protected TestConfigurationItem( String itemName, Node contentTitle, ConfigurationTreeController controller, Node content ) {
+      protected TestConfigurationItem( String itemName, Node contentTitle, PreferenceController controller, Node content ) {
          super( itemName, contentTitle, controller, content );
       }//End Constructor
       

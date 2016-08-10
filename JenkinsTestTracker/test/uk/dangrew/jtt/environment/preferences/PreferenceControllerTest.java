@@ -8,35 +8,54 @@
  */
 package uk.dangrew.jtt.environment.preferences;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 import uk.dangrew.jtt.event.structure.Event;
+import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
+import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 
 /**
- * {@link PreferenceOpener} test.
+ * {@link PreferenceController} test.
  */
-public class PreferenceOpenerTest {
+public class PreferenceControllerTest {
 
-   @Mock private SystemConfiguration configuration;
+   private SystemConfiguration configuration;
    @Mock private PreferenceWindowController controller;
-   private PreferenceOpener systemUnderTest;
+   @Mock private ConfigurationTreeContent content;
+   private PreferenceController systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
+      JavaFxInitializer.startPlatform();
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new PreferenceOpener( controller, configuration );
+      configuration = new SystemConfiguration();
+      systemUnderTest = new PreferenceController( controller, configuration, content );
    }//End Method
 
    @Test public void shouldAssociate(){
-      verify( controller ).associateWithConfiguration( configuration );
+      ArgumentCaptor< ConfigurationTreePane > paneCaptor = ArgumentCaptor.forClass( ConfigurationTreePane.class );
+      verify( controller ).associateWithConfiguration( paneCaptor.capture() );
+      
+      assertThat( paneCaptor.getValue(), is( notNullValue() ) );
+      assertThat( paneCaptor.getValue().hasTree( systemUnderTest.tree() ), is( true ) );
+      assertThat( paneCaptor.getValue().hasContent( content ), is( true ) );
    }//End Method
    
    @Test public void shouldTriggerOpeningOfWindowWhenEventReceived() {
@@ -68,4 +87,11 @@ public class PreferenceOpenerTest {
       verify( controller, times( 2 ) ).showConfigurationWindow();
    }//End Method
 
+   @Test public void shouldInstructContentToShowNewNodes() {
+      Node titleNode = new Label();
+      Node contentNode = new Label();
+      
+      systemUnderTest.displayContent( titleNode, contentNode );
+      verify( content ).setContent( titleNode, contentNode );
+   }//End Method   
 }//End Class

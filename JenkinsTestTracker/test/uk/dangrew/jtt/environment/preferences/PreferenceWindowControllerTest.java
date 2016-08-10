@@ -8,7 +8,6 @@
  */
 package uk.dangrew.jtt.environment.preferences;
 
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -19,21 +18,18 @@ import org.junit.Test;
 
 import com.sun.javafx.application.PlatformImpl;
 
-import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
-import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
+import javafx.scene.Parent;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.utility.javafx.TestableParent;
 
 /**
  * {@link PreferenceWindowController} test.
  */
 public class PreferenceWindowControllerTest {
    
-   private SystemConfiguration systemConfiguration;
+   private Parent pane;
    private PreferenceWindowController systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
@@ -41,16 +37,10 @@ public class PreferenceWindowControllerTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      systemConfiguration = new SystemConfiguration();
-      
-      for ( int i = 0; i < 10; i++ ) {
-         systemConfiguration.getRightConfiguration().jobPolicies().put( new JenkinsJobImpl( "job " + i ), BuildWallJobPolicy.values()[ i % 3 ] );
-      }
-      systemConfiguration.getLeftConfiguration().jobPolicies().putAll( systemConfiguration.getRightConfiguration().jobPolicies() );
-      
       JavaFxInitializer.startPlatform();
+      pane = new TestableParent();
       systemUnderTest = new PreferenceWindowController();
-      systemUnderTest.associateWithConfiguration( systemConfiguration );
+      systemUnderTest.associateWithConfiguration( pane );
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowShowIfNotAssociated(){
@@ -75,7 +65,7 @@ public class PreferenceWindowControllerTest {
    @Test public void stageShouldHaveConfigurationWindowWithinScene(){
       assertThat( systemUnderTest.stage().getScene(), is( notNullValue() ) );
       assertThat( systemUnderTest.stage().getScene().getRoot(), is( notNullValue() ) );
-      assertThat( systemUnderTest.stage().getScene().getRoot(), instanceOf( ConfigurationTreePane.class ) );
+      assertThat( systemUnderTest.stage().getScene().getRoot(), is( pane ) );
    }//End Method
    
    @Test public void stageShouldBeHiddenInitially(){

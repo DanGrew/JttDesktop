@@ -36,6 +36,7 @@ import uk.dangrew.jtt.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.configuration.system.SystemVersionItem;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -45,7 +46,7 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
  */
 public class ConfigurationTreeTest {
 
-   @Mock private ConfigurationTreeController controller;
+   @Mock private PreferenceController controller;
    private SystemConfiguration systemConfiguration;
    private ConfigurationTree systemUnderTest;
    
@@ -185,5 +186,58 @@ public class ConfigurationTreeTest {
       verify( item, never() ).handleBeingSelected();
       systemUnderTest.getSelectionModel().select( additionalItem );
       verify( item ).handleBeingSelected();
+   }//End Method
+   
+   @Test public void shouldSelectRoots(){
+      systemUnderTest.select( ConfigurationTreeItems.SystemVersion );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.systemVersion() ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.DualWallRoot );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.dualWallRoot() ) );
+   }//End Method
+   
+   @Test public void shouldSelectDualWallProperties(){
+      systemUnderTest.select( ConfigurationTreeItems.DualWallProperties );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.dualWallProperties() ) );
+   }//End Method
+   
+   @Test public void shouldSelectWallRoots(){
+      systemUnderTest.select( ConfigurationTreeItems.LeftWallRoot );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot() ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.RightWallRoot );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot() ) );
+   }//End Method
+   
+   @Test public void shouldSelectLeftSubItems(){
+      systemUnderTest.select( ConfigurationTreeItems.LeftDimension );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot().getChildren().get( 0 ) ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.LeftJobPolicies );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot().getChildren().get( 1 ) ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.LeftFonts );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot().getChildren().get( 2 ) ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.LeftColours );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.leftWallRoot().getChildren().get( 3 ) ) );
+   }//End Method
+   
+   @Test public void shouldSelectRightSubItems(){
+      systemUnderTest.select( ConfigurationTreeItems.RightDimension );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 0 ) ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.RightJobPolicies );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 1 ) ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.RightFonts );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 2 ) ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.RightColours );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 3 ) ) );
+   }//End Method
+   
+   @Test public void shouldIgnoreNullSelect(){
+      systemUnderTest.select( null );
    }//End Method
 }//End Class

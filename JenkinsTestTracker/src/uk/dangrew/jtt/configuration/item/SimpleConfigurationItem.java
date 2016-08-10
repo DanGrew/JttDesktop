@@ -9,7 +9,7 @@
 package uk.dangrew.jtt.configuration.item;
 
 import javafx.scene.Node;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
 /**
  * The {@link SimpleConfigurationItem} provides a base class for {@link ConfigurationItem} that
@@ -19,20 +19,20 @@ public abstract class SimpleConfigurationItem implements ConfigurationItem {
 
    private final String itemName;
    private final Node contentTitle;
-   private final ConfigurationTreeController controller;
+   private final PreferenceController controller;
    private final Node content;
    
    /**
     * Constructs a new {@link SimpleConfigurationItem}.
     * @param itemName the name of the item in the {@link javafx.scene.control.TreeView}.
     * @param contentTitle the {@link Node} representing the title of the configuration.
-    * @param controller the {@link ConfigurationTreeController} for controlling the configuration.
+    * @param controller the {@link PreferenceController} for controlling the configuration.
     * @param content the {@link Node} providing the configuration options.
     */
    protected SimpleConfigurationItem( 
             String itemName, 
             Node contentTitle,
-            ConfigurationTreeController controller, 
+            PreferenceController controller, 
             Node content 
    ) {
       this.itemName = itemName;

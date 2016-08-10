@@ -11,7 +11,7 @@ package uk.dangrew.jtt.buildwall.configuration.tree.item;
 import uk.dangrew.jtt.buildwall.configuration.components.DualBuildWallDescriptionPanel;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
 /**
  * The {@link DualBuildWallRootItem} provides the root of a set of configuration items
@@ -24,9 +24,9 @@ public class DualBuildWallRootItem extends SimpleConfigurationItem {
 
    /**
     * Constructs a new {@link DualBuildWallRootItem}.
-    * @param controller the {@link ConfigurationTreeController} for controlling the configuration.
+    * @param controller the {@link PreferenceController} for controlling the configuration.
     */
-   public DualBuildWallRootItem( ConfigurationTreeController controller ) {
+   public DualBuildWallRootItem( PreferenceController controller ) {
       super( 
                NAME, 
                new SimpleConfigurationTitle( TITLE, null ), 

@@ -10,7 +10,7 @@ package uk.dangrew.jtt.configuration.system;
 
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreeController;
+import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
 /**
  * The {@link SystemVersionItem} provides a {@link SimpleConfigurationItem} that provides
@@ -23,9 +23,9 @@ public class SystemVersionItem extends SimpleConfigurationItem {
 
    /**
     * Constructs a new {@link SystemVersionItem}.
-    * @param controller the {@link ConfigurationTreeController} for controlling the configuration.
+    * @param controller the {@link PreferenceController} for controlling the configuration.
     */
-   public SystemVersionItem( ConfigurationTreeController controller ) {
+   public SystemVersionItem( PreferenceController controller ) {
       super( 
                NAME, 
                new SimpleConfigurationTitle( TITLE, null ), 

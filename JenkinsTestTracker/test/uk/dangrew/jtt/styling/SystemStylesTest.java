@@ -15,9 +15,8 @@ import org.mockito.Mockito;
 
 import javafx.scene.Parent;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.styling.BuildWallStyles;
-import uk.dangrew.jtt.styling.SystemStyles;
 import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.utility.javafx.TestableParent;
 
 /**
  * {@link SystemStyles} test.
@@ -25,9 +24,6 @@ import uk.dangrew.jtt.utility.TestCommon;
 public class SystemStylesTest {
    
    private SystemStyles systemUnderTest;
-   
-   /** Simple extension for {@link Parent} because mocking isn't enough. **/
-   private class TestableParent extends Parent {}
    
    @Before public void initialieSystemUnderTest(){
       systemUnderTest = new SystemStyles();

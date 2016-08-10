@@ -10,10 +10,9 @@ package uk.dangrew.jtt.environment.preferences;
 
 import com.sun.javafx.application.PlatformImpl;
 
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 
 /**
  * The {@link PreferenceWindowController} is responsible for controlling a
@@ -37,14 +36,11 @@ public class PreferenceWindowController {
    
    /**
     * Constructs a new {@link DualBuildWallConfigurationWindowController}.
-    * @param systemConfiguration the {@link SystemConfiguration}.
+    * @param configurationWindow the {@link Parent} to show in the window.
     */
    public void associateWithConfiguration(
-            SystemConfiguration systemConfiguration
+            Parent configurationWindow
    ) {
-         ConfigurationTreePane configurationWindow = new ConfigurationTreePane( 
-                  systemConfiguration 
-         );
          Scene configurationScene = new Scene( configurationWindow );
          PlatformImpl.runAndWait( () -> {
             configurationWindowStage = new Stage();
