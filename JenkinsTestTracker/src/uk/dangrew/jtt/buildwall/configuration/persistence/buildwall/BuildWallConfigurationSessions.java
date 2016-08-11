@@ -150,6 +150,16 @@ public class BuildWallConfigurationSessions {
       rightSessions.stop();
    }//End Method
    
+   /**
+    * Method to determine whether this object uses the given {@link BuildWallConfiguration}.
+    * @param left the left {@link BuildWallConfiguration}.
+    * @param right the right {@link BuildWallConfiguration}.
+    * @return true if same as given.
+    */
+   public boolean usesConfiguration( BuildWallConfiguration left, BuildWallConfiguration right ) {
+      return this.leftConfiguration == left && this.rightConfiguration == right;
+   }//End Method
+   
    FileLocationProtocol rightConfigurationFileLocation(){
       return rightConfigurationFileLocation;
    }//End Method

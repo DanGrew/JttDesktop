@@ -12,6 +12,9 @@ import javafx.scene.Scene;
 import uk.dangrew.jtt.api.sources.ClientHandler;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.api.sources.JenkinsApiImpl;
+import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
+import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.core.JenkinsTestTrackerCoreImpl;
 import uk.dangrew.jtt.core.JttSystemCoreImpl;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin;
@@ -26,6 +29,10 @@ public class JttSceneConstructor {
    
    private final JttApplicationController controller;
    private final SystemDigestController digestController;
+   
+   private SystemConfiguration configuration;
+   private BuildWallConfigurationSessions buildWallSessions;
+   private DualWallConfigurationSessions dualWallSessions;
    
    /**
     * Constructs a new {@link JttSceneConstructor}.
@@ -49,15 +56,40 @@ public class JttSceneConstructor {
     * @return the {@link Scene} constructed, or null if the user backs out.
     */
    public Scene makeScene() {
+      if ( configuration != null ) {
+         throw new IllegalStateException( "Can only call once." );
+      }
+      
       ExternalApi api = new JenkinsApiImpl( new ClientHandler() );
       
       if ( !controller.login( new JenkinsLogin( api, digestController.getDigestViewer() ) ) ) {
          return null;
       }
       
+      configuration = new SystemConfiguration();
       JenkinsTestTrackerCoreImpl core = new JttSystemCoreImpl( api );
-      EnvironmentWindow window = new EnvironmentWindow( core.getJenkinsDatabase(), digestController.getDigestViewer() );
+      buildWallSessions = new BuildWallConfigurationSessions( 
+               core.getJenkinsDatabase(), 
+               configuration.getLeftConfiguration(), 
+               configuration.getRightConfiguration() 
+      );
+      dualWallSessions = new DualWallConfigurationSessions( configuration.getDualConfiguration() );
+      core.initialiseTimeKeepers();
+      
+      EnvironmentWindow window = new EnvironmentWindow( configuration, core.getJenkinsDatabase(), digestController.getDigestViewer() );
       return new Scene( window );
+   }//End Method
+
+   SystemConfiguration configuration(){
+      return configuration;
+   }//End Method
+   
+   BuildWallConfigurationSessions buildWallSessions() {
+      return buildWallSessions;
+   }//End Method
+   
+   DualWallConfigurationSessions dualWallSessions() {
+      return dualWallSessions;
    }//End Method
    
 }//End Class

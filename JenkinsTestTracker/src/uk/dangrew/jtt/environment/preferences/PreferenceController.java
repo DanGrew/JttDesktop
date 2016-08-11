@@ -21,6 +21,7 @@ import uk.dangrew.jtt.event.structure.Event;
  */
 public class PreferenceController {
 
+   private final SystemConfiguration configuration;
    private final PreferenceWindowController controller;
    private final ConfigurationTreeContent contentHolder;
    private final ConfigurationTree tree;
@@ -40,6 +41,7 @@ public class PreferenceController {
     * @param contentHolder the {@link ConfigurationTreeContent}.
     */
    PreferenceController( PreferenceWindowController controller, SystemConfiguration configuration, ConfigurationTreeContent contentHolder ) {
+      this.configuration = configuration;
       this.contentHolder = contentHolder;
       
       this.tree = new ConfigurationTree( this, configuration );
@@ -84,6 +86,15 @@ public class PreferenceController {
     */
    public void displayContent( Node title, Node content ){
       contentHolder.setContent( title, content );
+   }//End Method
+   
+   /**
+    * Method to determine whether the given {@link SystemConfiguration} is used by this {@link PreferenceController}.
+    * @param configuration the {@link SystemConfiguration} in question.
+    * @return true if same as given.
+    */
+   public boolean usesConfiguration( SystemConfiguration configuration ) {
+      return this.configuration == configuration;
    }//End Method
    
    ConfigurationTree tree(){

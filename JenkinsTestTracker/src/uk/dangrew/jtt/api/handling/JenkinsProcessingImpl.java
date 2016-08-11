@@ -8,6 +8,9 @@
  */
 package uk.dangrew.jtt.api.handling;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
@@ -89,7 +92,11 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
       fetchJobs();
       
       digest.startUpdatingJobs( database.jenkinsJobs().size() );
-      database.jenkinsJobs().forEach( job -> {
+      
+      List< JenkinsJob > toProcess = new ArrayList<>();
+      database.jenkinsJobs().forEach( toProcess::add );
+      
+      for ( JenkinsJob job : toProcess ) {
          int previousBuildNumber = job.lastBuildNumberProperty().get();
          BuildResultStatus previousStatus = job.lastBuildStatusProperty().get();
          
@@ -97,7 +104,7 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
          digest.updatedJob( job );
          
          updateTestsIfStateChanged( job, previousBuildNumber, previousStatus );
-      } );
+      }
       digest.jobsUpdated();
    }//End Method
 

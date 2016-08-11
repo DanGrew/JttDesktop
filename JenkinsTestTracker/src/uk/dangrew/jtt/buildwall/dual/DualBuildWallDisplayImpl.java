@@ -47,31 +47,9 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * @param database the {@link JenkinsDatabase} associated.
     * @param systemConfiguration the {@link SystemConfiguration}.
     */
-   public DualBuildWallDisplayImpl( JenkinsDatabase database, SystemConfiguration systemConfiguration ) {
-      this( 
-               database, 
-               systemConfiguration, 
-               new BuildWallConfigurationSessions( 
-                        database, 
-                        systemConfiguration.getLeftConfiguration(), 
-                        systemConfiguration.getRightConfiguration() 
-               ),
-               new DualWallConfigurationSessions( systemConfiguration.getDualConfiguration() )
-      );
-   }//End Constructor
-   
-   /**
-    * Constructs a new {@link BuildWallDisplayImpl}.
-    * @param database the {@link JenkinsDatabase} associated.
-    * @param systemConfiguration the {@link SystemConfiguration}.
-    * @param wallSessions the {@link BuildWallConfigurationSessions} used to persist configuration.
-    * @param dualSessions the {@link DualWallConfigurationSessions} used to persist {@link uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration}.
-    */
-   DualBuildWallDisplayImpl( 
+   public DualBuildWallDisplayImpl( 
             JenkinsDatabase database, 
-            SystemConfiguration systemConfiguration, 
-            BuildWallConfigurationSessions wallSessions,
-            DualWallConfigurationSessions dualSessions
+            SystemConfiguration systemConfiguration 
    ) {
       this.database = database;
       this.systemConfiguration = systemConfiguration;

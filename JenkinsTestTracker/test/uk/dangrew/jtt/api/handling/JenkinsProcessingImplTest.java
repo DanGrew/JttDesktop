@@ -13,6 +13,9 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.concurrent.CountDownLatch;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +29,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.utility.mockito.DoAnswerNullReturn;
 
 /**
  * {@link JenkinsProcessingImpl} test.
@@ -203,6 +207,25 @@ public class JenkinsProcessingImplTest {
                count -> database.store( new JenkinsJobImpl( "" + count ) ), 
                10 
       );
+   }//End Method
+   
+   @Test public void shouldProcessOnlyThosePresentAtTheStartOfTheProcessing(){
+      CountDownLatch latch = new CountDownLatch( 1 );
+      doAnswer( invocation -> new DoAnswerNullReturn( () -> {
+         try {
+            latch.await();
+         } catch ( Exception e ) {
+            e.printStackTrace();
+         }
+      } ) ).when( fetcher ).updateJobDetails( firstJob );
+      
+      systemUnderTest.fetchJobsAndUpdateDetails();
+      
+      JenkinsJob extra = new JenkinsJobImpl( "Extra" );
+      database.store( extra );
+      latch.countDown();
+      
+      verify( fetcher, never() ).updateJobDetails( extra );
    }//End Method
    
 }//End Class

@@ -37,13 +37,13 @@ public abstract class JenkinsTestTrackerCoreImpl {
       JenkinsFetcher fetcher = new JenkinsFetcherImpl( database, api );
       jenkinsProcessing = new JenkinsProcessingImpl( database, fetcher );
 //      new JobMonitorImpl( database, fetcher );
-      initialiseTimeKeepers();
    }//End Constructor
    
    /**
-    * Method to initialise the {@link TimeKeeper}s for polling changes.
+    * Method to initialise the {@link TimeKeeper}s for polling changes. To be called
+    * manually for synchronization issues.
     */
-   abstract void initialiseTimeKeepers();
+   public abstract void initialiseTimeKeepers();
    
    /**
     * Setter for the {@link TimeKeeper}s created with specific configurations for the different environments.

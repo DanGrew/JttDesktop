@@ -50,6 +50,11 @@ public class PreferenceControllerTest {
       systemUnderTest = new PreferenceController( controller, configuration, content );
    }//End Method
 
+   @Test public void shouldHaveConfigurationGiven(){
+      assertThat( systemUnderTest.usesConfiguration( configuration ), is( true ) );
+      assertThat( systemUnderTest.usesConfiguration( new SystemConfiguration() ), is( false ) );
+   }//End Method
+   
    @Test public void shouldAssociate(){
       ArgumentCaptor< ConfigurationTreePane > paneCaptor = ArgumentCaptor.forClass( ConfigurationTreePane.class );
       verify( controller ).associateWithConfiguration( paneCaptor.capture() );

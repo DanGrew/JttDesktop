@@ -387,4 +387,11 @@ public class BuildWallConfigurationSessionsTest {
       assertThat( rightConfiguration.jobPanelDescriptionProvider().get(), is( JobPanelDescriptionProviders.Detailed ) );
    }//End Method
    
+   @Test public void shouldUseCorrectConfiguration(){
+      assertThat( systemUnderTest.usesConfiguration( leftConfiguration, rightConfiguration ), is( true ) );
+      assertThat( systemUnderTest.usesConfiguration( new BuildWallConfigurationImpl(), rightConfiguration ), is( false ) );
+      assertThat( systemUnderTest.usesConfiguration( leftConfiguration, new BuildWallConfigurationImpl() ), is( false ) );
+      assertThat( systemUnderTest.usesConfiguration( new BuildWallConfigurationImpl(), new BuildWallConfigurationImpl() ), is( false ) );
+   }//End Method
+   
 }//End Class

@@ -37,10 +37,10 @@ public class EnvironmentWindow extends BorderPane {
     * @param database the {@link JenkinsDatabase} used for launching the relevant system.
     * @param digest the {@link DigestViewer} for the system.
     */
-   public EnvironmentWindow( JenkinsDatabase database, DigestViewer digest ) {
+   public EnvironmentWindow( SystemConfiguration configuration, JenkinsDatabase database, DigestViewer digest ) {
       this.content = new HiddenSidesPane();
       
-      this.configuration = new SystemConfiguration();
+      this.configuration = configuration;
       this.preferenceOpener = new PreferenceController( configuration );
       
       EnvironmentMenuBar menuBar = new EnvironmentMenuBar();

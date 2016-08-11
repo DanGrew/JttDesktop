@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.environment.layout.CenterScreenWrapper;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
@@ -32,6 +33,7 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
  */
 public class EnvironmentWindowTest {
 
+   private SystemConfiguration configuration;
    @Mock private JenkinsDatabase database;
    @Mock private DigestViewer digest;
    private EnvironmentWindow systemUnderTest;
@@ -40,12 +42,13 @@ public class EnvironmentWindowTest {
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new EnvironmentWindow( database, digest );
+      configuration = new SystemConfiguration();
+      systemUnderTest = new EnvironmentWindow( configuration, database, digest );
    }//End Method
    
    @Ignore
    @Test public void maunal() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> new EnvironmentWindow(null, null) );
+      JavaFxInitializer.launchInWindow( () -> new EnvironmentWindow(configuration, null, null) );
       
       Thread.sleep( 1000000 );
    }//End Method
@@ -66,6 +69,7 @@ public class EnvironmentWindowTest {
    
    @Test public void shouldHavePreferenceOpener(){
       assertThat( systemUnderTest.preferenceOpener(), is( notNullValue() ) );
+      assertThat( systemUnderTest.preferenceOpener().usesConfiguration( configuration ), is( true ) );
    }//End Method
    
 }//End Class

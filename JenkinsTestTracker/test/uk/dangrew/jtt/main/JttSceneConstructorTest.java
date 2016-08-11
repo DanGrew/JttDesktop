@@ -10,6 +10,7 @@ package uk.dangrew.jtt.main;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
@@ -60,5 +61,21 @@ public class JttSceneConstructorTest {
       assertThat( scene.getRoot(), instanceOf( EnvironmentWindow.class ) );
       assertThat( scene.getAccelerators().isEmpty(), is( true ) );
    }// End Method
+   
+   @Test( expected = IllegalStateException.class ) public void shouldNotAllowRecallOfConstruction(){
+      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      systemUnderTest.makeScene();
+      systemUnderTest.makeScene();
+   }//End Method
+   
+   @Test public void shouldConstructBuildWallSessions(){
+      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      systemUnderTest.makeScene();
+      assertThat( systemUnderTest.buildWallSessions(), is( notNullValue() ) );
+      assertThat( systemUnderTest.buildWallSessions().usesConfiguration( 
+               systemUnderTest.configuration().getLeftConfiguration(),
+               systemUnderTest.configuration().getRightConfiguration() 
+      ), is( true ) );
+   }//End Method
 
 }//End Class
