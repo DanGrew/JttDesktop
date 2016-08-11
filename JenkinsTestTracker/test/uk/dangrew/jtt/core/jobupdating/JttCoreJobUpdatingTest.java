@@ -100,6 +100,7 @@ public class JttCoreJobUpdatingTest {
    @Test public void shouldPullInJobsAndUpdateBuiltStateAndTimes(){
       final ExternalApi api = Mockito.mock( ExternalApi.class );
       JttTestCoreImpl core = new JttTestCoreImpl( api );
+      core.initialiseTimeKeepers();
       JenkinsDatabase database = core.getJenkinsDatabase();
       TimeKeeper jobUpdater = core.getJobUpdater();
       

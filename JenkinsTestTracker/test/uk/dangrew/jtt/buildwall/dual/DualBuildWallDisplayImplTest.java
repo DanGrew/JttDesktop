@@ -16,9 +16,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.Map.Entry;
 import java.util.Random;
@@ -27,7 +24,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.sun.javafx.application.PlatformImpl;
@@ -36,14 +32,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
-import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
-import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -61,8 +54,6 @@ import uk.dangrew.jtt.utility.TestCommon;
  */
 public class DualBuildWallDisplayImplTest {
 
-   @Mock private BuildWallConfigurationSessions sessions;
-   @Mock private DualWallConfigurationSessions dualSessions;
    private JenkinsDatabase database;
    private DualBuildWallDisplayImpl systemUnderTest;
 
@@ -109,7 +100,7 @@ public class DualBuildWallDisplayImplTest {
       
       systemConfiguration = new SystemConfiguration();
       
-      systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration, sessions, dualSessions );
+      systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration );
       
       systemConfiguration.getLeftConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
       systemConfiguration.getRightConfiguration().jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );

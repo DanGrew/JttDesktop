@@ -209,15 +209,11 @@ public class DualBuildWallContextMenuTest {
     * Method to apply the preconditions for the digest control being testable.
     */
    private void digestControlPreconditions(){
-      BuildWallConfigurationSessions sessions = mock( BuildWallConfigurationSessions.class );
-      DualWallConfigurationSessions dualSessions = mock( DualWallConfigurationSessions.class );
       SystemConfiguration systemConfiguration = new SystemConfiguration();
       
       display = new DualBuildWallDisplayImpl( 
                new JenkinsDatabaseImpl(),
-               systemConfiguration,
-               sessions,
-               dualSessions
+               systemConfiguration
       );
       
       BorderPane parent = new BorderPane( display );

@@ -27,6 +27,7 @@ public class JttTestCoreImplTest {
    
    @Before public void initialiseSystemUnderTest(){
       systemUnderTest = new JttTestCoreImpl( Mockito.mock( ExternalApi.class ) );
+      systemUnderTest.initialiseTimeKeepers();
    }//End Method
    
    @Test public void shouldNotHaveTimersAssociated() {
