@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.configuration.system;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
@@ -27,15 +28,26 @@ public class SystemVersionPanel extends GridPane {
             + "good principles from it's first lines to full releases, automating as much "
             + "of the process as possible and understanding technical debt and how to manage "
             + "it.";
+   static final String CHECK_FOR_UPDATES = "Check For Updates";
 
    private final Label firstSentence;
    private final Label firstGap;
    private final Label secondParagraph;
+   private final Label secondGap;
+   private final Button checkForUpdatesButton;
    
    /**
     * Constructs a new {@link SystemVersionPanel}.
     */
-   public SystemVersionPanel() {
+   public SystemVersionPanel(){
+      this( new CheckForUpdates() );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link SystemVersionPanel}.
+    * @param updates the {@link CheckForUpdates} to use to find new releases.
+    */
+   SystemVersionPanel( CheckForUpdates updates ) {
       JavaFxStyle styling = new JavaFxStyle();
       Versioning versionig = new Versioning();
       
@@ -50,6 +62,15 @@ public class SystemVersionPanel extends GridPane {
       add( 
                secondParagraph = styling.createWrappedTextLabel( SECOND_PARAGRAPH ), 
       0, 2 );
+      
+      add( 
+               secondGap = new Label(), 
+      0, 3 );
+      
+      checkForUpdatesButton = new Button( CHECK_FOR_UPDATES );
+      checkForUpdatesButton.setMaxWidth( Double.MAX_VALUE );
+      checkForUpdatesButton.setOnAction( event -> updates.checkForUpdates() );
+      add( checkForUpdatesButton, 0, 4 );
    }//End Constructor
    
    Label firstSentence() {
@@ -62,5 +83,13 @@ public class SystemVersionPanel extends GridPane {
    
    Label secondParagraph() {
       return secondParagraph;
+   }//End Method
+   
+   Label secondGap() {
+      return secondGap;
+   }//End Method
+   
+   Button checkForUpdatesButton(){
+      return checkForUpdatesButton;
    }//End Method
 }//End Class

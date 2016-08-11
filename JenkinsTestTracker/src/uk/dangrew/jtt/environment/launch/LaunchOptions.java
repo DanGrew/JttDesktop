@@ -15,7 +15,6 @@ import javafx.scene.layout.VBox;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
-import uk.dangrew.jtt.releases.ReleasesWrapper;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
@@ -69,17 +68,17 @@ public class LaunchOptions extends VBox {
       DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( database, configuration );
       BorderPane digestWrapper = new BorderPane( dualWall );
       
-      ReleasesWrapper releaseNotifier = new ReleasesWrapper();
-      releaseNotifier.setContent( digestWrapper );
-      
       digestWrapper.setTop( new TitledPane( "System Digest", digest ) );
       dualWall.initialiseContextMenu();
-      window.setContent( releaseNotifier );
       
-      releaseNotifier.maxWidthProperty().bind( window.widthProperty() );
-      releaseNotifier.minWidthProperty().bind( window.widthProperty() );
-      releaseNotifier.maxHeightProperty().bind( window.heightProperty() );
-      releaseNotifier.minHeightProperty().bind( window.heightProperty() );
+      //wrap once more so that border pane resizes correctly with bindings below.
+      BorderPane content = new BorderPane( digestWrapper );
+      window.setContent( content );
+      
+      content.maxWidthProperty().bind( window.widthProperty() );
+      content.minWidthProperty().bind( window.widthProperty() );
+      content.maxHeightProperty().bind( window.heightProperty() );
+      content.minHeightProperty().bind( window.heightProperty() );
    }//End Method
 
    Button managementConsoleButton() {

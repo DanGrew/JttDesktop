@@ -25,8 +25,10 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
  */
 public class EnvironmentWindow extends BorderPane {
 
+   static final String NEW_VERSIONS_MESSAGE = "New versions of JTT are available. Click here to install...";
+   
    private final HiddenSidesPane content;
-   private final CenterScreenWrapper center;
+   private final CenterScreenWrapper centerWrapper;
    private final SystemConfiguration configuration;
    private final PreferenceController preferenceOpener;
    
@@ -43,8 +45,8 @@ public class EnvironmentWindow extends BorderPane {
       
       EnvironmentMenuBar menuBar = new EnvironmentMenuBar();
       content.setTop( menuBar );
-      center = new CenterScreenWrapper( new LaunchOptions( this, configuration, database, digest ) );
-      content.setContent( center );
+      centerWrapper = new CenterScreenWrapper( new LaunchOptions( this, configuration, database, digest ) );
+      content.setContent( centerWrapper );
       
       setCenter( content );
    }//End Constructor
@@ -54,7 +56,7 @@ public class EnvironmentWindow extends BorderPane {
     * @param content the {@link Node} content.
     */
    public void setContent( Node content ){
-      center.setCenter( content );
+      centerWrapper.setCenter( content );
    }//End Method
    
    HiddenSidesPane hiddenSidesPane(){

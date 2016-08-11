@@ -12,11 +12,14 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 
@@ -25,12 +28,13 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
  */
 public class SystemVersionPanelTest {
 
+   @Mock private CheckForUpdates updates;
    private SystemVersionPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new SystemVersionPanel();
+      systemUnderTest = new SystemVersionPanel( updates );
    }//End Method
 
    @Test public void labelsShouldWrapText(){
@@ -42,7 +46,9 @@ public class SystemVersionPanelTest {
       assertThat( systemUnderTest.getChildren(), contains( 
                systemUnderTest.firstSentence(), 
                systemUnderTest.firstGap(), 
-               systemUnderTest.secondParagraph() 
+               systemUnderTest.secondParagraph(),
+               systemUnderTest.secondGap(),
+               systemUnderTest.checkForUpdatesButton()
       ) );
    }//End Method
    
@@ -61,6 +67,13 @@ public class SystemVersionPanelTest {
       assertThat( GridPane.getColumnIndex( systemUnderTest.firstSentence() ), is( 0 ) );
       assertThat( GridPane.getColumnIndex( systemUnderTest.firstGap() ), is( 0 ) );
       assertThat( GridPane.getColumnIndex( systemUnderTest.secondParagraph() ), is( 0 ) );
+      assertThat( GridPane.getColumnIndex( systemUnderTest.secondGap() ), is( 0 ) );
+      assertThat( GridPane.getColumnIndex( systemUnderTest.checkForUpdatesButton() ), is( 0 ) );
+   }//End Method
+   
+   @Test public void shouldCheckForUpdatesOnButtonPress(){
+      systemUnderTest.checkForUpdatesButton().getOnAction().handle( new ActionEvent() );
+      verify( updates ).checkForUpdates();
    }//End Method
 
 }//End Class

@@ -33,7 +33,6 @@ import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.releases.ReleasesWrapper;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
@@ -107,9 +106,9 @@ public class LaunchOptionsTest {
       verify( window ).setContent( contentCaptor.capture() );
       
       Node content = contentCaptor.getValue();
-      assertThat( content, instanceOf( ReleasesWrapper.class ) );
+      assertThat( content, instanceOf( BorderPane.class ) );
       
-      BorderPane wrapperPane = ( BorderPane ) ( ( ReleasesWrapper ) content ).getContent();
+      BorderPane wrapperPane = ( BorderPane ) ( ( BorderPane )content ).getCenter();
       
       DualBuildWallDisplayImpl display = ( DualBuildWallDisplayImpl ) wrapperPane.getCenter();
       assertThat( display.getOnContextMenuRequested(), instanceOf( DualBuildWallContextMenuOpener.class ) );
@@ -126,7 +125,7 @@ public class LaunchOptionsTest {
       verify( window ).setContent( contentCaptor.capture() );
       
       Node content = contentCaptor.getValue();
-      ReleasesWrapper wrapper = ( ReleasesWrapper ) content;
+      BorderPane wrapper = ( BorderPane ) content;
       
       window.setWidth( 103 );
       assertThat( wrapper.getMinWidth(), is( 103.0 ) );
