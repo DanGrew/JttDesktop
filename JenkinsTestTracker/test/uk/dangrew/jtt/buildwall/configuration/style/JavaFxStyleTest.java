@@ -13,7 +13,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -26,10 +28,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -171,6 +176,19 @@ public class JavaFxStyleTest {
       assertThat( label.getText(), is( anyText ) );
       assertThat( label.isWrapText(), is( true ) );
       assertThat( systemUnderTest.createWrappedTextLabel( anyText ), is( not( label ) ) );
+   }//End Method
+   
+   @Test public void shouldRemoveBackgroundAndColourOnClick(){
+      Button button = new Button();
+      systemUnderTest.removeBackgroundAndColourOnClick( button, Color.AQUAMARINE );
+      
+      assertThat( button.getBackground(), is( nullValue() ) );
+      
+      button.getOnMousePressed().handle( mock( MouseEvent.class ) );
+      assertThat( button.getBackground().getFills().get( 0 ).getFill(), is( Color.AQUAMARINE ) );
+      
+      button.getOnMouseReleased().handle( mock( MouseEvent.class ) );
+      assertThat( button.getBackground(), is( nullValue() ) );
    }//End Method
 
 }//End Class

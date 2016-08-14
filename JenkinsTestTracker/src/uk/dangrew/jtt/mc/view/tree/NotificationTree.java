@@ -25,10 +25,6 @@ import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
  */
 public class NotificationTree extends TreeTableView< NotificationTreeItem > {
    
-   static final double CONTROL_COLUMN_WIDTH = 40;
-   static final double CONTENT_COLUMN_WIDTH = 400;
-   static final double TYPE_COLUMN_WIDTH = 100;
-   static final double ICON_COLUMN_WIDTH = 100;
    private final NotificationTreeLayoutManager layoutManager;
    private final NotificationTreeController controller;
    
@@ -50,11 +46,7 @@ public class NotificationTree extends TreeTableView< NotificationTreeItem > {
       constructRoot();
       configureTree();
       
-      insertColumn( item -> item.getNotificationIcon(), ICON_COLUMN_WIDTH );
-      insertColumn( item -> item.getNotificationType(), TYPE_COLUMN_WIDTH );
-      insertColumn( item -> item.getContent(), CONTENT_COLUMN_WIDTH );
-      insertColumn( item -> item.getActionButton(), CONTROL_COLUMN_WIDTH );
-      insertColumn( item -> item.getCancelButton(), CONTROL_COLUMN_WIDTH );
+      insertColumn( item -> item.contentProperty() );
       
       hider.hideColumnHeaders( this );
       layoutManager.reconstructTree( new ArrayList<>() );
@@ -75,6 +67,7 @@ public class NotificationTree extends TreeTableView< NotificationTreeItem > {
     */
    private void configureTree(){
       getSelectionModel().setSelectionMode( SelectionMode.SINGLE );
+      setColumnResizePolicy( TreeTableView.CONSTRAINED_RESIZE_POLICY );
    }//End Method
    
    /**
@@ -82,7 +75,7 @@ public class NotificationTree extends TreeTableView< NotificationTreeItem > {
     * @param nodeRetriever the {@link Function} for supplying the {@link Node} to draw.
     * @param width the preferred width of the column.
     */
-   private void insertColumn( Function< NotificationTreeItem, ObjectProperty< Node > > nodeRetriever, double width ){
+   private void insertColumn( Function< NotificationTreeItem, ObjectProperty< Node > > nodeRetriever ){
       TreeTableColumn< NotificationTreeItem, Node > iconColumn = new TreeTableColumn<>();
       iconColumn.setCellValueFactory( object -> {
          if ( object.getValue().getValue() == null ) {
@@ -90,7 +83,6 @@ public class NotificationTree extends TreeTableView< NotificationTreeItem > {
          }
          return nodeRetriever.apply( object.getValue().getValue() );
       } );
-      iconColumn.setPrefWidth( width );
       getColumns().add( iconColumn );
    }//End Method
    

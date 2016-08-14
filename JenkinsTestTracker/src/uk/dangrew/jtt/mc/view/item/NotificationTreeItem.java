@@ -10,6 +10,7 @@ package uk.dangrew.jtt.mc.view.item;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Node;
+import uk.dangrew.jtt.mc.model.Notification;
 
 /**
  * Interface for providing the necessary elements to drive the {@link uk.dangrew.jtt.mc.view.tree.NotificationTree}.
@@ -17,32 +18,14 @@ import javafx.scene.Node;
 public interface NotificationTreeItem {
 
    /**
-    * {@link Node} {@link ObjectProperty} for the icon.
+    * Provides the {@link ObjectProperty} for the {@link Node} to place in the {@link uk.dangrew.jtt.mc.view.tree.NotificationTree}.
     * @return the {@link ObjectProperty}.
     */
-   public ObjectProperty< Node > getNotificationIcon();
-
-   /**
-    * {@link Node} {@link ObjectProperty} for the type.
-    * @return the {@link ObjectProperty}.
-    */
-   public ObjectProperty< Node > getNotificationType();
-
-   /**
-    * {@link Node} {@link ObjectProperty} for the content.
-    * @return the {@link ObjectProperty}.
-    */
-   public ObjectProperty< Node > getContent();
-
-   /**
-    * {@link Node} {@link ObjectProperty} for the action button.
-    * @return the {@link ObjectProperty}.
-    */
-   public ObjectProperty< Node > getActionButton();
+   public ObjectProperty< Node > contentProperty();
    
    /**
-    * {@link Node} {@link ObjectProperty} for the cancel button.
-    * @return the {@link ObjectProperty}.
+    * Method to get the associated {@link Notification}.
+    * @return the {@link Notification}.
     */
-   public ObjectProperty< Node > getCancelButton();
+   public Notification getNotification();
 }//End Interface

@@ -8,6 +8,18 @@
  */
 package uk.dangrew.jtt.mc.model;
 
-public class Notification {
+import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
 
-}
+/**
+ * The {@link Notification} provides an interface for every type of {@link Notification}
+ * to be displayed in the {@link uk.dangrew.jtt.mc.view.tree.NotificationTree}.
+ */
+public interface Notification {
+   
+   /**
+    * Method to construct a new {@link NotificationTreeItem} from this {@link Notification}.
+    * @return the {@link NotificationTreeItem}.
+    */
+   public NotificationTreeItem constructTreeItem();
+
+}//End Interface

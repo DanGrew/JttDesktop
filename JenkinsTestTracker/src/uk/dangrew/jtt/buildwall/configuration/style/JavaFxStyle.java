@@ -13,10 +13,14 @@ import javafx.beans.property.IntegerProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -140,6 +144,20 @@ public class JavaFxStyle {
       controls.setPercentWidth( CONTROLS_PERCENTAGE_WIDTH );
       controls.setHgrow( Priority.ALWAYS );
       grid.getColumnConstraints().addAll( labels, controls );  
+   }//End Method
+   
+   /**
+    * Method to apply a style change where there is no background but instead a {@link Color} placed
+    * when pressed and removed when released.
+    * @param button the {@link Button} to apply the style to.
+    * @param backgroundWhenPressed the {@link Color} to use for the background.
+    */
+   public void removeBackgroundAndColourOnClick( Button button, Color backgroundWhenPressed ) {
+      button.setBackground( null );
+      button.setOnMousePressed( event -> button.setBackground( new Background( 
+               new BackgroundFill( backgroundWhenPressed, null, null ) 
+      ) ) );
+      button.setOnMouseReleased( event -> button.setBackground( null ) );
    }//End Method
    
 }//End Class
