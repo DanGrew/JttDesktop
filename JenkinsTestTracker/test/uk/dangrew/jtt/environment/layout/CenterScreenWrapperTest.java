@@ -16,6 +16,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
@@ -34,8 +36,10 @@ public class CenterScreenWrapperTest {
       JavaFxInitializer.startPlatform();
       initialCenter = new Rectangle( 10, 10 );
       center = new Rectangle( 10, 10 );
-      systemUnderTest = new CenterScreenWrapper( initialCenter );
-      new Scene( systemUnderTest );
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest = new CenterScreenWrapper( initialCenter );
+         new Scene( systemUnderTest );
+      } );
    }//End Method
    
    @Ignore
