@@ -13,8 +13,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.util.function.BiConsumer;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,10 +24,7 @@ import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
-import uk.dangrew.jtt.storage.database.TestClassKey;
-import uk.dangrew.jtt.storage.database.TestClassKeyImpl;
+import uk.dangrew.jtt.storage.database.events.JttChangeListener;
 
 /**
  * {@link JenkinsDatabaseImpl} test.
@@ -309,13 +304,13 @@ public class JenkinsDatabaseImplTest {
       assertThat( systemUnderTest.jenkinsJobProperties(), notNullValue() );
       
       @SuppressWarnings("unchecked") //simply mocking genericized objects. 
-      BiConsumer< JenkinsJob, BuildResultStatus > listener = mock( BiConsumer.class );
+      JttChangeListener< JenkinsJob, BuildResultStatus > listener = mock( JttChangeListener.class );
       
       systemUnderTest.store( jenkinsJob );
       systemUnderTest.jenkinsJobProperties().addBuildResultStatusListener( listener );
       jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
       
-      verify( listener ).accept( jenkinsJob, BuildResultStatus.SUCCESS );
+      verify( listener ).changed( jenkinsJob, BuildResultStatus.NOT_BUILT, BuildResultStatus.SUCCESS );
    }//End Method
    
    @Test public void shouldProvideJenkinsUsers(){

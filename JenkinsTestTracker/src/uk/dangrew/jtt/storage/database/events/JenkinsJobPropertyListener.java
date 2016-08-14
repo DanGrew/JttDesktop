@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.storage.database.events;
 
-import java.util.function.BiConsumer;
-
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
@@ -34,10 +32,10 @@ public class JenkinsJobPropertyListener {
    }//End Constructor
 
    /**
-    * Method to add a {@link BiConsumer} as a listener for changes in {@link JenkinsJob}s {@link BuildResultStatus}.
-    * @param buildResultListener the {@link BiConsumer} listener.
+    * Method to add a {@link JttChangeListener} as a listener for changes in {@link JenkinsJob}s {@link BuildResultStatus}.
+    * @param buildResultListener the {@link JttChangeListener} listener.
     */
-   public void addBuildResultStatusListener( BiConsumer< JenkinsJob, BuildResultStatus > buildResultListener ) {
+   public void addBuildResultStatusListener( JttChangeListener< JenkinsJob, BuildResultStatus > buildResultListener ) {
       buildResultStatusPropertyListener.addListener( buildResultListener );
    }//End Method
 

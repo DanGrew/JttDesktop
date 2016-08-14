@@ -78,7 +78,9 @@ public class DualBuildWallContextMenuTest {
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
       when( display.buildWallPane() ).thenReturn( buildWallPane );
-      systemUnderTest = new DualBuildWallContextMenu( display );
+      PlatformImpl.runAndWait( () -> {
+         systemUnderTest = new DualBuildWallContextMenu( display );
+      } );
    }//End Method
 
    @Ignore

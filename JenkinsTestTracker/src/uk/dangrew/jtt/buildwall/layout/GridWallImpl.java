@@ -54,7 +54,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
       constructLayout();
       
       database.jenkinsJobs().addListener( ( Change< ? extends JenkinsJob > change ) -> constructLayout() );
-      database.jenkinsJobProperties().addBuildResultStatusListener( ( job, result ) -> constructLayout() );
+      database.jenkinsJobProperties().addBuildResultStatusListener( ( job, old, updated ) -> constructLayout() );
       
       configuration.numberOfColumns().addListener( ( source, old, updated ) -> constructLayout() );
       configuration.jobPolicies().addListener( ( MapChangeListener.Change< ? extends JenkinsJob, ? extends BuildWallJobPolicy > change ) -> {

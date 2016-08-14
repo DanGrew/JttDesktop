@@ -13,7 +13,6 @@ import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +23,6 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
-import uk.dangrew.jtt.storage.database.events.JenkinsJobPropertyListener;
 
 /**
  * {@link JenkinsJobPropertyListener} test.
@@ -38,7 +36,7 @@ public class JenkinsJobPropertyListenerImplTest {
    
    private JenkinsJobPropertyListener systemUnderTest;
    private List< Pair< JenkinsJob, BuildResultStatus > > buildResultStatusNotifications;
-   private BiConsumer< JenkinsJob, BuildResultStatus > buildResultListener;
+   private JttChangeListener< JenkinsJob, BuildResultStatus > buildResultListener;
    
    @Before public void initialiseSystemUnderTest(){
       databse = new JenkinsDatabaseImpl();
@@ -51,7 +49,7 @@ public class JenkinsJobPropertyListenerImplTest {
       
       systemUnderTest = new JenkinsJobPropertyListener( databse );
       buildResultStatusNotifications = new ArrayList<>();
-      buildResultListener = ( job, result ) -> buildResultStatusNotifications.add( new Pair< JenkinsJob, BuildResultStatus >( job, result ) );
+      buildResultListener = ( job, old, updated ) -> buildResultStatusNotifications.add( new Pair< JenkinsJob, BuildResultStatus >( job, updated ) );
       systemUnderTest.addBuildResultStatusListener( buildResultListener );
    }//End Method
    

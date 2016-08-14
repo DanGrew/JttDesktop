@@ -13,7 +13,6 @@ import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +23,6 @@ import javafx.util.Pair;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.jtt.storage.database.events.GlobalPropertyListenerImpl;
 
 /**
  * {@link GlobalPropertyListenerImpl} test.
@@ -39,7 +37,7 @@ public class GlobalPropertyListenerImplTest {
    private GlobalPropertyListenerImpl< JenkinsJob, BuildResultStatus > systemUnderTest;
    
    private List< Pair< JenkinsJob, BuildResultStatus > > buildResultStatusNotifications;
-   private BiConsumer< JenkinsJob, BuildResultStatus > buildResultListener;
+   private JttChangeListener< JenkinsJob, BuildResultStatus > buildResultListener;
    
    @Before public void initialiseSystemUnderTest(){
       databaseJobs = FXCollections.observableArrayList();
@@ -49,7 +47,7 @@ public class GlobalPropertyListenerImplTest {
       databaseJobs.addAll( job1, job2, job3 );
       
       buildResultStatusNotifications = new ArrayList<>();
-      buildResultListener = ( job, result ) -> buildResultStatusNotifications.add( new Pair< JenkinsJob, BuildResultStatus >( job, result ) );
+      buildResultListener = ( job, old, updated ) -> buildResultStatusNotifications.add( new Pair< JenkinsJob, BuildResultStatus >( job, updated ) );
       
       systemUnderTest = new GlobalPropertyListenerImpl<>( 
                databaseJobs,

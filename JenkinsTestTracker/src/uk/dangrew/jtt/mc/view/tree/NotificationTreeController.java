@@ -24,6 +24,8 @@ class NotificationTreeController {
     */
    NotificationTreeController( NotificationTreeLayoutManager layoutManager ) {
       this.layoutManager = layoutManager;
+      
+      new NotificationEvent().register( event -> addItem( event.getValue().constructTreeItem() ) );
    }//End Constructor
 
    /**

@@ -35,10 +35,11 @@ public class JobFailureTrigger {
    /**
     * Method to handle the change of {@link JenkinsJob} {@link BuildResultStatus}.
     * @param job the source of event.
-    * @param status the new status.
+    * @param old the old status.
+    * @param updated the new status.
     */
-   private void handleJobStatusChange( JenkinsJob job, BuildResultStatus status ) {
-      switch ( status ) {
+   private void handleJobStatusChange( JenkinsJob job, BuildResultStatus old, BuildResultStatus updated ) {
+      switch ( updated ) {
          case ABORTED:
          case FAILURE:
          case UNSTABLE:

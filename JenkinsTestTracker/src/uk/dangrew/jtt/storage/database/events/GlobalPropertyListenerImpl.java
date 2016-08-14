@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import javafx.beans.property.ObjectProperty;
@@ -32,7 +31,7 @@ public class GlobalPropertyListenerImpl< ObjectTypeT, PropertyTypeT > {
    
    private Function< ObjectTypeT, ObjectProperty< PropertyTypeT > > propertyGetterFunction;
    private Map< ObjectTypeT, ChangeListener< PropertyTypeT > > propertyListeners;
-   private List< BiConsumer< ObjectTypeT, PropertyTypeT > > listeners;
+   private List< JttChangeListener< ObjectTypeT, PropertyTypeT > > listeners;
 
    /**
     * Constructs a new {@link GlobalPropertyListenerImpl}.
@@ -59,10 +58,12 @@ public class GlobalPropertyListenerImpl< ObjectTypeT, PropertyTypeT > {
     * @param object the object in question.
     */
    private void listenForJobPropertyChange( ObjectTypeT object ) {
-      if ( propertyListeners.containsKey( object ) ) return;
+      if ( propertyListeners.containsKey( object ) ) {
+         return;
+      }
       
       ChangeListener< PropertyTypeT > changeListener = ( source, old, updated ) -> {
-         listeners.forEach( listener -> listener.accept( object, updated ) );
+         listeners.forEach( listener -> listener.changed( object, old, updated ) );
       };
       propertyListeners.put( object, changeListener );
       propertyGetterFunction.apply( object ).addListener( changeListener );
@@ -78,20 +79,22 @@ public class GlobalPropertyListenerImpl< ObjectTypeT, PropertyTypeT > {
    }//End Method
    
    /**
-    * Method to add a {@link BiConsumer} as a listener to the associated {@link ObjectProperty} change.
-    * @param listener the {@link BiConsumer} to add as a listener.
+    * Method to add a {@link JttChangeListener} as a listener to the associated {@link ObjectProperty} change.
+    * @param listener the {@link JttChangeListener} to add as a listener.
     */
-   void addListener( BiConsumer< ObjectTypeT, PropertyTypeT > listener ) {
-      if ( listeners.contains( listener ) ) return;
+   void addListener( JttChangeListener< ObjectTypeT, PropertyTypeT > listener ) {
+      if ( listeners.contains( listener ) ) {
+         return;
+      }
       
       listeners.add( listener );
    }//End Method
 
    /**
     * Method to remove the given listener from this.
-    * @param listener the {@link BiConsumer} to remove.
+    * @param listener the {@link JttChangeListener} to remove.
     */
-   void removeListener( BiConsumer< JenkinsJob, BuildResultStatus > listener ) {
+   void removeListener( JttChangeListener< JenkinsJob, BuildResultStatus > listener ) {
       listeners.remove( listener );
    }//End Method
 
