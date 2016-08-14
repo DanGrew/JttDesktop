@@ -10,6 +10,7 @@ package uk.dangrew.jtt.mc.notifiers.jobs;
 
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
+import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
@@ -62,7 +63,7 @@ public class BuildResultStatusNotification implements Notification {
    /**
     * {@inheritDoc}
     */
-   @Override public NotificationTreeItem constructTreeItem() {
-      return new BuildResultStatusNotificationTreeItem( this );
+   @Override public NotificationTreeItem constructTreeItem( NotificationTreeController controller ) {
+      return new BuildResultStatusNotificationTreeItem( this, controller );
    }//End Method
 }//End Class

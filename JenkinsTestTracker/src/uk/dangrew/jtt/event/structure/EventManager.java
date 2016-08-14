@@ -35,6 +35,15 @@ public class EventManager< SourceT, ValueT > implements EventSubscription< Sourc
       this.subscriptions = subscriptions;
       this.lock = lock;
    }//End Constructor
+   
+   /**
+    * Method to clear all subscriptions, be careful of static subscriptions.
+    */
+   public void clearAllSubscriptions(){
+      lock.lock();
+      subscriptions.clear();
+      lock.unlock();
+   }//End Method
 
    /**
     * Method to register the given {@link EventSubscription} for the associated type of event.

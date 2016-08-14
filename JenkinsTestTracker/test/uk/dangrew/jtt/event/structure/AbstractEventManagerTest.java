@@ -36,6 +36,7 @@ public abstract class AbstractEventManagerTest< SourceT, ValueT > {
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = constructSut();
+      systemUnderTest.clearAllSubscriptions();
    }//End Method
    
    /** 

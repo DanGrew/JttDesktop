@@ -14,7 +14,7 @@ import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
  * The {@link NotificationTreeController} is responsible for redirecting instructions to the {@link NotificationTree}
  * in a controlled manner.
  */
-class NotificationTreeController {
+public class NotificationTreeController {
    
    private final NotificationTreeLayoutManager layoutManager;
 
@@ -25,7 +25,7 @@ class NotificationTreeController {
    NotificationTreeController( NotificationTreeLayoutManager layoutManager ) {
       this.layoutManager = layoutManager;
       
-      new NotificationEvent().register( event -> addItem( event.getValue().constructTreeItem() ) );
+      new NotificationEvent().register( event -> addItem( event.getValue().constructTreeItem( this ) ) );
    }//End Constructor
 
    /**
@@ -40,7 +40,7 @@ class NotificationTreeController {
     * Method to remove a {@link NotificationTreeItem} from the {@link NotificationTree}.
     * @param item the {@link NotificationTreeItem} to remove.
     */
-   void removeItem( NotificationTreeItem item ) {
+   public void removeItem( NotificationTreeItem item ) {
       layoutManager.remove( item );
    }//End Method
 

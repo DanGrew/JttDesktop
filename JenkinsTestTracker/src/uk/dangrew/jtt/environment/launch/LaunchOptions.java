@@ -15,6 +15,8 @@ import javafx.scene.layout.VBox;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
+import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotifier;
+import uk.dangrew.jtt.mc.view.tree.NotificationTree;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
@@ -55,7 +57,7 @@ public class LaunchOptions extends VBox {
       
       this.managementConsoleButton = new Button( MANAGEMENT_CONSOLE_BUTTON_TEXT );
       this.managementConsoleButton.setMaxWidth( Double.MAX_VALUE );
-      this.managementConsoleButton.setDisable( true );
+      this.managementConsoleButton.setOnAction( event -> launchManagementConsole() );
       getChildren().add( this.managementConsoleButton );
       
       setSpacing( BUTTON_SPACING );
@@ -74,7 +76,28 @@ public class LaunchOptions extends VBox {
       //wrap once more so that border pane resizes correctly with bindings below.
       BorderPane content = new BorderPane( digestWrapper );
       window.setContent( content );
+      bindDimensions( content );
+   }//End Method
+   
+   /**
+    * Method to launch the management console.
+    */
+   private void launchManagementConsole(){
+      NotificationTree tree = new NotificationTree();
       
+      //not tested - to be wrapped with others
+      new BuildResultStatusNotifier( database );
+      
+      BorderPane content = new BorderPane( tree );
+      window.setContent( content );
+      bindDimensions( content );
+   }//End Method
+   
+   /**
+    * Method to bind the dimensions of the given {@link BorderPane} to the {@link EnvironmentWindow}.
+    * @param content the {@link BorderPane} to bind.
+    */
+   private void bindDimensions( BorderPane content ){
       content.maxWidthProperty().bind( window.widthProperty() );
       content.minWidthProperty().bind( window.widthProperty() );
       content.maxHeightProperty().bind( window.heightProperty() );

@@ -12,7 +12,9 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.LinkedHashSet;
@@ -107,6 +109,20 @@ public class EventManagerTest {
       locking.verify( lock ).lock();
       locking.verify( subscriber ).notify( notification );
       locking.verify( subscriberB ).notify( notification );
+      locking.verify( lock ).unlock();
+   }//End Method
+   
+   @Test public void shouldClearAllSubscriptions(){
+      systemUnderTest.register( subscriber );
+      systemUnderTest.clearAllSubscriptions();
+      systemUnderTest.register( subscriberB );
+      
+      systemUnderTest.notify( notification );
+      
+      InOrder locking = inOrder( lock, subscriber, subscriberB );
+      locking.verify( lock ).lock();
+      locking.verify( subscriber, never() ).notify( notification );
+      locking.verify( subscriberB, times( 1 ) ).notify( notification );
       locking.verify( lock ).unlock();
    }//End Method
 

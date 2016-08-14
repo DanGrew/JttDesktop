@@ -9,6 +9,7 @@
 package uk.dangrew.jtt.mc.model;
 
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
+import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 
 /**
  * The {@link Notification} provides an interface for every type of {@link Notification}
@@ -18,8 +19,9 @@ public interface Notification {
    
    /**
     * Method to construct a new {@link NotificationTreeItem} from this {@link Notification}.
+    * @param controller the {@link NotificationTreeController} for providing instructions.
     * @return the {@link NotificationTreeItem}.
     */
-   public NotificationTreeItem constructTreeItem();
+   public NotificationTreeItem constructTreeItem( NotificationTreeController controller );
 
 }//End Interface

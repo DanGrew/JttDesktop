@@ -38,6 +38,7 @@ public class NotificationTreeControllerTest {
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
+      new NotificationEvent().clearAllSubscriptions();
       systemUnderTest = new NotificationTreeController( layoutManager );
    }//End Method
    

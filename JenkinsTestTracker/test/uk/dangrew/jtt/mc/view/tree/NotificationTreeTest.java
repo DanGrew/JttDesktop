@@ -48,15 +48,15 @@ public class NotificationTreeTest {
       
       systemUnderTest.controller().addItem( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
                new JenkinsJobImpl( "JenkinsJob" ), BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS 
-      ) ) );
+      ), systemUnderTest.controller() ) );
       Thread.sleep( 2000 );
       systemUnderTest.controller().addItem( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
                new JenkinsJobImpl( "Another Job" ), BuildResultStatus.UNKNOWN, BuildResultStatus.UNKNOWN 
-      ) ) );
+      ), systemUnderTest.controller() ) );
       Thread.sleep( 2000 );
       systemUnderTest.controller().addItem( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
                new JenkinsJobImpl( "JenkinsJob" ), BuildResultStatus.SUCCESS, BuildResultStatus.FAILURE 
-      ) ) );
+      ), systemUnderTest.controller() ) );
       
       Thread.sleep( 100000 );
    }//End Method
@@ -100,7 +100,8 @@ public class NotificationTreeTest {
    
    @Test public void shouldHoldNodesProvidedByNotificationTreeItem(){
       NotificationTreeItem item = new BuildResultStatusNotificationTreeItem( 
-               new BuildResultStatusNotification( new JenkinsJobImpl( "Anything" ), BuildResultStatus.ABORTED, BuildResultStatus.SUCCESS )
+               new BuildResultStatusNotification( new JenkinsJobImpl( "Anything" ), BuildResultStatus.ABORTED, BuildResultStatus.SUCCESS ),
+               systemUnderTest.controller()
       );
       systemUnderTest.layoutManager().add( item );
       

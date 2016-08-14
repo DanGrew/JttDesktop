@@ -24,6 +24,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -37,6 +38,7 @@ import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.resources.ManagementConsoleImages;
+import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 
@@ -48,6 +50,7 @@ public class BuildResultStatusNotificationTreeItemTest {
    private static final Image PEOPLE_IMAGE = mock( Image.class );
    private static final Image CLOSE_IMAGE = mock( Image.class );
    
+   @Mock private NotificationTreeController controller;
    @Mock private ChangeIdentifier changeIdentifier;
    @Spy private JavaFxStyle styling;
    @Mock private ManagementConsoleImages images;
@@ -67,11 +70,15 @@ public class BuildResultStatusNotificationTreeItemTest {
       when( images.constuctPeopleImage() ).thenReturn( PEOPLE_IMAGE );
       when( images.constuctCloseImage() ).thenReturn( CLOSE_IMAGE );
       
-      systemUnderTest = new BuildResultStatusNotificationTreeItem( notification, changeIdentifier, styling, images );
+      systemUnderTest = new BuildResultStatusNotificationTreeItem( notification, controller, changeIdentifier, styling, images );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shoudlNotAcceptNullNotification() {
-      new BuildResultStatusNotificationTreeItem( null );
+      new BuildResultStatusNotificationTreeItem( null, controller );
+   }//End Method
+   
+   @Test( expected = IllegalArgumentException.class ) public void shoudlNotAcceptNullController() {
+      new BuildResultStatusNotificationTreeItem( notification, null );
    }//End Method
    
    @Test public void shouldUseColumnConstraints(){
@@ -177,6 +184,19 @@ public class BuildResultStatusNotificationTreeItemTest {
                systemUnderTest.formatBuildResultStatusChange( BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS ), 
                is( "Build has achieved SUCCESS from FAILURE" )
       );
+   }//End Method
+   
+   @Test public void closeButtonShouldRemoveNotificationWhenClicked(){
+      BorderPane wrapper = ( BorderPane ) systemUnderTest.close();
+      Button button = ( Button ) wrapper.getCenter();
+      button.getOnAction().handle( new ActionEvent() );
+      
+      verify( controller ).removeItem( systemUnderTest );
+   }//End Method
+   
+   @Test public void shouldHaveControllerAssociated(){
+      assertThat( systemUnderTest.hasController( controller ), is( true ) );
+      assertThat( systemUnderTest.hasController( mock( NotificationTreeController.class ) ), is( false ) );
    }//End Method
 
 }//End Class

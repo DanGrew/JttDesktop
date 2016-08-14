@@ -42,6 +42,7 @@ public class BuildResultStatusNotifierTest {
    
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
+      new NotificationEvent().clearAllSubscriptions();
       new NotificationEvent().register( notificationSubscriber );
       database = new JenkinsDatabaseImpl();
       job = new JenkinsJobImpl( "Initialised Job" );

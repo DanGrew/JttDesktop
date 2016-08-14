@@ -24,6 +24,7 @@ import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.resources.ManagementConsoleImages;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
+import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 
 /**
@@ -45,6 +46,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
    static final String MAY_REQUIRE_ACTION = "Build has only achieved %s when it was %s and may require action";
    static final String PASSING = "Build has achieved %s from %s";
    
+   private final NotificationTreeController controller;
    private final ChangeIdentifier changeIdentifier;
    private final JavaFxStyle styling;
    private final ManagementConsoleImages images;
@@ -60,29 +62,33 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
    /**
     * Constructs a new {@link BuildResultStatusNotificationTreeItem}.
     * @param notification the {@link BuildResultStatusNotification} associated.
+    * @param controller the {@link NotificationTreeController} for instructions.
     */
-   public BuildResultStatusNotificationTreeItem( BuildResultStatusNotification notification ) {
-      this( notification, new ChangeIdentifier(), new JavaFxStyle(), new ManagementConsoleImages() );
+   public BuildResultStatusNotificationTreeItem( BuildResultStatusNotification notification, NotificationTreeController controller ) {
+      this( notification, controller, new ChangeIdentifier(), new JavaFxStyle(), new ManagementConsoleImages() );
    }//End Constructor
    
    /**
     * Constructs a new {@link BuildResultStatusNotificationTreeItem}.
     * @param notification the {@link BuildResultStatusNotification} associated.
+    * @param controller the {@link NotificationTreeController} for instructions.
     * @param changeIdentifier the {@link ChangeIdentifier} for identifying change type.
     * @param stying the {@link JavaFxStyle} to apply.
     * @param images the {@link ManagementConsoleImages} available.
     */
    BuildResultStatusNotificationTreeItem( 
             BuildResultStatusNotification notification, 
+            NotificationTreeController controller,
             ChangeIdentifier changeIdentifier, 
             JavaFxStyle stying,
             ManagementConsoleImages images
    ) {
-      if ( notification == null ) {
-         throw new IllegalArgumentException( "Notification must not be null." );
+      if ( notification == null || controller == null ) {
+         throw new IllegalArgumentException( "Arguments must not be null." );
       }
       
       this.notification = notification;
+      this.controller = controller;
       this.changeIdentifier = changeIdentifier;
       this.styling = stying;
       this.images = images;
@@ -163,7 +169,6 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
       button.setPrefSize( PREFERRED_ROW_HEIGHT, PREFERRED_ROW_HEIGHT );
       button.setAlignment( Pos.CENTER );
       styling.removeBackgroundAndColourOnClick( button, Color.GRAY );
-//      actualButton.setOnAction( event -> System.out.println( "Pressed " + actualButton.toString() ) );
       return button;
    }//End Method
    
@@ -182,6 +187,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     */
    private Node constructCloseImage(){
       Button button = constructControl( images.constuctCloseImage() );
+      button.setOnAction( event -> controller.removeItem( this ) );
       return new BorderPane( button );
    }//End Method
 
@@ -197,6 +203,13 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     */
    @Override public Notification getNotification() {
       return notification;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean hasController(NotificationTreeController controller) {
+      return this.controller == controller;
    }//End Method
    
    /**

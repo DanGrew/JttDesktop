@@ -10,6 +10,7 @@ package uk.dangrew.jtt.environment.launch;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -33,6 +34,7 @@ import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
+import uk.dangrew.jtt.mc.view.tree.NotificationTree;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
@@ -86,14 +88,12 @@ public class LaunchOptionsTest {
    @Test public void shouldProvideManagementConsoleButton(){
       assertThat( systemUnderTest.getChildren().contains( systemUnderTest.managementConsoleButton() ), is( true ) );
       assertThat( systemUnderTest.managementConsoleButton().getMaxWidth(), is( Double.MAX_VALUE ) );
-      assertThat( systemUnderTest.managementConsoleButton().isDisable(), is( true ) );
       assertThat( systemUnderTest.managementConsoleButton().getText(), is( LaunchOptions.MANAGEMENT_CONSOLE_BUTTON_TEXT ) );
    }//End Method
    
    @Test public void shouldProvideBuildWallButton(){
       assertThat( systemUnderTest.getChildren().contains( systemUnderTest.buildWallButton() ), is( true ) );
       assertThat( systemUnderTest.buildWallButton().getMaxWidth(), is( Double.MAX_VALUE ) );
-      assertThat( systemUnderTest.buildWallButton().isDisable(), is( false ) );
       assertThat( systemUnderTest.buildWallButton().getText(), is( LaunchOptions.BUILD_WALL_BUTTON_TEXT ) );
    }//End Method
    
@@ -120,8 +120,30 @@ public class LaunchOptionsTest {
       assertThat( titledPane.getContent(), is( digest ) );
    }//End Method
    
+   @Test public void managementConsoleButtonShouldMangementConsole(){
+      systemUnderTest.managementConsoleButton().getOnAction().handle( new ActionEvent() );
+      verify( window ).setContent( contentCaptor.capture() );
+      
+      Node content = contentCaptor.getValue();
+      assertThat( content, instanceOf( BorderPane.class ) );
+      
+      BorderPane wrapperPane = ( BorderPane )content;
+      
+      NotificationTree display = ( NotificationTree ) wrapperPane.getCenter();
+      assertThat( display, is( notNullValue() ) );
+   }//End Method
+   
    @Test public void shouldBindBuildWallToWindow(){
       systemUnderTest.buildWallButton().getOnAction().handle( new ActionEvent() );
+      assertDimensionsBound();
+   }//End Method
+   
+   @Test public void shouldBindNotificationsToWindow(){
+      systemUnderTest.managementConsoleButton().getOnAction().handle( new ActionEvent() );
+      assertDimensionsBound();
+   }//End Method
+   
+   private void assertDimensionsBound(){
       verify( window ).setContent( contentCaptor.capture() );
       
       Node content = contentCaptor.getValue();

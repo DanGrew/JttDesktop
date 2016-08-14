@@ -12,12 +12,14 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
+import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -49,10 +51,12 @@ public class BuildResultStatusNotificationTest {
    }//End Method
    
    @Test public void shouldConstructNotificationItem(){
-      NotificationTreeItem item = systemUnderTest.constructTreeItem();
+      NotificationTreeController controller = mock( NotificationTreeController.class );
+      NotificationTreeItem item = systemUnderTest.constructTreeItem( controller );
       assertThat( item, is( notNullValue() ) );
       assertThat( item, is( instanceOf( BuildResultStatusNotificationTreeItem.class ) ) );
       assertThat( item.getNotification(), is( systemUnderTest ) );
+      assertThat( item.hasController( controller ), is( true ) );
    }//End Method
    
 }//End Class
