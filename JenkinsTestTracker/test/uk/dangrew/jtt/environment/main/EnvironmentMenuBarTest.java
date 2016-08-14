@@ -59,7 +59,6 @@ public class EnvironmentMenuBarTest {
       EventAssertions.assertEventRaised( 
                () -> new PreferencesOpenEvent(), 
                () -> systemUnderTest.preferences().getOnAction().handle( new ActionEvent() ), 
-               null,
                new PreferenceBehaviour( WindowPolicy.Open, null ) 
       );
    }//End Method
@@ -68,7 +67,6 @@ public class EnvironmentMenuBarTest {
       EventAssertions.assertEventRaised( 
                () -> new PreferencesOpenEvent(), 
                () -> systemUnderTest.about().getOnAction().handle( new ActionEvent() ), 
-               null,
                new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.SystemVersion ) 
       );
    }//End Method

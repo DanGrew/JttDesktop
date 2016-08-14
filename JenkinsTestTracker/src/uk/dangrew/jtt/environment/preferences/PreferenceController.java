@@ -58,7 +58,7 @@ public class PreferenceController {
     * Handler for the event when received.
     * @param event the {@link Event} fired.
     */
-   private void eventFired( Event< Void, PreferenceBehaviour > event ) {
+   private void eventFired( Event< PreferenceBehaviour > event ) {
       if ( event.getValue() == null ) {
          return;
       }

@@ -18,9 +18,9 @@ import uk.dangrew.jtt.event.structure.EventSubscription;
 /**
  * {@link EventManager} for the event of opening the preferences window.
  */
-public class PreferencesOpenEvent extends EventManager< Void, PreferenceBehaviour >{
+public class PreferencesOpenEvent extends EventManager< PreferenceBehaviour >{
 
-   private static final Collection< EventSubscription< Void, PreferenceBehaviour > > subscriptions = 
+   private static final Collection< EventSubscription< PreferenceBehaviour > > subscriptions = 
             new LinkedHashSet<>();
    private static final ReentrantLock lock = new ReentrantLock();
    

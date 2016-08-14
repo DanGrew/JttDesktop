@@ -14,13 +14,12 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * The {@link EventManager} provides a mechanism for registering for events and notifying events
  * to a {@link Collection} of {@link EventSubscription}s.
- * @param <SourceT> the source of the event.
  * @param <ValueT> the type of value changed.
  */
-public class EventManager< SourceT, ValueT > implements EventSubscription< SourceT, ValueT >, EventNotification< SourceT, ValueT >{
+public class EventManager< ValueT > implements EventSubscription< ValueT >, EventNotification< ValueT >{
 
    private final ReentrantLock lock;
-   private final Collection< EventSubscription< SourceT, ValueT > > subscriptions;
+   private final Collection< EventSubscription< ValueT > > subscriptions;
 
    /**
     * Constructs a new {@link EventManager}.
@@ -28,7 +27,7 @@ public class EventManager< SourceT, ValueT > implements EventSubscription< Sourc
     * static storage o subscriptions can be used across the system.
     * @param lock the {@link ReentrantLock} for synchronization, again allowing synchronizing across the system.
     */
-   protected EventManager( Collection< EventSubscription< SourceT, ValueT > > subscriptions, ReentrantLock lock ) {
+   protected EventManager( Collection< EventSubscription< ValueT > > subscriptions, ReentrantLock lock ) {
       if ( subscriptions == null || lock == null ) {
          throw new IllegalArgumentException( "Must not supply null parameters." );
       }
@@ -49,7 +48,7 @@ public class EventManager< SourceT, ValueT > implements EventSubscription< Sourc
     * Method to register the given {@link EventSubscription} for the associated type of event.
     * @param subscriber the {@link EventSubscription} to register.
     */
-   public void register( EventSubscription< SourceT, ValueT > subscriber ) {
+   public void register( EventSubscription< ValueT > subscriber ) {
       lock.lock();
       subscriptions.add( subscriber );
       lock.unlock();
@@ -59,7 +58,7 @@ public class EventManager< SourceT, ValueT > implements EventSubscription< Sourc
     * Method to unregister the given {@link EventSubscription} to not receive the associated type of event.
     * @param subscriber the {@link EventSubscription} to unregister.
     */
-   public void unregister( EventSubscription< SourceT, ValueT > subscriber ) {
+   public void unregister( EventSubscription< ValueT > subscriber ) {
       lock.lock();
       subscriptions.remove( subscriber );
       lock.unlock();
@@ -68,9 +67,9 @@ public class EventManager< SourceT, ValueT > implements EventSubscription< Sourc
    /**
     * {@inheritDoc}
     */
-   @Override public void notify( Event< SourceT, ValueT > event ) {
+   @Override public void notify( Event< ValueT > event ) {
       lock.lock();
-      for ( EventSubscription< SourceT, ValueT > subscription : subscriptions ) {
+      for ( EventSubscription< ValueT > subscription : subscriptions ) {
          subscription.notify( event );
       }
       lock.unlock();
@@ -79,7 +78,7 @@ public class EventManager< SourceT, ValueT > implements EventSubscription< Sourc
    /**
     * {@inheritDoc}
     */
-   @Override public void fire( Event< SourceT, ValueT > event ) {
+   @Override public void fire( Event< ValueT > event ) {
       notify( event );
    }//End Method
 

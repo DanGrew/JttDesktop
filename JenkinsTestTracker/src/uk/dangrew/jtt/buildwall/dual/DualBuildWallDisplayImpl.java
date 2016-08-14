@@ -10,8 +10,6 @@ package uk.dangrew.jtt.buildwall.dual;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
-import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
@@ -20,7 +18,6 @@ import uk.dangrew.jtt.buildwall.effects.flasher.configuration.ImageFlasherConfig
 import uk.dangrew.jtt.buildwall.effects.triggers.JobFailureTrigger;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.environment.preferences.PreferenceWindowController;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**

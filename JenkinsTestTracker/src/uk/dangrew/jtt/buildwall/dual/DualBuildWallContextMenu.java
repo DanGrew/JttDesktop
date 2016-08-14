@@ -163,7 +163,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
     * @param configWindowControl the {@link MenuItem} to update.
     */
    private void controlConfigWindow( MenuItem configWindowControl ) {
-      prefernceOpener.fire( new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
+      prefernceOpener.fire( new Event<>( new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
       configWindowControl.setText( PREFERENCES );
    }//End Method
    

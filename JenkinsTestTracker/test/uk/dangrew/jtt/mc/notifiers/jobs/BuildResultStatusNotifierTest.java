@@ -34,8 +34,8 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
  */
 public class BuildResultStatusNotifierTest {
 
-   @Mock private EventSubscription< Void, Notification > notificationSubscriber;
-   @Captor private ArgumentCaptor< Event< Void, Notification > > notificationCaptor;
+   @Mock private EventSubscription< Notification > notificationSubscriber;
+   @Captor private ArgumentCaptor< Event< Notification > > notificationCaptor;
    private JenkinsJob job;
    private JenkinsDatabase database;
    private BuildResultStatusNotifier systemUnderTest;

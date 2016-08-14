@@ -18,9 +18,9 @@ import uk.dangrew.jtt.event.structure.EventSubscription;
 /**
  * Example usage of the {@link EventManager} to prove the concept.
  */
-public class ProofOfConceptEventManager extends EventManager< SourceOfEvent, EventValue > {
+public class ProofOfConceptEventManager extends EventManager< EventValue > {
 
-   private static final Set< EventSubscription< SourceOfEvent, EventValue > > subscriptions = new LinkedHashSet<>();
+   private static final Set< EventSubscription< EventValue > > subscriptions = new LinkedHashSet<>();
    private static final ReentrantLock lock = new ReentrantLock();
    
    /**

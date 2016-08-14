@@ -55,7 +55,7 @@ public class NotificationTreeControllerTest {
    @Test public void shouldReceiveNotificationsAndAddToLayoutManager(){
       Notification notification = new BuildResultStatusNotification( new JenkinsJobImpl( "Job" ), BuildResultStatus.ABORTED, BuildResultStatus.ABORTED );
       
-      new NotificationEvent().fire( new Event< Void, Notification >( null, notification ) );
+      new NotificationEvent().fire( new Event< Notification >( notification ) );
       ArgumentCaptor< NotificationTreeItem > itemCaptor = ArgumentCaptor.forClass( NotificationTreeItem.class );
       
       verify( layoutManager ).add( itemCaptor.capture() );

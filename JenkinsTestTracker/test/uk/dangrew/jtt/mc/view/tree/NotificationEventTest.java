@@ -15,12 +15,12 @@ import uk.dangrew.jtt.mc.model.Notification;
 /**
  * {@link NotificationEvent} test.
  */
-public class NotificationEventTest extends AbstractEventManagerTest< Void, Notification > {
+public class NotificationEventTest extends AbstractEventManagerTest< Notification > {
 
    /**
     * {@inheritDoc}
     */
-   @Override protected EventManager< Void, Notification > constructSut() {
+   @Override protected EventManager< Notification > constructSut() {
       return new NotificationEvent();
    }//End Method
 

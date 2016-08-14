@@ -14,7 +14,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,8 +32,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
-import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
@@ -155,14 +152,12 @@ public class DualBuildWallContextMenuTest {
       EventAssertions.assertEventRaised( 
                () -> new PreferencesOpenEvent(), 
                () -> controWindow.getOnAction().handle( new ActionEvent() ), 
-               null, 
                new PreferenceBehaviour( WindowPolicy.Open, null )
       );
       
       EventAssertions.assertEventRaised( 
                () -> new PreferencesOpenEvent(), 
                () -> controWindow.getOnAction().handle( new ActionEvent() ), 
-               null, 
                new PreferenceBehaviour( WindowPolicy.Open, null )
       );
    }//End Method

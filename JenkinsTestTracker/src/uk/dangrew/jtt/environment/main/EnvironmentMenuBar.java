@@ -42,11 +42,11 @@ public class EnvironmentMenuBar extends MenuBar {
       PreferencesOpenEvent preferenceOpener = new PreferencesOpenEvent();
       preferences = new MenuItem( PREFERENCES_MENU );
       preferences.setOnAction( event -> preferenceOpener.fire( 
-               new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, null ) ) 
+               new Event<>( new PreferenceBehaviour( WindowPolicy.Open, null ) ) 
       ) );
       about = new MenuItem( ABOUT_MENU );
       about.setOnAction( event -> preferenceOpener.fire( 
-               new Event<>( null, new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.SystemVersion ) ) 
+               new Event<>( new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.SystemVersion ) ) 
       ) );
       applicationMenu.getItems().addAll( preferences, new SeparatorMenuItem(), about );
       

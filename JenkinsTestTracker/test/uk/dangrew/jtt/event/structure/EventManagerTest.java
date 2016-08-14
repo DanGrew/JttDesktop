@@ -35,14 +35,14 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
  */
 public class EventManagerTest {
 
-   @Mock private EventSubscription< EventManagerTest, Object > subscriber;
-   @Mock private EventSubscription< EventManagerTest, Object > subscriberB;
-   @Mock private Event< EventManagerTest, Object > notification;
-   @Mock private Event< EventManagerTest, Object > notification2;
+   @Mock private EventSubscription< Object > subscriber;
+   @Mock private EventSubscription< Object > subscriberB;
+   @Mock private Event< Object > notification;
+   @Mock private Event< Object > notification2;
    
    @Spy private ReentrantLock lock;
-   private Set< EventSubscription< EventManagerTest, Object > > subscriptions;
-   private EventManager< EventManagerTest, Object > systemUnderTest;
+   private Set< EventSubscription< Object > > subscriptions;
+   private EventManager< Object > systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();

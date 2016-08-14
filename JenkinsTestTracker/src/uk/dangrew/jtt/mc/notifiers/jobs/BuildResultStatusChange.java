@@ -13,7 +13,6 @@ import java.util.function.Function;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import uk.dangrew.jtt.mc.resources.ManagementConsoleImages;
-import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 
 /**
  * The {@link BuildResultStatusChange} provides the different levels of change.

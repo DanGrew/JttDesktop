@@ -31,27 +31,21 @@ public class EventAssertions {
     * @param expectedSource the expected SourceT.
     * @param expectedValue the expected ValueT.
     */
-   public static < SourceT, ValueT > void assertEventRaised( 
-            Supplier< EventManager< SourceT, ValueT > > eventProvider,
+   public static < ValueT > void assertEventRaised( 
+            Supplier< EventManager< ValueT > > eventProvider,
             Runnable eventFirer,
-            SourceT expectedSource,
             ValueT expectedValue
    ){
       @SuppressWarnings("unchecked")//mocking 
-      EventSubscription< SourceT, ValueT > registration = mock( EventSubscription.class );
+      EventSubscription< ValueT > registration = mock( EventSubscription.class );
       eventProvider.get().register( registration );
       
       @SuppressWarnings("deprecation")//forClass does not compile 
-      ArgumentCaptor< Event< SourceT, ValueT > > eventCaptor = new ArgumentCaptor<>();
+      ArgumentCaptor< Event< ValueT > > eventCaptor = new ArgumentCaptor<>();
       
       eventFirer.run();
       verify( registration ).notify( eventCaptor.capture() );
       
-      if ( expectedSource == null ) {
-         assertThat( eventCaptor.getValue().getSource(), is( nullValue() ) );
-      } else {
-         assertThat( eventCaptor.getValue().getSource(), is( expectedSource ) );
-      }
       if ( expectedValue == null ) {
          assertThat( eventCaptor.getValue().getValue(), is( nullValue() ) );
       } else {

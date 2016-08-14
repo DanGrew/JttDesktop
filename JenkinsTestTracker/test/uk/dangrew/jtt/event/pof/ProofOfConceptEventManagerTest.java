@@ -32,7 +32,7 @@ public class ProofOfConceptEventManagerTest {
       registeringEventManager.register( event -> received.set( true ) );
       
       ProofOfConceptEventManager firingEventManager = new ProofOfConceptEventManager();
-      firingEventManager.fire( new Event<>( new SourceOfEvent(), new EventValue() ) );
+      firingEventManager.fire( new Event<>( new EventValue() ) );
       
       assertThat( received.get(), is( true ) );
    }//End Method
@@ -41,23 +41,23 @@ public class ProofOfConceptEventManagerTest {
       ProofOfConceptEventManager registeringEventManagerA = new ProofOfConceptEventManager();
       
       @SuppressWarnings("unchecked") //mocking 
-      EventSubscription< SourceOfEvent, EventValue > subscriptionA = mock( EventSubscription.class );
+      EventSubscription< EventValue > subscriptionA = mock( EventSubscription.class );
       registeringEventManagerA.register( subscriptionA );
       
       ProofOfConceptEventManager registeringEventManagerB = new ProofOfConceptEventManager();
       @SuppressWarnings("unchecked") //mocking 
-      EventSubscription< SourceOfEvent, EventValue > subscriptionB = mock( EventSubscription.class );
+      EventSubscription< EventValue > subscriptionB = mock( EventSubscription.class );
       registeringEventManagerB.register( subscriptionB );
 
       ProofOfConceptEventManager firingEventManagerA = new ProofOfConceptEventManager();
-      Event< SourceOfEvent, EventValue > eventA = new Event<>( new SourceOfEvent(), new EventValue() );
+      Event< EventValue > eventA = new Event<>( new EventValue() );
       firingEventManagerA.fire( eventA );
       
       verify( subscriptionA ).notify( eventA );
       verify( subscriptionB ).notify( eventA );
       
       ProofOfConceptEventManager firingEventManagerB = new ProofOfConceptEventManager();
-      Event< SourceOfEvent, EventValue > eventB = new Event<>( new SourceOfEvent(), new EventValue() );
+      Event< EventValue > eventB = new Event<>( new EventValue() );
       firingEventManagerB.fire( eventB );
       
       verify( subscriptionA ).notify( eventB );

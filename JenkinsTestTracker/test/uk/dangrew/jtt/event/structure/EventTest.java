@@ -9,7 +9,7 @@
 package uk.dangrew.jtt.event.structure;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
@@ -18,18 +18,11 @@ import org.junit.Test;
  */
 public class EventTest {
 
-   private Event< Object, Object > systemUnderTest;
-   
-   @Test public void shouldProvideSourceGiven() {
-      Object source = new Object();
-      systemUnderTest = new Event<>( source, new Object() );
-      
-      assertThat( systemUnderTest.getSource(), is( source ) );
-   }//End Method
+   private Event< Object > systemUnderTest;
    
    @Test public void shouldProvideValueGiven() {
       Object value = new Object();
-      systemUnderTest = new Event<>( new Object(), value );
+      systemUnderTest = new Event<>( value );
       
       assertThat( systemUnderTest.getValue(), is( value ) );
    }//End Method

@@ -20,9 +20,9 @@ import uk.dangrew.jtt.mc.model.Notification;
  * {@link NotificationEvent} provides the manager for {@link Notification}s to be fired and
  * received.
  */
-public class NotificationEvent extends EventManager< Void, Notification >{
+public class NotificationEvent extends EventManager< Notification >{
 
-   private static final Collection< EventSubscription< Void, Notification > > subscriptions = 
+   private static final Collection< EventSubscription< Notification > > subscriptions = 
             new LinkedHashSet<>();
    private static final ReentrantLock lock = new ReentrantLock();
    
