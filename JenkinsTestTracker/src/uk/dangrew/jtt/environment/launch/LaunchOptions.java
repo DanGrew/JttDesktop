@@ -15,8 +15,7 @@ import javafx.scene.layout.VBox;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
-import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotifier;
-import uk.dangrew.jtt.mc.view.tree.NotificationTree;
+import uk.dangrew.jtt.mc.view.console.ManagementConsole;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
@@ -83,14 +82,9 @@ public class LaunchOptions extends VBox {
     * Method to launch the management console.
     */
    private void launchManagementConsole(){
-      NotificationTree tree = new NotificationTree();
-      
-      //not tested - to be wrapped with others
-      new BuildResultStatusNotifier( database );
-      
-      BorderPane content = new BorderPane( tree );
-      window.setContent( content );
-      bindDimensions( content );
+      ManagementConsole console = new ManagementConsole( database );
+      window.setContent( console );
+      bindDimensions( console );
    }//End Method
    
    /**

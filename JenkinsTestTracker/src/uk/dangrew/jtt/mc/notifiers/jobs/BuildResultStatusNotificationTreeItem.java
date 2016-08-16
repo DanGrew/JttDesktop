@@ -34,10 +34,11 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 public class BuildResultStatusNotificationTreeItem implements NotificationTreeItem {
 
    static final double STATUS_PROPORTION = 10;
-   static final double TITLE_PROPORTION = 30;
-   static final double DESCRIPTION_PROPORTION = 40;
-   static final double PEOPLE_PROPORTION = 10;
-   static final double CLOSE_PROPORTION = 10;
+   static final double TITLE_PROPORTION = 20;
+   static final double DESCRIPTION_PROPORTION = 55;
+   static final double PEOPLE_PROPORTION = 7.5;
+   static final double CLOSE_PROPORTION = 7.5;
+   
    static final double PREFERRED_ROW_HEIGHT = 20;
    static final double PREFERRED_IMAGE_HEIGHT = 20;
    static final double PREFERRED_IMAGE_WIDTH = 20;  

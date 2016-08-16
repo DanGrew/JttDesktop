@@ -22,6 +22,7 @@ import uk.dangrew.jtt.styling.SystemStyling;
  */
 public class JobProgressImpl extends BorderPane {
 
+   private final JenkinsJob job;
    private ProgressBar progress;
    private RegistrationManager registrations;
    
@@ -30,6 +31,7 @@ public class JobProgressImpl extends BorderPane {
     * @param job the {@link JenkinsJob}.
     */
    public JobProgressImpl( JenkinsJob job ) {
+      this.job = job;
       this.registrations = new RegistrationManager();
       
       progress = new ProgressBar();
@@ -95,6 +97,15 @@ public class JobProgressImpl extends BorderPane {
     */
    public void detachFromSystem(){
       registrations.shutdown();
+   }//End Method
+   
+   /**
+    * Method to determine whether the given {@link JenkinsJob} is associated with this {@link JobProgressImpl}.
+    * @param job the {@link JenkinsJob} in question.
+    * @return true if associated.
+    */
+   public boolean isAssociatedWith( JenkinsJob job ) {
+      return this.job == job;
    }//End Method
    
    /**

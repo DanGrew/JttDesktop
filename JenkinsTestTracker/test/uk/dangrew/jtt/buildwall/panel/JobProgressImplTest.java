@@ -155,4 +155,9 @@ public class JobProgressImplTest {
       assertThat( systemUnderTest.isDetached(), is( true ) );
    }//End Method
    
+   @Test public void shouldBeAssociatedWith(){
+      assertThat( systemUnderTest.isAssociatedWith( job ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new JenkinsJobImpl( "anything" ) ), is( false ) );
+   }//End Method
+   
 }//End Class

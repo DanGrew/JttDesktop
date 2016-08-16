@@ -10,7 +10,6 @@ package uk.dangrew.jtt.environment.launch;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -34,7 +33,7 @@ import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.mc.view.tree.NotificationTree;
+import uk.dangrew.jtt.mc.view.console.ManagementConsole;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
@@ -125,12 +124,7 @@ public class LaunchOptionsTest {
       verify( window ).setContent( contentCaptor.capture() );
       
       Node content = contentCaptor.getValue();
-      assertThat( content, instanceOf( BorderPane.class ) );
-      
-      BorderPane wrapperPane = ( BorderPane )content;
-      
-      NotificationTree display = ( NotificationTree ) wrapperPane.getCenter();
-      assertThat( display, is( notNullValue() ) );
+      assertThat( content, instanceOf( ManagementConsole.class ) );
    }//End Method
    
    @Test public void shouldBindBuildWallToWindow(){
