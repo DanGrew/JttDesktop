@@ -24,7 +24,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.javafx.tree.ColumnHeaderHider;
+import uk.dangrew.jtt.javafx.tree.utility.ColumnHeaderHider;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotificationTreeItem;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;

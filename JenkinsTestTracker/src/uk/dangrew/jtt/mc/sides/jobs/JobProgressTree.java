@@ -16,7 +16,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
-import uk.dangrew.jtt.javafx.tree.ColumnHeaderHider;
+import uk.dangrew.jtt.javafx.tree.utility.ColumnHeaderHider;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**

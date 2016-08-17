@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.javafx.tree;
+package uk.dangrew.jtt.javafx.tree.utility;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -24,6 +24,7 @@ import com.sun.javafx.application.PlatformImpl;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.Pane;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.javafx.tree.utility.ColumnHeaderHider;
 
 /**
  * {@link ColumnHeaderHider} test.

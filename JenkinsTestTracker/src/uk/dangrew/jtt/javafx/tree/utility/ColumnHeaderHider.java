@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.javafx.tree;
+package uk.dangrew.jtt.javafx.tree.utility;
 
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.Pane;

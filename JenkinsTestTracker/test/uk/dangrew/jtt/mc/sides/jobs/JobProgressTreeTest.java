@@ -23,7 +23,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.javafx.tree.ColumnHeaderHider;
+import uk.dangrew.jtt.javafx.tree.utility.ColumnHeaderHider;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
