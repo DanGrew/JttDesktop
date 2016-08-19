@@ -50,4 +50,12 @@ public class TreeController< TreeItemValueT extends TreeItemValue, ObjectTypeT >
       layout.update( object );
    }//End Method
    
+   /**
+    * Protected access to the {@link TreeLayout}.
+    * @return the associated {@link TreeLayout}.
+    */
+   protected TreeLayout< TreeItemValueT, ObjectTypeT > getLayoutManager(){
+      return layout;
+   }//End Method
+   
 }//End Class

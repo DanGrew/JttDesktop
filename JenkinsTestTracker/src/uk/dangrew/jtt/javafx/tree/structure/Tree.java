@@ -24,11 +24,19 @@ import javafx.scene.control.TreeTableView;
  * determines how items are arranged in the {@link Tree}.
  * @param <TreeItemValueT> the {@link TreeItemValue} associated with {@link TreeItem}s.
  * @param <ObjectTypeT> the underlying object being represented in the tree, can be the same as TreeItemValueT.
+ * @param <ControllerT> the {@link TreeController} type.
+ * @param <LayoutT> the {@link TreeLayout} type.
  */
-public abstract class Tree< TreeItemValueT extends TreeItemValue, ObjectTypeT > extends TreeTableView< TreeItemValueT > {
+public abstract class Tree< 
+      TreeItemValueT extends TreeItemValue, 
+      ObjectTypeT,
+      ControllerT extends TreeController< TreeItemValueT, ObjectTypeT >,
+      LayoutT extends TreeLayout< TreeItemValueT, ObjectTypeT >
+> extends TreeTableView< TreeItemValueT > 
+{
    
-   private final TreeLayout< TreeItemValueT, ObjectTypeT > layoutManager;
-   private final TreeController< TreeItemValueT, ObjectTypeT > controller;
+   private final LayoutT layoutManager;
+   private final ControllerT controller;
    
    /**
     * Constructs a new {@link Tree}.
@@ -54,14 +62,14 @@ public abstract class Tree< TreeItemValueT extends TreeItemValue, ObjectTypeT > 
     * used before the {@link TreeController}.
     * @return the {@link TreeLayout} being used with this {@link Tree}.
     */
-   protected abstract TreeLayout< TreeItemValueT, ObjectTypeT > constructLayout();
+   protected abstract LayoutT constructLayout();
    
    /**
     * Method to construct the {@link TreeController} to use for this {@link Tree}. This will be called and
     * used after the {@link TreeLayout}.
     * @return the {@link TreeController} being used with this {@link Tree}.
     */
-   protected abstract TreeController< TreeItemValueT, ObjectTypeT > constructController();
+   protected abstract ControllerT constructController();
    
    /**
     * Method to perform the initial layout of items in the {@link Tree}. The {@link TreeController} and 
@@ -107,7 +115,7 @@ public abstract class Tree< TreeItemValueT extends TreeItemValue, ObjectTypeT > 
     * Protected access to the {@link TreeLayout}.
     * @return the {@link TreeLayout}.
     */
-   protected final TreeLayout< TreeItemValueT, ObjectTypeT > getLayoutManager(){
+   protected LayoutT getLayoutManager(){
       return layoutManager;
    }//End Method
    
@@ -115,7 +123,7 @@ public abstract class Tree< TreeItemValueT extends TreeItemValue, ObjectTypeT > 
     * Protected access to the {@link TreeController}.
     * @return the {@link TreeController}.
     */
-   protected final TreeController< TreeItemValueT, ObjectTypeT > getController(){
+   protected ControllerT getController(){
       return controller;
    }//End Method
    

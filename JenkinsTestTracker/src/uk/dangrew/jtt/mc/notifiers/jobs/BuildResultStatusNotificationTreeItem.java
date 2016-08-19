@@ -188,7 +188,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     */
    private Node constructCloseImage(){
       Button button = constructControl( images.constuctCloseImage() );
-      button.setOnAction( event -> controller.removeItem( this ) );
+      button.setOnAction( event -> controller.remove( this ) );
       return new BorderPane( button );
    }//End Method
 

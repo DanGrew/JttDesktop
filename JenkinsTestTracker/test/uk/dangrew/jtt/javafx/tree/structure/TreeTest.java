@@ -46,10 +46,20 @@ public class TreeTest {
    @Mock private TestTreeValueItem item;
    @Mock private TreeLayout< TestTreeValueItem, TestTreeValueItem > layout;
    @Mock private TreeController< TestTreeValueItem, TestTreeValueItem > controller;
-   private Tree< TestTreeValueItem, TestTreeValueItem > systemUnderTest;
+   private Tree< 
+      TestTreeValueItem, 
+      TestTreeValueItem, 
+      TreeController< TestTreeValueItem, TestTreeValueItem >, 
+      TreeLayout< TestTreeValueItem, TestTreeValueItem > 
+   > systemUnderTest;
    
    /** Test extension.**/
-   private class TestTree extends Tree< TestTreeValueItem, TestTreeValueItem > {
+   private class TestTree extends Tree< 
+         TestTreeValueItem, 
+         TestTreeValueItem, 
+         TreeController< TestTreeValueItem, TestTreeValueItem >, 
+         TreeLayout< TestTreeValueItem, TestTreeValueItem >  
+   > {
       
       /** {@inheritDoc} */
       @Override protected void insertColumns() {

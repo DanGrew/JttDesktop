@@ -43,12 +43,12 @@ public class NotificationTreeControllerTest {
    }//End Method
    
    @Test public void shouldAddNewItem() {
-      systemUnderTest.addItem( item );
+      systemUnderTest.add( item );
       verify( layoutManager ).add( item );
    }//End Method
    
    @Test public void shouldRemoveItem(){
-      systemUnderTest.removeItem( item );
+      systemUnderTest.remove( item );
       verify( layoutManager ).remove( item );
    }//End Method
 

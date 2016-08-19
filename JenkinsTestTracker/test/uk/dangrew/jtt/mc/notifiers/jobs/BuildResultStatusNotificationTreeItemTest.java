@@ -191,7 +191,7 @@ public class BuildResultStatusNotificationTreeItemTest {
       Button button = ( Button ) wrapper.getCenter();
       button.getOnAction().handle( new ActionEvent() );
       
-      verify( controller ).removeItem( systemUnderTest );
+      verify( controller ).remove( systemUnderTest );
    }//End Method
    
    @Test public void shouldHaveControllerAssociated(){

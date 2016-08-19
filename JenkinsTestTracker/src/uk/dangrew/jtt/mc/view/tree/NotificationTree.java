@@ -9,89 +9,63 @@
 package uk.dangrew.jtt.mc.view.tree;
 
 import java.util.ArrayList;
-import java.util.function.Function;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.scene.Node;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
-import uk.dangrew.jtt.javafx.tree.utility.ColumnHeaderHider;
+import uk.dangrew.jtt.javafx.tree.structure.Tree;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
 
 /**
- * The {@link ConfigurationTree} provides a {@link TreeView} for {@link ConfigurationItem}s.
+ * The {@link NotificationTree} provides a {@link Tree} for {@link NotificationTreeItem}s.
  */
-public class NotificationTree extends TreeTableView< NotificationTreeItem > {
-   
-   private final NotificationTreeLayoutManager layoutManager;
-   private final NotificationTreeController controller;
+public class NotificationTree extends Tree< 
+         NotificationTreeItem, NotificationTreeItem, NotificationTreeController, NotificationTreeLayoutManager 
+> {
    
    /**
     * Method to construct a new {@link NotificationTree}.
     */
    public NotificationTree() {
-      this( new ColumnHeaderHider() );
+      super();
    }//End Constructor
-   
+
    /**
-    * Constructs a new {@link ConfigurationTree}.
-    * @param hider the {@link ColumnHeaderHider} in support.
+    * {@inheritDoc}
     */
-   NotificationTree( ColumnHeaderHider hider ) {
-      this.layoutManager = new NotificationTreeLayoutManager( this );
-      this.controller = new NotificationTreeController( layoutManager );
-      
-      constructRoot();
-      configureTree();
-      
+   @Override protected void insertColumns() {
       insertColumn( item -> item.contentProperty() );
-      
-      hider.hideColumnHeaders( this );
-      layoutManager.reconstructTree( new ArrayList<>() );
-   }//End Constructor
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override protected NotificationTreeLayoutManager constructLayout() {
+      return new NotificationTreeLayoutManager( this );
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override protected NotificationTreeController constructController() {
+      return new NotificationTreeController( getLayoutManager() );
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override protected void performInitialLayout() {
+      getLayoutManager().reconstructTree( new ArrayList<>() );
+   }//End Method
    
    /**
-    * Method to construct the root for the tree.
+    * {@inheritDoc}
     */
-   private void constructRoot(){
-      TreeItem< NotificationTreeItem > root = new TreeItem<>();
-      root.setExpanded( true );
-      setRoot( root );
-      setShowRoot( false );
+   @Override protected NotificationTreeController getController() {
+      return super.getController();
    }//End Method
    
    /**
-    * Method to configure the tree.
+    * {@inheritDoc}
     */
-   private void configureTree(){
-      getSelectionModel().setSelectionMode( SelectionMode.SINGLE );
-      setColumnResizePolicy( TreeTableView.CONSTRAINED_RESIZE_POLICY );
+   @Override protected NotificationTreeLayoutManager getLayoutManager() {
+      return super.getLayoutManager();
    }//End Method
-   
-   /**
-    * Method to insert a single column into the tree.
-    * @param nodeRetriever the {@link Function} for supplying the {@link Node} to draw.
-    * @param width the preferred width of the column.
-    */
-   private void insertColumn( Function< NotificationTreeItem, ObjectProperty< Node > > nodeRetriever ){
-      TreeTableColumn< NotificationTreeItem, Node > iconColumn = new TreeTableColumn<>();
-      iconColumn.setCellValueFactory( object -> {
-         if ( object.getValue().getValue() == null ) {
-            return null;
-         }
-         return nodeRetriever.apply( object.getValue().getValue() );
-      } );
-      getColumns().add( iconColumn );
-   }//End Method
-   
-   NotificationTreeController controller(){
-      return controller;
-   }//End Method
-   
-   NotificationTreeLayoutManager layoutManager(){
-      return layoutManager;
-   }//End Method
-   
 }//End Class

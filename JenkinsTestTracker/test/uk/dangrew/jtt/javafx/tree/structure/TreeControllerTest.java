@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.javafx.tree.structure;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
@@ -42,6 +44,10 @@ public class TreeControllerTest {
    @Test public void shouldUpdateLayout() {
       systemUnderTest.update( item );
       verify( layout ).update( item );
+   }//End Method
+   
+   @Test public void shouldProvideLayoutManager(){
+      assertThat( systemUnderTest.getLayoutManager(), is( layout ) );
    }//End Method
 
 }//End Class

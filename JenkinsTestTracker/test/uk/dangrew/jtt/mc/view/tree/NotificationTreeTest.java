@@ -12,51 +12,50 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.javafx.tree.utility.ColumnHeaderHider;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotificationTreeItem;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 
+/**
+ * {@link NotificationTree} test.
+ */
 public class NotificationTreeTest {
    
-   @Spy private ColumnHeaderHider hider;
    private NotificationTree systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new NotificationTree( hider );
+      systemUnderTest = new NotificationTree();
    }//End Method
 
    @Ignore
    @Test public void manual() throws InterruptedException {
       JavaFxInitializer.launchInWindow( () -> systemUnderTest );
       
-      systemUnderTest.controller().addItem( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
+      systemUnderTest.getController().add( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
                new JenkinsJobImpl( "JenkinsJob" ), BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS 
-      ), systemUnderTest.controller() ) );
+      ), systemUnderTest.getController() ) );
       Thread.sleep( 2000 );
-      systemUnderTest.controller().addItem( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
+      systemUnderTest.getController().add( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
                new JenkinsJobImpl( "Another Job" ), BuildResultStatus.UNKNOWN, BuildResultStatus.UNKNOWN 
-      ), systemUnderTest.controller() ) );
+      ), systemUnderTest.getController() ) );
       Thread.sleep( 2000 );
-      systemUnderTest.controller().addItem( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
+      systemUnderTest.getController().add( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
                new JenkinsJobImpl( "JenkinsJob" ), BuildResultStatus.SUCCESS, BuildResultStatus.FAILURE 
-      ), systemUnderTest.controller() ) );
+      ), systemUnderTest.getController() ) );
       
       Thread.sleep( 100000 );
    }//End Method
@@ -72,16 +71,12 @@ public class NotificationTreeTest {
    }//End Method
    
    @Test public void shouldConstructControllerWithLayoutManager(){
-      assertThat( systemUnderTest.controller(), is( notNullValue() ) );
-      assertThat( systemUnderTest.controller().layoutManager(), is( systemUnderTest.layoutManager() ) );
-   }//End Method
-   
-   @Test public void shouldHideColumnHeaders(){
-      verify( hider ).hideColumnHeaders( systemUnderTest );
+      assertThat( systemUnderTest.getController(), is( notNullValue() ) );
+      assertThat( systemUnderTest.getController().getLayoutManager(), is( systemUnderTest.getLayoutManager() ) );
    }//End Method
    
    @Test public void shouldReconstructTreeWithLayoutManager(){
-      assertThat( systemUnderTest.layoutManager().isControlling( systemUnderTest ), is( true ) );
+      assertThat( systemUnderTest.getLayoutManager().isControlling( systemUnderTest ), is( true ) );
    }//End Method
    
    @Test public void shouldHaveSingleColumn(){
@@ -95,15 +90,15 @@ public class NotificationTreeTest {
    
    @Test public void shouldSupportItemWithNullValuesForEachColumn(){
       NotificationTreeItem nullItem = mock( NotificationTreeItem.class );
-      systemUnderTest.layoutManager().add( nullItem );
+      systemUnderTest.getLayoutManager().add( nullItem );
    }//End Method
    
    @Test public void shouldHoldNodesProvidedByNotificationTreeItem(){
       NotificationTreeItem item = new BuildResultStatusNotificationTreeItem( 
                new BuildResultStatusNotification( new JenkinsJobImpl( "Anything" ), BuildResultStatus.ABORTED, BuildResultStatus.SUCCESS ),
-               systemUnderTest.controller()
+               systemUnderTest.getController()
       );
-      systemUnderTest.layoutManager().add( item );
+      systemUnderTest.getLayoutManager().add( item );
       
       TreeTableColumn< NotificationTreeItem, ? > onlyColumn = systemUnderTest.getColumns().get( 0 );
       assertThat( onlyColumn.getCellData( 1 ), is( item.contentProperty().get() ) );

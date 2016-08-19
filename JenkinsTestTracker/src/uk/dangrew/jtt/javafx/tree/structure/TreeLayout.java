@@ -48,5 +48,5 @@ public interface TreeLayout< TreeItemValueT extends TreeItemValue, ObjectTypeT >
     * @param tree the {@link Tree} in question.
     * @return true if being controller by and laid out with the given.
     */
-   public boolean isControlling( Tree< TreeItemValueT, ObjectTypeT > tree );
+   public boolean isControlling( Tree< TreeItemValueT, ObjectTypeT, ?, ? > tree );
 }//End Class

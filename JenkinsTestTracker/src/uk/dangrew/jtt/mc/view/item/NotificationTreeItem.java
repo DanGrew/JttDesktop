@@ -10,13 +10,14 @@ package uk.dangrew.jtt.mc.view.item;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Node;
+import uk.dangrew.jtt.javafx.tree.structure.TreeItemValue;
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 
 /**
  * Interface for providing the necessary elements to drive the {@link uk.dangrew.jtt.mc.view.tree.NotificationTree}.
  */
-public interface NotificationTreeItem {
+public interface NotificationTreeItem extends TreeItemValue {
 
    /**
     * Provides the {@link ObjectProperty} for the {@link Node} to place in the {@link uk.dangrew.jtt.mc.view.tree.NotificationTree}.
