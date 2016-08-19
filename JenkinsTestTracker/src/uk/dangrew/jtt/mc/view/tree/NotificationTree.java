@@ -25,6 +25,7 @@ public class NotificationTree extends Tree<
     */
    public NotificationTree() {
       super();
+      initialise();
    }//End Constructor
 
    /**

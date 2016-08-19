@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.scene.control.TreeItem;
+import uk.dangrew.jtt.javafx.tree.structure.Tree;
+import uk.dangrew.jtt.javafx.tree.structure.TreeLayout;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
@@ -24,7 +26,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
  * The {@link BuildResultStatusLayout} is responsible for laying out the {@link JenkinsJob}s
  * according to their current {@link BuildResultStatus}.
  */
-public class BuildResultStatusLayout {
+public class BuildResultStatusLayout implements TreeLayout< JobProgressTreeItem, JenkinsJob >{
 
    private final JobProgressTree tree;
    private final Map< BuildResultStatus, TreeItem< JobProgressTreeItem > > branches;
@@ -44,11 +46,9 @@ public class BuildResultStatusLayout {
    }//End Constructor
 
    /**
-    * Method to reconstruct the tree. This will discard everything currently in the tree and
-    * reconstruct its structure.
-    * @param jobs the {@link JenkinsJob}s to add.
+    * {@inheritDoc}
     */
-   void reconstructTree( List< JenkinsJob > jobs ) {
+   @Override public void reconstructTree( List< JenkinsJob > jobs ) {
       if ( jobs == null ) {
          throw new IllegalArgumentException( "Must provide non null list." );
       }
@@ -83,10 +83,9 @@ public class BuildResultStatusLayout {
    }//End Method
    
    /**
-    * Method to add the given {@link JenkinsJob} to the tree.
-    * @param job the {@link JenkinsJob} to add.
+    * {@inheritDoc}
     */
-   void add( JenkinsJob job ) {
+   @Override public void add( JenkinsJob job ) {
       verifyConstructedWithThisManager();
       
       if ( jobItems.containsKey( job ) ) {
@@ -109,10 +108,9 @@ public class BuildResultStatusLayout {
    }//End Method
 
    /**
-    * Method to remove the given {@link JenkinsJob} from the tree.
-    * @param job the {@link JenkinsJob} to remove.
+    * {@inheritDoc}
     */
-   void remove( JenkinsJob job ) {
+   @Override public void remove( JenkinsJob job ) {
       verifyConstructedWithThisManager();
       purge( job );
    }//End Method
@@ -132,11 +130,9 @@ public class BuildResultStatusLayout {
    }//End Method
 
    /**
-    * Method to determine whether this layout is controlling the given {@link JobProgressTree}.
-    * @param tree the {@link JobProgressTree} in question.
-    * @return true if being controller by and laid out with the given.
+    * {@inheritDoc}
     */
-   boolean isControlling( JobProgressTree tree ) {
+   @Override public boolean isControlling( Tree< JobProgressTreeItem, JenkinsJob, ?, ? > tree ) {
       if ( tree == null ) {
          return false;
       }
@@ -153,10 +149,9 @@ public class BuildResultStatusLayout {
    }//End Method
 
    /**
-    * Method to update the {@link JenkinsJob} in the tree, moving it if needed.
-    * @param job the {@link JenkinsJob} to update.
+    * {@inheritDoc}
     */
-   void update( JenkinsJob job ) {
+   @Override public void update( JenkinsJob job ) {
       verifyConstructedWithThisManager();
       
       if ( !jobItems.containsKey( job ) ) {

@@ -35,8 +35,8 @@ public abstract class Tree<
 > extends TreeTableView< TreeItemValueT > 
 {
    
-   private final LayoutT layoutManager;
-   private final ControllerT controller;
+   private LayoutT layoutManager;
+   private ControllerT controller;
    
    /**
     * Constructs a new {@link Tree}.
@@ -44,12 +44,19 @@ public abstract class Tree<
    protected Tree() {
       constructRoot();
       configureTree();
-      
-      this.insertColumns();
-      this.layoutManager = constructLayout();
-      this.performInitialLayout();
-      this.controller = constructController();
    }//End Constructor
+   
+   /**
+    * Method to initialise the {@link Tree}. This should be called in the constructor of
+    * the child once all variables required are initialised and ready for the {@link Tree}
+    * to use.
+    */
+   protected void initialise(){
+      insertColumns();
+      layoutManager = constructLayout();
+      performInitialLayout();
+      controller = constructController();
+   }//End Method
    
    /**
     * Method to insert all columns required in the table. This will be called only once on construction

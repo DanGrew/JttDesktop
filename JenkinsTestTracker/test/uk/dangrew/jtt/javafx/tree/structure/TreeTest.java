@@ -92,6 +92,7 @@ public class TreeTest {
    }//End Method
    
    @Test public void shouldProvideLayoutAndController() {
+      systemUnderTest.initialise();
       assertThat( systemUnderTest.getLayoutManager(), is( layout ) );
       assertThat( systemUnderTest.getController(), is( controller ) );
    }//End Method
@@ -107,7 +108,12 @@ public class TreeTest {
       assertThat( systemUnderTest.getColumnResizePolicy(), is( TreeTableView.CONSTRAINED_RESIZE_POLICY ) );
    }//End Method
    
+   @Test public void shouldNotInitialiseInConstructor(){
+      verifyZeroInteractions( methodExecutions );
+   }//End Method
+   
    @Test public void shouldInitialiseTreeInCorrectSequence(){
+      systemUnderTest.initialise();
       InOrder order = inOrder( methodExecutions );
       order.verify( methodExecutions ).add( insertColumnsKey );
       order.verify( methodExecutions ).add( constructLayoutKey );

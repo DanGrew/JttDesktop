@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.mc.sides.jobs;
 
+import uk.dangrew.jtt.javafx.tree.structure.TreeController;
+import uk.dangrew.jtt.javafx.tree.structure.TreeLayout;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
@@ -16,51 +18,28 @@ import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
  * The {@link JobProgressTreeController} is responsible for controlling the information in the 
  * {@link JobProgressTree}.
  */
-public class JobProgressTreeController {
+public class JobProgressTreeController extends TreeController< JobProgressTreeItem, JenkinsJob >{
 
-   private final BuildResultStatusLayout layout;
-   
    /**
     * Constructs a new {@link JobProgressTreeController}.
     * @param layout the {@link BuildResultStatusLayout} for positioning items in the tree.
     * @param database the {@link JenkinsDatabase} for monitoring {@link JenkinsJob}s.
     */
    public JobProgressTreeController( BuildResultStatusLayout layout, JenkinsDatabase database ) {
-      this.layout = layout;
+      super( layout );
       
       database.jenkinsJobs().addListener( new FunctionListChangeListenerImpl<>( 
-                this::addJob,
-                this::removeJob
+                this::add,
+                this::remove
       )  );
-      database.jenkinsJobProperties().addBuildResultStatusListener( ( job, old, updated ) -> updateJob( job ) );
+      database.jenkinsJobProperties().addBuildResultStatusListener( ( job, old, updated ) -> update( job ) );
    }//End Constructor
    
    /**
-    * Method to add the given {@link JenkinsJob} to the {@link JobProgressTree}.
-    * @param job the {@link JenkinsJob} to add.
+    * {@inheritDoc}
     */
-   void addJob( JenkinsJob job ) {
-      layout.add( job );
-   }//End MethodT
-   
-   /**
-    * Method to remove the given {@link JenkinsJob} from the {@link JobProgressTree}.
-    * @param job the {@link JenkinsJob} to remove.
-    */
-   void removeJob( JenkinsJob job ) {
-      layout.remove( job );
-   }//End Method
-   
-   /**
-    * Method to update the given {@link JenkinsJob} in the {@link JobProgressTree}.
-    * @param job the {@link JenkinsJob} to update.
-    */
-   void updateJob( JenkinsJob job ) {
-      layout.update( job );
-   }//End Method
-   
-   BuildResultStatusLayout layoutManager(){
-      return layout;
+   @Override protected TreeLayout< JobProgressTreeItem, JenkinsJob > getLayoutManager() {
+      return super.getLayoutManager();
    }//End Method
 
 }//End Class
