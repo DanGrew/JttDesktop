@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -125,6 +126,9 @@ public class UserAssignmentsTreeLayoutTest {
       assertThat( tree.getRoot().getChildren().get( 0 ).getValue(), is( not( item1 ) ) );
       assertThat( tree.getRoot().getChildren().get( 1 ).getValue(), is( not( item2 ) ) );
       assertThat( tree.getRoot().getChildren().get( 2 ).getValue().getJenkinsUser(), is( user3 ) );
+      
+      assertThat( item1.isDetachedFromSystem(), is( true ) );
+      assertThat( item2.isDetachedFromSystem(), is( true ) );
    }//End Method
    
    @Test public void shouldAddUserBranchIfNotPresent() {
@@ -144,7 +148,9 @@ public class UserAssignmentsTreeLayoutTest {
    
    @Test public void shouldRemoveUserFromTree() {
       systemUnderTest.reconstructBranches( Arrays.asList( user1, user2, user3 ) );
+      UserAssignmentsTreeItem item = systemUnderTest.getBranch( user3 ).getValue();
       systemUnderTest.removeBranch( user3 );
+      assertThat( item.isDetachedFromSystem(), is( true ) );
       
       assertThat( tree.getRoot().getChildren(), hasSize( 2 ) );
    }//End Method
@@ -221,6 +227,10 @@ public class UserAssignmentsTreeLayoutTest {
       
       assertUserBranchIsPopulatedWith( user1, user1Assignment2Item );
       assertUserBranchIsPopulatedWith( user2, user2Assignment2Item );
+      
+      verify( user1Assignment1Item ).detachFromSystem();
+      verify( user2Assignment1Item ).detachFromSystem();
+      verify( user3Assignment1Item ).detachFromSystem();
    }//End Method
    
    @Test public void shouldAddUserAndAssignmentIfNotPresent() {
@@ -245,6 +255,8 @@ public class UserAssignmentsTreeLayoutTest {
       
       assertThat( tree.getRoot().getChildren(), hasSize( 1 ) );
       assertUserBranchIsPopulatedWith( user1, user1Assignment2Item );
+      
+      verify( user1Assignment1Item ).detachFromSystem();
    }//End Method
    
    @Test public void shouldAddAssignmentBackInTreeAfterBeingRemoved() {

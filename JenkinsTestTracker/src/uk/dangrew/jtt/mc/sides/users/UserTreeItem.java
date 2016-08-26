@@ -84,4 +84,11 @@ public class UserTreeItem implements UserAssignmentsTreeItem {
     */
    @Override public void detachFromSystem() {}
    
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean isDetachedFromSystem() {
+      return true;
+   }//End Method
+   
 }//End Class

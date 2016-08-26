@@ -66,4 +66,8 @@ public class UserTreeItemTest {
    @Test public void shouldNotBeAssociatedWithAssignment(){
       assertThat( systemUnderTest.isAssociatedWithUserAssignment( mock( UserAssignment.class ) ), is( false ) );
    }//End Method
+   
+   @Test public void shouldBeDetachedFromSystem(){
+      assertThat( systemUnderTest.isDetachedFromSystem(), is( true ) );
+   }//End Method
 }//End Class

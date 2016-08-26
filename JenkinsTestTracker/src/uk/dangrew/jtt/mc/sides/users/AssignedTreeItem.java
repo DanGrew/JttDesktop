@@ -108,6 +108,13 @@ public class AssignedTreeItem implements UserAssignmentsTreeItem {
    }//End Method
    
    /**
+    * {@inheritDoc}}
+    */
+   @Override public boolean isDetachedFromSystem() {
+      return registrations.isEmpty();
+   }//End Method
+   
+   /**
     * Method to format the given timestamp in seconds to an appropriate date/time format.
     * @param timestamp the number of seconds since epoch.
     * @return the formatted {@link String}.

@@ -64,7 +64,9 @@ public class UserAssignmentsTreeLayout implements TreeLayout< UserAssignmentsTre
     */
    private void clearLayout(){
       tree.getRoot().getChildren().clear();
+      branches.values().forEach( item -> item.getValue().detachFromSystem() );
       branches.clear();
+      assignmentItems.values().forEach( item -> item.getValue().detachFromSystem() );
       assignmentItems.clear();
    }//End Method
    
@@ -148,20 +150,24 @@ public class UserAssignmentsTreeLayout implements TreeLayout< UserAssignmentsTre
       if ( !branches.containsKey( user ) ) {
          return;
       }
-      tree.getRoot().getChildren().remove( branches.get( user ) );
+      TreeItem< UserAssignmentsTreeItem > item = branches.get( user );
+      tree.getRoot().getChildren().remove( item );
+      item.getValue().detachFromSystem();
       branches.remove( user );
    }//End Method
    
    /**
     * {@inheritDoc}
     */
-   @Override public void remove( UserAssignment user ) {
-      if ( !assignmentItems.containsKey( user ) ) {
+   @Override public void remove( UserAssignment assignment ) {
+      if ( !assignmentItems.containsKey( assignment ) ) {
          return;
       }
       
-      getBranch( user.getJenkinsUser() ).getChildren().remove( assignmentItems.get( user ) );
-      assignmentItems.remove( user );
+      TreeItem< UserAssignmentsTreeItem > item = assignmentItems.get( assignment );
+      getBranch( assignment.getJenkinsUser() ).getChildren().remove( item );
+      item.getValue().detachFromSystem();
+      assignmentItems.remove( assignment );
    }//End Method
 
    /**

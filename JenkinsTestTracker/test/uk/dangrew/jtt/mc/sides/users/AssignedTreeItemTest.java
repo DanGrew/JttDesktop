@@ -123,5 +123,11 @@ public class AssignedTreeItemTest {
    @Test public void shouldFormatTimestamp(){
       assertThat( AssignedTreeItem.formatTimestamp( 1000 ), is( "1970-01-01 at 00:16:40" ) );
    }//End Method
+   
+   @Test public void shouldBeDetachedWhenNoRegistrationsHeld(){
+      assertThat( systemUnderTest.isDetachedFromSystem(), is( false ) );
+      systemUnderTest.detachFromSystem();
+      assertThat( systemUnderTest.isDetachedFromSystem(), is( true ) );
+   }//End Method
 
 }//End Class

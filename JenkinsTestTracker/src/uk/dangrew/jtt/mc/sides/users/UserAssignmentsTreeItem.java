@@ -55,4 +55,10 @@ public interface UserAssignmentsTreeItem extends TreeItemValue {
     * Method to detach all listeners and registrations from the system.
     */
    public void detachFromSystem();
+   
+   /**
+    * Method to determine whether the item is detached and holds no registrations.
+    * @return true if holds no registrations.
+    */
+   public boolean isDetachedFromSystem();
 }//End Interface
