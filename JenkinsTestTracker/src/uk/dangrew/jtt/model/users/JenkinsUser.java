@@ -8,7 +8,7 @@
  */
 package uk.dangrew.jtt.model.users;
 
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.ObjectProperty;
 
 /**
  * The {@link JenkinsUser} represents any user or culprit in jenkins.
@@ -19,6 +19,6 @@ public interface JenkinsUser {
     * Provides the {@link StringProperty} of the name of the user.
     * @return the {@link StringProperty}.
     */
-   public StringProperty nameProperty();
+   public ObjectProperty< String > nameProperty();
 
 }//End Interface

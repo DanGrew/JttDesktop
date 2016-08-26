@@ -313,6 +313,19 @@ public class JenkinsDatabaseImplTest {
       verify( listener ).changed( jenkinsJob, BuildResultStatus.NOT_BUILT, BuildResultStatus.SUCCESS );
    }//End Method
    
+   @Test public void shouldProvideJenkinsUserPropertyListener(){
+      assertThat( systemUnderTest.jenkinsUserProperties(), notNullValue() );
+      
+      @SuppressWarnings("unchecked") //simply mocking genericized objects. 
+      JttChangeListener< JenkinsUser, String > listener = mock( JttChangeListener.class );
+      
+      systemUnderTest.store( jenkinsUser );
+      systemUnderTest.jenkinsUserProperties().addNamePropertyListener( listener );
+      jenkinsUser.nameProperty().set( "soemthing else for this test" );
+      
+      verify( listener ).changed( jenkinsUser, JENKINS_USER_NAME, "soemthing else for this test" );
+   }//End Method
+   
    @Test public void shouldProvideJenkinsUsers(){
       Assert.assertNotNull( systemUnderTest.jenkinsUsers() );
       Assert.assertTrue( systemUnderTest.jenkinsUsers().isEmpty() );

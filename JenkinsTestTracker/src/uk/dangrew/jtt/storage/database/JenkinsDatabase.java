@@ -13,6 +13,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.storage.database.events.JenkinsJobPropertyListener;
+import uk.dangrew.jtt.storage.database.events.JenkinsUserPropertyListener;
 
 /**
  * {@link JenkinsDatabase} defines the interface for storing Jenkins data such
@@ -190,5 +191,11 @@ public interface JenkinsDatabase {
     * @return the {@link JenkinsJobPropertyListener}.
     */
    public JenkinsJobPropertyListener jenkinsJobProperties();
+   
+   /**
+    * Getter for access to the {@link JenkinsUserPropertyListener} allowing global registrations.
+    * @return the {@link JenkinsUserPropertyListener}.
+    */
+   public JenkinsUserPropertyListener jenkinsUserProperties();
 
 }//End Interface

@@ -13,6 +13,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.storage.database.events.JenkinsJobPropertyListener;
+import uk.dangrew.jtt.storage.database.events.JenkinsUserPropertyListener;
 import uk.dangrew.jtt.storage.structure.MappedObservableStoreManagerImpl;
 import uk.dangrew.jtt.storage.structure.ObjectStoreManager;
 
@@ -25,6 +26,7 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
    private ObjectStoreManager< String, JenkinsJob > jenkinsJobs;
    private ObjectStoreManager< String, JenkinsUser > jenkinsUsers;
    private JenkinsJobPropertyListener jenkinsJobProperties;
+   private JenkinsUserPropertyListener jenkinsUserProperties;
 
    /**
     * Constructs a new {@link JenkinsDatabaseImpl}.
@@ -34,6 +36,7 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
       jenkinsJobs = new MappedObservableStoreManagerImpl<>();
       jenkinsUsers = new MappedObservableStoreManagerImpl<>();
       jenkinsJobProperties = new JenkinsJobPropertyListener( this );
+      jenkinsUserProperties = new JenkinsUserPropertyListener( this );
    }//End Constructor
    
    /**
@@ -232,6 +235,13 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
     */
    @Override public JenkinsJobPropertyListener jenkinsJobProperties() {
       return jenkinsJobProperties;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public JenkinsUserPropertyListener jenkinsUserProperties() {
+      return jenkinsUserProperties;
    }//End Method
 
 }//End Class

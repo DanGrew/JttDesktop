@@ -8,15 +8,15 @@
  */
 package uk.dangrew.jtt.model.users;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /**
  * Implementation of the {@link JenkinsUser}.
  */
 public class JenkinsUserImpl implements JenkinsUser {
 
-   private final StringProperty nameProperty;
+   private final ObjectProperty< String > nameProperty;
    
    /**
     * Constructs a new {@link JenkinsUserImpl}.
@@ -26,13 +26,13 @@ public class JenkinsUserImpl implements JenkinsUser {
       if ( name == null ) throw new IllegalArgumentException( "No User name provided." );
       if ( name.trim().length() == 0 ) throw new IllegalArgumentException( "Invalid User name provided." );
       
-      nameProperty = new SimpleStringProperty( name );
+      nameProperty = new SimpleObjectProperty<>( name );
    }//End Constructor
 
    /**
     * {@inheritDoc}
     */
-   @Override public StringProperty nameProperty() {
+   @Override public ObjectProperty< String > nameProperty() {
       return nameProperty;
    }//End Method
 
