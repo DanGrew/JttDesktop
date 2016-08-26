@@ -24,14 +24,14 @@ import javafx.scene.control.TreeTableView;
  * determines how items are arranged in the {@link Tree}.
  * @param <TreeItemValueT> the {@link TreeItemValue} associated with {@link TreeItem}s.
  * @param <ObjectTypeT> the underlying object being represented in the tree, can be the same as TreeItemValueT.
- * @param <ControllerT> the {@link TreeController} type.
  * @param <LayoutT> the {@link TreeLayout} type.
+ * @param <ControllerT> the {@link TreeController} type.
  */
 public abstract class Tree< 
       TreeItemValueT extends TreeItemValue, 
       ObjectTypeT,
-      ControllerT extends TreeController< TreeItemValueT, ObjectTypeT >,
-      LayoutT extends TreeLayout< TreeItemValueT, ObjectTypeT >
+      LayoutT extends TreeLayout< TreeItemValueT, ObjectTypeT >,
+      ControllerT extends TreeController< TreeItemValueT, ObjectTypeT, LayoutT >
 > extends TreeTableView< TreeItemValueT > 
 {
    

@@ -17,7 +17,10 @@ import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
  * The {@link NotificationTree} provides a {@link Tree} for {@link NotificationTreeItem}s.
  */
 public class NotificationTree extends Tree< 
-         NotificationTreeItem, NotificationTreeItem, NotificationTreeController, NotificationTreeLayoutManager 
+         NotificationTreeItem,
+         NotificationTreeItem, 
+         NotificationTreeLayoutManager, 
+         NotificationTreeController 
 > {
    
    /**

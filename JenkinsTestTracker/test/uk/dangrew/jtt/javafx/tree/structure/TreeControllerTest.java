@@ -24,7 +24,11 @@ public class TreeControllerTest {
    
    @Mock private TestTreeValueItem item;
    @Mock private TreeLayout< TestTreeValueItem, TestTreeValueItem > layout;
-   private TreeController< TestTreeValueItem, TestTreeValueItem > systemUnderTest;
+   private TreeController< 
+      TestTreeValueItem, 
+      TestTreeValueItem, 
+      TreeLayout< TestTreeValueItem, TestTreeValueItem > 
+   > systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );

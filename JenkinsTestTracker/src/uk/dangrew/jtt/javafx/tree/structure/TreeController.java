@@ -13,16 +13,17 @@ package uk.dangrew.jtt.javafx.tree.structure;
  * {@link Tree}.
  * @param <TreeItemValueT> the {@link TreeItemValue} associated with {@link TreeItem}s.
  * @param <ObjectTypeT> the underlying object being represented in the tree, can be the same as TreeItemValueT.
+ * @param <LayoutManagerT> the associated {@link TreeLayout} manager.
  */
-public class TreeController< TreeItemValueT extends TreeItemValue, ObjectTypeT > {
+public class TreeController< TreeItemValueT extends TreeItemValue, ObjectTypeT, LayoutManagerT extends TreeLayout< TreeItemValueT, ObjectTypeT > > {
 
-   private final TreeLayout< TreeItemValueT, ObjectTypeT > layout;
+   private final LayoutManagerT layout;
    
    /**
     * Constructs a new {@link TreeController}.
     * @param layout the {@link TreeLayout} for positioning items in the tree.
     */
-   public TreeController( TreeLayout< TreeItemValueT, ObjectTypeT > layout ) {
+   public TreeController( LayoutManagerT layout ) {
       this.layout = layout;
    }//End Constructor
    
@@ -54,7 +55,7 @@ public class TreeController< TreeItemValueT extends TreeItemValue, ObjectTypeT >
     * Protected access to the {@link TreeLayout}.
     * @return the associated {@link TreeLayout}.
     */
-   protected TreeLayout< TreeItemValueT, ObjectTypeT > getLayoutManager(){
+   protected LayoutManagerT getLayoutManager(){
       return layout;
    }//End Method
    

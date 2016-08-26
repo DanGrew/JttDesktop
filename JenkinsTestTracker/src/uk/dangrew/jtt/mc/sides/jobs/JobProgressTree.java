@@ -15,7 +15,12 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 /**
  * The {@link JobProgressTree} provides a {@link TreeView} for {@link JobProgressTreeItem}s.
  */
-public class JobProgressTree extends Tree< JobProgressTreeItem, JenkinsJob, JobProgressTreeController, BuildResultStatusLayout > {
+public class JobProgressTree extends Tree< 
+      JobProgressTreeItem, 
+      JenkinsJob, 
+      BuildResultStatusLayout, 
+      JobProgressTreeController 
+> {
    
    private final JenkinsDatabase database;
    

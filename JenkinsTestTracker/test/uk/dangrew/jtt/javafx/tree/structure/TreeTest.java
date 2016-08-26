@@ -45,20 +45,20 @@ public class TreeTest {
    
    @Mock private TestTreeValueItem item;
    @Mock private TreeLayout< TestTreeValueItem, TestTreeValueItem > layout;
-   @Mock private TreeController< TestTreeValueItem, TestTreeValueItem > controller;
+   @Mock private TreeController< TestTreeValueItem, TestTreeValueItem, TreeLayout< TestTreeValueItem, TestTreeValueItem > > controller;
    private Tree< 
       TestTreeValueItem, 
       TestTreeValueItem, 
-      TreeController< TestTreeValueItem, TestTreeValueItem >, 
-      TreeLayout< TestTreeValueItem, TestTreeValueItem > 
+      TreeLayout< TestTreeValueItem, TestTreeValueItem >, 
+      TreeController< TestTreeValueItem, TestTreeValueItem, TreeLayout< TestTreeValueItem, TestTreeValueItem > > 
    > systemUnderTest;
    
    /** Test extension.**/
    private class TestTree extends Tree< 
          TestTreeValueItem, 
          TestTreeValueItem, 
-         TreeController< TestTreeValueItem, TestTreeValueItem >, 
-         TreeLayout< TestTreeValueItem, TestTreeValueItem >  
+         TreeLayout< TestTreeValueItem, TestTreeValueItem >,  
+         TreeController< TestTreeValueItem, TestTreeValueItem, TreeLayout< TestTreeValueItem, TestTreeValueItem > > 
    > {
       
       /** {@inheritDoc} */
@@ -73,7 +73,11 @@ public class TreeTest {
       }//End Method
 
       /** {@inheritDoc} */
-      @Override protected TreeController< TestTreeValueItem, TestTreeValueItem > constructController() {
+      @Override protected TreeController< 
+            TestTreeValueItem, 
+            TestTreeValueItem, 
+            TreeLayout< TestTreeValueItem, TestTreeValueItem > 
+      > constructController() {
          methodExecutions.add( constructControllerKey );
          return controller;
       }//End Method

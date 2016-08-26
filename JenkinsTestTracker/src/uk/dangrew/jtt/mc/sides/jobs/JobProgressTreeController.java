@@ -9,7 +9,6 @@
 package uk.dangrew.jtt.mc.sides.jobs;
 
 import uk.dangrew.jtt.javafx.tree.structure.TreeController;
-import uk.dangrew.jtt.javafx.tree.structure.TreeLayout;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
@@ -18,7 +17,11 @@ import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
  * The {@link JobProgressTreeController} is responsible for controlling the information in the 
  * {@link JobProgressTree}.
  */
-public class JobProgressTreeController extends TreeController< JobProgressTreeItem, JenkinsJob >{
+public class JobProgressTreeController extends TreeController< 
+   JobProgressTreeItem, 
+   JenkinsJob, 
+   BuildResultStatusLayout 
+>{
 
    /**
     * Constructs a new {@link JobProgressTreeController}.
@@ -38,7 +41,7 @@ public class JobProgressTreeController extends TreeController< JobProgressTreeIt
    /**
     * {@inheritDoc}
     */
-   @Override protected TreeLayout< JobProgressTreeItem, JenkinsJob > getLayoutManager() {
+   @Override protected BuildResultStatusLayout getLayoutManager() {
       return super.getLayoutManager();
    }//End Method
 
