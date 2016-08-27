@@ -32,6 +32,8 @@ public class UserAssignmentsTreeController extends TreeController< UserAssignmen
                this::remove
       ) );
       database.jenkinsUserProperties().addNamePropertyListener( ( source, old, updated ) -> update( source ) );
+      
+      new UserAssignmentEvent().register( event -> add( event.getValue() ) );
    }//End Constructor
    
    /**
