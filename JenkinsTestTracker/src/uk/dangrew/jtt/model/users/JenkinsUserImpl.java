@@ -35,5 +35,12 @@ public class JenkinsUserImpl implements JenkinsUser {
    @Override public ObjectProperty< String > nameProperty() {
       return nameProperty;
    }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String toString() {
+      return nameProperty.get();
+   }//End Method
 
 }//End Class

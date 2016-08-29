@@ -13,6 +13,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.junit.Before;
@@ -61,8 +63,13 @@ public class AssignmentMenuTest {
    
    private void assertAllUsersPresentInMenu() {
       assertThat( systemUnderTest.getItems(), hasSize( database.jenkinsUsers().size() ) );
-      for ( int i = 0; i > database.jenkinsUsers().size(); i++ ) {
-         assertThat( systemUnderTest.getItems().get( i ).getText(), is( database.jenkinsUsers().get( i ).nameProperty().get() ) );
+      
+      List< JenkinsUser > orderedUsers = new ArrayList<>();
+      orderedUsers.addAll( database.jenkinsUsers() );
+      orderedUsers.sort( ( a, b ) -> a.nameProperty().get().compareTo( b.nameProperty().get() ) );
+      
+      for ( int i = 0; i < database.jenkinsUsers().size(); i++ ) {
+         assertThat( systemUnderTest.getItems().get( i ).getText(), is( orderedUsers.get( i ).nameProperty().get() ) );
       }
    }//End Method
    

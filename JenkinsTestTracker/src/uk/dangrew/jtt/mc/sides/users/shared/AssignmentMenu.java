@@ -8,12 +8,15 @@
  */
 package uk.dangrew.jtt.mc.sides.users.shared;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.utility.comparator.Comparators;
 import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
 
 /**
@@ -49,6 +52,7 @@ public class AssignmentMenu extends Menu {
                change -> resetMenus(), 
                change -> resetMenus() 
       ) );
+      database.jenkinsUserProperties().addNamePropertyListener( ( user, old, name ) -> resetMenus() );
    }//End Constructor
    
    /**
@@ -57,7 +61,10 @@ public class AssignmentMenu extends Menu {
    private void resetMenus(){
       getItems().clear();
       
-      database.jenkinsUsers().forEach( user -> {
+      List< JenkinsUser > users = new ArrayList<>( database.jenkinsUsers() );
+      users.sort( Comparators.stringExtractionComparater( user -> user.nameProperty().get() ) );
+      
+      users.forEach( user -> {
          MenuItem menu = new MenuItem( user.nameProperty().get() );
          menu.setOnAction( event -> notificationHandler.accept( user ) );
          getItems().add( menu );
