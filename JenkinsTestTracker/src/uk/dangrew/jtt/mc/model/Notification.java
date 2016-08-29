@@ -18,6 +18,12 @@ import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 public interface Notification {
    
    /**
+    * Method to get a description of the {@link Notification}.
+    * @return the {@link String} description.
+    */
+   public String getDescription();
+   
+   /**
     * Method to construct a new {@link NotificationTreeItem} from this {@link Notification}.
     * @param controller the {@link NotificationTreeController} for providing instructions.
     * @return the {@link NotificationTreeItem}.

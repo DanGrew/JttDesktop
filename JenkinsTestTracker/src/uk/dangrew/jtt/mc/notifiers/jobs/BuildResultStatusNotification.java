@@ -20,6 +20,11 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
  */
 public class BuildResultStatusNotification implements Notification {
 
+   static final String STILL_THE_SAME = "Build has remained at %s";
+   static final String MAY_REQUIRE_ACTION = "Build has only achieved %s when it was %s and may require action";
+   static final String PASSING = "Build has achieved %s from %s";
+   
+   private final ChangeIdentifier changeIdentifier;
    private final JenkinsJob job;
    private final BuildResultStatus previousStatus;
    private final BuildResultStatus newStatus;
@@ -31,10 +36,50 @@ public class BuildResultStatusNotification implements Notification {
     * @param newStatus the new {@link BuildResultStatus}.
     */
    public BuildResultStatusNotification( JenkinsJob job, BuildResultStatus previousStatus, BuildResultStatus newStatus ) {
+      this( new ChangeIdentifier(), job, previousStatus, newStatus );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link BuildResultStatusNotification}.
+    * @param changeIdentifier the {@link ChangeIdentifier} for providing a change description.
+    * @param job the {@link JenkinsJob} changed.
+    * @param previousStatus the previous {@link BuildResultStatus}.
+    * @param newStatus the new {@link BuildResultStatus}.
+    */
+   BuildResultStatusNotification( ChangeIdentifier changeIdentifier, JenkinsJob job, BuildResultStatus previousStatus, BuildResultStatus newStatus ) {
       this.job = job;
       this.previousStatus = previousStatus;
       this.newStatus = newStatus;
+      this.changeIdentifier = changeIdentifier;
    }//End Constructor
+   
+   /**
+    * Method to format the given change in {@link BuildResultStatus}.
+    * @param previous the previous {@link BuildResultStatus}.
+    * @param current the new {@link BuildResultStatus}.
+    * @return the {@link String} description of the change.
+    */
+   String formatBuildResultStatusChange( BuildResultStatus previous, BuildResultStatus current ) {
+      switch ( changeIdentifier.identifyChangeType( previous, current ) ) {
+         case ActionRequired:
+            return String.format( MAY_REQUIRE_ACTION, current.name(), previous.name() );
+         case Passed:
+            return String.format( PASSING, current.name(), previous.name() );
+         case Unchanged:
+            return String.format( STILL_THE_SAME, previous.name() );
+         default:
+            return "Unkown";
+      }
+   }//End Method 
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String getDescription() {
+      return formatBuildResultStatusChange( 
+               getPreviousBuildResultStatus(), getNewBuildResultStatus() 
+      );
+   }//End Method
 
    /**
     * Getter for the associated {@link JenkinsJob}.

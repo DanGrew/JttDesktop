@@ -19,7 +19,6 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
@@ -127,9 +126,7 @@ public class BuildResultStatusNotificationTreeItemTest {
       BorderPane wrapper = ( BorderPane ) systemUnderTest.description();
       assertThat( wrapper.getCenter(), is( instanceOf( Label.class ) ) );
       
-      String description = systemUnderTest.formatBuildResultStatusChange( 
-               notification.getPreviousBuildResultStatus(), notification.getNewBuildResultStatus() 
-      );
+      String description = notification.getDescription();
       verify( styling ).createWrappedTextLabel( description );
       
       Label label = ( Label ) wrapper.getCenter();
@@ -166,24 +163,6 @@ public class BuildResultStatusNotificationTreeItemTest {
       assertThat( button.getAlignment(), is( Pos.CENTER ) );
       
       verify( styling ).removeBackgroundAndColourOnClick( button, Color.GRAY );
-   }//End Method
-   
-   @Test public void shouldFormatBuildResultStatusChange(){
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.Unchanged );
-      assertThat( 
-               systemUnderTest.formatBuildResultStatusChange( BuildResultStatus.FAILURE, BuildResultStatus.FAILURE ), 
-               is( "Build has remained at FAILURE" )
-      );
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.ActionRequired );
-      assertThat( 
-               systemUnderTest.formatBuildResultStatusChange( BuildResultStatus.SUCCESS, BuildResultStatus.FAILURE ), 
-               is( "Build has only achieved FAILURE when it was SUCCESS and may require action" )
-      );
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.Passed );
-      assertThat( 
-               systemUnderTest.formatBuildResultStatusChange( BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS ), 
-               is( "Build has achieved SUCCESS from FAILURE" )
-      );
    }//End Method
    
    @Test public void closeButtonShouldRemoveNotificationWhenClicked(){

@@ -28,7 +28,7 @@ import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 
 /**
- * {@link BuildResultStatusNotificationTreeItem} respresents a {@link BuildResultStatusNotification}
+ * {@link BuildResultStatusNotificationTreeItem} represents a {@link BuildResultStatusNotification}
  * in the {@link uk.dangrew.jtt.mc.view.tree.NotificationTree}.
  */
 public class BuildResultStatusNotificationTreeItem implements NotificationTreeItem {
@@ -42,10 +42,6 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
    static final double PREFERRED_ROW_HEIGHT = 20;
    static final double PREFERRED_IMAGE_HEIGHT = 20;
    static final double PREFERRED_IMAGE_WIDTH = 20;  
-   
-   static final String STILL_THE_SAME = "Build has remained at %s";
-   static final String MAY_REQUIRE_ACTION = "Build has only achieved %s when it was %s and may require action";
-   static final String PASSING = "Build has achieved %s from %s";
    
    private final NotificationTreeController controller;
    private final ChangeIdentifier changeIdentifier;
@@ -149,9 +145,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     * @return the {@link Node}.
     */
    private Node constructDescriptionLabel(){
-      Label actualLabel = styling.createWrappedTextLabel( formatBuildResultStatusChange( 
-               notification.getPreviousBuildResultStatus(), notification.getNewBuildResultStatus() 
-      ) );
+      Label actualLabel = styling.createWrappedTextLabel( notification.getDescription() );
       actualLabel.setPrefHeight( PREFERRED_ROW_HEIGHT );
       return new BorderPane( actualLabel );
    }//End Method
@@ -212,25 +206,6 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
    @Override public boolean hasController(NotificationTreeController controller) {
       return this.controller == controller;
    }//End Method
-   
-   /**
-    * Method to format the given change in {@link BuildResultStatus}.
-    * @param previous the previous {@link BuildResultStatus}.
-    * @param current the new {@link BuildResultStatus}.
-    * @return the {@link String} description of the change.
-    */
-   String formatBuildResultStatusChange( BuildResultStatus previous, BuildResultStatus current ) {
-      switch ( changeIdentifier.identifyChangeType( previous, current ) ) {
-         case ActionRequired:
-            return String.format( MAY_REQUIRE_ACTION, current.name(), previous.name() );
-         case Passed:
-            return String.format( PASSING, current.name(), previous.name() );
-         case Unchanged:
-            return String.format( STILL_THE_SAME, previous.name() );
-         default:
-            return "Unkown";
-      }
-   }//End Method 
    
    Node status(){
       return status;

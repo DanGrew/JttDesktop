@@ -10,8 +10,11 @@ package uk.dangrew.jtt.mc.view.tree;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.SelectionMode;
+import uk.dangrew.jtt.friendly.javafx.FriendlyMenuOpener;
 import uk.dangrew.jtt.javafx.tree.structure.Tree;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link NotificationTree} provides a {@link Tree} for {@link NotificationTreeItem}s.
@@ -23,12 +26,18 @@ public class NotificationTree extends Tree<
          NotificationTreeController 
 > {
    
+   private final NotificationTreeContextMenu menu;
+   
    /**
     * Method to construct a new {@link NotificationTree}.
     */
-   public NotificationTree() {
+   public NotificationTree( JenkinsDatabase database ) {
       super();
       initialise();
+      
+      getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
+      menu = new NotificationTreeContextMenu( this, database );
+      new FriendlyMenuOpener( this, menu );
    }//End Constructor
 
    /**
@@ -71,5 +80,9 @@ public class NotificationTree extends Tree<
     */
    @Override protected NotificationTreeLayoutManager getLayoutManager() {
       return super.getLayoutManager();
+   }//End Method
+   
+   NotificationTreeContextMenu menu(){
+      return menu;
    }//End Method
 }//End Class

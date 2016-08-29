@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.mc.view.tree;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -21,24 +22,29 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import uk.dangrew.jtt.friendly.javafx.FriendlyMenuOpener;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotificationTreeItem;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 /**
  * {@link NotificationTree} test.
  */
 public class NotificationTreeTest {
    
+   private JenkinsDatabase database;
    private NotificationTree systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new NotificationTree();
+      database = new JenkinsDatabaseImpl();
+      systemUnderTest = new NotificationTree( database );
    }//End Method
 
    @Ignore
@@ -67,7 +73,7 @@ public class NotificationTreeTest {
    }//End Method
    
    @Test public void shouldOnlySupportSingleSelection(){
-      assertThat( systemUnderTest.getSelectionModel().getSelectionMode(), is( SelectionMode.SINGLE ) );
+      assertThat( systemUnderTest.getSelectionModel().getSelectionMode(), is( SelectionMode.MULTIPLE ) );
    }//End Method
    
    @Test public void shouldConstructControllerWithLayoutManager(){
@@ -102,5 +108,13 @@ public class NotificationTreeTest {
       
       TreeTableColumn< NotificationTreeItem, ? > onlyColumn = systemUnderTest.getColumns().get( 0 );
       assertThat( onlyColumn.getCellData( 1 ), is( item.contentProperty().get() ) );
+   }//End Method
+   
+   @Test public void shouldUseOpenerForContextMenu(){
+      assertThat( systemUnderTest.getOnContextMenuRequested(), is( instanceOf( FriendlyMenuOpener.class ) ) );
+      FriendlyMenuOpener opener = ( FriendlyMenuOpener ) systemUnderTest.getOnContextMenuRequested();
+      assertThat( opener.isAnchoredTo( systemUnderTest ), is( true ) );
+      assertThat( opener.isControllingA( NotificationTreeContextMenu.class ), is( true ) );
+      assertThat( systemUnderTest.menu().isConnectedTo( database ), is( true ) );
    }//End Method
 }//End Class
