@@ -27,7 +27,6 @@ public class EnvironmentWindow extends BorderPane {
 
    static final String NEW_VERSIONS_MESSAGE = "New versions of JTT are available. Click here to install...";
    
-   private final HiddenSidesPane content;
    private final CenterScreenWrapper centerWrapper;
    private final SystemConfiguration configuration;
    private final PreferenceController preferenceOpener;
@@ -38,17 +37,14 @@ public class EnvironmentWindow extends BorderPane {
     * @param digest the {@link DigestViewer} for the system.
     */
    public EnvironmentWindow( SystemConfiguration configuration, JenkinsDatabase database, DigestViewer digest ) {
-      this.content = new HiddenSidesPane();
-      
       this.configuration = configuration;
       this.preferenceOpener = new PreferenceController( configuration );
       
       EnvironmentMenuBar menuBar = new EnvironmentMenuBar();
-      content.setTop( menuBar );
+      setTop( menuBar );
       centerWrapper = new CenterScreenWrapper( new LaunchOptions( this, configuration, database, digest ) );
-      content.setContent( centerWrapper );
       
-      setCenter( content );
+      setCenter( centerWrapper );
    }//End Constructor
    
    /**
@@ -57,10 +53,6 @@ public class EnvironmentWindow extends BorderPane {
     */
    public void setContent( Node content ){
       centerWrapper.setCenter( content );
-   }//End Method
-   
-   HiddenSidesPane hiddenSidesPane(){
-      return content;
    }//End Method
    
    PreferenceController preferenceOpener(){

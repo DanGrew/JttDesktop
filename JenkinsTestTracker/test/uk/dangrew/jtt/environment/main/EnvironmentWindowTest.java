@@ -53,17 +53,13 @@ public class EnvironmentWindowTest {
       Thread.sleep( 1000000 );
    }//End Method
    
-   @Test public void shouldProvideHiddenSidesPaneToHideMenuBarWhenNotInUse(){
-      assertThat( systemUnderTest.hiddenSidesPane(), is( systemUnderTest.getCenter() ) );
-   }//End Method
-   
-   @Test public void shouldProvideMenuBarInTopOfHiddenPane(){
-      assertThat( systemUnderTest.hiddenSidesPane().getTop(), is( instanceOf( EnvironmentMenuBar.class ) ) );
+   @Test public void shouldProvideMenuBarInTopOfPane(){
+      assertThat( systemUnderTest.getTop(), is( instanceOf( EnvironmentMenuBar.class ) ) );
    }//End Method
    
    @Test public void shouldUseLaunchOptionsDisplayedInCenter(){
-      assertThat( systemUnderTest.hiddenSidesPane().getContent(), is( instanceOf( CenterScreenWrapper.class ) ) );
-      CenterScreenWrapper wrapper = ( CenterScreenWrapper ) systemUnderTest.hiddenSidesPane().getContent();
+      assertThat( systemUnderTest.getCenter(), is( instanceOf( CenterScreenWrapper.class ) ) );
+      CenterScreenWrapper wrapper = ( CenterScreenWrapper ) systemUnderTest.getCenter();
       assertThat( wrapper.getCenter(), is( instanceOf( LaunchOptions.class ) ) );
    }//End Method
    

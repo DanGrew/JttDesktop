@@ -11,9 +11,12 @@ package uk.dangrew.jtt.environment.main;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import javafx.event.ActionEvent;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreeItems;
@@ -22,21 +25,32 @@ import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.event.structure.EventAssertions;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.utility.system.OperatingSystem;
 
 /**
  * {@link EnvironmentMenuBar} test.
  */
 public class EnvironmentMenuBarTest {
    
+   @Mock private OperatingSystem os;
    private EnvironmentMenuBar systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new EnvironmentMenuBar();
+      MockitoAnnotations.initMocks( this );
+      
+      when( os.isMac() ).thenReturn( true );
+      systemUnderTest = new EnvironmentMenuBar( os );
    }//End Method
 
-   @Test public void shouldUseSystemMenuBar() {
+   @Test public void shouldUseSystemMenuBarIfMac() {
       assertThat( systemUnderTest.isUseSystemMenuBar(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldNotUseSystemMenuBarIfNoyMac() {
+      when( os.isMac() ).thenReturn( false );
+      systemUnderTest = new EnvironmentMenuBar( os );
+      assertThat( systemUnderTest.isUseSystemMenuBar(), is( false ) );
    }//End Method
    
    @Test public void shouldContainMenus(){

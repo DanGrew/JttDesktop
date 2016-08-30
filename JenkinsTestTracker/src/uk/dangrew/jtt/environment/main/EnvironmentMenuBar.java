@@ -17,6 +17,7 @@ import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.event.structure.Event;
+import uk.dangrew.jtt.utility.system.OperatingSystem;
 
 /**
  * {@link EnvironmentMenuBar} provides a {@link MenuBar} for the {@link EnvironmentWindow}.
@@ -30,12 +31,22 @@ public class EnvironmentMenuBar extends MenuBar {
    private final Menu applicationMenu;
    private final MenuItem preferences;
    private final MenuItem about;
-
+   
    /**
     * Constructs a new {@link EnvironmentMenuBar}.
     */
    public EnvironmentMenuBar() {
-      setUseSystemMenuBar( true );
+      this( new OperatingSystem() );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link EnvironmentMenuBar}.
+    * @param operatingSystem the {@link OperatingSystem} for enabling platform specific features.
+    */
+   EnvironmentMenuBar( OperatingSystem operatingSystem ) {
+      if ( operatingSystem.isMac() ) {
+         setUseSystemMenuBar( true );
+      }
       
       applicationMenu = new Menu( JENKINS_TEST_TRACKER_MENU );
       
