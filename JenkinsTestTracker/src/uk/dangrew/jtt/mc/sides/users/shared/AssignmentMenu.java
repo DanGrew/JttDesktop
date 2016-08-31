@@ -62,7 +62,7 @@ public class AssignmentMenu extends Menu {
       getItems().clear();
       
       List< JenkinsUser > users = new ArrayList<>( database.jenkinsUsers() );
-      users.sort( Comparators.stringExtractionComparater( user -> user.nameProperty().get() ) );
+      users.sort( Comparators.stringExtractionComparater( user -> user.nameProperty().get().toLowerCase() ) );
       
       users.forEach( user -> {
          MenuItem menu = new MenuItem( user.nameProperty().get() );

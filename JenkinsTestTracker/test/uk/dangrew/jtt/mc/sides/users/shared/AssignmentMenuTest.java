@@ -39,6 +39,8 @@ public class AssignmentMenuTest {
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
       database = new JenkinsDatabaseImpl();
+      database.store( new JenkinsUserImpl( "lizzybuff" ) );
+      database.store( new JenkinsUserImpl( "jeffrey" ) );
       database.store( new JenkinsUserImpl( "Dan" ) );
       database.store( new JenkinsUserImpl( "Liz" ) );
       database.store( new JenkinsUserImpl( "Jeffrey" ) );
@@ -66,7 +68,7 @@ public class AssignmentMenuTest {
       
       List< JenkinsUser > orderedUsers = new ArrayList<>();
       orderedUsers.addAll( database.jenkinsUsers() );
-      orderedUsers.sort( ( a, b ) -> a.nameProperty().get().compareTo( b.nameProperty().get() ) );
+      orderedUsers.sort( ( a, b ) -> a.nameProperty().get().compareToIgnoreCase( b.nameProperty().get() ) );
       
       for ( int i = 0; i < database.jenkinsUsers().size(); i++ ) {
          assertThat( systemUnderTest.getItems().get( i ).getText(), is( orderedUsers.get( i ).nameProperty().get() ) );
@@ -90,7 +92,7 @@ public class AssignmentMenuTest {
    
    @Test public void shouldRaiseSingleEventForSingleSelection() {
       systemUnderTest.getItems().get( 0 ).fire();
-      verify( notifier ).accept( database.jenkinsUsers().get( 0 ) );
+      verify( notifier ).accept( database.jenkinsUsers().get( 2 ) );
    }//End Method
    
 }//End Class
