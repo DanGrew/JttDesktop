@@ -52,10 +52,7 @@ public class UserAssignmentsTreeLayout implements TreeLayout< UserAssignmentsTre
       
       clearLayout();
       for ( JenkinsUser user : users ) {
-         TreeItem< UserAssignmentsTreeItem > branch = new TreeItem<>( new UserTreeItem( user ) );
-         tree.getRoot().getChildren().add( branch );
-         branch.setExpanded( true );
-         branches.put( user, branch );
+         addBranch( user );
       }
    }//End Method
    
@@ -112,6 +109,7 @@ public class UserAssignmentsTreeLayout implements TreeLayout< UserAssignmentsTre
       TreeItem< UserAssignmentsTreeItem > treeItem = new TreeItem<>( item );
       branches.put( user, treeItem );
       tree.getRoot().getChildren().add( treeItem );
+      treeItem.setExpanded( true );
    }//End Method
    
    /**

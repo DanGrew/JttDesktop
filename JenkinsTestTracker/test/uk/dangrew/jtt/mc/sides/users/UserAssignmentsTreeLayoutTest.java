@@ -137,6 +137,7 @@ public class UserAssignmentsTreeLayoutTest {
       
       assertThat( tree.getRoot().getChildren(), hasSize( 3 ) );
       assertThat( tree.getRoot().getChildren().get( 2 ).getValue().getJenkinsUser(), is( user3 ) );
+      assertThat( tree.getRoot().getChildren().get( 2 ).isExpanded(), is( true ) );
    }//End Method
    
    @Test public void shouldNotAddUserBranchIfAlreadyPresent() {
@@ -239,6 +240,15 @@ public class UserAssignmentsTreeLayoutTest {
       
       assertThat( tree.getRoot().getChildren(), hasSize( 1 ) );
       assertUserBranchIsPopulatedWith( user1, user1Assignment1Item );
+   }//End Method
+   
+   @Test public void shouldExpandUserWhenAssignmentAddedAndUserAlreadyPresent() {
+      systemUnderTest.reconstructBranches( Arrays.asList( user1 ) );
+      systemUnderTest.add( user1Assignment1 );
+      
+      assertThat( tree.getRoot().getChildren(), hasSize( 1 ) );
+      assertUserBranchIsPopulatedWith( user1, user1Assignment1Item );
+      assertThat( tree.getRoot().getChildren().get( 0 ).isExpanded(), is( true ) );
    }//End Method
    
    @Test public void shouldNotAddAssignmentIfAlreadyPresent() {
