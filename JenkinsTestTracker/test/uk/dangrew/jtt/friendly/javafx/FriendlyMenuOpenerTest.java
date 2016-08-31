@@ -43,7 +43,7 @@ public class FriendlyMenuOpenerTest {
    }//End Method
 
    @Test public void shouldAttachOpenerToDisplay() {
-      verify( display ).setOnContextMenuRequested( systemUnderTest );
+      assertThat( display.getOnContextMenuRequested(), is( systemUnderTest ) );
    }//End Method
    
    @Test public void shouldNotShowIfAlreadyShowing(){
