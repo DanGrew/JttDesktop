@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.mc.sides.jobs;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -20,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import uk.dangrew.jtt.friendly.javafx.FriendlyMenuOpener;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -73,7 +75,7 @@ public class JobProgressTreeTest {
    }//End Method
    
    @Test public void shouldOnlySupportSingleSelection(){
-      assertThat( systemUnderTest.getSelectionModel().getSelectionMode(), is( SelectionMode.SINGLE ) );
+      assertThat( systemUnderTest.getSelectionModel().getSelectionMode(), is( SelectionMode.MULTIPLE ) );
    }//End Method
    
    @Test public void shouldConstructControllerWithLayoutManager(){
@@ -92,6 +94,14 @@ public class JobProgressTreeTest {
 
    @Test public void shouldUseResizePolicy(){
       assertThat( systemUnderTest.getColumnResizePolicy(), is( TreeTableView.CONSTRAINED_RESIZE_POLICY ) );
+   }//End Method
+   
+   @Test public void shouldUseOpenerForContextMenu(){
+      assertThat( systemUnderTest.getOnContextMenuRequested(), is( instanceOf( FriendlyMenuOpener.class ) ) );
+      FriendlyMenuOpener opener = ( FriendlyMenuOpener ) systemUnderTest.getOnContextMenuRequested();
+      assertThat( opener.isAnchoredTo( systemUnderTest ), is( true ) );
+      assertThat( opener.isControllingA( JobProgressTreeContextMenu.class ), is( true ) );
+      assertThat( systemUnderTest.menu().isConnectedTo( database ), is( true ) );
    }//End Method
    
 }//End Class

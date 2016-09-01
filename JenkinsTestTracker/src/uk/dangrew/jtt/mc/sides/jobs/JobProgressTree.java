@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.mc.sides.jobs;
 
+import javafx.scene.control.SelectionMode;
+import uk.dangrew.jtt.friendly.javafx.FriendlyMenuOpener;
 import uk.dangrew.jtt.javafx.tree.structure.Tree;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
@@ -22,6 +24,7 @@ public class JobProgressTree extends Tree<
       JobProgressTreeController 
 > {
    
+   private final JobProgressTreeContextMenu menu;
    private final JenkinsDatabase database;
    
    /**
@@ -32,6 +35,10 @@ public class JobProgressTree extends Tree<
       super();
       this.database = database;
       initialise();
+      
+      getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
+      menu = new JobProgressTreeContextMenu( this, database );
+      new FriendlyMenuOpener( this, menu );
    }//End Constructor
    
    /**
@@ -74,6 +81,10 @@ public class JobProgressTree extends Tree<
     */
    @Override protected BuildResultStatusLayout getLayoutManager() {
       return super.getLayoutManager();
+   }//End Method
+   
+   JobProgressTreeContextMenu menu(){
+      return menu;
    }//End Method
    
 }//End Class
