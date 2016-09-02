@@ -31,6 +31,7 @@ import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.event.structure.EventSubscription;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentEvent;
 import uk.dangrew.jtt.mc.sides.users.shared.AssignmentMenu;
@@ -98,7 +99,7 @@ public class JobProgressTreeContextMenuTest {
    }//End Method
    
    @Test public void shouldProvideCancelOption() {
-      assertThat( systemUnderTest.getItems().get( 2 ).getText(), is( JobProgressTreeContextMenu.CANCEL ) );
+      assertThat( systemUnderTest, is( instanceOf( ContextMenuWithCancel.class ) ) );
    }//End Method
    
    @Test public void shouldHideWhenCancelled() {

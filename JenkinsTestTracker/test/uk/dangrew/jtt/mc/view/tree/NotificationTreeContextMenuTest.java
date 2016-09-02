@@ -30,6 +30,7 @@ import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.event.structure.EventSubscription;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.mc.sides.users.UserAssignment;
@@ -102,7 +103,7 @@ public class NotificationTreeContextMenuTest {
    }//End Method
    
    @Test public void shouldProvideCancelOption() {
-      assertThat( systemUnderTest.getItems().get( 2 ).getText(), is( NotificationTreeContextMenu.CANCEL ) );
+      assertThat( systemUnderTest, is( instanceOf( ContextMenuWithCancel.class ) ) );
    }//End Method
    
    @Test public void shouldHideWhenCancelled() {

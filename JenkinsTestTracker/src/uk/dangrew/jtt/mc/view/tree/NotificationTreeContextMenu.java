@@ -8,15 +8,11 @@
  */
 package uk.dangrew.jtt.mc.view.tree;
 
-import java.time.Instant;
-
 import javafx.collections.ObservableList;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.event.structure.Event;
-import uk.dangrew.jtt.friendly.javafx.FriendlyContextMenu;
+import uk.dangrew.jtt.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentEvent;
@@ -31,10 +27,9 @@ import uk.dangrew.jtt.utility.time.InstantProvider;
  * The {@link NotificationTreeContextMenu} provides a {@link ContextMenu} that allows
  * the user to interact with {@link Notification}s on the {@link NotificationTree}.
  */
-public class NotificationTreeContextMenu extends FriendlyContextMenu {
+public class NotificationTreeContextMenu extends ContextMenuWithCancel {
    
    static final String ENTER_DETAIL = "<enter detail>";
-   static final String CANCEL = "Cancel";
    
    private final JenkinsDatabase database;
    private final InstantProvider instantProvider;
@@ -62,16 +57,13 @@ public class NotificationTreeContextMenu extends FriendlyContextMenu {
       this.instantProvider = instantProvider;
       this.events = new UserAssignmentEvent();
       
-      applyControls();
-      applyCancel();
-      
-      setAutoHide( true );
+      super.initialise();
    }//End Constructor
 
    /**
-    * Method to apply the functions available to the menu.
+    * {@inheritDoc}
     */
-   private void applyControls() {
+   @Override protected void applyControls() {
       assignControl = new AssignmentMenu( database, this::notifyAssignment );
       getItems().addAll( 
             assignControl
@@ -102,19 +94,6 @@ public class NotificationTreeContextMenu extends FriendlyContextMenu {
          );
          events.fire( new Event<>( assignment ) );         
       }
-   }//End Method
-   
-   /**
-    * Method to apply the cancel function to close the menu.
-    */
-   private void applyCancel() {
-      MenuItem cancel = new MenuItem( CANCEL );
-      cancel.setOnAction( event -> hide() );
-      
-      getItems().addAll( 
-               new SeparatorMenuItem(),
-               cancel
-      );
    }//End Method
    
    /**

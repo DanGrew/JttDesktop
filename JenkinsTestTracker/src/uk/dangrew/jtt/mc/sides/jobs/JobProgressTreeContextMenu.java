@@ -15,6 +15,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.friendly.javafx.FriendlyContextMenu;
+import uk.dangrew.jtt.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentEvent;
 import uk.dangrew.jtt.mc.sides.users.shared.AssignmentMenu;
@@ -28,10 +29,9 @@ import uk.dangrew.jtt.utility.time.InstantProvider;
  * The {@link JobProgressTreeContextMenu} provides a {@link ContextMenu} that allows
  * the user to interact with {@link Notification}s on the {@link JobProgressTree}.
  */
-public class JobProgressTreeContextMenu extends FriendlyContextMenu {
+public class JobProgressTreeContextMenu extends ContextMenuWithCancel {
    
    static final String ENTER_DETAIL = "<enter detail>";
-   static final String CANCEL = "Cancel";
    
    private final JenkinsDatabase database;
    private final InstantProvider instantProvider;
@@ -59,16 +59,13 @@ public class JobProgressTreeContextMenu extends FriendlyContextMenu {
       this.instantProvider = instantProvider;
       this.events = new UserAssignmentEvent();
       
-      applyControls();
-      applyCancel();
-      
-      setAutoHide( true );
+      super.initialise();
    }//End Constructor
 
    /**
-    * Method to apply the functions available to the menu.
+    * {@inheritDoc}
     */
-   private void applyControls() {
+   @Override protected void applyControls() {
       assignControl = new AssignmentMenu( database, this::notifyAssignment );
       getItems().addAll( 
             assignControl
@@ -100,19 +97,6 @@ public class JobProgressTreeContextMenu extends FriendlyContextMenu {
          );
          events.fire( new Event<>( assignment ) );         
       }
-   }//End Method
-   
-   /**
-    * Method to apply the cancel function to close the menu.
-    */
-   private void applyCancel() {
-      MenuItem cancel = new MenuItem( CANCEL );
-      cancel.setOnAction( event -> hide() );
-      
-      getItems().addAll( 
-               new SeparatorMenuItem(),
-               cancel
-      );
    }//End Method
    
    /**
