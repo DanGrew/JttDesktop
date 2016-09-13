@@ -54,6 +54,13 @@ public class UserTreeItem implements UserAssignmentsTreeItem {
    /**
     * {@inheritDoc}
     */
+   @Override public UserAssignment getAssignment() {
+      return null;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
    @Override public ObjectProperty< Node > firstColumnProperty() {
       return userProperty;
    }//End Method

@@ -166,6 +166,13 @@ public class BuildResultStatusLayout implements TreeLayout< JobProgressTreeItem,
    }//End Method
    
    /**
+    * {@inheritDoc}
+    */
+   @Override public boolean contains( JenkinsJob object ) {
+      return jobItems.containsKey( object );
+   }//End Method
+   
+   /**
     * Getter for the branch for the given {@link BuildResultStatus}.
     * @param status the {@link BuildResultStatus} the branch is for.
     * @return the {@link TreeItem} branch.

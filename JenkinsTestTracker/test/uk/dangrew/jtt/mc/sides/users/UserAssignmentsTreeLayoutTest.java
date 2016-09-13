@@ -331,4 +331,13 @@ public class UserAssignmentsTreeLayoutTest {
       assertThat( systemUnderTest.isControlling( tree ), is( false ) );
    }//End Method
    
+   @Test public void shouldContainsAssignmentsPresent(){
+      systemUnderTest.reconstructTree( Arrays.asList( user1Assignment1, user3Assignment1 ) );
+      assertThat( systemUnderTest.contains( user1Assignment1 ), is( true ) );
+      assertThat( systemUnderTest.contains( user1Assignment2 ), is( false ) );
+      assertThat( systemUnderTest.contains( user2Assignment1 ), is( false ) );
+      assertThat( systemUnderTest.contains( user2Assignment2 ), is( false ) );
+      assertThat( systemUnderTest.contains( user1Assignment1 ), is( true ) );
+   }//End Method
+   
 }//End Class

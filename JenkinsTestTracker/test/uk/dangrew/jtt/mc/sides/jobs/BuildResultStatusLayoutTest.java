@@ -205,6 +205,16 @@ public class BuildResultStatusLayoutTest {
       assertBranchSize( BuildResultStatus.SUCCESS, 0 );
    }//End Method
    
+   @Test public void shouldContainJenkinsJob(){
+      systemUnderTest.reconstructTree( Arrays.asList( jobB, jobD ) );
+      assertThat( systemUnderTest.contains( jobA ), is( false ) );
+      assertThat( systemUnderTest.contains( jobB ), is( true ) );
+      assertThat( systemUnderTest.contains( jobC ), is( false ) );
+      assertThat( systemUnderTest.contains( jobD ), is( true ) );
+      assertThat( systemUnderTest.contains( jobE ), is( false ) );
+      assertThat( systemUnderTest.contains( jobF ), is( false ) );
+   }//End Method
+   
    /**
     * Method to assert that the {@link JenkinsJob} is present in the correct branch and location.
     * @param job the {@link JenkinsJob} in question.
@@ -224,5 +234,5 @@ public class BuildResultStatusLayoutTest {
       TreeItem< JobProgressTreeItem > branch = systemUnderTest.getBranch( status );
       assertThat( branch.getChildren(), hasSize( size ) );
    }//End Method
-
+   
 }//End Class

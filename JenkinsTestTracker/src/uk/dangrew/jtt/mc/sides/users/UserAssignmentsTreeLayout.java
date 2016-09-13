@@ -209,6 +209,13 @@ public class UserAssignmentsTreeLayout implements TreeLayout< UserAssignmentsTre
    }//End Method
    
    /**
+    * {@inheritDoc}
+    */
+   @Override public boolean contains( UserAssignment object ) {
+      return assignmentItems.containsKey( object );
+   }//End Method
+   
+   /**
     * Getter for the branch for the given {@link JenkinsUser}.
     * @param user the {@link JenkinsUser} to get the branch for.
     * @return the {@link TreeItem} branch.

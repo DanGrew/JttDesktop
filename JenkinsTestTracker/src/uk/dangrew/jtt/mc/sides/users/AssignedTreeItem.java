@@ -96,6 +96,13 @@ public class AssignedTreeItem implements UserAssignmentsTreeItem {
    /**
     * {@inheritDoc}
     */
+   @Override public UserAssignment getAssignment() {
+      return assignment;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
    @Override public boolean isAssociatedWithUserAssignment( UserAssignment assignment ) {
       return this.assignment == assignment;
    }//End Method

@@ -145,5 +145,13 @@ public class NotificationTreeLayoutManagerTest {
       tree.getRoot().getChildren().clear();
       assertThat( systemUnderTest.isControlling( tree ), is( false ) );
    }//End Method
+   
+   @Test public void shouldContainNotifications(){
+      systemUnderTest.reconstructTree( Arrays.asList( item1, item4 ) );
+      assertThat( systemUnderTest.contains( item1 ), is( true ) );
+      assertThat( systemUnderTest.contains( item2 ), is( false ) );
+      assertThat( systemUnderTest.contains( item3 ), is( false ) );
+      assertThat( systemUnderTest.contains( item4 ), is( true ) );
+   }//End Method
 
 }//End Class

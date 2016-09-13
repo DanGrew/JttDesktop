@@ -26,6 +26,12 @@ public interface UserAssignmentsTreeItem extends TreeItemValue {
    public JenkinsUser getJenkinsUser();
    
    /**
+    * Method to get the associated {@link UserAssignment}.
+    * @return the {@link UserAssignment}.
+    */
+   public UserAssignment getAssignment();
+   
+   /**
     * Method to determine whether the given {@link UserAssignment} is associated with
     * this {@link UserAssignmentsTreeItem}.
     * @param assignment the {@link UserAssignment} in question.

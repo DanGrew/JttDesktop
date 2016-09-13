@@ -43,6 +43,7 @@ public class AssignedTreeItemTest {
    @Test public void shouldBeAssociatedWithAssignment() {
       assertThat( systemUnderTest.isAssociatedWithUserAssignment( assignment ), is( true ) );
       assertThat( systemUnderTest.isAssociatedWithUserAssignment( mock( UserAssignment.class ) ), is( false ) );
+      assertThat( systemUnderTest.getAssignment(), is( assignment ) );
    }//End Method
    
    @Test public void shouldProvideJenkinsUser() {

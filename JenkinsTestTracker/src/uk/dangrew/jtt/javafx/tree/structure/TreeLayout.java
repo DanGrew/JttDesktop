@@ -44,6 +44,13 @@ public interface TreeLayout< TreeItemValueT extends TreeItemValue, ObjectTypeT >
    public void update( ObjectTypeT object );   
    
    /**
+    * Method to determine whether the given object is located within the associated {@link Tree}.
+    * @param object the object to check.
+    * @return true if contained in the tree.
+    */
+   public boolean contains( ObjectTypeT object );
+   
+   /**
     * Method to determine whether this layout is controlling the given {@link Tree}.
     * @param tree the {@link Tree} in question.
     * @return true if being controller by and laid out with the given.

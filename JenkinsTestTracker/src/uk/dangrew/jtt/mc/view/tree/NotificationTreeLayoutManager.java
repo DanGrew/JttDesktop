@@ -8,8 +8,9 @@
  */
 package uk.dangrew.jtt.mc.view.tree;
 
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.javafx.tree.structure.Tree;
@@ -24,6 +25,7 @@ class NotificationTreeLayoutManager implements TreeLayout< NotificationTreeItem,
 
    private final NotificationTree tree;
    private final TreeItem< NotificationTreeItem > branch;
+   private final Map< NotificationTreeItem, TreeItem< NotificationTreeItem > > notificationItems;
    
    /**
     * Constructs a new {@link NotificationTreeLayoutManager}.
@@ -32,6 +34,7 @@ class NotificationTreeLayoutManager implements TreeLayout< NotificationTreeItem,
    NotificationTreeLayoutManager( NotificationTree tree ) {
       this.tree = tree;
       this.branch = new TreeItem<>();
+      this.notificationItems = new HashMap<>();
    }//End Constructor
 
    /**
@@ -49,7 +52,7 @@ class NotificationTreeLayoutManager implements TreeLayout< NotificationTreeItem,
       tree.getRoot().getChildren().clear();
       tree.getRoot().getChildren().add( branch );
       for ( NotificationTreeItem item : treeItems ) {
-         branch.getChildren().add( new TreeItem<>( item ) );
+         add( item );
       }
       branch.setExpanded( true );
    }//End Method
@@ -68,7 +71,9 @@ class NotificationTreeLayoutManager implements TreeLayout< NotificationTreeItem,
     */
    @Override public void add( NotificationTreeItem item ) {
       verifyConstructedWithThisManager();
-      branch.getChildren().add( new TreeItem<>( item ) );
+      TreeItem< NotificationTreeItem > treeItem = new TreeItem<>( item );
+      branch.getChildren().add( treeItem );
+      notificationItems.put( item, treeItem );
    }//End Method
 
    /**
@@ -81,13 +86,7 @@ class NotificationTreeLayoutManager implements TreeLayout< NotificationTreeItem,
          return;
       }
       
-      for ( Iterator< TreeItem< NotificationTreeItem > > iterator = branch.getChildren().iterator(); iterator.hasNext(); ) {
-         TreeItem< NotificationTreeItem > treeItem = iterator.next();
-         if ( item.equals( treeItem.getValue() ) ) {
-            iterator.remove();
-            return;
-         }
-      }
+      branch.getChildren().remove( notificationItems.get( item ) );
    }//End Method
    
    /**
@@ -95,6 +94,13 @@ class NotificationTreeLayoutManager implements TreeLayout< NotificationTreeItem,
     */
    @Override public void update( NotificationTreeItem object ) {}
 
+   /**
+    * {@inheritDoc}
+    */
+   @Override public boolean contains( NotificationTreeItem object ) {
+      return notificationItems.containsKey( object );
+   }//End Method
+   
    /**
     * {@inheritDoc}
     */

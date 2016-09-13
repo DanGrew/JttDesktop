@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.mc.sides.users;
 
+import javafx.scene.control.SelectionMode;
+import uk.dangrew.jtt.friendly.javafx.FriendlyMenuOpener;
 import uk.dangrew.jtt.javafx.tree.structure.Tree;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
@@ -22,6 +24,7 @@ public class UserAssignmentsTree extends Tree<
 > {
 
    private final JenkinsDatabase database;
+   private final UserAssignmentsTreeContextMenu menu;
    
    /**
     * Constructs a new {@link UserAssignmentsTree}.
@@ -31,6 +34,10 @@ public class UserAssignmentsTree extends Tree<
       super();
       this.database = database;
       super.initialise();
+      
+      getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
+      menu = new UserAssignmentsTreeContextMenu( this );
+      new FriendlyMenuOpener( this, menu );
    }//End Constructor
    
    /**
@@ -74,6 +81,10 @@ public class UserAssignmentsTree extends Tree<
     */
    @Override protected UserAssignmentsTreeController getController() {
       return super.getController();
+   }//End Method
+   
+   UserAssignmentsTreeContextMenu menu(){
+      return menu;
    }//End Method
 
 }//End Class

@@ -9,6 +9,7 @@
 package uk.dangrew.jtt.mc.sides.users;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -19,8 +20,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
+import uk.dangrew.jtt.friendly.javafx.FriendlyMenuOpener;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
@@ -82,5 +85,16 @@ public class UserAssignmentsTreeTest {
       
       systemUnderTest.getColumns().get( 1 ).getCellValueFactory().call( new CellDataFeatures<>( systemUnderTest, null, new TreeItem<>( item ) ) );
       verify( item ).secondColumnProperty();
+   }//End Method
+   
+   @Test public void shouldSupportMultipleSelection(){
+      assertThat( systemUnderTest.getSelectionModel().getSelectionMode(), is( SelectionMode.MULTIPLE ) );
+   }//End Method
+   
+   @Test public void shouldUseOpenerForContextMenu(){
+      assertThat( systemUnderTest.getOnContextMenuRequested(), is( instanceOf( FriendlyMenuOpener.class ) ) );
+      FriendlyMenuOpener opener = ( FriendlyMenuOpener ) systemUnderTest.getOnContextMenuRequested();
+      assertThat( opener.isAnchoredTo( systemUnderTest ), is( true ) );
+      assertThat( opener.isControllingA( UserAssignmentsTreeContextMenu.class ), is( true ) );
    }//End Method
 }//End Class
