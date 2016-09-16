@@ -10,7 +10,6 @@ package uk.dangrew.jtt.mc.notifiers.jobs;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,9 +22,9 @@ import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.resources.ManagementConsoleImages;
+import uk.dangrew.jtt.mc.view.ManagementConsoleStyle;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
 import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
-import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 
 /**
  * {@link BuildResultStatusNotificationTreeItem} represents a {@link BuildResultStatusNotification}
@@ -45,7 +44,8 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
    
    private final NotificationTreeController controller;
    private final ChangeIdentifier changeIdentifier;
-   private final JavaFxStyle styling;
+   private final JavaFxStyle javaFxStyling;
+   private final ManagementConsoleStyle mcStyling;
    private final ManagementConsoleImages images;
    private final BuildResultStatusNotification notification;
    private final ObjectProperty< Node > contentProperty;
@@ -62,7 +62,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     * @param controller the {@link NotificationTreeController} for instructions.
     */
    public BuildResultStatusNotificationTreeItem( BuildResultStatusNotification notification, NotificationTreeController controller ) {
-      this( notification, controller, new ChangeIdentifier(), new JavaFxStyle(), new ManagementConsoleImages() );
+      this( notification, controller, new ChangeIdentifier(), new JavaFxStyle(), new ManagementConsoleStyle(), new ManagementConsoleImages() );
    }//End Constructor
    
    /**
@@ -71,6 +71,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     * @param controller the {@link NotificationTreeController} for instructions.
     * @param changeIdentifier the {@link ChangeIdentifier} for identifying change type.
     * @param stying the {@link JavaFxStyle} to apply.
+    * @param mcStyling the {@link ManagementConsoleStyle}.
     * @param images the {@link ManagementConsoleImages} available.
     */
    BuildResultStatusNotificationTreeItem( 
@@ -78,6 +79,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
             NotificationTreeController controller,
             ChangeIdentifier changeIdentifier, 
             JavaFxStyle stying,
+            ManagementConsoleStyle mcStyling,
             ManagementConsoleImages images
    ) {
       if ( notification == null || controller == null ) {
@@ -87,7 +89,8 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
       this.notification = notification;
       this.controller = controller;
       this.changeIdentifier = changeIdentifier;
-      this.styling = stying;
+      this.javaFxStyling = stying;
+      this.mcStyling = mcStyling;
       this.images = images;
       
       this.status = constructStatusImage();
@@ -137,7 +140,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     * @return the {@link Node}.
     */
    private Node constructCenteredTitle(){
-      return new BorderPane( styling.createBoldLabel( notification.getJenkinsJob().nameProperty().get() ) );
+      return new BorderPane( javaFxStyling.createBoldLabel( notification.getJenkinsJob().nameProperty().get() ) );
    }//End Method
    
    /**
@@ -145,7 +148,7 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     * @return the {@link Node}.
     */
    private Node constructDescriptionLabel(){
-      Label actualLabel = styling.createWrappedTextLabel( notification.getDescription() );
+      Label actualLabel = javaFxStyling.createWrappedTextLabel( notification.getDescription() );
       actualLabel.setPrefHeight( PREFERRED_ROW_HEIGHT );
       return new BorderPane( actualLabel );
    }//End Method
@@ -157,13 +160,8 @@ public class BuildResultStatusNotificationTreeItem implements NotificationTreeIt
     */
    private Button constructControl( Image image ){
       Button button = new Button();
-      ImageView view = new ImageView( image );
-      view.setFitHeight( PREFERRED_IMAGE_HEIGHT );
-      view.setFitWidth( PREFERRED_IMAGE_WIDTH );
-      button.setGraphic( view );
-      button.setPrefSize( PREFERRED_ROW_HEIGHT, PREFERRED_ROW_HEIGHT );
-      button.setAlignment( Pos.CENTER );
-      styling.removeBackgroundAndColourOnClick( button, Color.GRAY );
+      mcStyling.styleButtonSize( button, image );
+      javaFxStyling.removeBackgroundAndColourOnClick( button, Color.GRAY );
       return button;
    }//End Method
    

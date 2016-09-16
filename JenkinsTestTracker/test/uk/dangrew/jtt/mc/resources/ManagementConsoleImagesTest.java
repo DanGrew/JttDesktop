@@ -32,6 +32,7 @@ public class ManagementConsoleImagesTest {
       assertThat( systemUnderTest.constuctEqualImage(), is( notNullValue() ) );
       assertThat( systemUnderTest.constuctPassedImage(), is( notNullValue() ) );
       assertThat( systemUnderTest.constuctPeopleImage(), is( notNullValue() ) );
+      assertThat( systemUnderTest.constuctLockImage(), is( notNullValue() ) );
    }//End Method
    
    @Test public void shouldCahceImages() {
@@ -40,6 +41,7 @@ public class ManagementConsoleImagesTest {
       assertThat( systemUnderTest.constuctEqualImage(), is( systemUnderTest.constuctEqualImage() ) );
       assertThat( systemUnderTest.constuctPassedImage(), is( systemUnderTest.constuctPassedImage() ) );
       assertThat( systemUnderTest.constuctPeopleImage(), is( systemUnderTest.constuctPeopleImage() ) );
+      assertThat( systemUnderTest.constuctLockImage(), is( systemUnderTest.constuctLockImage() ) );
    }//End Method
 
 }//End Class

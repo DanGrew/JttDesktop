@@ -24,6 +24,8 @@ public class ManagementConsoleImages {
    private static final String PEOPLE_IMAGE = "uk/dangrew/jtt/resources/mc/buildresultstatus/images/people.png";
    private static final String CLOSE_IMAGE = "uk/dangrew/jtt/resources/mc/buildresultstatus/images/close.png";
    
+   private static final String LOCK_IMAGE = "uk/dangrew/jtt/resources/mc/userassignment/images/lock.png";
+   
    private static final Map< String, Image > imageCache = new HashMap<>();
    
    /**
@@ -78,6 +80,14 @@ public class ManagementConsoleImages {
     */
    public Image constuctCloseImage(){
       return constructImage( CLOSE_IMAGE );
+   }//End Method
+   
+   /**
+    * Method to construct a new lock {@link Image}.
+    * @return the {@link Image}.
+    */
+   public Image constuctLockImage(){
+      return constructImage( LOCK_IMAGE );
    }//End Method
 
 }//End Class

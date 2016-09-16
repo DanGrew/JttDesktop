@@ -20,6 +20,7 @@ import javafx.scene.control.SplitPane;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.sides.jobs.JobProgressTree;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentsTree;
+import uk.dangrew.jtt.mc.sides.users.detail.AssignmentDetailArea;
 import uk.dangrew.jtt.mc.view.tree.NotificationTree;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
@@ -54,7 +55,12 @@ public class ManagementConsoleTest {
    @Test public void shouldProvideAssignmentsSplitWithNotifications(){
       SplitPane center = systemUnderTest.notificationsAssignmentsSplit();
       assertThat( center.getItems().get( 0 ), is( systemUnderTest.jobsNotificationsSplit() ) );
-      assertThat( center.getItems().get( 1 ), is( instanceOf( UserAssignmentsTree.class ) ) );
+      assertThat( center.getItems().get( 1 ), is( systemUnderTest.assignments() ) );
+   }//End Method
+   
+   @Test public void shouldProvideAssignmentDetailWithTree(){
+      assertThat( systemUnderTest.assignments().getCenter(), is( instanceOf( UserAssignmentsTree.class  ) ) );
+      assertThat( systemUnderTest.assignments().getRight(), is( instanceOf( AssignmentDetailArea.class  ) ) );
    }//End Method
    
    @Test public void shouldProvideAssignmentSplitInCenter(){

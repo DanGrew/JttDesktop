@@ -13,7 +13,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -149,10 +149,10 @@ public class JavaFxStyle {
    /**
     * Method to apply a style change where there is no background but instead a {@link Color} placed
     * when pressed and removed when released.
-    * @param button the {@link Button} to apply the style to.
+    * @param button the {@link ButtonBase} to apply the style to.
     * @param backgroundWhenPressed the {@link Color} to use for the background.
     */
-   public void removeBackgroundAndColourOnClick( Button button, Color backgroundWhenPressed ) {
+   public void removeBackgroundAndColourOnClick( ButtonBase button, Color backgroundWhenPressed ) {
       button.setBackground( null );
       button.setOnMousePressed( event -> button.setBackground( new Background( 
                new BackgroundFill( backgroundWhenPressed, null, null ) 

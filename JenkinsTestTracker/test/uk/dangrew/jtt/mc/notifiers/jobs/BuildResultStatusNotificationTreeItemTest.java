@@ -37,6 +37,7 @@ import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.resources.ManagementConsoleImages;
+import uk.dangrew.jtt.mc.view.ManagementConsoleStyle;
 import uk.dangrew.jtt.mc.view.tree.NotificationTreeController;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -51,7 +52,8 @@ public class BuildResultStatusNotificationTreeItemTest {
    
    @Mock private NotificationTreeController controller;
    @Mock private ChangeIdentifier changeIdentifier;
-   @Spy private JavaFxStyle styling;
+   @Spy private JavaFxStyle javaFxStyling;
+   @Spy private ManagementConsoleStyle mcStyling;
    @Mock private ManagementConsoleImages images;
    private BuildResultStatusNotification notification;
    private BuildResultStatusNotificationTreeItem systemUnderTest;
@@ -69,7 +71,9 @@ public class BuildResultStatusNotificationTreeItemTest {
       when( images.constuctPeopleImage() ).thenReturn( PEOPLE_IMAGE );
       when( images.constuctCloseImage() ).thenReturn( CLOSE_IMAGE );
       
-      systemUnderTest = new BuildResultStatusNotificationTreeItem( notification, controller, changeIdentifier, styling, images );
+      systemUnderTest = new BuildResultStatusNotificationTreeItem( 
+               notification, controller, changeIdentifier, javaFxStyling, mcStyling, images 
+      );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shoudlNotAcceptNullNotification() {
@@ -127,7 +131,7 @@ public class BuildResultStatusNotificationTreeItemTest {
       assertThat( wrapper.getCenter(), is( instanceOf( Label.class ) ) );
       
       String description = notification.getDescription();
-      verify( styling ).createWrappedTextLabel( description );
+      verify( javaFxStyling ).createWrappedTextLabel( description );
       
       Label label = ( Label ) wrapper.getCenter();
       assertThat( label.getText(), is( description ) );
@@ -162,7 +166,8 @@ public class BuildResultStatusNotificationTreeItemTest {
       assertThat( button.getPrefHeight(), is( BuildResultStatusNotificationTreeItem.PREFERRED_ROW_HEIGHT ) );
       assertThat( button.getAlignment(), is( Pos.CENTER ) );
       
-      verify( styling ).removeBackgroundAndColourOnClick( button, Color.GRAY );
+      verify( javaFxStyling ).removeBackgroundAndColourOnClick( button, Color.GRAY );
+      verify( mcStyling ).styleButtonSize( button, image );
    }//End Method
    
    @Test public void closeButtonShouldRemoveNotificationWhenClicked(){

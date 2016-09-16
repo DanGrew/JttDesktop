@@ -14,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotifier;
 import uk.dangrew.jtt.mc.sides.jobs.JobProgressTree;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentsTree;
+import uk.dangrew.jtt.mc.sides.users.detail.AssignmentDetailArea;
+import uk.dangrew.jtt.mc.sides.users.detail.AssignmentDetailController;
 import uk.dangrew.jtt.mc.view.tree.NotificationTree;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
@@ -28,6 +30,7 @@ public class ManagementConsole extends BorderPane {
    
    private final SplitPane jobsNotificationsSplit;
    private final SplitPane notificationsAssignmentsSplit;
+   private final BorderPane assignments;
    
    /**
     * Constructs a new {@link ManagementConsole}.
@@ -42,7 +45,14 @@ public class ManagementConsole extends BorderPane {
       this.jobsNotificationsSplit = new SplitPane( new JobProgressTree( database ), notifications );
       this.jobsNotificationsSplit.setDividerPositions( PROGRESS_DIVIDER_POSITION );
       
-      this.notificationsAssignmentsSplit = new SplitPane( jobsNotificationsSplit, new UserAssignmentsTree( database ) );
+      UserAssignmentsTree assignmentsTree = new UserAssignmentsTree( database );
+      AssignmentDetailArea detailArea = new AssignmentDetailArea();
+      new AssignmentDetailController( assignmentsTree, detailArea );
+      
+      this.assignments = new BorderPane( assignmentsTree );
+      this.assignments.setRight( detailArea );
+      
+      this.notificationsAssignmentsSplit = new SplitPane( jobsNotificationsSplit, assignments );
       this.notificationsAssignmentsSplit.setDividerPositions( ASSIGNMENTS_DIVIDER_POSITION );
       this.notificationsAssignmentsSplit.setOrientation( Orientation.VERTICAL );
       
@@ -55,6 +65,10 @@ public class ManagementConsole extends BorderPane {
    
    SplitPane notificationsAssignmentsSplit(){
       return notificationsAssignmentsSplit;
+   }//End Method
+   
+   BorderPane assignments(){
+      return assignments;
    }//End Method
    
 }//End Class
