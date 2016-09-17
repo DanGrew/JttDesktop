@@ -25,6 +25,11 @@ public enum ConfigurationTreeItems {
    RightDimension,
    RightJobPolicies,
    RightFonts,
-   RightColours
+   RightColours,
+   ManagementConsole,
+   Notifications,
+   UserAssignments,
+   JobProgress,
+   JobProgressFiltering;
 
 }//End Enum

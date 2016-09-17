@@ -40,6 +40,10 @@ import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
+import uk.dangrew.jtt.mc.configuration.tree.item.JobProgressRootItem;
+import uk.dangrew.jtt.mc.configuration.tree.item.ManagementConsoleRootItem;
+import uk.dangrew.jtt.mc.configuration.tree.item.NotificationsRootItem;
+import uk.dangrew.jtt.mc.configuration.tree.item.UserAssignmentsRootItem;
 
 /**
  * {@link ConfigurationTree} test.
@@ -82,7 +86,7 @@ public class ConfigurationTreeTest {
    
    @Test public void buildWallRootShouldBePresentAndExpanded(){
       TreeItem< ConfigurationItem > root = systemUnderTest.getRoot();
-      assertThat( root.getChildren(), hasSize( 2 ) );
+      assertThat( root.getChildren(), hasSize( 3 ) );
       
       assertThat( getItem( root, 0 ), is( systemUnderTest.systemVersion().getValue() ) );
       assertThat( systemUnderTest.systemVersion().isExpanded(), is( true ) );
@@ -91,6 +95,10 @@ public class ConfigurationTreeTest {
       assertThat( getItem( root, 1 ), is( systemUnderTest.dualWallRoot().getValue() ) );
       assertThat( systemUnderTest.dualWallRoot().isExpanded(), is( true ) );
       assertThat( systemUnderTest.dualWallRoot().getValue(), is( instanceOf( DualBuildWallRootItem.class ) ) );
+      
+      assertThat( getItem( root, 2 ), is( systemUnderTest.mcRoot().getValue() ) );
+      assertThat( systemUnderTest.mcRoot().isExpanded(), is( true ) );
+      assertThat( systemUnderTest.mcRoot().getValue(), is( instanceOf( ManagementConsoleRootItem.class ) ) );
    }//End Method
    
    @Test public void dualWallRootShouldBePresentAndExpanded(){
@@ -178,6 +186,33 @@ public class ConfigurationTreeTest {
       verify( controller, times( 2 ) ).displayContent( Mockito.any(), Mockito.any() );
    }//End Method
    
+   @Test public void managementConsoleShouldBePresent(){
+      TreeItem< ConfigurationItem > root = systemUnderTest.mcRoot();
+      assertThat( root.getValue(), is( instanceOf( ManagementConsoleRootItem.class ) ) );
+      root.getValue().handleBeingSelected();
+      verify( controller ).displayContent( Mockito.any(), Mockito.any() );
+      
+      assertThat( root.isExpanded(), is( true ) );
+   }//End Method
+   
+   @Test public void managementConsoleChildrenShouldBePresent(){
+      TreeItem< ConfigurationItem > root = systemUnderTest.mcRoot();
+      assertThat( getItem( root, 0 ), is( systemUnderTest.notificationsRoot().getValue() ) );
+      assertThat( getItem( root, 0 ), is( instanceOf( NotificationsRootItem.class ) ) );
+      getItem( root, 0 ).handleBeingSelected();
+      verify( controller ).displayContent( Mockito.any(), Mockito.any() );
+      
+      assertThat( getItem( root, 1 ), is( systemUnderTest.userAssignmentsRoot().getValue() ) );
+      assertThat( getItem( root, 1 ), is( instanceOf( UserAssignmentsRootItem.class ) ) );
+      getItem( root, 1 ).handleBeingSelected();
+      verify( controller, times( 2 ) ).displayContent( Mockito.any(), Mockito.any() );
+      
+      assertThat( getItem( root, 2 ), is( systemUnderTest.jobProgressRoot().getValue() ) );
+      assertThat( getItem( root, 2 ), is( instanceOf( JobProgressRootItem.class ) ) );
+      getItem( root, 2 ).handleBeingSelected();
+      verify( controller, times( 3 ) ).displayContent( Mockito.any(), Mockito.any() );
+   }//End Method
+   
    @Test public void shouldHandleSelectionByPassingOnToItem(){
       ConfigurationItem item = spy( new ConfigurationRootItem() );
       TreeItem< ConfigurationItem > additionalItem = new TreeItem<>( item );
@@ -249,6 +284,24 @@ public class ConfigurationTreeTest {
       systemUnderTest.select( ConfigurationTreeItems.RightColours );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.rightWallRoot().getChildren().get( 3 ) ) );
       assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.RightColours ), is( true ) );
+   }//End Method
+   
+   @Test public void shouldSelectManagementConsoleAndSubsections(){
+      systemUnderTest.select( ConfigurationTreeItems.ManagementConsole );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.mcRoot() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.ManagementConsole ), is( true ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.Notifications );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.notificationsRoot() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.Notifications ), is( true ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.UserAssignments );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.userAssignmentsRoot() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.UserAssignments ), is( true ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.JobProgress );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.jobProgressRoot() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.JobProgress ), is( true ) );
    }//End Method
    
    @Test public void shouldIgnoreNullSelect(){

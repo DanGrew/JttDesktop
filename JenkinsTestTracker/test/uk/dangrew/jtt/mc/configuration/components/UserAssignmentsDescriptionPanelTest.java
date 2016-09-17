@@ -6,28 +6,29 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.buildwall.configuration.components;
+package uk.dangrew.jtt.mc.configuration.components;
 
 import javafx.util.Pair;
 import uk.dangrew.jtt.configuration.content.SimpleDescriptionPanel;
 import uk.dangrew.jtt.configuration.content.SimpleDescriptionPanelTest;
 
 /**
- * {@link DualBuildWallDescriptionPanel} test.
+ * {@link UserAssignmentsDescriptionPanel} test.
  */
-public class DualBuildWallDescriptionPanelTest extends SimpleDescriptionPanelTest {
+public class UserAssignmentsDescriptionPanelTest extends SimpleDescriptionPanelTest {
 
    /**
     * {@inheritDoc}
     */
    @Override protected Pair< String, String > getSentences() {
-      return new Pair<>( DualBuildWallDescriptionPanel.FIRST_SENTENCE, DualBuildWallDescriptionPanel.SECOND_PARAGRAPH );
+      return new Pair<>( UserAssignmentsDescriptionPanel.FIRST_SENTENCE, UserAssignmentsDescriptionPanel.SECOND_PARAGRAPH );
    }//End Method
 
    /**
     * {@inheritDoc}
     */
    @Override protected SimpleDescriptionPanel constructSut() {
-      return new DualBuildWallDescriptionPanel();
+      return new UserAssignmentsDescriptionPanel();
    }//End Method
+
 }//End Class

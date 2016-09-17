@@ -20,7 +20,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
+import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
+import uk.dangrew.jtt.environment.preferences.WindowPolicy;
+import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -47,7 +51,9 @@ public class ConfigurationTreePaneTest {
    
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      new PreferencesOpenEvent().fire( new Event< PreferenceBehaviour >( 
+               new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.DualWallProperties ) ) 
+      );
       
       systemUnderTest.tree().select( ConfigurationTreeItems.SystemVersion );
       Thread.sleep( 1000 );

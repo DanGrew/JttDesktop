@@ -30,6 +30,10 @@ import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.configuration.system.SystemVersionItem;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
+import uk.dangrew.jtt.mc.configuration.tree.item.JobProgressRootItem;
+import uk.dangrew.jtt.mc.configuration.tree.item.ManagementConsoleRootItem;
+import uk.dangrew.jtt.mc.configuration.tree.item.NotificationsRootItem;
+import uk.dangrew.jtt.mc.configuration.tree.item.UserAssignmentsRootItem;
 
 /**
  * The {@link ConfigurationTree} provides a {@link TreeView} for {@link ConfigurationItem}s.
@@ -39,10 +43,17 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    private final PreferenceController controller;
    private final TreeItem< ConfigurationItem > root;
    private final TreeItem< ConfigurationItem > systemVersion;
+   
    private final TreeItem< ConfigurationItem > dualWallProperties;
    private final TreeItem< ConfigurationItem > dualWallRoot;
    private final TreeItem< ConfigurationItem > leftWallRoot;
    private final TreeItem< ConfigurationItem > rightWallRoot;
+   
+   private final TreeItem< ConfigurationItem > mcRoot;
+   private final TreeItem< ConfigurationItem > notificationsRoot;
+   private final TreeItem< ConfigurationItem > userAssignmentsRoot;
+   private final TreeItem< ConfigurationItem > jobProgressRoot;
+   
    private final Map< ConfigurationTreeItems, TreeItem< ConfigurationItem > > itemMapping;
    
    /**
@@ -58,19 +69,25 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       this.controller = controller;
       this.itemMapping = new EnumMap<>( ConfigurationTreeItems.class );
       
-      root = new TreeItem<>( new ConfigurationRootItem() );
+      this.root = new TreeItem<>( new ConfigurationRootItem() );
       
-      systemVersion = new TreeItem<>( new SystemVersionItem( controller ) );
-      systemVersion.setExpanded( true );
-      root.getChildren().add( systemVersion );
+      this.systemVersion = new TreeItem<>( new SystemVersionItem( controller ) );
+      this.systemVersion.setExpanded( true );
+      this.root.getChildren().add( systemVersion );
       
-      dualWallRoot = new TreeItem<>( new DualBuildWallRootItem( controller ) );
-      dualWallRoot.setExpanded( true );
-      root.getChildren().add( dualWallRoot );
+      this.dualWallRoot = new TreeItem<>( new DualBuildWallRootItem( controller ) );
+      this.dualWallRoot.setExpanded( true );
+      this.root.getChildren().add( dualWallRoot );
       
       this.dualWallProperties = insertDualProperties( dualWallRoot, systemConfiguration.getDualConfiguration() );
       this.leftWallRoot = insertBuildWallConfiguration( dualWallRoot, "Left", systemConfiguration.getLeftConfiguration() );
       this.rightWallRoot = insertBuildWallConfiguration( dualWallRoot, "Right", systemConfiguration.getRightConfiguration() );
+      
+      this.mcRoot = insertManageConsoleConfiguration( root );
+      this.notificationsRoot = insertNotificationsConfiguration( mcRoot );
+      this.userAssignmentsRoot = insertUserAssignmentsConfiguration( mcRoot );
+      this.jobProgressRoot = insertJobProgressConfiguration( mcRoot );
+      
       setRoot( root );
       setShowRoot( false );
       
@@ -135,10 +152,61 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    }//End Method
    
    /**
+    * Method to insert the management console items.
+    * @param root the root of the items.
+    * @return the constructed root.
+    */
+   private TreeItem< ConfigurationItem > insertManageConsoleConfiguration( TreeItem< ConfigurationItem > root ) {
+      return createNewTreeItemInsideRoot( new ManagementConsoleRootItem( controller ), true, root ); 
+   }//End Method
+   
+   /**
+    * Method to insert the notifications items.
+    * @param root the root of the items.
+    * @return the constructed root.
+    */
+   private TreeItem< ConfigurationItem > insertNotificationsConfiguration( TreeItem< ConfigurationItem > root ) {
+      return createNewTreeItemInsideRoot( new NotificationsRootItem( controller ), true, root );
+   }//End Method
+   
+   /**
+    * Method to insert the user assignments items.
+    * @param root the root of the items.
+    * @return the constructed root.
+    */
+   private TreeItem< ConfigurationItem > insertUserAssignmentsConfiguration( TreeItem< ConfigurationItem > root ) {
+      return createNewTreeItemInsideRoot( new UserAssignmentsRootItem( controller ), true, root );
+   }//End Method
+   
+   /**
+    * Method to insert the job progress items.
+    * @param root the root of the items.
+    * @return the constructed root.
+    */
+   private TreeItem< ConfigurationItem > insertJobProgressConfiguration( TreeItem< ConfigurationItem > root ) {
+      return createNewTreeItemInsideRoot( new JobProgressRootItem( controller ), true, root );
+   }//End Method
+   
+   /**
+    * Method to create a {@link TreeItem} with the given {@link ConfigurationItem}, epxanded and present in the given root.
+    * @param item the {@link ConfigurationItem} associated.
+    * @param expanded expanded or not.
+    * @param root the {@link TreeItem} root to place it in.
+    * @return the constructed {@link TreeItem}.
+    */
+   private TreeItem< ConfigurationItem > createNewTreeItemInsideRoot( ConfigurationItem item, boolean expanded, TreeItem< ConfigurationItem > root ) {
+      TreeItem<ConfigurationItem> treeItem = new TreeItem<>( item );
+      treeItem.setExpanded( expanded );
+      root.getChildren().add( treeItem );
+      return treeItem;
+   }//End Method
+   
+   /**
     * Method to populate the item mappings for selection.
     */
    private void populateItemMappings(){
       itemMapping.put( ConfigurationTreeItems.SystemVersion, systemVersion );
+      
       itemMapping.put( ConfigurationTreeItems.DualWallProperties, dualWallProperties ); 
       itemMapping.put( ConfigurationTreeItems.DualWallRoot, dualWallRoot );
       itemMapping.put( ConfigurationTreeItems.LeftWallRoot, leftWallRoot );
@@ -151,6 +219,12 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       itemMapping.put( ConfigurationTreeItems.RightJobPolicies, rightWallRoot.getChildren().get( 1 ) );
       itemMapping.put( ConfigurationTreeItems.RightFonts, rightWallRoot.getChildren().get( 2 ) );
       itemMapping.put( ConfigurationTreeItems.RightColours, rightWallRoot.getChildren().get( 3 ) );
+      
+      itemMapping.put( ConfigurationTreeItems.ManagementConsole, mcRoot );
+      itemMapping.put( ConfigurationTreeItems.Notifications, notificationsRoot );
+      itemMapping.put( ConfigurationTreeItems.UserAssignments, userAssignmentsRoot );
+      itemMapping.put( ConfigurationTreeItems.JobProgress, jobProgressRoot );
+//      itemMapping.put( ConfigurationTreeItems.JobProgressFiltering, jobProgressRoot.getChildren().get( 0 ) );
    }//End Method
    
    /**
@@ -199,6 +273,22 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    TreeItem< ConfigurationItem > rightWallRoot(){
       return rightWallRoot;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > mcRoot() {
+      return mcRoot;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > notificationsRoot() {
+      return notificationsRoot;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > userAssignmentsRoot() {
+      return userAssignmentsRoot;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > jobProgressRoot() {
+      return jobProgressRoot;
    }//End Method
    
 }//End Class
