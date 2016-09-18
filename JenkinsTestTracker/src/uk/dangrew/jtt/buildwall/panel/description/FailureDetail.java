@@ -22,6 +22,7 @@ import uk.dangrew.jtt.javafx.registrations.RegisteredComponent;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
 
@@ -31,6 +32,8 @@ import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
  */
 public class FailureDetail extends GridPane implements RegisteredComponent {
    
+   static final String UNKNOWN_NODE = "Unknown";
+   static final String BUILT_ON_PREFIX = "Built on: ";
    static final String CULPRIT_PREFIX = "Suspect: ";
    static final String CULPRITS_PREFIX = "Suspects: ";
    static final String NO_CULPRITS = "No Suspects.";
@@ -38,8 +41,9 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    static final String FAILING_TEST_CLASS_PREFIX = "Failure:";
    static final String FAILING_TEST_CLASSES_PREFIX = "Failures:";
    static final String NO_FAILING_TESTS = "No Failures.";
-   static final double CULPRITS_ROW_PERCENT = 30.0;
-   static final double FAILURES_ROW_PERCENT = 70.0;
+   static final double CULPRITS_ROW_PERCENT = 25.0;
+   static final double BUILT_ON_ROW_PERCENT = 10.0;
+   static final double FAILURES_ROW_PERCENT = 65.0;
    
    static final Object ABORTED_DESCRIPTION = "ABORTED: Manual, Build Timeout, etc.";
    static final Object FAILURE_DESCRIPTION = "FAILURE: Compilation Problem, Partial Checkout, etc.";
@@ -49,6 +53,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    
    private RegistrationManager registrations;
    private Label culpritsLabel;
+   private Label lastBuiltOnLabel;
    private Label failingLabel;
    
    /**
@@ -61,6 +66,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       this.configuration = configuration;
       
       provideCulprits();
+      provideLastBuiltOnNode();
       provideFailingTestCases();
       
       updateDetailColour();
@@ -78,6 +84,17 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       updateCulpritText();
       culpritsLabel.setWrapText( true );
       add( culpritsLabel, 0, 0 );
+   }//End Method
+   
+   /**
+    * Method to provide the {@link JenkinsNode} the {@link JenkinsNode} was last
+    * built on.
+    */
+   private void provideLastBuiltOnNode(){  
+      lastBuiltOnLabel = new Label();
+      updateLastBuiltOnText();
+      lastBuiltOnLabel.setWrapText( true );
+      add( lastBuiltOnLabel, 0, 1 );
    }//End Method
 
    /**
@@ -116,7 +133,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       failingLabel.setLineSpacing( 0.0 );
       updateFailuresText();
       failingLabel.setWrapText( true );
-      add( failingLabel, 0, 1 );
+      add( failingLabel, 0, 2 );
    }//End Method
 
    /**
@@ -166,11 +183,15 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       culpritsRow.setPercentHeight( CULPRITS_ROW_PERCENT );
       culpritsRow.setMaxHeight( Double.MAX_VALUE );
       
+      RowConstraints builtOnRow = new RowConstraints();
+      builtOnRow.setPercentHeight( BUILT_ON_ROW_PERCENT );
+      builtOnRow.setMaxHeight( Double.MAX_VALUE );
+      
       RowConstraints failuresRow = new RowConstraints();
       failuresRow.setPercentHeight( FAILURES_ROW_PERCENT );
       failuresRow.setMaxHeight( Double.MAX_VALUE );
       
-      getRowConstraints().addAll( culpritsRow, failuresRow );
+      getRowConstraints().addAll( culpritsRow, builtOnRow, failuresRow );
    }//End Method
    
    /**
@@ -204,6 +225,11 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       ) );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               jenkinsJob.lastBuiltOnProperty(), 
+               ( source, old, updated ) -> updateLastBuiltOnText() 
+      ) );
+      
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
                jenkinsJob.lastBuildStatusProperty(), 
                ( source, old, updated ) -> updateFailuresText() 
       ) );
@@ -228,6 +254,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
     */
    private void updateDetailFont(){
       culpritsLabel.fontProperty().set( configuration.detailFont().get() );
+      lastBuiltOnLabel.fontProperty().set( configuration.detailFont().get() );
       failingLabel.fontProperty().set( configuration.detailFont().get() );
    }//End Method
    
@@ -236,6 +263,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
     */
    private void updateDetailColour(){
       culpritsLabel.textFillProperty().set( configuration.detailColour().get() );
+      lastBuiltOnLabel.textFillProperty().set( configuration.detailColour().get() );
       failingLabel.textFillProperty().set( configuration.detailColour().get() );
    }//End Method
    
@@ -246,6 +274,17 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       StringBuilder culprits = constructCulpritsList();
       DecoupledPlatformImpl.runLater( () -> {
          culpritsLabel.setText( culprits.toString() );
+      } );
+   }//End Method
+   
+   /**
+    * Method to update the node text displayed in the {@link Label}.
+    */
+   private void updateLastBuiltOnText(){
+      JenkinsNode builtOn = jenkinsJob.lastBuiltOnProperty().get();
+      String builtOnText = BUILT_ON_PREFIX + ( builtOn == null ? UNKNOWN_NODE : builtOn.nameProperty().get() );
+      DecoupledPlatformImpl.runLater( () -> {
+         lastBuiltOnLabel.setText( builtOnText );
       } );
    }//End Method
    
@@ -263,6 +302,10 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       return culpritsLabel;
    }//End Method
 
+   Label lastBuiltOnLabel() {
+      return lastBuiltOnLabel;
+   }//End Method
+   
    Label failuresLabel() {
       return failingLabel;
    }//End Method

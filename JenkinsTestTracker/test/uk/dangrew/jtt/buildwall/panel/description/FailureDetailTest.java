@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.buildwall.panel.description;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
@@ -34,6 +35,8 @@ import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
+import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestCaseImpl;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
@@ -121,6 +124,11 @@ public class FailureDetailTest {
       return new TestCaseImpl( caseName, new TestClassImpl( className ) );
    }//End Method
    
+   /**
+    * Method to construct the expected failures {@link String}.
+    * @param cases the {@link TestCase}s to construct for.
+    * @return the expected {@link String}.
+    */
    private String constructFailuresString( TestCase... cases ) {
       if ( cases.length == 0 ) {
          return "";
@@ -133,10 +141,22 @@ public class FailureDetailTest {
       }
       builder.append( cases[ cases.length - 1 ].testClassProperty().get().nameProperty().get() );
       return builder.toString();
-   }
+   }//End Method
+   
+   @Test public void shouldContainAllElements(){
+      assertThat( systemUnderTest.getChildren(), contains(
+               systemUnderTest.culpritsLabel(), 
+               systemUnderTest.lastBuiltOnLabel(), 
+               systemUnderTest.failuresLabel() 
+      ) );
+   }//End Method
    
    @Test public void shouldPrefixCulpritsDescription(){
       assertThat( systemUnderTest.culpritsLabel().getText(), startsWith( FailureDetail.CULPRITS_PREFIX ) );
+   }//End Method
+   
+   @Test public void shouldDisplayUnknownStateWhenNoNodeAssociated(){
+      assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + FailureDetail.UNKNOWN_NODE ) );
    }//End Method
    
    @Test public void shouldListAllCulpritsInOrderDefinedByJob(){
@@ -166,6 +186,14 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.FAILURE_DESCRIPTION ) );
    }//End Method
    
+   @Test public void shouldShowLastBuiltOnWhenInitiallyPresent(){
+      JenkinsNode node = new JenkinsNodeImpl( "This is a node." );
+      jenkinsJob.lastBuiltOnProperty().set( node );
+      
+      systemUnderTest = new FailureDetail( jenkinsJob, configuration );
+      assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + node.nameProperty().get() ) );
+   }//End Method
+   
    @Test public void shouldUpdateCulpritsListWhenCulpritsAdded(){
       shouldListAllCulpritsInOrderDefinedByJob();
       
@@ -191,8 +219,14 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Governor." ) );
    }//End Method
    
+   @Test public void shouldUpdateLastBuiltWhenStateChanges(){
+      JenkinsNode node = new JenkinsNodeImpl( "This is a node." );
+      jenkinsJob.lastBuiltOnProperty().set( node );
+      assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + node.nameProperty().get() ) );
+   }//End Method
+   
    @Test public void shouldRestrainRowToFitInPanel(){
-      assertThat( systemUnderTest.getRowConstraints(), hasSize( 2 ) );
+      assertThat( systemUnderTest.getRowConstraints(), hasSize( 3 ) );
       
       RowConstraints constraint = systemUnderTest.getRowConstraints().get( 0 );
       assertThat( constraint.getMaxHeight(), is( Double.MAX_VALUE ) );
@@ -200,17 +234,24 @@ public class FailureDetailTest {
       
       constraint = systemUnderTest.getRowConstraints().get( 1 );
       assertThat( constraint.getMaxHeight(), is( Double.MAX_VALUE ) );
+      assertThat( constraint.getPercentHeight(), is( FailureDetail.BUILT_ON_ROW_PERCENT ) );
+      
+      constraint = systemUnderTest.getRowConstraints().get( 2 );
+      assertThat( constraint.getMaxHeight(), is( Double.MAX_VALUE ) );
       assertThat( constraint.getPercentHeight(), is( FailureDetail.FAILURES_ROW_PERCENT ) );
    }//End Method
    
    @Test public void shouldWrapTextToFillRow(){
       assertThat( systemUnderTest.culpritsLabel().isWrapText(), is( true ) );
+      assertThat( systemUnderTest.lastBuiltOnLabel().isWrapText(), is( true ) );
       assertThat( systemUnderTest.failuresLabel().isWrapText(), is( true ) );
    }//End Method
    
    @Test public void shouldUseDefaultConfigurationOnText(){
       assertThat( systemUnderTest.culpritsLabel().getFont(), is( configuration.detailFont().get() ) );
       assertThat( systemUnderTest.culpritsLabel().getTextFill(), is( configuration.detailColour().get() ) );
+      assertThat( systemUnderTest.lastBuiltOnLabel().getFont(), is( configuration.detailFont().get() ) );
+      assertThat( systemUnderTest.lastBuiltOnLabel().getTextFill(), is( configuration.detailColour().get() ) );
       assertThat( systemUnderTest.failuresLabel().getFont(), is( configuration.detailFont().get() ) );
       assertThat( systemUnderTest.failuresLabel().getTextFill(), is( configuration.detailColour().get() ) );
    }//End Method
@@ -231,6 +272,24 @@ public class FailureDetailTest {
       configuration.detailColour().set( alternateColour );
       
       assertThat( systemUnderTest.culpritsLabel().getTextFill(), is( alternateColour ) );
+   }//End Method
+   
+   @Test public void shouldUpdateBuiltOnFontFromConfiguration(){
+      assertThat( systemUnderTest.lastBuiltOnLabel().getFont(), is( configuration.detailFont().get() ) );
+      
+      Font alternateFont = Font.font( 100 );
+      configuration.detailFont().set( alternateFont );
+      
+      assertThat( systemUnderTest.lastBuiltOnLabel().getFont(), is( alternateFont ) );
+   }//End Method
+   
+   @Test public void shouldUpdateBuiltOnColourFromConfiguration(){
+      assertThat( systemUnderTest.lastBuiltOnLabel().getTextFill(), is( configuration.detailColour().get() ) );
+      
+      Color alternateColour = Color.AQUAMARINE;
+      configuration.detailColour().set( alternateColour );
+      
+      assertThat( systemUnderTest.lastBuiltOnLabel().getTextFill(), is( alternateColour ) );
    }//End Method
    
    @Test public void shouldUpdateFailuresFontFromConfiguration(){
@@ -294,6 +353,38 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
    }//End Method
    
+   @Test public void shouldDetachBuiltOnFontListenersFromSystem(){
+      systemUnderTest.detachFromSystem();
+      
+      Font original = configuration.detailFont().get();
+      assertThat( systemUnderTest.lastBuiltOnLabel().getFont(), is( configuration.detailFont().get() ) );
+      
+      Font alternateFont = Font.font( 100 );
+      configuration.detailFont().set( alternateFont );
+      
+      assertThat( systemUnderTest.lastBuiltOnLabel().getFont(), is( original ) );
+   }//End Method
+   
+   @Test public void shouldDetachBuiltOnColorListenersFromSystem(){
+      systemUnderTest.detachFromSystem();
+      
+      Color orignal = configuration.detailColour().get();
+      assertThat( systemUnderTest.lastBuiltOnLabel().getTextFill(), is( configuration.detailColour().get() ) );
+      
+      Color alternateColour = Color.AQUAMARINE;
+      configuration.detailColour().set( alternateColour );
+      
+      assertThat( systemUnderTest.lastBuiltOnLabel().getTextFill(), is( orignal ) );
+   }//End Method
+   
+   @Test public void shouldDetachBuiltOnUpdatesFromSystem(){
+      systemUnderTest.detachFromSystem();
+      assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + FailureDetail.UNKNOWN_NODE ) );
+      
+      jenkinsJob.lastBuiltOnProperty().set( new JenkinsNodeImpl( "anything" ) );
+      assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + FailureDetail.UNKNOWN_NODE ) );
+   }//End Method
+   
    @Test public void shouldDetachFailuresFontListenersFromSystem(){
       systemUnderTest.detachFromSystem();
       
@@ -351,6 +442,17 @@ public class FailureDetailTest {
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
       assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker, Walker." ) );
+   }//End Method
+   
+   @Test public void shouldUseDecoupledPlatformToSetBuiltOnText(){
+      DecoupledPlatformImpl.setInstance( runnable -> {} );
+    
+      jenkinsJob.lastBuiltOnProperty().set( new JenkinsNodeImpl( "anything" ) );
+      assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + FailureDetail.UNKNOWN_NODE ) );
+      
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
+      jenkinsJob.lastBuiltOnProperty().set( new JenkinsNodeImpl( "something" ) );
+      assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + "something" ) );
    }//End Method
    
    @Test public void shouldUseDecoupledPlatformToSetFailuresText(){
@@ -460,6 +562,12 @@ public class FailureDetailTest {
       
       jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.NO_FAILING_TESTS ) );
+   }//End Method
+   
+   @Test public void shouldBeDetachedInApiAfterDetachment(){
+      assertThat( systemUnderTest.isDetached(), is( false ) );
+      systemUnderTest.detachFromSystem();
+      assertThat( systemUnderTest.isDetached(), is( true ) );
    }//End Method
 
 }//End Class
