@@ -1,3 +1,8 @@
+Release, "1.5.153"
+Date, "(Sep 16, 2016 6:22:39 AM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.153/JenkinsTestTracker-1.5.153-runnable.jar"
+Description, "First release of the Management Console. Using this tool instead of the build wall allows you to track changes in the system via notifications. Initially it notifies changes in build state and allows those changes to be assigned to users as assignments which can be completed at a future point. Please note there is no persistence yet."
+
 Release, "1.4.123"
 Date, "(Jul 26, 2016 7:26:44 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.4.123/JenkinsTestTracker-1.4.123-runnable.jar"
