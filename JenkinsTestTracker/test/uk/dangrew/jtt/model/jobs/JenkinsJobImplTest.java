@@ -19,6 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.dangrew.jtt.api.handling.BuildState;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
+import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestCaseImpl;
 import uk.dangrew.jtt.model.tests.TestClass;
@@ -119,6 +121,18 @@ public class JenkinsJobImplTest {
       final int value = 1000;
       systemUnderTest.currentBuildTimestampProperty().set( value );
       Assert.assertEquals( value, systemUnderTest.currentBuildTimestampProperty().get() );
+   }//End Method
+   
+   @Test public void shouldProvideLastBuiltOnProperty() {
+      Assert.assertEquals( JenkinsJob.DEFAULT_LAST_BUILT_ON, systemUnderTest.lastBuiltOnProperty().get() );
+   }//End Method
+   
+   @Test public void shouldUpdateLastBuiltOnProperty() {
+      shouldProvideLastBuiltOnProperty();
+      
+      final JenkinsNode value = new JenkinsNodeImpl( "anything" );
+      systemUnderTest.lastBuiltOnProperty().set( value );
+      Assert.assertEquals( value, systemUnderTest.lastBuiltOnProperty().get() );
    }//End Method
    
    @Test public void shouldProvideCurrentBuildNumberProperty() {

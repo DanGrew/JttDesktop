@@ -18,6 +18,7 @@ import static uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl.ESTIMATED_DURATI
 import static uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl.FULL_NAME_KEY;
 import static uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl.JOBS_KEY;
 import static uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl.NAME_KEY;
+import static uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl.NODE_KEY;
 import static uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl.NUMBER_KEY;
 import static uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl.RESULT_KEY;
 import static uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl.TIMESTAMP_KEY;
@@ -34,6 +35,7 @@ import org.mockito.MockitoAnnotations;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 
 /**
  * {@link JsonJobImporterImpl} test.
@@ -44,14 +46,17 @@ public class JsonJobImporterImplTest {
    private static final long IMPORTED_TIMESTAMP = 12345L;
    private static final long IMPORTED_ESTIMATED_DURATION = 1000450L;
    private static final BuildResultStatus IMPORTED_RESULT = BuildResultStatus.SUCCESS;
+   private static final String IMPORTED_NODE = "ImportedNode";
    
    private static final int INITIAL_BUILD_NUMBER = 44;
    private static final long INITIAL_TIMESTAMP = 12345L;
    private static final long INITIAL_ESTIMATED_DURATION = 1000320L;
+   private static final String INITIAL_NODE = "InitialNode";
    
    private static final int BUILD_NUMBER_PROVIDED = 46;
    private static final long TIMESTAMP_PROVIDED = 902L;
    private static final long ESTIMATED_DURATION_PROVIDED = 8726L;
+   private static final String PROVIDED_NODE = "ProvidedNode";
    
    private static final String FIRST_CULPRIT = "firstCulprit";
    private static final String SECOND_CULPRIT = "secondCulprit";
@@ -89,6 +94,7 @@ public class JsonJobImporterImplTest {
       jenkinsJob.expectedBuildTimeProperty().set( INITIAL_ESTIMATED_DURATION );
       jenkinsJob.currentBuildTimestampProperty().set( INITIAL_TIMESTAMP );
       jenkinsJob.currentBuildNumberProperty().set( INITIAL_BUILD_NUMBER );
+      jenkinsJob.lastBuiltOnProperty().set( new JenkinsNodeImpl( INITIAL_NODE ) );
       
       systemUnderTest = new JsonJobImporterImpl( handler );
       
@@ -114,6 +120,9 @@ public class JsonJobImporterImplTest {
       
       when( buildingStateResponse.has( NUMBER_KEY ) ).thenReturn( true );
       when( buildingStateResponse.optInt( NUMBER_KEY, jenkinsJob.currentBuildNumberProperty().get() ) ).thenReturn( IMPORTED_BUILD_NUMBER );
+      
+      when( buildingStateResponse.has( NODE_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optString( NODE_KEY, jenkinsJob.lastBuiltOnProperty().get().nameProperty().get() ) ).thenReturn( IMPORTED_NODE );
    }//End Method
    
    /**
@@ -122,8 +131,9 @@ public class JsonJobImporterImplTest {
     * @param duration expected value for expected duration, null implies not expected to be handled.
     * @param timestamp expected value for timestamp, null implies not expected to be handled.
     * @param number expected value for build number, null implies not expected to be handled.
+    * @param builtOn expected value for the name of the node last built on, null implies not expected to be handled.
     */
-   private void verifyBuildingStateImportDataIsHandled( Boolean building, Long duration, Long timestamp, Integer number ) {
+   private void verifyBuildingStateImportDataIsHandled( Boolean building, Long duration, Long timestamp, Integer number, String builtOn ) {
       if ( building == null ) {
          verify( handler, never() ).handleBuildingState( Mockito.any(), Mockito.anyBoolean() );
       } else {
@@ -147,22 +157,28 @@ public class JsonJobImporterImplTest {
       } else {
          verify( handler, times( 1 ) ).handleBuildNumber( jenkinsJob, number );
       }
+      
+      if ( builtOn == null ) {
+         verify( handler, never() ).handleBuiltOn( Mockito.any(), Mockito.anyString() );
+      } else {
+         verify( handler, times( 1 ) ).handleBuiltOn( jenkinsJob, builtOn );
+      }
    }//End Method
    
    @Test public void shouldIgnoreBuildStateIfJobIsNull(){
       systemUnderTest.updateBuildState( null, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( null, null, null, null );
+      verifyBuildingStateImportDataIsHandled( null, null, null, null, null );
    }//End Method
    
    @Test public void shouldIgnoreBuildStateIfResponseIsNull(){
       systemUnderTest.updateBuildState( jenkinsJob, null );
-      verifyBuildingStateImportDataIsHandled( null, null, null, null );
+      verifyBuildingStateImportDataIsHandled( null, null, null, null, null );
    }//End Method
    
    @Test public void shouldIgnoreResponseIfHasNoBuildingState(){
       when( buildingStateResponse.has( BUILDING_KEY ) ).thenReturn( false );
       systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( null, null, null, null );
+      verifyBuildingStateImportDataIsHandled( null, null, null, null, null );
    }//End Method
    
    @Test public void shouldIgnoreResponseIfThoughtToHaveBuildingStateButNotPresent(){
@@ -171,14 +187,14 @@ public class JsonJobImporterImplTest {
       when( buildingStateResponse.optBoolean( BUILDING_KEY ) ).thenReturn( false );
       
       systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( null, null, null, null );
+      verifyBuildingStateImportDataIsHandled( null, null, null, null, null );
    }//End Method
    
    @Test public void shouldNotImportDurationOnlyIfNotPresent(){
       when( buildingStateResponse.has( ESTIMATED_DURATION_KEY ) ).thenReturn( false );
       
       systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( true, null, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER );
+      verifyBuildingStateImportDataIsHandled( true, null, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER, IMPORTED_NODE );
    }//End Method
    
    @Test public void shouldImportDurationUsingDefaultInJob(){
@@ -186,14 +202,14 @@ public class JsonJobImporterImplTest {
       when( buildingStateResponse.optLong( ESTIMATED_DURATION_KEY, INITIAL_ESTIMATED_DURATION ) ).thenReturn( ESTIMATED_DURATION_PROVIDED );
       
       systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( true, ESTIMATED_DURATION_PROVIDED, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER );
+      verifyBuildingStateImportDataIsHandled( true, ESTIMATED_DURATION_PROVIDED, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER, IMPORTED_NODE );
    }//End Method
    
    @Test public void shouldNotImportTimestampOnlyIfNotPresent(){
       when( buildingStateResponse.has( TIMESTAMP_KEY ) ).thenReturn( false );
       
       systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, null, IMPORTED_BUILD_NUMBER );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, null, IMPORTED_BUILD_NUMBER, IMPORTED_NODE );
    }//End Method
    
    @Test public void shouldImportTimestampUsingDefaultInJob(){
@@ -201,14 +217,14 @@ public class JsonJobImporterImplTest {
       when( buildingStateResponse.optLong( TIMESTAMP_KEY, INITIAL_TIMESTAMP ) ).thenReturn( TIMESTAMP_PROVIDED );
       
       systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, TIMESTAMP_PROVIDED, IMPORTED_BUILD_NUMBER );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, TIMESTAMP_PROVIDED, IMPORTED_BUILD_NUMBER, IMPORTED_NODE );
    }//End Method
    
    @Test public void shouldNotImportBuildNumberOnlyIfNotPresent(){
       when( buildingStateResponse.has( NUMBER_KEY ) ).thenReturn( false );
       
       systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, null );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, null, IMPORTED_NODE );
    }//End Method
    
    @Test public void shouldImportBuildNumberUsingDefaultInJob(){
@@ -216,7 +232,31 @@ public class JsonJobImporterImplTest {
       when( buildingStateResponse.optInt( NUMBER_KEY, INITIAL_BUILD_NUMBER ) ).thenReturn( BUILD_NUMBER_PROVIDED );
       
       systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
-      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, BUILD_NUMBER_PROVIDED );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, BUILD_NUMBER_PROVIDED, IMPORTED_NODE );
+   }//End Method
+   
+   @Test public void shouldNotImportBuiltOnOnlyIfNotPresent(){
+      when( buildingStateResponse.has( NODE_KEY ) ).thenReturn( false );
+      
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER, null );
+   }//End Method
+   
+   @Test public void shouldImportBuiltOnUsingDefault(){
+      when( buildingStateResponse.has( NODE_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optString( NODE_KEY, INITIAL_NODE ) ).thenReturn( PROVIDED_NODE );
+      
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER, PROVIDED_NODE );
+   }//End Method
+   
+   @Test public void shouldImportBuiltOnUsingDefaultEvenIfNoNodeInJob(){
+      jenkinsJob.lastBuiltOnProperty().set( null );
+      when( buildingStateResponse.has( NODE_KEY ) ).thenReturn( true );
+      when( buildingStateResponse.optString( NODE_KEY, null ) ).thenReturn( PROVIDED_NODE );
+      
+      systemUnderTest.updateBuildState( jenkinsJob, buildingStateResponse );
+      verifyBuildingStateImportDataIsHandled( true, IMPORTED_ESTIMATED_DURATION, IMPORTED_TIMESTAMP, IMPORTED_BUILD_NUMBER, PROVIDED_NODE );
    }//End Method
    
    /**

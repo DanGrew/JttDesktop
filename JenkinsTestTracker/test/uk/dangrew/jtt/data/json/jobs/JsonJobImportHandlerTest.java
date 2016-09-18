@@ -12,10 +12,14 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static uk.dangrew.jtt.data.json.jobs.JsonJobImportHandler.MASTER_ID;
+import static uk.dangrew.jtt.data.json.jobs.JsonJobImportHandler.MASTER_NAME;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,10 +28,11 @@ import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.api.handling.JenkinsProcessing;
-import uk.dangrew.jtt.data.json.jobs.JsonJobImportHandler;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
+import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
@@ -40,11 +45,14 @@ import uk.dangrew.jtt.utility.mockito.DoAnswerNullReturn;
 public class JsonJobImportHandlerTest {
 
    private static final String USER_NAME = "some user";
+   private static final String NODE_NAME = "some node";
    
    private JenkinsDatabase database;
    @Mock private JenkinsProcessing jenkinsProcessing;
    private JenkinsJob job;
    private JenkinsUser user;
+   private JenkinsNode node;
+   private JenkinsNode masterNode;
    private JsonJobImportHandler systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
@@ -52,6 +60,8 @@ public class JsonJobImportHandlerTest {
       database = new JenkinsDatabaseImpl();
       job = new JenkinsJobImpl( "any job" );
       user = new JenkinsUserImpl( USER_NAME );
+      node = new JenkinsNodeImpl( NODE_NAME );
+      masterNode = new JenkinsNodeImpl( MASTER_NAME );
       systemUnderTest = new JsonJobImportHandler( database, jenkinsProcessing );
    }//End Method
    
@@ -189,6 +199,51 @@ public class JsonJobImportHandlerTest {
       assertThat( database.jenkinsJobs(), hasSize( 2 ) );
       assertThat( database.jenkinsJobs().get( 0 ), is( job ) );
       assertThat( database.jenkinsJobs().get( 1 ).nameProperty().get(), is( newJobName ) );
+   }//End Method
+   
+   @Test public void shouldSetBuiltOnEvenIfNull(){
+      systemUnderTest.handleBuiltOn( job, null );
+      
+      assertThat( database.jenkinsNodes(), hasSize( 0 ) );
+      assertThat( job.lastBuiltOnProperty().get(), is( nullValue() ) );
+   }//End Method
+   
+   @Test public void shouldCreateBuiltOnIfNotPresent(){
+      systemUnderTest.handleBuiltOn( job, NODE_NAME );
+      
+      assertThat( database.jenkinsNodes(), hasSize( 1 ) );
+      assertThat( job.lastBuiltOnProperty().get(), is( database.jenkinsNodes().get( 0 ) ) );
+      assertThat( database.jenkinsNodes().get( 0 ).nameProperty().get(), is( NODE_NAME ) );
+      assertThat( database.jenkinsNodes().get( 0 ), is( not( node ) ) );
+   }//End Method
+   
+   @Test public void shouldUseBuiltOnNodeIfPresentInDatabase(){
+      database.store( node );
+      systemUnderTest.handleBuiltOn( job, NODE_NAME );
+      
+      assertThat( database.jenkinsNodes(), hasSize( 1 ) );
+      assertThat( job.lastBuiltOnProperty().get(), is( database.jenkinsNodes().get( 0 ) ) );
+      assertThat( database.jenkinsNodes().get( 0 ).nameProperty().get(), is( NODE_NAME ) );
+      assertThat( database.jenkinsNodes().get( 0 ), is( node ) );
+   }//End Method   
+   
+   @Test public void shouldInterpretEmptyNameAsMasterAndCreateMasterIfNotPresent(){
+      systemUnderTest.handleBuiltOn( job, MASTER_ID );
+      
+      assertThat( database.jenkinsNodes(), hasSize( 1 ) );
+      assertThat( job.lastBuiltOnProperty().get(), is( database.jenkinsNodes().get( 0 ) ) );
+      assertThat( database.jenkinsNodes().get( 0 ).nameProperty().get(), is( MASTER_NAME ) );
+      assertThat( database.jenkinsNodes().get( 0 ), is( not( masterNode ) ) );
+   }//End Method
+   
+   @Test public void shouldInterpretEmptyNameAsMasterAndUseMasterIfPresent(){
+      database.store( masterNode );
+      systemUnderTest.handleBuiltOn( job, MASTER_ID );
+      
+      assertThat( database.jenkinsNodes(), hasSize( 1 ) );
+      assertThat( job.lastBuiltOnProperty().get(), is( database.jenkinsNodes().get( 0 ) ) );
+      assertThat( database.jenkinsNodes().get( 0 ).nameProperty().get(), is( MASTER_NAME ) );
+      assertThat( database.jenkinsNodes().get( 0 ), is( masterNode ) );
    }//End Method
 
 }//End Class

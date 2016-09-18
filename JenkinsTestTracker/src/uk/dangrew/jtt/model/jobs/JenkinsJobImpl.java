@@ -19,6 +19,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import uk.dangrew.jtt.api.handling.BuildState;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 
@@ -35,6 +36,7 @@ public class JenkinsJobImpl implements JenkinsJob {
    private LongProperty expectedBuildTime;
    private LongProperty currentBuildTime;
    private LongProperty currentBuildTimestamp;
+   private ObjectProperty< JenkinsNode > lastBuiltOn;
    private ObservableList< JenkinsUser > culprits;
    private ObservableList< TestCase > failingTestCases;
    
@@ -43,8 +45,12 @@ public class JenkinsJobImpl implements JenkinsJob {
     * @param name the name of the {@link JenkinsJob}.
     */
    public JenkinsJobImpl( String name ) {
-      if ( name == null ) throw new IllegalArgumentException( "Null name provided for Jenkins Job." );
-      if ( name.trim().length() == 0 ) throw new IllegalArgumentException( "Invalid name provided for Jenkins Job." );
+      if ( name == null ) {
+         throw new IllegalArgumentException( "Null name provided for Jenkins Job." );
+      }
+      if ( name.trim().length() == 0 ) {
+         throw new IllegalArgumentException( "Invalid name provided for Jenkins Job." );
+      }
       
       this.name = new SimpleStringProperty( name );
       lastBuildNumber = new SimpleIntegerProperty( DEFAULT_LAST_BUILD_NUMBER );
@@ -54,6 +60,7 @@ public class JenkinsJobImpl implements JenkinsJob {
       expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
       currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
       currentBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
+      lastBuiltOn = new SimpleObjectProperty<>( DEFAULT_LAST_BUILT_ON );
       culprits = FXCollections.observableArrayList();
       failingTestCases = FXCollections.observableArrayList();
    }//End Constructor
@@ -112,6 +119,13 @@ public class JenkinsJobImpl implements JenkinsJob {
     */
    @Override public LongProperty currentBuildTimestampProperty() {
       return currentBuildTimestamp;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObjectProperty< JenkinsNode > lastBuiltOnProperty() {
+      return lastBuiltOn;
    }//End Method
    
    /**

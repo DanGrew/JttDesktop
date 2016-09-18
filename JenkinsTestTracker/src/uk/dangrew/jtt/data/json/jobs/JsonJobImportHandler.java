@@ -13,6 +13,8 @@ import uk.dangrew.jtt.api.handling.JenkinsFetcher;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
+import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
@@ -21,6 +23,9 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
  * {@link JenkinsDatabase} model.
  */
 public class JsonJobImportHandler {
+   
+   static final String MASTER_ID = "";
+   static final String MASTER_NAME = "Master Node";
    
    private final JenkinsDatabase database;
    private final JenkinsFetcher jenkinsFetcher;
@@ -32,8 +37,12 @@ public class JsonJobImportHandler {
     * be updated.
     */
    JsonJobImportHandler( JenkinsDatabase database, JenkinsFetcher jenkinsFetcher ) {
-      if ( database == null ) throw new IllegalArgumentException( "Null database provided." );
-      if ( jenkinsFetcher == null ) throw new IllegalArgumentException( "Null fetcher provided." );
+      if ( database == null ) {
+         throw new IllegalArgumentException( "Null database provided." );
+      }
+      if ( jenkinsFetcher == null ) {
+         throw new IllegalArgumentException( "Null fetcher provided." );
+      }
       
       this.database = database;
       this.jenkinsFetcher = jenkinsFetcher;
@@ -82,6 +91,31 @@ public class JsonJobImportHandler {
       if ( jenkinsJob.buildStateProperty().get() == BuildState.Built ) {
          jenkinsJob.lastBuildNumberProperty().set( buildNumber );   
       }
+   }//End Method
+   
+   /**
+    * Method to handle the imported node the job was last built on..
+    * @param jenkinsJob the {@link JenkinsJob} to be updated.
+    * @param builtOn the name of the node last built on. Can be null, empty, or otherwise.
+    */
+   void handleBuiltOn( JenkinsJob jenkinsJob, String builtOn ) {
+      JenkinsNode node;
+      if ( builtOn == null ) {
+         node = null;
+      } else if ( builtOn.equals( MASTER_ID ) ) {
+         node = database.getJenkinsNode( MASTER_NAME );
+         if ( node == null ) {
+            node = new JenkinsNodeImpl( MASTER_NAME );
+            database.store( node );
+         }
+      } else {
+         node = database.getJenkinsNode( builtOn );
+         if ( node == null ) {
+            node = new JenkinsNodeImpl( builtOn );
+            database.store( node );
+         }
+      }
+      jenkinsJob.lastBuiltOnProperty().set( node );
    }//End Method
 
    /**

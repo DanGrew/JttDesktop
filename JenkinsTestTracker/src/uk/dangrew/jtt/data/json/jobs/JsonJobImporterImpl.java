@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import uk.dangrew.jtt.api.handling.JenkinsFetcher;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
@@ -24,6 +25,7 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 public class JsonJobImporterImpl implements JsonJobImporter {
    
    static final String BUILDING_KEY = "building";
+   static final String NODE_KEY = "builtOn";
    static final String ESTIMATED_DURATION_KEY = "estimatedDuration";
    static final String TIMESTAMP_KEY = "timestamp";
    static final String NUMBER_KEY = "number";
@@ -87,6 +89,12 @@ public class JsonJobImporterImpl implements JsonJobImporter {
       if ( object.has( NUMBER_KEY ) ) {
          int buildNumber = object.optInt( NUMBER_KEY, jenkinsJob.currentBuildNumberProperty().get() );
          handler.handleBuildNumber( jenkinsJob, buildNumber );
+      }
+      
+      if ( object.has( NODE_KEY ) ) {
+         JenkinsNode previousNode = jenkinsJob.lastBuiltOnProperty().get();
+         String builtOn = object.optString( NODE_KEY, previousNode == null ? null : previousNode.nameProperty().get() );
+         handler.handleBuiltOn( jenkinsJob, builtOn );
       }
    }//End Method
 

@@ -14,6 +14,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import uk.dangrew.jtt.api.handling.BuildState;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 
@@ -31,6 +32,7 @@ public interface JenkinsJob {
    public static final long DEFAULT_EXPECTED_BUILD_TIME = 0;
    public static final long DEFAULT_BUILD_TIMESTAMP = 0;
    public static final boolean DEFAULT_TEST_RESULTS_ARE_SYNC = false;
+   public static final JenkinsNode DEFAULT_LAST_BUILT_ON = null;
 
    /**
     * Provides the name {@link StringProperty} of the {@link JenkinsJob}.
@@ -81,6 +83,12 @@ public interface JenkinsJob {
     * @return the {@link LongProperty}.
     */
    public LongProperty currentBuildTimestampProperty();
+   
+   /**
+    * Provides the {@link JenkinsNode} the job was last built on.
+    * @return the {@link ObjectProperty}. Note that the node can be null.
+    */
+   public ObjectProperty< JenkinsNode > lastBuiltOnProperty();
    
    /**
     * Provides an {@link ObservableList} of {@link JenkinsUser} culprits for the failure of the
