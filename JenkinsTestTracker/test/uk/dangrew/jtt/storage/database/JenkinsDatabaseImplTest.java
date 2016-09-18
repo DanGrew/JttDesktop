@@ -20,6 +20,8 @@ import org.junit.Test;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
+import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
@@ -35,25 +37,33 @@ public class JenkinsDatabaseImplTest {
    private static final String TEST_CLASS_LOCATION = "anywhere";
    private static final String JENKINS_JOB_NAME = "job name";
    private static final String JENKINS_USER_NAME = "user name";
+   private static final String JENKINS_NODE_NAME = "node name";
    private JenkinsDatabase systemUnderTest;
    private TestClass testClass;
    private JenkinsJob jenkinsJob;
    private JenkinsUser jenkinsUser;
+   private JenkinsNode jenkinsNode;
    
    /**
     * Method to initialise the {@link JenkinsDatabase} system under test.
     */
    @Before public void initialiseSystemUnderTest(){
       systemUnderTest = new JenkinsDatabaseImpl();
+      testClass = new TestClassImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION );
+      jenkinsJob = new JenkinsJobImpl( JENKINS_JOB_NAME );
+      jenkinsUser = new JenkinsUserImpl( JENKINS_USER_NAME );
+      jenkinsNode = new JenkinsNodeImpl( JENKINS_NODE_NAME );
+   }//End Method
+   
+   @Test public void shouldBeEmptyInitially(){
       Assert.assertTrue( systemUnderTest.hasNoTestClasses() );
       Assert.assertTrue( systemUnderTest.hasNoJenkinsJobs() );
+      Assert.assertTrue( systemUnderTest.hasNoJenkinsNodes() );
       
-      testClass = new TestClassImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION );
       Assert.assertFalse( systemUnderTest.hasTestClass( new TestClassKeyImpl( TEST_CLASS_NAME, TEST_CLASS_LOCATION ) ) );
-      jenkinsJob = new JenkinsJobImpl( JENKINS_JOB_NAME );
       Assert.assertFalse( systemUnderTest.hasJenkinsJob( JENKINS_JOB_NAME ) );
-      jenkinsUser = new JenkinsUserImpl( JENKINS_USER_NAME );
       Assert.assertFalse( systemUnderTest.hasJenkinsUser( JENKINS_USER_NAME ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
    }//End Method
    
    /**
@@ -440,5 +450,121 @@ public class JenkinsDatabaseImplTest {
    @Test public void shouldContainJenkinsUser(){
       systemUnderTest.store( jenkinsUser );
       Assert.assertTrue( systemUnderTest.containsJenkinsUser( jenkinsUser ) );
+   }//End Method
+   
+   @Test public void shouldProvideJenkinsNodes(){
+      Assert.assertNotNull( systemUnderTest.jenkinsNodes() );
+      Assert.assertTrue( systemUnderTest.jenkinsNodes().isEmpty() );
+      JenkinsNode anotherUser = new JenkinsNodeImpl( "some random user" );
+      systemUnderTest.store( anotherUser );
+      Assert.assertFalse( systemUnderTest.jenkinsNodes().isEmpty() );
+      Assert.assertTrue( systemUnderTest.jenkinsNodes().contains( anotherUser ) );
+   }//End Method
+   
+   @Test public void shouldStoreJenkinsNode() {
+      systemUnderTest.store( jenkinsNode );
+      Assert.assertTrue( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( 1, systemUnderTest.jenkinsNodes().size() );
+      Assert.assertTrue( systemUnderTest.jenkinsNodes().contains( jenkinsNode ) );
+   }//End Method
+   
+   @Test public void shouldRetrieveJenkinsNode() {
+      systemUnderTest.store( jenkinsNode );
+      Assert.assertTrue( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( jenkinsNode, systemUnderTest.getJenkinsNode( JENKINS_NODE_NAME ) );
+   }//End Method
+   
+   @Test public void shouldRetrieveOnlyMatchingJenkinsNode() {
+      systemUnderTest.store( new JenkinsNodeImpl( "something else" ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertNull( systemUnderTest.getJenkinsNode( JENKINS_NODE_NAME ) );
+   }//End Method
+   
+   @Test public void shouldOverwriteDuplicateJenkinsNode() {
+      systemUnderTest.store( jenkinsNode );
+      Assert.assertTrue( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( 1, systemUnderTest.jenkinsNodes().size() );
+      Assert.assertTrue( systemUnderTest.jenkinsNodes().contains( jenkinsNode ) );
+      
+      JenkinsNode alternate = new JenkinsNodeImpl( JENKINS_NODE_NAME );
+      systemUnderTest.store( alternate );
+      Assert.assertEquals( alternate, systemUnderTest.getJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( 1, systemUnderTest.jenkinsNodes().size() );
+      Assert.assertTrue( systemUnderTest.jenkinsNodes().contains( alternate ) );
+   }//End Method
+   
+   @Test public void shouldNotStoreNullJenkinsNode(){
+      JenkinsNode nullUser = null;
+      systemUnderTest.store( nullUser );
+      Assert.assertTrue( systemUnderTest.hasNoJenkinsNodes() );
+   }//End Method
+   
+   @Test public void shouldNotHasNullJenkinsNode(){
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( null ) );
+   }//End Method
+
+   @Test public void shouldNotGetNullJenkinsNode(){
+      Assert.assertNull( systemUnderTest.getJenkinsNode( null ) );
+   }//End Method
+   
+   @Test public void shouldRemoveJenkinsNodeUsingKey(){
+      systemUnderTest.store( jenkinsNode );
+      Assert.assertTrue( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( jenkinsNode, systemUnderTest.removeJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( 0, systemUnderTest.jenkinsNodes().size() );
+   }//End Method
+   
+   @Test public void shouldRemoveJenkinsNodeUsingInstance(){
+      systemUnderTest.store( jenkinsNode );
+      Assert.assertTrue( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertTrue( systemUnderTest.removeJenkinsNode( jenkinsNode ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( 0, systemUnderTest.jenkinsNodes().size() );
+   }//End Method
+   
+   @Test public void shouldNotRemoveJenkinsNodeUsingInstance(){
+      Assert.assertFalse( systemUnderTest.removeJenkinsNode( jenkinsNode ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+   }//End Method
+   
+   @Test public void shouldNotRemoveJenkinsNodeIfNonePresent(){
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertNull( systemUnderTest.removeJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( 0, systemUnderTest.jenkinsNodes().size() );
+   }//End Method
+   
+   @Test public void shouldNotRemoveJenkinsNodeIfNotPresent(){
+      systemUnderTest.store( jenkinsNode );
+      Assert.assertTrue( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertNull( systemUnderTest.removeJenkinsNode( "something not defined" ) );
+      Assert.assertTrue( systemUnderTest.hasJenkinsNode( JENKINS_NODE_NAME ) );
+      Assert.assertEquals( 1, systemUnderTest.jenkinsNodes().size() );
+      Assert.assertTrue( systemUnderTest.jenkinsNodes().contains( jenkinsNode ) );
+   }//End Method
+   
+   @Test public void shouldNotRemoveNullJenkinsNodeWithKey(){
+      String name = null;
+      Assert.assertNull( systemUnderTest.removeJenkinsNode( name ) );
+   }//End Method
+   
+   @Test public void shouldNotRemoveNullJenkinsNodeWithInstance(){
+      JenkinsNode user = null;
+      Assert.assertFalse( systemUnderTest.removeJenkinsNode( user ) );
+   }//End Method
+   
+   @Test public void shouldNotStoreJenkinsNodeWithNoName(){
+      jenkinsNode.nameProperty().set( null );
+      systemUnderTest.store( jenkinsNode );
+      Assert.assertTrue( systemUnderTest.hasNoJenkinsNodes() );
+      Assert.assertTrue( systemUnderTest.jenkinsNodes().isEmpty() );
+      Assert.assertFalse( systemUnderTest.hasJenkinsNode( null ) );
+      Assert.assertNull( systemUnderTest.getJenkinsNode( null ) );
+   }//End Method   
+   
+   @Test public void shouldContainJenkinsNode(){
+      systemUnderTest.store( jenkinsNode );
+      Assert.assertTrue( systemUnderTest.containsJenkinsNode( jenkinsNode ) );
    }//End Method
 }//End Class
