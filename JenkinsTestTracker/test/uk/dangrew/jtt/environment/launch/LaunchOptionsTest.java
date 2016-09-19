@@ -10,6 +10,7 @@ package uk.dangrew.jtt.environment.launch;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -72,8 +73,8 @@ public class LaunchOptionsTest {
       SystemStyling.initialise();
       MockitoAnnotations.initMocks( this );
       configuration = new SystemConfiguration();
-      window = spy( new EnvironmentWindowWithExposedWidth( configuration, database, digest ) );
       database = new JenkinsDatabaseImpl();
+      window = spy( new EnvironmentWindowWithExposedWidth( configuration, database, digest ) );
       systemUnderTest = new LaunchOptions( window, configuration, database, digest );
    }//End Method
 
@@ -150,6 +151,10 @@ public class LaunchOptionsTest {
       window.setHeight( 102 );
       assertThat( wrapper.getMinHeight(), is( 102.0 ) );
       assertThat( wrapper.getMaxHeight(), is( 102.0 ) );
+   }//End Method
+   
+   @Test public void shouldHaveNotificationCenter(){
+      assertThat( systemUnderTest.notificationCenter(), is( notNullValue() ) );
    }//End Method
 
 }//End Class

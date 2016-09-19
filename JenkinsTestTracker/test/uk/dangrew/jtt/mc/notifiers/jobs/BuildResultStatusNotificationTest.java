@@ -8,18 +8,25 @@
  */
 package uk.dangrew.jtt.mc.notifiers.jobs;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.controlsfx.control.Notifications;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
@@ -33,7 +40,8 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
  */
 public class BuildResultStatusNotificationTest {
 
-   @Mock private ChangeIdentifier changeIdentifier;
+   @Mock private BuildResultStatusDesktopNotification desktopNotification;
+   @Spy private ChangeIdentifier changeIdentifier;
    private JenkinsJob job;
    private BuildResultStatusNotification systemUnderTest;
    
@@ -41,7 +49,7 @@ public class BuildResultStatusNotificationTest {
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
       job = new JenkinsJobImpl( "JenkinsJob" );
-      systemUnderTest = new BuildResultStatusNotification( job, BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS );
+      systemUnderTest = new BuildResultStatusNotification( changeIdentifier, desktopNotification, job, BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS );
    }//End Method
    
    @Test public void shouldProvideAssoicatedJob() {
@@ -87,6 +95,42 @@ public class BuildResultStatusNotificationTest {
       assertThat( systemUnderTest.getDescription(), is( systemUnderTest.formatBuildResultStatusChange( 
                systemUnderTest.getPreviousBuildResultStatus(), systemUnderTest.getNewBuildResultStatus() ) 
       ) );
+   }//End Method
+   
+   @Test public void shouldProvideChangeViaChangeIdentifier(){
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.ActionRequired );
+      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusChange.ActionRequired ) );
+      
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.Passed );
+      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusChange.Passed ) );
+      
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.Unchanged );
+      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusChange.Unchanged ) );
+   }//End Method
+   
+   @Test public void shouldShowDesktopNotificationWithNewNotifications(){
+      ArgumentCaptor< Notifications > captor = ArgumentCaptor.forClass( Notifications.class );
+      
+      systemUnderTest.showDesktopNotification();
+      verify( desktopNotification ).showNotification( 
+               Mockito.eq( systemUnderTest ), Mockito.any(), Mockito.eq( BuildResultStatusNotification.NOTIFICATION_DELAY ) 
+      );
+      systemUnderTest.showDesktopNotification();
+      verify( desktopNotification, times( 2 ) ).showNotification( 
+               Mockito.eq( systemUnderTest ), Mockito.any(), Mockito.eq( BuildResultStatusNotification.NOTIFICATION_DELAY ) 
+      );
+      systemUnderTest.showDesktopNotification();
+      verify( desktopNotification, times( 3 ) ).showNotification( 
+               Mockito.eq( systemUnderTest ), captor.capture(), Mockito.eq( BuildResultStatusNotification.NOTIFICATION_DELAY ) 
+      );
+      
+      assertThat( captor.getAllValues(), hasSize( 3 ) );
+      Notifications first = captor.getAllValues().get( 0 );
+      Notifications second = captor.getAllValues().get( 1 );
+      Notifications third = captor.getAllValues().get( 2 );
+      
+      assertThat( first, is( not( second ) ) );
+      assertThat( second, is( not( third ) ) );
    }//End Method
    
 }//End Class

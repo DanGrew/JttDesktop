@@ -18,7 +18,7 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
  */
 public class BuildResultStatusNotifier {
 
-   private NotificationEvent events;
+   private final NotificationEvent events;
    private final JenkinsDatabase database;
    
    /**

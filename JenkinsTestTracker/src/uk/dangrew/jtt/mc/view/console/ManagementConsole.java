@@ -39,9 +39,6 @@ public class ManagementConsole extends BorderPane {
    public ManagementConsole( JenkinsDatabase database ) {
       NotificationTree notifications = new NotificationTree( database );
       
-      //not tested - to be wrapped with others
-      new BuildResultStatusNotifier( database );
-      
       this.jobsNotificationsSplit = new SplitPane( new JobProgressTree( database ), notifications );
       this.jobsNotificationsSplit.setDividerPositions( PROGRESS_DIVIDER_POSITION );
       

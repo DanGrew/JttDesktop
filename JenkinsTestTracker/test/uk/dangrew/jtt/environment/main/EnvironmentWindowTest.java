@@ -26,6 +26,7 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -34,7 +35,7 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
 public class EnvironmentWindowTest {
 
    private SystemConfiguration configuration;
-   @Mock private JenkinsDatabase database;
+   private JenkinsDatabase database;
    @Mock private DigestViewer digest;
    private EnvironmentWindow systemUnderTest;
    
@@ -42,6 +43,7 @@ public class EnvironmentWindowTest {
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
+      database = new JenkinsDatabaseImpl();
       configuration = new SystemConfiguration();
       systemUnderTest = new EnvironmentWindow( configuration, database, digest );
    }//End Method

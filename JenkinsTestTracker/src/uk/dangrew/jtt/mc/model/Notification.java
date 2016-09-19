@@ -30,4 +30,9 @@ public interface Notification {
     */
    public NotificationTreeItem constructTreeItem( NotificationTreeController controller );
 
+   /**
+    * Method to show a desktop notification for the {@link Notification}.
+    */
+   public void showDesktopNotification();
+   
 }//End Interface

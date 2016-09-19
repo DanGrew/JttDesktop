@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
+import uk.dangrew.jtt.mc.NotificationCenter;
 import uk.dangrew.jtt.mc.view.console.ManagementConsole;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
@@ -32,6 +33,7 @@ public class LaunchOptions extends VBox {
    private final SystemConfiguration configuration;
    private final JenkinsDatabase database;
    private final DigestViewer digest;
+   private final NotificationCenter notificationCenter;
    
    private final Button buildWallButton;
    private final Button managementConsoleButton;
@@ -48,6 +50,7 @@ public class LaunchOptions extends VBox {
       this.configuration = configuration;
       this.database = database;
       this.digest = digest;
+      this.notificationCenter = new NotificationCenter( database );
       
       this.buildWallButton = new Button( BUILD_WALL_BUTTON_TEXT );
       this.buildWallButton.setMaxWidth( Double.MAX_VALUE );
@@ -104,5 +107,9 @@ public class LaunchOptions extends VBox {
    
    Button buildWallButton() {
       return buildWallButton;
+   }//End Method
+   
+   NotificationCenter notificationCenter(){
+      return notificationCenter;
    }//End Method
 }//End Class
