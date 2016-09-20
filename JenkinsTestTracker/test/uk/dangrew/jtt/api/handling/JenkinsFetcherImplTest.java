@@ -24,10 +24,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.api.handling.BuildState;
-import uk.dangrew.jtt.api.handling.JenkinsFetcher;
-import uk.dangrew.jtt.api.handling.JenkinsFetcherDigest;
-import uk.dangrew.jtt.api.handling.JenkinsFetcherImpl;
+import javafx.util.Pair;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -54,7 +51,7 @@ public class JenkinsFetcherImplTest {
       MockitoAnnotations.initMocks( this );
       database = new JenkinsDatabaseImpl();
       jenkinsJob = new JenkinsJobImpl( "JenkinsJob" );
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.FAILURE );
       jenkinsUser = new JenkinsUserImpl( "JenkinsUser" );
       database.store( jenkinsJob );
       database.store( jenkinsUser );
@@ -100,11 +97,11 @@ public class JenkinsFetcherImplTest {
       Assert.assertNotNull( response );
       Mockito.when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( response );
       
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
+      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
       systemUnderTest.updateJobDetails( jenkinsJob );
-      Assert.assertEquals( 22, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.SUCCESS, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( 22, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
+      Assert.assertEquals( BuildResultStatus.SUCCESS, jenkinsJob.lastBuildProperty().get().getValue() );
       
       InOrder digestOrdering = inOrder( digest, externalApi );
       digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
@@ -118,11 +115,11 @@ public class JenkinsFetcherImplTest {
       Assert.assertNotNull( buildingResponse );
       Mockito.when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
 
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
+      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
       systemUnderTest.updateJobDetails( jenkinsJob );
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
+      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
       
       verify( externalApi, Mockito.times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
       
@@ -139,9 +136,9 @@ public class JenkinsFetcherImplTest {
       String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
       when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
 
-      jenkinsJob.lastBuildNumberProperty().set( 22 );
+      jenkinsJob.lastBuildProperty().set( new Pair<>( 22, BuildResultStatus.ABORTED ) );
       systemUnderTest.updateJobDetails( jenkinsJob );
-      assertEquals( 23, jenkinsJob.lastBuildNumberProperty().get() );
+      assertEquals( 23, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
       assertEquals( 24, jenkinsJob.currentBuildNumberProperty().get() );
    }//End Method
    
@@ -151,11 +148,10 @@ public class JenkinsFetcherImplTest {
       String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
       when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
 
-      jenkinsJob.lastBuildNumberProperty().set( 23 );
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      jenkinsJob.lastBuildProperty().set( new Pair<>( 23, BuildResultStatus.FAILURE ) );
       systemUnderTest.updateJobDetails( jenkinsJob );
-      assertEquals( 23, jenkinsJob.lastBuildNumberProperty().get() );
-      assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      assertEquals( 23, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
+      assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
       assertEquals( 24, jenkinsJob.currentBuildNumberProperty().get() );
    }//End Method
    
@@ -165,17 +161,17 @@ public class JenkinsFetcherImplTest {
       String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
       when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
 
-      assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
+      assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
       systemUnderTest.updateJobDetails( jenkinsJob );
-      assertEquals( 23, jenkinsJob.lastBuildNumberProperty().get() );
+      assertEquals( 23, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
    }//End Method
    
    @Test public void shouldNotUpdateJobDetailsWhenNullJob() {
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
+      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
       systemUnderTest.updateJobDetails( null );
-      Assert.assertEquals( 0, jenkinsJob.lastBuildNumberProperty().get() );
-      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildStatusProperty().get() );
+      Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
+      Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
       
       verify( externalApi, times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
       verify( externalApi, times( 0 ) ).getLastBuildBuildingState( Mockito.any() );

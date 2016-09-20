@@ -17,8 +17,6 @@ import java.util.function.Function;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
-import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
 
 /**
@@ -94,7 +92,7 @@ public class GlobalPropertyListenerImpl< ObjectTypeT, PropertyTypeT > {
     * Method to remove the given listener from this.
     * @param listener the {@link JttChangeListener} to remove.
     */
-   void removeListener( JttChangeListener< JenkinsJob, BuildResultStatus > listener ) {
+   void removeListener( JttChangeListener< ObjectTypeT, PropertyTypeT > listener ) {
       listeners.remove( listener );
    }//End Method
 

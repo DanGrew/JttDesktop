@@ -48,7 +48,7 @@ public class JobProgressImpl extends BorderPane {
                job.expectedBuildTimeProperty(), ( source, old, updated ) -> updateProgress( job ) 
       ) );
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               job.lastBuildStatusProperty(), ( source, old, updated ) -> updateStyle( job ) 
+               job.lastBuildProperty(), ( source, old, updated ) -> updateStyle( job ) 
       ) );
       updateStyle( job );
    }//End Class
@@ -59,7 +59,7 @@ public class JobProgressImpl extends BorderPane {
     * @param job the {@link JenkinsJob} to update for.
     */
    private void updateStyle( JenkinsJob job ) {
-      switch ( job.lastBuildStatusProperty().get() ) {
+      switch ( job.lastBuildProperty().get().getValue() ) {
          case ABORTED:
             SystemStyling.applyStyle( BuildWallStyles.ProgressBarAborted, progress );
             break;

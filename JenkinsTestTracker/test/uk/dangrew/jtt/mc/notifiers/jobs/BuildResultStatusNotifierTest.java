@@ -51,7 +51,7 @@ public class BuildResultStatusNotifierTest {
    }//End Method
    
    @Test public void shouldRaiseEventWhenJobStateChanges() {
-      job.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
       verify( notificationSubscriber ).notify( notificationCaptor.capture() );
       
       BuildResultStatusNotification notification = ( BuildResultStatusNotification ) notificationCaptor.getValue().getValue();
@@ -60,10 +60,20 @@ public class BuildResultStatusNotifierTest {
       assertThat( notification.getNewBuildResultStatus(), is( BuildResultStatus.SUCCESS ) );
    }//End Method   
    
+   @Test public void shouldRaiseEventWhenJobNumberChanges() {
+      job.setLastBuildNumber( 20 );
+      verify( notificationSubscriber ).notify( notificationCaptor.capture() );
+      
+      BuildResultStatusNotification notification = ( BuildResultStatusNotification ) notificationCaptor.getValue().getValue();
+      assertThat( notification.getJenkinsJob(), is( job ) );
+      assertThat( notification.getPreviousBuildResultStatus(), is( BuildResultStatus.NOT_BUILT ) );
+      assertThat( notification.getNewBuildResultStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+   }//End Method   
+   
    @Test public void shouldRaiseEventWhenNewJobStateChanges() {
       JenkinsJob newJob = new JenkinsJobImpl( "something new" );
       database.store( newJob );
-      newJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      newJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
       
       verify( notificationSubscriber ).notify( notificationCaptor.capture() );
       

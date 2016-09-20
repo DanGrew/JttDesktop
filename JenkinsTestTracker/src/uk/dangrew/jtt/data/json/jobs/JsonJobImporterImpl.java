@@ -88,7 +88,7 @@ public class JsonJobImporterImpl implements JsonJobImporter {
       
       if ( object.has( NUMBER_KEY ) ) {
          int buildNumber = object.optInt( NUMBER_KEY, jenkinsJob.currentBuildNumberProperty().get() );
-         handler.handleBuildNumber( jenkinsJob, buildNumber );
+         handler.handleCurrentBuildNumber( jenkinsJob, buildNumber );
       }
       
       if ( object.has( NODE_KEY ) ) {
@@ -107,8 +107,12 @@ public class JsonJobImporterImpl implements JsonJobImporter {
          return;
       }
 
-      if ( !object.has( NUMBER_KEY ) ) return;
-      if ( !object.has( RESULT_KEY ) ) return;
+      if ( !object.has( NUMBER_KEY ) ) {
+         return;
+      }
+      if ( !object.has( RESULT_KEY ) ) {
+         return;
+      }
       
       int lastBuildNumber = object.optInt( NUMBER_KEY, jenkinsJob.currentBuildNumberProperty().get() );
       BuildResultStatus lastBuildResult = object.optEnum( BuildResultStatus.class, RESULT_KEY );

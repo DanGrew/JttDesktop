@@ -34,10 +34,10 @@ public class GlobalPropertyListenerImplTest {
    private JenkinsJob job2;
    private JenkinsJob job3;
    
-   private GlobalPropertyListenerImpl< JenkinsJob, BuildResultStatus > systemUnderTest;
+   private GlobalPropertyListenerImpl< JenkinsJob, Pair< Integer, BuildResultStatus > > systemUnderTest;
    
    private List< Pair< JenkinsJob, BuildResultStatus > > buildResultStatusNotifications;
-   private JttChangeListener< JenkinsJob, BuildResultStatus > buildResultListener;
+   private JttChangeListener< JenkinsJob, Pair< Integer, BuildResultStatus > > buildResultListener;
    
    @Before public void initialiseSystemUnderTest(){
       databaseJobs = FXCollections.observableArrayList();
@@ -47,18 +47,18 @@ public class GlobalPropertyListenerImplTest {
       databaseJobs.addAll( job1, job2, job3 );
       
       buildResultStatusNotifications = new ArrayList<>();
-      buildResultListener = ( job, old, updated ) -> buildResultStatusNotifications.add( new Pair< JenkinsJob, BuildResultStatus >( job, updated ) );
+      buildResultListener = ( job, old, updated ) -> buildResultStatusNotifications.add( new Pair<>( job, updated.getValue() ) );
       
       systemUnderTest = new GlobalPropertyListenerImpl<>( 
                databaseJobs,
-               job -> { return job.lastBuildStatusProperty(); } 
+               job -> { return job.lastBuildProperty(); } 
       );
       systemUnderTest.addListener( buildResultListener );
    }//End Method
    
    @Test public void shouldDetectChangeInItemsAlreadyPresent() {
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
-      job1.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
       
       assertNextResult( job1, BuildResultStatus.SUCCESS );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
@@ -66,7 +66,7 @@ public class GlobalPropertyListenerImplTest {
    
    @Test public void shouldNotNotifyLastBuildResultStatusWhenSameValueSet() {
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
-      job1.lastBuildStatusProperty().set( job1.lastBuildStatusProperty().get() );
+      job1.setLastBuildStatus( job1.lastBuildProperty().get().getValue() );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
    }//End Method
    
@@ -75,7 +75,7 @@ public class GlobalPropertyListenerImplTest {
       
       JenkinsJob addedJob = new JenkinsJobImpl( "another job" );
       databaseJobs.add( addedJob );
-      addedJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      addedJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
       
       assertNextResult( addedJob, BuildResultStatus.SUCCESS );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
@@ -85,7 +85,7 @@ public class GlobalPropertyListenerImplTest {
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
       
       databaseJobs.remove( job1 );
-      job1.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
       
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
    }//End Method
@@ -96,7 +96,7 @@ public class GlobalPropertyListenerImplTest {
       databaseJobs.add( job1 );
       databaseJobs.add( job1 );
       databaseJobs.add( job1 );
-      job1.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
       
       assertNextResult( job1, BuildResultStatus.SUCCESS );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
@@ -110,7 +110,7 @@ public class GlobalPropertyListenerImplTest {
    @Test public void shouldAllowListenersToBeRemoved() {
       systemUnderTest.removeListener( buildResultListener );
       
-      job1.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
    }//End Method
    

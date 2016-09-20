@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.buildwall.effects.triggers;
 
+import javafx.util.Pair;
 import uk.dangrew.jtt.buildwall.effects.flasher.control.ImageFlasherControls;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -38,8 +39,8 @@ public class JobFailureTrigger {
     * @param old the old status.
     * @param updated the new status.
     */
-   private void handleJobStatusChange( JenkinsJob job, BuildResultStatus old, BuildResultStatus updated ) {
-      switch ( updated ) {
+   private void handleJobStatusChange( JenkinsJob job, Pair< Integer, BuildResultStatus > old, Pair< Integer, BuildResultStatus > updated ) {
+      switch ( updated.getValue() ) {
          case ABORTED:
          case FAILURE:
          case UNSTABLE:

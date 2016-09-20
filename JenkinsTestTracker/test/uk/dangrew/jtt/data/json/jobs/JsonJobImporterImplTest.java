@@ -153,9 +153,9 @@ public class JsonJobImporterImplTest {
       }
       
       if ( number == null ) {
-         verify( handler, never() ).handleBuildNumber( Mockito.any(), Mockito.anyInt() );
+         verify( handler, never() ).handleCurrentBuildNumber( Mockito.any(), Mockito.anyInt() );
       } else {
-         verify( handler, times( 1 ) ).handleBuildNumber( jenkinsJob, number );
+         verify( handler, times( 1 ) ).handleCurrentBuildNumber( jenkinsJob, number );
       }
       
       if ( builtOn == null ) {

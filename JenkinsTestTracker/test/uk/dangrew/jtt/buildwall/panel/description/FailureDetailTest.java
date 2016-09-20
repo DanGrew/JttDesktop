@@ -26,9 +26,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Pair;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.buildwall.panel.description.FailureDetail;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
@@ -69,7 +69,7 @@ public class FailureDetailTest {
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       
       jenkinsJob = new JenkinsJobImpl( "Some Job" );
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.UNSTABLE );
       
       rick = new JenkinsUserImpl( "Rick" );
       daryl = new JenkinsUserImpl( "Daryl" );
@@ -176,13 +176,13 @@ public class FailureDetailTest {
    
    @Test public void shouldShowAbortedDescriptionWhenAborted(){
       jenkinsJob.failingTestCases().clear();
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.ABORTED );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.ABORTED_DESCRIPTION ) );
    }//End Method
    
    @Test public void shouldShowFailureDescriptionWhenFailed(){
       jenkinsJob.failingTestCases().clear();
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.FAILURE_DESCRIPTION ) );
    }//End Method
    
@@ -541,26 +541,26 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.failuresLabel().getLineSpacing(), is( 0.0 ) );
    }//End Method
    
-   @Test public void shouldUpdateFailuresWhenJobBuildStatusChanges(){
+   @Test public void shouldUpdateFailuresWhenJobBuildChanges(){
       jenkinsJob.failingTestCases().clear();
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.NO_FAILING_TESTS ) );
       
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.ABORTED );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.ABORTED_DESCRIPTION ) );
 
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.FAILURE_DESCRIPTION ) );
       
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.NO_FAILING_TESTS ) );
    }//End Method
    
-   @Test public void shouldDetachFailuresBuildStatusListenerFromSystem(){
+   @Test public void shouldDetachFailuresBuildListenerFromSystem(){
       jenkinsJob.failingTestCases().clear();
       
       systemUnderTest.detachFromSystem();
       
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.ABORTED );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.NO_FAILING_TESTS ) );
    }//End Method
    

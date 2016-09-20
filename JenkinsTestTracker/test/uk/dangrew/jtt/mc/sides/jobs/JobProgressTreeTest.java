@@ -57,11 +57,11 @@ public class JobProgressTreeTest {
       JenkinsJob jobC = new JenkinsJobImpl( "Extra Job" );
       database.store( jobC );
       
-      jobB.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      jobB.setLastBuildStatus( BuildResultStatus.SUCCESS );
       jobB.currentBuildTimeProperty().set( 100 );
       jobB.expectedBuildTimeProperty().set( 200 );
       
-      jobC.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      jobC.setLastBuildStatus( BuildResultStatus.UNSTABLE );
       jobC.currentBuildTimeProperty().set( 75 );
       jobC.expectedBuildTimeProperty().set( 100 );
       

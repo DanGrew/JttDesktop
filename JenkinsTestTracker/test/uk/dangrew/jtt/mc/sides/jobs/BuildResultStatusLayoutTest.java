@@ -67,12 +67,12 @@ public class BuildResultStatusLayoutTest {
    }//End Method
    
    @Test public void shouldLayoutJobsAccordingToBuildResultStatusAlphabetically() {
-      jobA.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
-      jobB.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
-      jobC.lastBuildStatusProperty().set( BuildResultStatus.NOT_BUILT );
-      jobD.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-      jobE.lastBuildStatusProperty().set( BuildResultStatus.UNKNOWN );
-      jobF.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      jobA.setLastBuildStatus( BuildResultStatus.ABORTED );
+      jobB.setLastBuildStatus( BuildResultStatus.FAILURE );
+      jobC.setLastBuildStatus( BuildResultStatus.NOT_BUILT );
+      jobD.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      jobE.setLastBuildStatus( BuildResultStatus.UNKNOWN );
+      jobF.setLastBuildStatus( BuildResultStatus.UNSTABLE );
       
       systemUnderTest.reconstructTree( Arrays.asList( 
                jobA, jobB, jobC, jobD, jobE, jobF 
@@ -104,9 +104,9 @@ public class BuildResultStatusLayoutTest {
    }//End Method
    
    @Test public void shouldGroupdJobsOfSameStatus() {
-      jobA.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-      jobB.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
-      jobC.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      jobA.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      jobB.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      jobC.setLastBuildStatus( BuildResultStatus.SUCCESS );
       
       systemUnderTest.reconstructTree( Arrays.asList( jobA, jobB, jobC ) );
       
@@ -185,7 +185,7 @@ public class BuildResultStatusLayoutTest {
    @Test public void shouldUpdateJobPositionWhenStatusChanges() {
       systemUnderTest.reconstructTree( Arrays.asList( jobA, jobB, jobC ) );
       
-      jobB.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      jobB.setLastBuildStatus( BuildResultStatus.SUCCESS );
       systemUnderTest.update( jobB );
       assertJobPresent( jobA, 0 );
       assertJobPresent( jobC, 1 );
@@ -196,7 +196,7 @@ public class BuildResultStatusLayoutTest {
    
    @Test public void shouldIgnoreUpdateJobWhenStatusChangesIfNotPresent() {
       systemUnderTest.reconstructTree( Arrays.asList( jobA, jobB, jobC ) );
-      jobD.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      jobD.setLastBuildStatus( BuildResultStatus.SUCCESS );
       systemUnderTest.update( jobD );
       assertJobPresent( jobA, 0 );
       assertJobPresent( jobB, 1 );
@@ -221,7 +221,7 @@ public class BuildResultStatusLayoutTest {
     * @param index the index in the children.
     */
    private void assertJobPresent( JenkinsJob job, int index ) {
-      TreeItem< JobProgressTreeItem > branch = systemUnderTest.getBranch( job.lastBuildStatusProperty().get() );
+      TreeItem< JobProgressTreeItem > branch = systemUnderTest.getBranch( job.lastBuildProperty().get().getValue() );
       assertThat( branch.getChildren().get( index ).getValue().getJenkinsJob(), is( job ) );
    }//End Method
    

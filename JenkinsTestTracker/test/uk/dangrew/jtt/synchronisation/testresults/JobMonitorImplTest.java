@@ -64,7 +64,7 @@ public class JobMonitorImplTest {
       database.store( storedJob );
       Mockito.verify( fetcher, Mockito.times( 1 ) ).updateTestResults( storedJob );
       
-      storedJob.lastBuildNumberProperty().set( 21 );
+      storedJob.setLastBuildNumber( 21 );
       Mockito.verify( fetcher, Mockito.times( 2 ) ).updateTestResults( storedJob );
       Mockito.verifyNoMoreInteractions( fetcher );
    }//End Method
@@ -77,7 +77,7 @@ public class JobMonitorImplTest {
       database.removeJenkinsJob( storedJob.nameProperty().get() );
       Assert.assertFalse( database.hasJenkinsJob( storedJob.nameProperty().get() ) );
       
-      storedJob.lastBuildNumberProperty().set( 21 );
+      storedJob.setLastBuildNumber( 21 );
       Mockito.verify( fetcher, Mockito.times( 1 ) ).updateTestResults( storedJob );
       Mockito.verifyNoMoreInteractions( fetcher );
    }//End Method

@@ -31,7 +31,7 @@ public class BuildResultStatusNotifier {
       this.events = new NotificationEvent();
       this.database.jenkinsJobProperties().addBuildResultStatusListener( 
                ( job, old, updated ) -> events.fire( 
-                        new Event<>( new BuildResultStatusNotification( job, old, updated ) ) 
+                        new Event<>( new BuildResultStatusNotification( job, old.getValue(), updated.getValue() ) ) 
                ) 
       );
    }//End Constructor

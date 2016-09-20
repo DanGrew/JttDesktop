@@ -13,18 +13,20 @@ import java.util.Map;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
+import javafx.util.Pair;
 import uk.dangrew.jtt.api.handling.JenkinsFetcher;
+import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
- * The {@link JobMonitorImpl} monitors the state of the {@link JenkinsJob#lastBuildNumberProperty()} in order
+ * The {@link JobMonitorImpl} monitors the state of the {@link JenkinsJob#lastBuildProperty()} in order
  * to determine when to update the {@link JenkinsDatabase} with the new test results.
  */
 public class JobMonitorImpl implements ListChangeListener< JenkinsJob > {
 
    private JenkinsFetcher fetcher;
-   private Map< JenkinsJob, ChangeListener< Number > > lastBuildNumberListeners;
+   private Map< JenkinsJob, ChangeListener< Pair< Integer, BuildResultStatus > > > lastBuildNumberListeners;
    
    /**
     * Constructs a new {@link JobMonitorImpl}.
@@ -56,11 +58,11 @@ public class JobMonitorImpl implements ListChangeListener< JenkinsJob > {
     * @param job the {@link JenkinsJob} added.
     */
    private void handleNewJob( JenkinsJob job ) {
-      ChangeListener< Number > lastBuildNumberListener = ( source, old, updated ) -> {
+      ChangeListener< Pair< Integer, BuildResultStatus > > lastBuildNumberListener = ( source, old, updated ) -> {
          fetcher.updateTestResults( job );
       };
       lastBuildNumberListeners.put( job, lastBuildNumberListener );
-      job.lastBuildNumberProperty().addListener( lastBuildNumberListener );
+      job.lastBuildProperty().addListener( lastBuildNumberListener );
       fetcher.updateTestResults( job );
    }//End Method
    
@@ -69,8 +71,8 @@ public class JobMonitorImpl implements ListChangeListener< JenkinsJob > {
     * @param job the {@link JenkinsJob} removed.
     */
    private void handleRemovedJob( JenkinsJob job ) {
-      ChangeListener< Number > listener = lastBuildNumberListeners.get( job );
-      job.lastBuildNumberProperty().removeListener( listener );
+      ChangeListener< Pair< Integer, BuildResultStatus > > listener = lastBuildNumberListeners.get( job );
+      job.lastBuildProperty().removeListener( listener );
    }//End Method
    
 }//End Class

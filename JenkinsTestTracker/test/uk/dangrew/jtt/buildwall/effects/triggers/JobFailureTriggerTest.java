@@ -14,9 +14,9 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.util.Pair;
 import uk.dangrew.jtt.buildwall.effects.flasher.control.ImageFlasherControls;
 import uk.dangrew.jtt.buildwall.effects.flasher.control.ImageFlasherControlsImpl;
-import uk.dangrew.jtt.buildwall.effects.triggers.JobFailureTrigger;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -44,7 +44,7 @@ public class JobFailureTriggerTest {
       database.store( firstJob );
       database.store( secondJob );
       database.store( thirdJob );
-      database.jenkinsJobs().forEach( job -> job.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS ) );
+      database.jenkinsJobs().forEach( job -> job.setLastBuildStatus( BuildResultStatus.SUCCESS ) );
       
       imageFlasherControls = new ImageFlasherControlsImpl();
       systemUnderTest = new JobFailureTrigger( database, imageFlasherControls );
@@ -52,25 +52,25 @@ public class JobFailureTriggerTest {
    
    @Test public void whenAnyJobFailsSwitchShouldBeFlipped() {
       assertThat( imageFlasherControls.flashingSwitch().get(), is( false ) );
-      firstJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      firstJob.setLastBuildStatus( BuildResultStatus.FAILURE );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( true ) );
       
       imageFlasherControls.flashingSwitch().set( false );
-      secondJob.lastBuildStatusProperty().set( BuildResultStatus.ABORTED );
+      secondJob.setLastBuildStatus( BuildResultStatus.ABORTED );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( true ) );
       
       imageFlasherControls.flashingSwitch().set( false );
-      thirdJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      thirdJob.setLastBuildStatus( BuildResultStatus.UNSTABLE );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( true ) );
    }//End Method
    
    @Test public void whenAnyJobFailsAgainSwitchShouldNotBeFlipped() {
       assertThat( imageFlasherControls.flashingSwitch().get(), is( false ) );
-      firstJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      firstJob.setLastBuildStatus( BuildResultStatus.FAILURE );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( true ) );
       
       imageFlasherControls.flashingSwitch().set( false );
-      firstJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      firstJob.setLastBuildStatus( BuildResultStatus.FAILURE );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( false ) );
    }//End Method
 

@@ -22,6 +22,7 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javafx.util.Pair;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -114,8 +115,7 @@ public class JenkinsProcessingImplTest {
     */
    private void updatePropertiesWhenJobDetailsUpdated( JenkinsJob job, int buildNumber, BuildResultStatus status ) {
       doAnswer( invocation -> { 
-         job.lastBuildNumberProperty().set( buildNumber );
-         job.lastBuildStatusProperty().set( status );
+         job.lastBuildProperty().set( new Pair<>( buildNumber, status ) );
          return null;
       } ).when( fetcher ).updateJobDetails( job );
    }//End Method
@@ -145,7 +145,7 @@ public class JenkinsProcessingImplTest {
    }//End Method
    
    @Test public void shouldFetchTestResultsForJobsSucessFromUnstableAndBuildNumberChanged(){
-      secondJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      secondJob.setLastBuildStatus( BuildResultStatus.UNSTABLE );
       
       updatePropertiesWhenJobDetailsUpdated( firstJob, 10, BuildResultStatus.SUCCESS );
       updatePropertiesWhenJobDetailsUpdated( secondJob, 10, BuildResultStatus.SUCCESS );
@@ -159,7 +159,7 @@ public class JenkinsProcessingImplTest {
    }//End Method
    
    @Test public void shouldFetchTestResultsOnceForJobsUnstableToUnstableAndBuildNumberChanged(){
-      secondJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      secondJob.setLastBuildStatus( BuildResultStatus.UNSTABLE );
       
       updatePropertiesWhenJobDetailsUpdated( firstJob, 10, BuildResultStatus.SUCCESS );
       updatePropertiesWhenJobDetailsUpdated( secondJob, 10, BuildResultStatus.UNSTABLE );
@@ -173,23 +173,20 @@ public class JenkinsProcessingImplTest {
    }//End Method
    
    @Test public void shouldFetchTestResultsForJobsSuccessWhenWasUnstableAndBuildNumberChanged(){
-      firstJob.lastBuildStatusProperty().set( BuildResultStatus.UNSTABLE );
+      firstJob.setLastBuildStatus( BuildResultStatus.UNSTABLE );
       
       doAnswer( invocation -> { 
-         firstJob.lastBuildNumberProperty().set( 10 );
-         firstJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+         firstJob.lastBuildProperty().set( new Pair<>( 10, BuildResultStatus.SUCCESS ) );
          return null;
       } ).when( fetcher ).updateJobDetails( firstJob );
       
       doAnswer( invocation -> { 
-         secondJob.lastBuildNumberProperty().set( 10 );
-         secondJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+         secondJob.lastBuildProperty().set( new Pair<>( 10, BuildResultStatus.SUCCESS ) );
          return null;
       } ).when( fetcher ).updateJobDetails( secondJob );
       
       doAnswer( invocation -> { 
-         thirdJob.lastBuildNumberProperty().set( 10 );
-         thirdJob.lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+         thirdJob.lastBuildProperty().set( new Pair<>( 10, BuildResultStatus.FAILURE ) );
          return null;
       } ).when( fetcher ).updateJobDetails( thirdJob );
       

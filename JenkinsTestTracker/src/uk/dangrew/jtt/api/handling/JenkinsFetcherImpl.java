@@ -102,7 +102,7 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
          return true;
       }
       
-      int lastBuild = job.lastBuildNumberProperty().get();
+      int lastBuild = job.lastBuildProperty().get().getKey();
       int currentBuild = job.currentBuildNumberProperty().get();
       
       int difference = currentBuild - lastBuild;

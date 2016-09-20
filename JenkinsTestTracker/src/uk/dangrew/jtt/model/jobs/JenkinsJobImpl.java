@@ -18,6 +18,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Pair;
 import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.tests.TestCase;
@@ -29,9 +30,8 @@ import uk.dangrew.jtt.model.users.JenkinsUser;
 public class JenkinsJobImpl implements JenkinsJob {
 
    private StringProperty name;
-   private IntegerProperty lastBuildNumber;
    private IntegerProperty currentBuildNumber;
-   private ObjectProperty< BuildResultStatus > lastBuildStatus;
+   private ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildStatus;
    private ObjectProperty< BuildState > buildState;
    private LongProperty expectedBuildTime;
    private LongProperty currentBuildTime;
@@ -53,9 +53,8 @@ public class JenkinsJobImpl implements JenkinsJob {
       }
       
       this.name = new SimpleStringProperty( name );
-      lastBuildNumber = new SimpleIntegerProperty( DEFAULT_LAST_BUILD_NUMBER );
       currentBuildNumber = new SimpleIntegerProperty( DEFAULT_CURRENT_BUILD_NUMBER );
-      lastBuildStatus = new SimpleObjectProperty<>( DEFAULT_LAST_BUILD_STATUS );
+      lastBuildStatus = new SimpleObjectProperty<>( new Pair<>( DEFAULT_LAST_BUILD_NUMBER, DEFAULT_LAST_BUILD_STATUS ) );
       buildState = new SimpleObjectProperty<>( DEFAULT_BUILD_STATE );
       expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
       currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
@@ -75,13 +74,6 @@ public class JenkinsJobImpl implements JenkinsJob {
    /**
     * {@inheritDoc}
     */
-   @Override public IntegerProperty lastBuildNumberProperty() {
-      return lastBuildNumber;
-   }//End Method
-   
-   /**
-    * {@inheritDoc}
-    */
    @Override public IntegerProperty currentBuildNumberProperty() {
       return currentBuildNumber;
    }//End Method
@@ -89,8 +81,22 @@ public class JenkinsJobImpl implements JenkinsJob {
    /**
     * {@inheritDoc}
     */
-   @Override public ObjectProperty< BuildResultStatus > lastBuildStatusProperty() {
+   @Override public ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildProperty() {
       return lastBuildStatus;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void setLastBuildNumber( Integer number ) {
+      lastBuildProperty().set( new Pair<>( number, lastBuildProperty().get().getValue() ) );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public void setLastBuildStatus( BuildResultStatus status ) {
+      lastBuildProperty().set( new Pair<>( lastBuildProperty().get().getKey(), status ) );
    }//End Method
 
    /**

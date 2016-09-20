@@ -13,6 +13,7 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import javafx.util.Pair;
 import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.tests.TestCase;
@@ -41,12 +42,6 @@ public interface JenkinsJob {
    public StringProperty nameProperty();
 
    /**
-    * Provides the last build number {@link IntegerProperty} of the {@link JenkinsJob}.
-    * @return the {@link IntegerProperty}.
-    */
-   public IntegerProperty lastBuildNumberProperty();
-
-   /**
     * Provides the current build number as found when initially building. If built job details
     * provides this to be the last build number.
     * @return the {@link IntegerProperty}.
@@ -57,7 +52,19 @@ public interface JenkinsJob {
     * Provides the last build status of the {@link JenkinsJob}.
     * @return the {@link ObjectProperty} for the {@link BuildResultStatus}.
     */
-   public ObjectProperty< BuildResultStatus > lastBuildStatusProperty();
+   public ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildProperty();
+   
+   /**
+    * Method to set the last build number on the {@link #lastBuildProperty()}.
+    * @param number the {@link Integer} build number.
+    */
+   public void setLastBuildNumber( Integer number );
+   
+   /**
+    * Method to set the last {@link BuildResultStatus} on the {@link #lastBuildProperty()}.
+    * @param status the {@link BuildResultStatus}.
+    */
+   public void setLastBuildStatus( BuildResultStatus status );
 
    /**
     * Provides the current build state of the {@link JenkinsJob}.

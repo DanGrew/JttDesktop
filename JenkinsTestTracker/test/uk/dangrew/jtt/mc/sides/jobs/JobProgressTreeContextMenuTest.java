@@ -184,4 +184,8 @@ public class JobProgressTreeContextMenuTest {
       assertThat( assignment.detailProperty().get(), is( JobProgressTreeContextMenu.ENTER_DETAIL ) );
    }//End Method
    
+   @Test public void shouldConstructReadableMessage(){
+      assertThat( JobProgressTreeContextMenu.constructDescriptionFor( job1 ), is( "Job1 with state NOT_BUILT" ) );
+   }//End Method
+   
 }//End Class

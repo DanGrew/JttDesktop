@@ -17,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.util.Pair;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -314,13 +315,17 @@ public class JenkinsDatabaseImplTest {
       assertThat( systemUnderTest.jenkinsJobProperties(), notNullValue() );
       
       @SuppressWarnings("unchecked") //simply mocking genericized objects. 
-      JttChangeListener< JenkinsJob, BuildResultStatus > listener = mock( JttChangeListener.class );
+      JttChangeListener< JenkinsJob, Pair< Integer, BuildResultStatus > > listener = mock( JttChangeListener.class );
       
       systemUnderTest.store( jenkinsJob );
       systemUnderTest.jenkinsJobProperties().addBuildResultStatusListener( listener );
-      jenkinsJob.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      jenkinsJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
       
-      verify( listener ).changed( jenkinsJob, BuildResultStatus.NOT_BUILT, BuildResultStatus.SUCCESS );
+      verify( listener ).changed( 
+               jenkinsJob, 
+               new Pair<>( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER, BuildResultStatus.NOT_BUILT ), 
+               new Pair<>( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER, BuildResultStatus.SUCCESS )
+      );
    }//End Method
    
    @Test public void shouldProvideJenkinsUserPropertyListener(){

@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.data.json.jobs;
 
+import javafx.util.Pair;
 import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.api.handling.JenkinsFetcher;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
@@ -85,12 +86,8 @@ public class JsonJobImportHandler {
     * @param jenkinsJob the {@link JenkinsJob} to be updated.
     * @param buildNumber the number of the current build.
     */
-   void handleBuildNumber( JenkinsJob jenkinsJob, int buildNumber ) {
+   void handleCurrentBuildNumber( JenkinsJob jenkinsJob, int buildNumber ) {
       jenkinsJob.currentBuildNumberProperty().set( buildNumber );
-      
-      if ( jenkinsJob.buildStateProperty().get() == BuildState.Built ) {
-         jenkinsJob.lastBuildNumberProperty().set( buildNumber );   
-      }
    }//End Method
    
    /**
@@ -125,8 +122,7 @@ public class JsonJobImportHandler {
     * @param lastBuildResult the result of the last build.
     */
    void handleBuiltJobDetails( JenkinsJob jenkinsJob, int lastBuildNumber, BuildResultStatus lastBuildResult ) {
-      jenkinsJob.lastBuildNumberProperty().set( lastBuildNumber );
-      jenkinsJob.lastBuildStatusProperty().set( lastBuildResult );
+      jenkinsJob.lastBuildProperty().set( new Pair<>( lastBuildNumber, lastBuildResult ) );
    }//End Method
 
    /**

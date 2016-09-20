@@ -97,8 +97,8 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
       database.jenkinsJobs().forEach( toProcess::add );
       
       for ( JenkinsJob job : toProcess ) {
-         int previousBuildNumber = job.lastBuildNumberProperty().get();
-         BuildResultStatus previousStatus = job.lastBuildStatusProperty().get();
+         int previousBuildNumber = job.lastBuildProperty().get().getKey();
+         BuildResultStatus previousStatus = job.lastBuildProperty().get().getValue();
          
          updateJobDetails( job );
          digest.updatedJob( job );
@@ -116,7 +116,7 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
     * @param previousStatus the {@link BuildResultStatus} before the details were updated.
     */
    private void updateTestsIfStateChanged( JenkinsJob job, int previousBuildNumber, BuildResultStatus previousStatus ) {
-      int lastBuildNumber = job.lastBuildNumberProperty().get();
+      int lastBuildNumber = job.lastBuildProperty().get().getKey();
       
       if ( previousBuildNumber == lastBuildNumber ) {
          return;
@@ -127,7 +127,7 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
          return;
       }
       
-      if ( job.lastBuildStatusProperty().get() == BuildResultStatus.UNSTABLE ) {
+      if ( job.lastBuildProperty().get().getValue() == BuildResultStatus.UNSTABLE ) {
          updateTestResults( job );
          return;
       }

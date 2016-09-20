@@ -35,8 +35,8 @@ public class JenkinsJobPropertyListenerImplTest {
    private JenkinsJob job3;
    
    private JenkinsJobPropertyListener systemUnderTest;
-   private List< Pair< JenkinsJob, BuildResultStatus > > buildResultStatusNotifications;
-   private JttChangeListener< JenkinsJob, BuildResultStatus > buildResultListener;
+   private List< Pair< JenkinsJob, Pair< Integer, BuildResultStatus > > > buildResultStatusNotifications;
+   private JttChangeListener< JenkinsJob, Pair< Integer, BuildResultStatus > > buildResultListener;
    
    @Before public void initialiseSystemUnderTest(){
       databse = new JenkinsDatabaseImpl();
@@ -49,18 +49,18 @@ public class JenkinsJobPropertyListenerImplTest {
       
       systemUnderTest = new JenkinsJobPropertyListener( databse );
       buildResultStatusNotifications = new ArrayList<>();
-      buildResultListener = ( job, old, updated ) -> buildResultStatusNotifications.add( new Pair< JenkinsJob, BuildResultStatus >( job, updated ) );
+      buildResultListener = ( job, old, updated ) -> buildResultStatusNotifications.add( new Pair< JenkinsJob, Pair< Integer, BuildResultStatus > >( job, updated ) );
       systemUnderTest.addBuildResultStatusListener( buildResultListener );
    }//End Method
    
    @Test public void shouldNotifyLastBuildResultStatusWhenChanged() {
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
-      job1.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
       
       assertThat( buildResultStatusNotifications.isEmpty(), is( false ) );
-      Pair< JenkinsJob, BuildResultStatus > result = buildResultStatusNotifications.remove( 0 );
+      Pair< JenkinsJob, Pair< Integer, BuildResultStatus > > result = buildResultStatusNotifications.remove( 0 );
       assertThat( result.getKey(), is( job1 ) );
-      assertThat( result.getValue(), is( BuildResultStatus.SUCCESS ) );
+      assertThat( result.getValue().getValue(), is( BuildResultStatus.SUCCESS ) );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
    }//End Method
    

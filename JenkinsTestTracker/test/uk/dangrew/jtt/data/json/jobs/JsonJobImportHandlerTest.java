@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javafx.util.Pair;
 import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.api.handling.JenkinsProcessing;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
@@ -106,39 +107,33 @@ public class JsonJobImportHandlerTest {
    @Test public void shouldUpdateCurrentBuildNumberWhenBuilding(){
       final int previousBuildNumber = 10;
       job.currentBuildNumberProperty().set( previousBuildNumber );
-      job.lastBuildNumberProperty().set( previousBuildNumber );
       
       job.buildStateProperty().set( BuildState.Building );
       
       final int newBuildNumber = 11;
-      systemUnderTest.handleBuildNumber( job, newBuildNumber );
+      systemUnderTest.handleCurrentBuildNumber( job, newBuildNumber );
       
       assertThat( job.currentBuildNumberProperty().get(), is( newBuildNumber ) );
-      assertThat( job.lastBuildNumberProperty().get(), is( previousBuildNumber ) );
    }//End Method
    
    @Test public void shouldUpdateLastBuildNumberWhenBuilt(){
       final int previousBuildNumber = 10;
       job.currentBuildNumberProperty().set( previousBuildNumber );
-      job.lastBuildNumberProperty().set( previousBuildNumber );
       
       job.buildStateProperty().set( BuildState.Built );
       
       final int newBuildNumber = 11;
-      systemUnderTest.handleBuildNumber( job, newBuildNumber );
+      systemUnderTest.handleCurrentBuildNumber( job, newBuildNumber );
       
       assertThat( job.currentBuildNumberProperty().get(), is( newBuildNumber ) );
-      assertThat( job.lastBuildNumberProperty().get(), is( newBuildNumber ) );
    }//End Method
    
    @Test public void shouldUpdateBuiltJobDetails(){
-      job.lastBuildNumberProperty().set( 10 );
-      job.lastBuildStatusProperty().set( BuildResultStatus.UNKNOWN );
+      job.lastBuildProperty().set( new Pair<>( 10, BuildResultStatus.UNKNOWN ) );
       
       systemUnderTest.handleBuiltJobDetails( job, 11, BuildResultStatus.SUCCESS );
       
-      assertThat( job.lastBuildNumberProperty().get(), is( 11 ) );
-      assertThat( job.lastBuildStatusProperty().get(), is( BuildResultStatus.SUCCESS ) );
+      assertThat( job.lastBuildProperty().get(), is( new Pair<>( 11, BuildResultStatus.SUCCESS ) ) );
    }//End Method
    
    @Test public void startImportingCulpritsShouldClearExistingCulprits(){

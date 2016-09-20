@@ -104,7 +104,7 @@ public class BuildResultStatusLayout implements TreeLayout< JobProgressTreeItem,
     * @return the {@link TreeItem}.
     */
    private TreeItem< JobProgressTreeItem > getBranch( JenkinsJob job ) {
-      return branches.get( job.lastBuildStatusProperty().get() );
+      return branches.get( job.lastBuildProperty().get().getValue() );
    }//End Method
 
    /**

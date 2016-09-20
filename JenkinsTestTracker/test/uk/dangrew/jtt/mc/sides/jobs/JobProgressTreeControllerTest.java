@@ -55,7 +55,7 @@ public class JobProgressTreeControllerTest {
    
    @Test public void shouldUpdaeJobInTree() {
       JenkinsJob job = database.jenkinsJobs().get( 0 );
-      job.lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
       verify( layout ).update( job );
    }//End Method
 

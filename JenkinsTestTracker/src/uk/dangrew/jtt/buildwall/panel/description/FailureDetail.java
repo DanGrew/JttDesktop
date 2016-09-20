@@ -143,7 +143,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    private StringBuilder constructFailingTestCasesList() {
       StringBuilder failingTests = new StringBuilder();
       
-      BuildResultStatus status = jenkinsJob.lastBuildStatusProperty().get();
+      BuildResultStatus status = jenkinsJob.lastBuildProperty().get().getValue();
       if ( status == BuildResultStatus.ABORTED ) {
          return failingTests.append( ABORTED_DESCRIPTION );
       } else if ( status == BuildResultStatus.FAILURE ) {
@@ -230,7 +230,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       ) );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               jenkinsJob.lastBuildStatusProperty(), 
+               jenkinsJob.lastBuildProperty(), 
                ( source, old, updated ) -> updateFailuresText() 
       ) );
    }//End Method

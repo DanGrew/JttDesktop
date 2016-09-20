@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.buildwall.panel;
 
+import javafx.util.Pair;
 import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -37,8 +38,7 @@ public class JobBuildSimulator {
             int interval 
    ) throws InterruptedException{
       job.buildStateProperty().set( BuildState.Building );
-      job.lastBuildStatusProperty().set( intialStatus );
-      job.lastBuildNumberProperty().set( number );
+      job.lastBuildProperty().set( new Pair<>( number, intialStatus ) );
       job.currentBuildTimeProperty().set( 0 );
       job.expectedBuildTimeProperty().set( expected );
       
@@ -49,7 +49,7 @@ public class JobBuildSimulator {
          job.currentBuildTimeProperty().set( currentTime );
       }
       Thread.sleep( 1000 );
-      job.lastBuildStatusProperty().set( resultingStatus );
+      job.lastBuildProperty().set( new Pair<>( number, resultingStatus ) );
       job.buildStateProperty().set( BuildState.Building );
    }//End Method
    

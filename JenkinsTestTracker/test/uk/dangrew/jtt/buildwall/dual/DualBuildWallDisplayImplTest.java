@@ -32,6 +32,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.util.Pair;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
@@ -91,7 +92,7 @@ public class DualBuildWallDisplayImplTest {
       for ( JenkinsJob job : database.jenkinsJobs() ) {
          int userCount = random.nextInt( 20 );
          for ( int i = 0; i < userCount; i++ ) {
-            job.lastBuildStatusProperty().set( BuildResultStatus.values()[ i %BuildResultStatus.values().length ] );
+            job.setLastBuildStatus( BuildResultStatus.values()[ i %BuildResultStatus.values().length ] );
             job.culprits().add( new JenkinsUserImpl( "User " + userCount + "_" + i ) );
          }
       }
@@ -330,9 +331,9 @@ public class DualBuildWallDisplayImplTest {
    }//End Method
    
    @Test public void shouldStartFlasherWhenFailureHappens(){
-      database.jenkinsJobs().get( 0 ).lastBuildStatusProperty().set( BuildResultStatus.SUCCESS );
+      database.jenkinsJobs().get( 0 ).setLastBuildStatus( BuildResultStatus.SUCCESS );
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( false ) );
-      database.jenkinsJobs().get( 0 ).lastBuildStatusProperty().set( BuildResultStatus.FAILURE );
+      database.jenkinsJobs().get( 0 ).setLastBuildStatus( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( true ) );
    }//End Method
 }//End Class

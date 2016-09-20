@@ -11,13 +11,17 @@ package uk.dangrew.jtt.model.jobs;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.beans.value.ChangeListener;
+import javafx.util.Pair;
 import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
@@ -51,28 +55,52 @@ public class JenkinsJobImplTest {
       Assert.assertEquals( newName, systemUnderTest.nameProperty().get() );
    }//End Method
    
-   @Test public void shouldProvideLastBuildNumberProperty() {
-      Assert.assertEquals( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER, systemUnderTest.lastBuildNumberProperty().get() );
+   @Test public void shouldProvideLastBuildProperty() {
+      Assert.assertEquals( 
+               new Pair<>( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ), 
+               systemUnderTest.lastBuildProperty().get() 
+      );
    }//End Method
    
    @Test public void shouldUpdateLastBuildNumberProperty() {
-      shouldProvideLastBuildNumberProperty();
+      shouldProvideLastBuildProperty();
       
       final int newBuild = 100;
-      systemUnderTest.lastBuildNumberProperty().set( newBuild );
-      Assert.assertEquals( newBuild, systemUnderTest.lastBuildNumberProperty().get() );
-   }//End Method
-   
-   @Test public void shouldProvideLastBuildStatusProperty() {
-      Assert.assertEquals( JenkinsJob.DEFAULT_LAST_BUILD_STATUS, systemUnderTest.lastBuildStatusProperty().get() );
-   }//End Method
-   
-   @Test public void shouldUpdateLastBuildStatusProperty() {
-      shouldProvideLastBuildStatusProperty();
+      systemUnderTest.lastBuildProperty().set( new Pair<>( newBuild, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      Assert.assertEquals( newBuild, systemUnderTest.lastBuildProperty().get().getKey().intValue() );
       
       final BuildResultStatus newStatus = BuildResultStatus.SUCCESS;
-      systemUnderTest.lastBuildStatusProperty().set( newStatus );
-      Assert.assertEquals( newStatus, systemUnderTest.lastBuildStatusProperty().get() );
+      systemUnderTest.lastBuildProperty().set( new Pair<>( newBuild, newStatus ) );
+      Assert.assertEquals( newStatus, systemUnderTest.lastBuildProperty().get().getValue() );
+   }//End Method
+   
+   @Test public void shouldUpdateBuildNumberAndStatus(){
+      systemUnderTest.setLastBuildNumber( 2000 );
+      assertThat( systemUnderTest.lastBuildProperty().get().getKey(), is( 2000 ) );
+      assertThat( systemUnderTest.lastBuildProperty().get().getValue(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      
+      systemUnderTest.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      assertThat( systemUnderTest.lastBuildProperty().get().getKey(), is( 2000 ) );
+      assertThat( systemUnderTest.lastBuildProperty().get().getValue(), is( BuildResultStatus.UNSTABLE ) );
+   }//End Method
+   
+   @Test public void shouldNotifyLastBuildListenersWhenEitherValueChanges(){
+      @SuppressWarnings("unchecked") //generic mocking 
+      ChangeListener< Pair< Integer, BuildResultStatus > > listener = mock( ChangeListener.class );
+      
+      systemUnderTest.lastBuildProperty().addListener( listener );
+      systemUnderTest.setLastBuildNumber( 10 );
+      verify( listener ).changed( 
+               systemUnderTest.lastBuildProperty(), 
+               new Pair<>( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ), 
+               new Pair<>( 10, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) 
+      );
+      systemUnderTest.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      verify( listener ).changed( 
+               systemUnderTest.lastBuildProperty(), 
+               new Pair<>( 10, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ), 
+               new Pair<>( 10, BuildResultStatus.SUCCESS ) 
+      );
    }//End Method
    
    @Test public void shouldProvideBuildStateProperty() {
