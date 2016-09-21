@@ -78,7 +78,7 @@ public class LaunchOptions extends VBox {
       //wrap once more so that border pane resizes correctly with bindings below.
       BorderPane content = new BorderPane( digestWrapper );
       window.setContent( content );
-      bindDimensions( content );
+      window.bindDimensions( content );
    }//End Method
    
    /**
@@ -87,20 +87,9 @@ public class LaunchOptions extends VBox {
    private void launchManagementConsole(){
       ManagementConsole console = new ManagementConsole( database );
       window.setContent( console );
-      bindDimensions( console );
+      window.bindDimensions( console );
    }//End Method
    
-   /**
-    * Method to bind the dimensions of the given {@link BorderPane} to the {@link EnvironmentWindow}.
-    * @param content the {@link BorderPane} to bind.
-    */
-   private void bindDimensions( BorderPane content ){
-      content.maxWidthProperty().bind( window.widthProperty() );
-      content.minWidthProperty().bind( window.widthProperty() );
-      content.maxHeightProperty().bind( window.heightProperty() );
-      content.minHeightProperty().bind( window.heightProperty() );
-   }//End Method
-
    Button managementConsoleButton() {
       return managementConsoleButton;
    }//End Method

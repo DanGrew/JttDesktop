@@ -8,10 +8,9 @@
  */
 package uk.dangrew.jtt.environment.main;
 
-import org.controlsfx.control.HiddenSidesPane;
-
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.environment.layout.CenterScreenWrapper;
@@ -30,6 +29,7 @@ public class EnvironmentWindow extends BorderPane {
    private final CenterScreenWrapper centerWrapper;
    private final SystemConfiguration configuration;
    private final PreferenceController preferenceOpener;
+   private final EnvironmentMenuBar menuBar;
    
    /**
     * Constructs a new {@link EnvironmentWindow}.
@@ -40,7 +40,7 @@ public class EnvironmentWindow extends BorderPane {
       this.configuration = configuration;
       this.preferenceOpener = new PreferenceController( configuration );
       
-      EnvironmentMenuBar menuBar = new EnvironmentMenuBar();
+      this.menuBar = new EnvironmentMenuBar();
       setTop( menuBar );
       centerWrapper = new CenterScreenWrapper( new LaunchOptions( this, configuration, database, digest ) );
       
@@ -53,6 +53,18 @@ public class EnvironmentWindow extends BorderPane {
     */
    public void setContent( Node content ){
       centerWrapper.setCenter( content );
+   }//End Method
+   
+   /**
+    * Method to bind the dimensions of the given {@link Region} to the content area of this
+    * {@link EnvironmentWindow}.
+    * @param node the {@link Region} to bind dimensions to.
+    */
+   public void bindDimensions( Region node ) {
+      node.maxWidthProperty().bind( widthProperty() );
+      node.minWidthProperty().bind( widthProperty() );
+      node.maxHeightProperty().bind( heightProperty().subtract( menuBar.heightProperty() ) );
+      node.minHeightProperty().bind( heightProperty().subtract( menuBar.heightProperty() ) );
    }//End Method
    
    PreferenceController preferenceOpener(){

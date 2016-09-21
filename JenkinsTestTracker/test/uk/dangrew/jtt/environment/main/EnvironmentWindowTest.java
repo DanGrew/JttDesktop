@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.environment.layout.CenterScreenWrapper;
@@ -50,8 +51,7 @@ public class EnvironmentWindowTest {
    
    @Ignore
    @Test public void maunal() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> new EnvironmentWindow(configuration, null, null) );
-      
+      JavaFxInitializer.launchInWindow( () -> systemUnderTest = new EnvironmentWindow(configuration, new JenkinsDatabaseImpl(), new DigestViewer()) );
       Thread.sleep( 1000000 );
    }//End Method
    
@@ -68,6 +68,24 @@ public class EnvironmentWindowTest {
    @Test public void shouldHavePreferenceOpener(){
       assertThat( systemUnderTest.preferenceOpener(), is( notNullValue() ) );
       assertThat( systemUnderTest.preferenceOpener().usesConfiguration( configuration ), is( true ) );
+   }//End Method
+   
+   @Test public void shouldAccountForMenuBarInDimensionBinding(){
+      EnvironmentMenuBar menuBar = ( EnvironmentMenuBar ) systemUnderTest.getTop();
+      menuBar.setUseSystemMenuBar( false );
+      menuBar.setMaxHeight( 27 );
+      menuBar.setMinHeight( 27 );
+      systemUnderTest.setTop( menuBar );
+      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      
+      assertThat( menuBar.getHeight(), is( 27.0 ) );
+      
+      BorderPane pane = new BorderPane();
+      systemUnderTest.bindDimensions( pane );
+      assertThat( pane.getMaxHeight(), is( systemUnderTest.getHeight() - menuBar.getHeight() ) );
+      assertThat( pane.getMinHeight(), is( systemUnderTest.getHeight() - menuBar.getHeight() ) );
+      assertThat( pane.getMaxWidth(), is( systemUnderTest.getWidth() ) );
+      assertThat( pane.getMinWidth(), is( systemUnderTest.getWidth() ) );
    }//End Method
    
 }//End Class
