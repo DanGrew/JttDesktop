@@ -88,8 +88,22 @@ public class JenkinsJobImpl implements JenkinsJob {
    /**
     * {@inheritDoc}
     */
+   @Override public Integer getLastBuildNumber() {
+      return lastBuildProperty().get().getKey();
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
    @Override public void setLastBuildNumber( Integer number ) {
       lastBuildProperty().set( new Pair<>( number, lastBuildProperty().get().getValue() ) );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public BuildResultStatus getLastBuildStatus() {
+      return lastBuildProperty().get().getValue();
    }//End Method
    
    /**

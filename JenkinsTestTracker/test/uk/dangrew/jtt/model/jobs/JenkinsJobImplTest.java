@@ -60,6 +60,9 @@ public class JenkinsJobImplTest {
                new Pair<>( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ), 
                systemUnderTest.lastBuildProperty().get() 
       );
+      
+      assertThat( systemUnderTest.getLastBuildNumber(), is( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER ) );
+      assertThat( systemUnderTest.getLastBuildStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
    }//End Method
    
    @Test public void shouldUpdateLastBuildNumberProperty() {
@@ -68,10 +71,12 @@ public class JenkinsJobImplTest {
       final int newBuild = 100;
       systemUnderTest.lastBuildProperty().set( new Pair<>( newBuild, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
       Assert.assertEquals( newBuild, systemUnderTest.lastBuildProperty().get().getKey().intValue() );
+      assertThat( systemUnderTest.getLastBuildNumber(), is( newBuild ) );
       
       final BuildResultStatus newStatus = BuildResultStatus.SUCCESS;
       systemUnderTest.lastBuildProperty().set( new Pair<>( newBuild, newStatus ) );
       Assert.assertEquals( newStatus, systemUnderTest.lastBuildProperty().get().getValue() );
+      assertThat( systemUnderTest.getLastBuildStatus(), is( newStatus ) );
    }//End Method
    
    @Test public void shouldUpdateBuildNumberAndStatus(){

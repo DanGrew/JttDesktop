@@ -55,10 +55,22 @@ public interface JenkinsJob {
    public ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildProperty();
    
    /**
+    * Method to get the last build number on the {@link #lastBuildProperty()}.
+    * @return the {@link Integer} build number.
+    */
+   public Integer getLastBuildNumber();
+   
+   /**
     * Method to set the last build number on the {@link #lastBuildProperty()}.
     * @param number the {@link Integer} build number.
     */
    public void setLastBuildNumber( Integer number );
+
+   /**
+    * Method to get the last {@link BuildResultStatus} on the {@link #lastBuildProperty()}.
+    * @return the {@link BuildResultStatus}.
+    */
+   public BuildResultStatus getLastBuildStatus();
    
    /**
     * Method to set the last {@link BuildResultStatus} on the {@link #lastBuildProperty()}.
