@@ -1,3 +1,8 @@
+Release, "1.5.159"
+Date, "(Sep 21, 2016 7:12:35 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.159/JenkinsTestTracker-1.5.159-runnable.jar"
+Description, "Failing builds now show which node the job was built on. An onscreen notification is popped up when a job completes indicating improvement, regression or same result. Resolved issue with binding not including menu bar so that the menu bars height is accounted for when binding."
+
 Release, "1.5.153"
 Date, "(Sep 16, 2016 6:22:39 AM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.153/JenkinsTestTracker-1.5.153-runnable.jar"
