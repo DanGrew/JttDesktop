@@ -10,6 +10,7 @@ package uk.dangrew.jtt.buildwall.panel;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.Assert;
@@ -18,12 +19,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import javafx.util.Pair;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.styling.BuildWallStyles;
+import uk.dangrew.jtt.styling.BuildWallThemes;
 import uk.dangrew.jtt.styling.SystemStyles;
 import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.jtt.utility.TestCommon;
@@ -83,29 +84,29 @@ public class JobProgressImplTest {
    }//End Method
    
    @Test public void shouldHaveInitialStyleAccordingToJobState() {
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
+      verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, systemUnderTest.progressBar() );
    }//End Method
    
    @Test public void shouldUpdateStyleWhenJobStateUpdates() {
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
+      verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.ABORTED );
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarAborted, systemUnderTest.progressBar() );
+      verify( styles ).applyStyle( BuildWallStyles.ProgressBarAborted, BuildWallThemes.Standard, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.FAILURE );
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarFailed, systemUnderTest.progressBar() );
+      verify( styles ).applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.NOT_BUILT );
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarNotBuilt, systemUnderTest.progressBar() );
+      verify( styles ).applyStyle( BuildWallStyles.ProgressBarNotBuilt, BuildWallThemes.Standard, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.SUCCESS );
-      Mockito.verify( styles, Mockito.times( 2 ) ).applyStyle( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
+      verify( styles, Mockito.times( 2 ) ).applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.UNKNOWN );
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarUnknown, systemUnderTest.progressBar() );
+      verify( styles ).applyStyle( BuildWallStyles.ProgressBarUnknown, BuildWallThemes.Standard, systemUnderTest.progressBar() );
 
       job.setLastBuildStatus( BuildResultStatus.UNSTABLE );
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarUnstable, systemUnderTest.progressBar() );
+      verify( styles ).applyStyle( BuildWallStyles.ProgressBarUnstable, BuildWallThemes.Standard, systemUnderTest.progressBar() );
    }//End Method
    
    @Test public void shouldBindWDimensionsOfProgressToContainer() {
@@ -142,7 +143,7 @@ public class JobProgressImplTest {
    }//End Method
    
    @Test public void detachShouldNotUpdateStyleWhenJobStateUpdates() {
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
+      verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, systemUnderTest.progressBar() );
       systemUnderTest.detachFromSystem();
       
       job.setLastBuildStatus( BuildResultStatus.ABORTED );

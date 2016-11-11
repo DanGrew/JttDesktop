@@ -14,6 +14,7 @@ import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.styling.BuildWallStyles;
+import uk.dangrew.jtt.styling.BuildWallThemes;
 import uk.dangrew.jtt.styling.SystemStyling;
 
 /**
@@ -61,22 +62,22 @@ public class JobProgressImpl extends BorderPane {
    private void updateStyle( JenkinsJob job ) {
       switch ( job.lastBuildProperty().get().getValue() ) {
          case ABORTED:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarAborted, progress );
+            SystemStyling.applyStyle( BuildWallStyles.ProgressBarAborted, BuildWallThemes.Standard, progress );
             break;
          case FAILURE:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, progress );
+            SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, progress );
             break;
          case NOT_BUILT:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarNotBuilt, progress );
+            SystemStyling.applyStyle( BuildWallStyles.ProgressBarNotBuilt, BuildWallThemes.Standard, progress );
             break;
          case SUCCESS:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarSuccess, progress );
+            SystemStyling.applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, progress );
             break;
          case UNKNOWN:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarUnknown, progress );
+            SystemStyling.applyStyle( BuildWallStyles.ProgressBarUnknown, BuildWallThemes.Standard, progress );
             break;
          case UNSTABLE:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarUnstable, progress );
+            SystemStyling.applyStyle( BuildWallStyles.ProgressBarUnstable, BuildWallThemes.Standard, progress );
             break;
          default:
             break;

@@ -31,15 +31,23 @@ public class SystemStylesTest {
 
    @Test public void shouldFindBuildWallProgressBarStyleSheets() {
       for ( BuildWallStyles style : BuildWallStyles.values() ) {
-         Assert.assertTrue( systemUnderTest.hasSheet( style ) );
          Assert.assertTrue( systemUnderTest.hasLabel( style ) );
       }
    }//End Method
    
-   @Test public void shouldHaveStylesPresentInSheet(){
+   @Test public void shouldHaveStandardStylesPresent(){
       for ( BuildWallStyles style : BuildWallStyles.values() ) {
             Assert.assertTrue( 
-                  TestCommon.readFileIntoString( getClass(), systemUnderTest.getSheet( style ) )
+                  TestCommon.readFileIntoString( getClass(), BuildWallThemes.Standard.sheet() )
+                     .contains( systemUnderTest.getLabel( style ) ) 
+            );
+      }
+   }//End Method
+   
+   @Test public void shouldHaveFrozenStylesPresentInSheet(){
+      for ( BuildWallStyles style : BuildWallStyles.values() ) {
+            Assert.assertTrue( 
+                  TestCommon.readFileIntoString( getClass(), BuildWallThemes.Frozen.sheet() )
                      .contains( systemUnderTest.getLabel( style ) ) 
             );
       }
@@ -47,27 +55,27 @@ public class SystemStylesTest {
    
    @Test public void shouldApplyStyleToParent(){
       TestableParent parent = new TestableParent();
-      systemUnderTest.applyStyle( BuildWallStyles.ProgressBarSuccess, parent );
-      Assert.assertTrue( parent.getStylesheets().contains( systemUnderTest.getSheet( BuildWallStyles.ProgressBarSuccess ) ) );
+      systemUnderTest.applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, parent );
+      Assert.assertTrue( parent.getStylesheets().contains( BuildWallThemes.Standard.sheet() ) );
       Assert.assertTrue( parent.getStyleClass().contains( systemUnderTest.getLabel( BuildWallStyles.ProgressBarSuccess ) ) );
    }//End Method
    
    @Test public void shouldSwapStylesInParent(){
       TestableParent parent = new TestableParent();
-      systemUnderTest.applyStyle( BuildWallStyles.ProgressBarSuccess, parent );
+      systemUnderTest.applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, parent );
       Assert.assertEquals( 1, parent.getStylesheets().size() );
-      Assert.assertTrue( parent.getStylesheets().contains( systemUnderTest.getSheet( BuildWallStyles.ProgressBarSuccess ) ) );
+      Assert.assertTrue( parent.getStylesheets().contains( BuildWallThemes.Standard.sheet() ) );
       Assert.assertTrue( parent.getStyleClass().contains( systemUnderTest.getLabel( BuildWallStyles.ProgressBarSuccess ) ) );
       
-      systemUnderTest.applyStyle( BuildWallStyles.ProgressBarFailed, parent );
+      systemUnderTest.applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, parent );
       Assert.assertEquals( 1, parent.getStylesheets().size() );
-      Assert.assertTrue( parent.getStylesheets().contains( systemUnderTest.getSheet( BuildWallStyles.ProgressBarFailed ) ) );
+      Assert.assertTrue( parent.getStylesheets().contains( BuildWallThemes.Standard.sheet() ) );
       Assert.assertTrue( parent.getStyleClass().contains( systemUnderTest.getLabel( BuildWallStyles.ProgressBarFailed ) ) );
    }//End Method
    
    @Test public void shouldIgnoreMissingSheetAndStyle(){
       Parent parent = Mockito.mock( Parent.class );
-      systemUnderTest.applyStyle( BuildResultStatus.ABORTED, parent );
+      systemUnderTest.applyStyle( BuildResultStatus.ABORTED, BuildWallThemes.Standard, parent );
       Mockito.verifyZeroInteractions( parent );
    }//End Method
 

@@ -34,13 +34,13 @@ public class SystemStylingTest {
       SystemStyling.set( styles );
       
       Parent parent = Mockito.mock( Parent.class );
-      SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, parent );
-      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarFailed, parent );
+      SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, parent );
+      Mockito.verify( styles ).applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, parent );
    }//End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldShowIllegalStateIfNoInstance(){
       SystemStyling.set( null );
-      SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, Mockito.mock( Parent.class ) );
+      SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, Mockito.mock( Parent.class ) );
    }//End Method
 
 }//End Class

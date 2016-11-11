@@ -82,10 +82,10 @@ public class BuildWallDemonstrationTest {
    
    @Ignore
    @Test public void demonstration() throws InterruptedException {
-      JobBuildSimulator.simulateConcurrentBuilding( coreProject, BuildResultStatus.UNKNOWN, BuildResultStatus.SUCCESS, 100, 10000, 100 );
-      JobBuildSimulator.simulateConcurrentBuilding( graphicalProject, BuildResultStatus.SUCCESS, BuildResultStatus.UNSTABLE, 45, 20000, 100 );
-      JobBuildSimulator.simulateConcurrentBuilding( extensionProject, BuildResultStatus.SUCCESS, BuildResultStatus.ABORTED, 33, 2000, 100 );
-      JobBuildSimulator.simulateConcurrentBuilding( v102, BuildResultStatus.SUCCESS, BuildResultStatus.SUCCESS, 3, 25000, 100 );
+      JobBuildSimulator.simulateConcurrentBuilding( coreProject, BuildResultStatus.FAILURE, BuildResultStatus.FAILURE, 100, 10000, 100 );
+      JobBuildSimulator.simulateConcurrentBuilding( graphicalProject, BuildResultStatus.SUCCESS, BuildResultStatus.SUCCESS, 45, 20000, 100 );
+      JobBuildSimulator.simulateConcurrentBuilding( extensionProject, BuildResultStatus.ABORTED, BuildResultStatus.ABORTED, 33, 2000, 100 );
+      JobBuildSimulator.simulateConcurrentBuilding( v102, BuildResultStatus.UNSTABLE, BuildResultStatus.UNSTABLE, 3, 25000, 100 );
       JobBuildSimulator.simulateConcurrentBuilding( v103, BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS, 1, 25000, 100 );
       
       JobBuildSimulator.simulateConcurrentBuilding( invisibleArchitecture, BuildResultStatus.SUCCESS, BuildResultStatus.FAILURE, 1, 5000, 100 );

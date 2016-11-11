@@ -20,8 +20,6 @@ public enum BuildWallStyles {
    ProgressBarNotBuilt( "progress-bar-not-built" ), 
    ProgressBarUnknown( "progress-bar-unknown" );
    
-   static String SHEET = "/uk/dangrew/jtt/buildwall/style/job-progress-styles.css";
-   
    private String label;
    
    /**

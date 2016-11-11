@@ -29,6 +29,7 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.styling.BuildWallStyles;
+import uk.dangrew.jtt.styling.BuildWallThemes;
 import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.jupa.javafx.platform.PlatformLifecycle;
 import uk.dangrew.jupa.javafx.platform.PlatformLifecycleImpl;
@@ -100,7 +101,7 @@ public class JenkinsTestTrackerIT {
    
    @Test public void shouldHaveInitialisedSystemStylings() {
       //Expect no exception.
-      SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, new Group() );
+      SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, new Group() );
    }//End Method
    
    @Test public void shouldHaveInitialisedPlatform() {
