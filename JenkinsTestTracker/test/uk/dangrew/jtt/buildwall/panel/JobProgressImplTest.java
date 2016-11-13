@@ -17,16 +17,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.javafx.progressbar.DynamicProgressBarProperties;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.styling.BuildWallStyles;
-import uk.dangrew.jtt.styling.BuildWallThemes;
-import uk.dangrew.jtt.styling.SystemStyles;
-import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
@@ -34,25 +34,26 @@ import uk.dangrew.jtt.utility.TestCommon;
  */
 public class JobProgressImplTest {
 
-   private static SystemStyles styles;
+   @Mock private DynamicProgressBarProperties dynamicProperties;
    private JenkinsJob job;
    private JobProgressImpl systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
-      styles = Mockito.mock( SystemStyles.class );
-      SystemStyling.set( styles );
+      MockitoAnnotations.initMocks( this );
       
       job = new JenkinsJobImpl( "MyTestJob" );
       job.currentBuildTimeProperty().set( 1000 );
       job.expectedBuildTimeProperty().set( 3000 );
       job.setLastBuildStatus( BuildResultStatus.SUCCESS );
-      systemUnderTest = new JobProgressImpl( job );
+      systemUnderTest = new JobProgressImpl( dynamicProperties, job );
    }//End Method
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> { return new JobProgressImpl( job ); } );
+      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      systemUnderTest.updateStyle( job );
+      
       Thread.sleep( 100000 );
    }//End Method
    
@@ -84,29 +85,29 @@ public class JobProgressImplTest {
    }//End Method
    
    @Test public void shouldHaveInitialStyleAccordingToJobState() {
-      verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
    }//End Method
    
    @Test public void shouldUpdateStyleWhenJobStateUpdates() {
-      verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarSuccess,systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.ABORTED );
-      verify( styles ).applyStyle( BuildWallStyles.ProgressBarAborted, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarAborted, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.FAILURE );
-      verify( styles ).applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarFailed, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.NOT_BUILT );
-      verify( styles ).applyStyle( BuildWallStyles.ProgressBarNotBuilt, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarNotBuilt, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.SUCCESS );
-      verify( styles, Mockito.times( 2 ) ).applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties, Mockito.times( 2 ) ).applyStandardColourFor( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
       
       job.setLastBuildStatus( BuildResultStatus.UNKNOWN );
-      verify( styles ).applyStyle( BuildWallStyles.ProgressBarUnknown, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarUnknown, systemUnderTest.progressBar() );
 
       job.setLastBuildStatus( BuildResultStatus.UNSTABLE );
-      verify( styles ).applyStyle( BuildWallStyles.ProgressBarUnstable, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarUnstable, systemUnderTest.progressBar() );
    }//End Method
    
    @Test public void shouldBindWDimensionsOfProgressToContainer() {
@@ -143,11 +144,11 @@ public class JobProgressImplTest {
    }//End Method
    
    @Test public void detachShouldNotUpdateStyleWhenJobStateUpdates() {
-      verify( styles ).applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, systemUnderTest.progressBar() );
+      verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
       systemUnderTest.detachFromSystem();
       
       job.setLastBuildStatus( BuildResultStatus.ABORTED );
-      verifyNoMoreInteractions( styles );
+      verifyNoMoreInteractions( dynamicProperties );
    }//End Method
    
    @Test public void shouldShowAsDetached(){

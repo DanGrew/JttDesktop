@@ -10,12 +10,11 @@ package uk.dangrew.jtt.buildwall.panel;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
+import uk.dangrew.jtt.javafx.progressbar.DynamicProgressBarProperties;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.styling.BuildWallStyles;
-import uk.dangrew.jtt.styling.BuildWallThemes;
-import uk.dangrew.jtt.styling.SystemStyling;
 
 /**
  * The {@link JobProgressImpl} provides a {@link BorderPane} with a specially formatted
@@ -24,6 +23,7 @@ import uk.dangrew.jtt.styling.SystemStyling;
 public class JobProgressImpl extends BorderPane {
 
    private final JenkinsJob job;
+   private final DynamicProgressBarProperties dynamicProperties;
    private ProgressBar progress;
    private RegistrationManager registrations;
    
@@ -32,7 +32,18 @@ public class JobProgressImpl extends BorderPane {
     * @param job the {@link JenkinsJob}.
     */
    public JobProgressImpl( JenkinsJob job ) {
+      this( new DynamicProgressBarProperties(), job );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link JobProgressImpl}.
+    * @param dynamicProperties the {@link DynamicProgressBarProperties} for changing the {@link javafx.scene.paint.Color}
+    * of the {@link ProgressBar}.
+    * @param job the associated {@link JenkinsJob}.
+    */
+   JobProgressImpl( DynamicProgressBarProperties dynamicProperties, JenkinsJob job ) {
       this.job = job;
+      this.dynamicProperties = dynamicProperties;
       this.registrations = new RegistrationManager();
       
       progress = new ProgressBar();
@@ -52,32 +63,32 @@ public class JobProgressImpl extends BorderPane {
                job.lastBuildProperty(), ( source, old, updated ) -> updateStyle( job ) 
       ) );
       updateStyle( job );
-   }//End Class
-   
+   }//End Constructor
+
    /**
     * Method to update the style of the {@link ProgressBar} using loaded styles, based on the {@link JenkinsJob}
     * build state of the last build.
     * @param job the {@link JenkinsJob} to update for.
     */
-   private void updateStyle( JenkinsJob job ) {
+   void updateStyle( JenkinsJob job ) {
       switch ( job.lastBuildProperty().get().getValue() ) {
          case ABORTED:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarAborted, BuildWallThemes.Standard, progress );
+            dynamicProperties.applyStandardColourFor( BuildWallStyles.ProgressBarAborted, progress );
             break;
          case FAILURE:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarFailed, BuildWallThemes.Standard, progress );
+            dynamicProperties.applyStandardColourFor( BuildWallStyles.ProgressBarFailed, progress );
             break;
          case NOT_BUILT:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarNotBuilt, BuildWallThemes.Standard, progress );
+            dynamicProperties.applyStandardColourFor( BuildWallStyles.ProgressBarNotBuilt, progress );
             break;
          case SUCCESS:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarSuccess, BuildWallThemes.Standard, progress );
+            dynamicProperties.applyStandardColourFor( BuildWallStyles.ProgressBarSuccess, progress );
             break;
          case UNKNOWN:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarUnknown, BuildWallThemes.Standard, progress );
+            dynamicProperties.applyStandardColourFor( BuildWallStyles.ProgressBarUnknown, progress );
             break;
          case UNSTABLE:
-            SystemStyling.applyStyle( BuildWallStyles.ProgressBarUnstable, BuildWallThemes.Standard, progress );
+            dynamicProperties.applyStandardColourFor( BuildWallStyles.ProgressBarUnstable, progress );
             break;
          default:
             break;
