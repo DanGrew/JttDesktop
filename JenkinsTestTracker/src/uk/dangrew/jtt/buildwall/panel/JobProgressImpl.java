@@ -10,11 +10,16 @@ package uk.dangrew.jtt.buildwall.panel;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.javafx.progressbar.DynamicProgressBarProperties;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
+import uk.dangrew.jtt.javafx.registrations.MapChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
+import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.styling.BuildWallStyles;
+import uk.dangrew.jtt.utility.observable.FunctionMapChangeListenerImpl;
 
 /**
  * The {@link JobProgressImpl} provides a {@link BorderPane} with a specially formatted
@@ -24,15 +29,17 @@ public class JobProgressImpl extends BorderPane {
 
    private final JenkinsJob job;
    private final DynamicProgressBarProperties dynamicProperties;
+   private final BuildWallTheme theme;
    private ProgressBar progress;
    private RegistrationManager registrations;
    
    /**
     * Constructs a new {@link JobProgressImpl}.
     * @param job the {@link JenkinsJob}.
+    * @param theme the {@link BuildWallTheme} associated to control the {@link Color}s.
     */
-   public JobProgressImpl( JenkinsJob job ) {
-      this( new DynamicProgressBarProperties(), job );
+   public JobProgressImpl( JenkinsJob job, BuildWallTheme theme ) {
+      this( new DynamicProgressBarProperties(), job, theme );
    }//End Constructor
    
    /**
@@ -40,10 +47,12 @@ public class JobProgressImpl extends BorderPane {
     * @param dynamicProperties the {@link DynamicProgressBarProperties} for changing the {@link javafx.scene.paint.Color}
     * of the {@link ProgressBar}.
     * @param job the associated {@link JenkinsJob}.
+    * @param theme the {@link BuildWallTheme} associated to control the {@link Color}s.
     */
-   JobProgressImpl( DynamicProgressBarProperties dynamicProperties, JenkinsJob job ) {
+   JobProgressImpl( DynamicProgressBarProperties dynamicProperties, JenkinsJob job, BuildWallTheme theme ) {
       this.job = job;
       this.dynamicProperties = dynamicProperties;
+      this.theme = theme;
       this.registrations = new RegistrationManager();
       
       progress = new ProgressBar();
@@ -62,6 +71,20 @@ public class JobProgressImpl extends BorderPane {
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
                job.lastBuildProperty(), ( source, old, updated ) -> updateStyle( job ) 
       ) );
+      
+      FunctionMapChangeListenerImpl< BuildResultStatus, Color > coloursListener = new FunctionMapChangeListenerImpl<>(
+               theme.barColoursMap(), 
+               ( k, v ) -> updateStyle( job ), 
+               ( k, v ) -> updateStyle( job ) 
+      );
+      registrations.apply( new MapChangeListenerRegistrationImpl<>( 
+               theme.barColoursMap(), 
+               coloursListener
+      ) );
+      registrations.apply( new MapChangeListenerRegistrationImpl<>( 
+               theme.trackColoursMap(), 
+               coloursListener
+      ) );
       updateStyle( job );
    }//End Constructor
 
@@ -71,7 +94,16 @@ public class JobProgressImpl extends BorderPane {
     * @param job the {@link JenkinsJob} to update for.
     */
    void updateStyle( JenkinsJob job ) {
-      switch ( job.lastBuildProperty().get().getValue() ) {
+      BuildResultStatus status = job.lastBuildProperty().get().getValue();
+      
+      Color trackColour = theme.trackColoursMap().get( status );
+      Color barColour = theme.barColoursMap().get( status );
+      if ( trackColour != null && barColour != null ) {
+         dynamicProperties.applyCustomColours( barColour, trackColour, progress );
+         return;
+      }
+      
+      switch ( status ) {
          case ABORTED:
             dynamicProperties.applyStandardColourFor( BuildWallStyles.ProgressBarAborted, progress );
             break;

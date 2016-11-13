@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.buildwall.panel.JobProgressImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
@@ -45,7 +46,7 @@ public class JobProgressTreeNode extends GridPane {
    JobProgressTreeNode( JenkinsJob job, JavaFxStyle styling ) {
       this.job = job;
       add( jobName = styling.createBoldLabel( job.nameProperty().get() ), 0, 0 );
-      add( jobProgress = new BorderPane( new JobProgressImpl( job ) ), 1, 0 );
+      add( jobProgress = new BorderPane( new JobProgressImpl( job, new BuildWallThemeImpl( "Default" ) ) ), 1, 0 );
       
       ColumnConstraints constraintA = new ColumnConstraints();
       constraintA.setPercentWidth( NAME_PROPORTION );

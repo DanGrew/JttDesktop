@@ -10,6 +10,7 @@ package uk.dangrew.jtt.buildwall.panel;
 
 import javafx.scene.layout.StackPane;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
@@ -38,7 +39,7 @@ public class JobPanelImpl extends StackPane {
       this.job = job;
       this.registrations = new RegistrationManager();
       
-      this.progress = new JobProgressImpl( job );
+      this.progress = new JobProgressImpl( job, new BuildWallThemeImpl( "Default" ) );
       getChildren().add( progress );
 
       updateJobPanelDescriptionType( configuration.jobPanelDescriptionProvider().get() );
