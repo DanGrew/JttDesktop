@@ -30,8 +30,8 @@ public class SystemStyles {
       for ( BuildWallStyles style : BuildWallStyles.values() ) {
          styles.put( style, style.label() );
       }
-   }//End Class
-
+   }//End Constructor
+   
    /**
     * Method to apply the given style to the given {@link Parent}.
     * @param style the {@link Enum} style to apply.

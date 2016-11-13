@@ -21,7 +21,7 @@ public class SystemStyling {
     * Getter for the singleton.
     * @return the {@link SystemStyles}.
     */
-   static SystemStyles get() {
+   public static SystemStyles get() {
       return instance;
    }//End Method
 
