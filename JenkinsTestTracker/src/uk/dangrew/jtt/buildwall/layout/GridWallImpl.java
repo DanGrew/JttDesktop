@@ -55,6 +55,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
       
       database.jenkinsJobs().addListener( ( Change< ? extends JenkinsJob > change ) -> constructLayout() );
       database.jenkinsJobProperties().addBuildResultStatusListener( ( job, old, updated ) -> constructLayout() );
+      database.jenkinsJobProperties().addBuildStateListener( ( job, old, updated ) -> constructLayout() );
       
       configuration.numberOfColumns().addListener( ( source, old, updated ) -> constructLayout() );
       configuration.jobPolicies().addListener( ( MapChangeListener.Change< ? extends JenkinsJob, ? extends BuildWallJobPolicy > change ) -> {
@@ -76,7 +77,9 @@ public class GridWallImpl extends GridPane implements BuildWall {
    private void fxConstruction(){
       removalAllPanelsAndCleanUp();
       
-      if ( database.jenkinsJobs().isEmpty() ) return;
+      if ( database.jenkinsJobs().isEmpty() ) {
+         return;
+      }
       
       List< JenkinsJob > jobsToShow = identifyDisplayedJobs();
       int numberOfColumns = calculateNumberOfColumnsToShow( jobsToShow );

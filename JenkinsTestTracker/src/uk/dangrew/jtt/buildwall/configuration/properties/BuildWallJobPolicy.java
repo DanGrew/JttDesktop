@@ -10,6 +10,7 @@ package uk.dangrew.jtt.buildwall.configuration.properties;
 
 import java.util.function.Predicate;
 
+import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
 /**
@@ -18,7 +19,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
  */
 public enum BuildWallJobPolicy {
    
-   AlwaysShow( job -> { return true; } ),
+   AlwaysShow( job -> true ),
    
    OnlyShowFailures( job -> {
       switch ( job.lastBuildProperty().get().getValue() ) {
@@ -48,7 +49,9 @@ public enum BuildWallJobPolicy {
       }
    } ),
    
-   NeverShow( job -> { return false; } );
+   OnlyShowBuilding( job -> job.buildStateProperty().get().equals( BuildState.Building ) ),
+   
+   NeverShow( job -> false );
    
    private Predicate< JenkinsJob > deciderFunction;
    

@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.util.Pair;
+import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -85,6 +86,14 @@ public class BuildWallJobPolicyTest {
       
       job.setLastBuildStatus( BuildResultStatus.UNSTABLE );
       assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
+   }//End Method
+   
+   @Test public void shouldDecideForBuildingOnlyOnly() {
+      job.buildStateProperty().set( BuildState.Built );
+      assertThat( BuildWallJobPolicy.OnlyShowBuilding.shouldShow( job ), is( false ) );
+      
+      job.buildStateProperty().set( BuildState.Building );
+      assertThat( BuildWallJobPolicy.OnlyShowBuilding.shouldShow( job ), is( true ) );
    }//End Method
 
 }//End Class

@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.buildwall.layout;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -31,7 +32,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import javafx.util.Pair;
+import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
@@ -346,6 +347,20 @@ public class GridWallImplTest {
       database.jenkinsJobs().get( 2 ).setLastBuildStatus( BuildResultStatus.SUCCESS );
       database.jenkinsJobs().get( 3 ).setLastBuildStatus( BuildResultStatus.SUCCESS );
       assertIndexConstraints( 1, 1 );
+   }//End Method
+   
+   @Test public void shouldReconstructLayoutWhenJobBuildStateChanges(){
+      configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.OnlyShowBuilding ) );
+      assertIndexConstraints( 2, 3 );
+      database.jenkinsJobs().get( 0 ).buildStateProperty().set( BuildState.Building );
+      database.jenkinsJobs().get( 1 ).buildStateProperty().set( BuildState.Building );
+      assertThat( systemUnderTest.getChildren(), hasSize( 2 ) );
+      assertIndexConstraints( 2, 2 );
+      
+      database.jenkinsJobs().get( 2 ).buildStateProperty().set( BuildState.Building );
+      database.jenkinsJobs().get( 3 ).buildStateProperty().set( BuildState.Building );
+      assertIndexConstraints( 4, 4 );
+      assertThat( systemUnderTest.getChildren(), hasSize( 4 ) );
    }//End Method
    
    @Test public void constructionShouldDetachChildrenPanels(){
