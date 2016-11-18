@@ -1,3 +1,8 @@
+Release, "1.5.172"
+Date, "(Nov 17, 2016 10:58:32 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.172/JenkinsTestTracker-1.5.172-runnable.jar"
+Description, "Job policies now include only when job is building so that when the job has finished, it is removed from the display."
+
 Release, "1.5.159"
 Date, "(Sep 21, 2016 7:12:35 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.159/JenkinsTestTracker-1.5.159-runnable.jar"
