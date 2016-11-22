@@ -10,10 +10,12 @@ package uk.dangrew.jtt.buildwall.configuration.style;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -34,9 +36,19 @@ import uk.dangrew.jtt.javafx.spinner.IntegerPropertySpinner;
  */
 public class JavaFxStyle {
 
+   static final double FULL_WIDTH_COLUMN = 100.0;
+   static final double HALF_WIDTH_COLUMN = 50.0;
    static final int TITLE_FONT_SIZE = 30;
    static final double LABEL_PERCENTAGE_WIDTH = 40;
    static final double CONTROLS_PERCENTAGE_WIDTH = 60;
+   
+   /**
+    * Method to get the column percentage for half of the width.
+    * @return the percentage for a half width column.
+    */
+   public double halfColumnWidth(){
+      return HALF_WIDTH_COLUMN;
+   }//End Method
    
    /**
     * Method to create a bold {@link Label}.
@@ -121,6 +133,18 @@ public class JavaFxStyle {
    }//End Method
    
    /**
+    * Method to configure a {@link ColorPicker} to synchronise with the given property.
+    * @param colorPicker the {@link ColorPicker} for changing the {@link Color}.
+    * @param colorProperty the property being configured.
+    */
+   public void configureColorPicker( ColorPicker colorPicker, ObjectProperty< Color > colorProperty ){
+      colorPicker.setMaxWidth( Double.MAX_VALUE );
+      colorPicker.valueProperty().set( colorProperty.get() );
+      colorPicker.valueProperty().addListener( ( source, old, updated ) -> colorProperty.set( updated ) );
+      colorProperty.addListener( ( source, old, updated ) -> colorPicker.valueProperty().set( updated ) );
+   }//End Method
+   
+   /**
     * Method to construct a title for the configuration panel.
     * @param title the string title to create a {@link Label} for.
     * @return the {@link Label} constructed.
@@ -136,6 +160,7 @@ public class JavaFxStyle {
     * Method to configure the {@link ColumnConstraints} on the given {@link GridPane}.
     * @param grid the {@link GridPane} to apply constraints to.
     */
+   @Deprecated
    public void configureColumnConstraints( GridPane grid ){
       ColumnConstraints labels = new ColumnConstraints();
       labels.setPercentWidth( LABEL_PERCENTAGE_WIDTH );
@@ -144,6 +169,36 @@ public class JavaFxStyle {
       controls.setPercentWidth( CONTROLS_PERCENTAGE_WIDTH );
       controls.setHgrow( Priority.ALWAYS );
       grid.getColumnConstraints().addAll( labels, controls );  
+   }//End Method
+   
+   /**
+    * Method to configure the {@link ColumnConstraints} for the {@link GridPane} given.
+    * @param pane the {@link GridPane} to configure.
+    * @param percentages the percentages to add as constraints, {@link ColumnConstraints} per
+    * value provided.
+    */
+   public void configureConstraintsForColumnPercentages( GridPane pane, double... percentages ){
+      for ( double value : percentages ) {
+         ColumnConstraints column = new ColumnConstraints();
+         column.setPercentWidth( value );
+         pane.getColumnConstraints().add( column );
+      }
+   }//End Method
+   
+   /**
+    * Method to configure the {@link GridPane} to have a single column spreading the width.
+    * @param pane the {@link GridPane} to configure.
+    */
+   public void configureFullWidthConstraints( GridPane pane ) {
+      configureConstraintsForColumnPercentages( pane, FULL_WIDTH_COLUMN );
+   }//End Method
+   
+   /**
+    * Method to configure the {@link GridPane} to have two columns equally sharing the width.
+    * @param pane the {@link GridPane} to configure.
+    */
+   public void configureHalfWidthConstraints( GridPane pane ) {
+      configureConstraintsForColumnPercentages( pane, HALF_WIDTH_COLUMN, HALF_WIDTH_COLUMN );
    }//End Method
    
    /**

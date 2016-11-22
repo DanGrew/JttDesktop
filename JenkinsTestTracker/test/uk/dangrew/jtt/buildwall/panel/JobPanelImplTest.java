@@ -23,6 +23,8 @@ import org.junit.Test;
 
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.buildwall.panel.description.SimpleJobPanelDescriptionImpl;
@@ -41,6 +43,7 @@ import uk.dangrew.jtt.styling.SystemStyling;
 public class JobPanelImplTest {
 
    private JenkinsJob job;
+   private BuildWallTheme theme;
    private BuildWallConfiguration configuration;
    private JobPanelImpl systemUnderTest;
    
@@ -54,15 +57,16 @@ public class JobPanelImplTest {
    
    @Before public void initialiseSystemUnderTest(){
       job = new JenkinsJobImpl( "JenkinsTestTracker" );
+      theme = new BuildWallThemeImpl( "Test" );
       JavaFxInitializer.startPlatform();
       configuration = new BuildWallConfigurationImpl();
-      systemUnderTest = new JobPanelImpl( configuration, job );
+      systemUnderTest = new JobPanelImpl( configuration, theme, job );
    }//End Method
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       job.expectedBuildTimeProperty().set( 1000000 );
-      JavaFxInitializer.launchInWindow( () -> { return new JobPanelImpl( new BuildWallConfigurationImpl(), job ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new JobPanelImpl( new BuildWallConfigurationImpl(), new BuildWallThemeImpl( "Test" ), job ); } );
       
       JobBuildSimulator.simulateBuilding( job, BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS, 1001, 300000, 100 );
       JobBuildSimulator.simulateBuilding( job, BuildResultStatus.SUCCESS, BuildResultStatus.SUCCESS, 1002, 600000, 100 );
@@ -131,6 +135,16 @@ public class JobPanelImplTest {
       JobPanelDescriptionBaseImpl newestDescription = systemUnderTest.description();
       assertThat( newestDescription, is( instanceOf( DefaultJobPanelDescriptionImpl.class ) ) );
       assertThat( systemUnderTest.getChildren(), not( contains( systemUnderTest.progress(), updatedDescription ) ) );
+   }//End Method
+   
+   @Test public void shouldAssociateProgressCorrectly(){
+      assertThat( systemUnderTest.progress().isAssociatedWith( theme ), is( true ) );
+      assertThat( systemUnderTest.progress().isAssociatedWith( job ), is( true ) );
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWithThemeCorrectly(){
+      assertThat( systemUnderTest.isAssociatedWith( theme ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new BuildWallThemeImpl( "anything" ) ), is( false ) );
    }//End Method
    
 }//End Class

@@ -23,12 +23,15 @@ import org.junit.Test;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
@@ -36,7 +39,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.javafx.spinner.DefensiveDoubleSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
@@ -189,6 +191,52 @@ public class JavaFxStyleTest {
       
       button.getOnMouseReleased().handle( mock( MouseEvent.class ) );
       assertThat( button.getBackground(), is( nullValue() ) );
+   }//End Method
+   
+   @Test public void shouldConfigureColorPicker(){
+      ObjectProperty< Color > property = new SimpleObjectProperty<>( Color.BLACK );
+      ColorPicker picker = new ColorPicker( Color.RED );
+      
+      systemUnderTest.configureColorPicker( picker, property );
+      assertThat( picker.getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( picker.getValue(), is( Color.BLACK ) );
+      
+      property.set( Color.YELLOW );
+      assertThat( picker.getValue(), is( Color.YELLOW ) );
+      
+      picker.setValue( Color.PURPLE );
+      assertThat( property.get(), is( Color.PURPLE ) );
+   }//End Method
+   
+   @Test public void shouldConfigureColumnConstraints(){
+      GridPane pane = new GridPane();
+      systemUnderTest.configureConstraintsForColumnPercentages( pane, 10, 20, 70 );
+      
+      assertThat( pane.getColumnConstraints(), hasSize( 3 ) );
+      assertThat( pane.getColumnConstraints().get( 0 ).getPercentWidth(), is( 10.0 ) );
+      assertThat( pane.getColumnConstraints().get( 1 ).getPercentWidth(), is( 20.0 ) );
+      assertThat( pane.getColumnConstraints().get( 2 ).getPercentWidth(), is( 70.0 ) );
+   }//End Method
+   
+   @Test public void shouldConfigureHalfWidthColumnConstraints(){
+      GridPane pane = new GridPane();
+      systemUnderTest.configureHalfWidthConstraints( pane );
+      
+      assertThat( pane.getColumnConstraints(), hasSize( 2 ) );
+      assertThat( pane.getColumnConstraints().get( 0 ).getPercentWidth(), is( JavaFxStyle.HALF_WIDTH_COLUMN ) );
+      assertThat( pane.getColumnConstraints().get( 1 ).getPercentWidth(), is( JavaFxStyle.HALF_WIDTH_COLUMN ) );
+   }//End Method
+   
+   @Test public void shouldConfigureFullWithColumnConstraints(){
+      GridPane pane = new GridPane();
+      systemUnderTest.configureFullWidthConstraints( pane );
+      
+      assertThat( pane.getColumnConstraints(), hasSize( 1 ) );
+      assertThat( pane.getColumnConstraints().get( 0 ).getPercentWidth(), is( JavaFxStyle.FULL_WIDTH_COLUMN ) );
+   }//End Method
+   
+   @Test public void shouldProvideHaldWidthColumn(){
+      assertThat( systemUnderTest.halfColumnWidth(), is( JavaFxStyle.HALF_WIDTH_COLUMN ) );
    }//End Method
 
 }//End Class

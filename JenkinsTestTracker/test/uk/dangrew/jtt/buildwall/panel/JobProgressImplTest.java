@@ -236,4 +236,12 @@ public class JobProgressImplTest {
       verifyNoMoreInteractions( dynamicProperties );
    }//End Method
    
+   @Test public void shouldBeAssociatedWithObjects(){
+      assertThat( systemUnderTest.isAssociatedWith( theme ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( job ), is( true ) );
+      
+      assertThat( systemUnderTest.isAssociatedWith( new BuildWallThemeImpl( "theme" ) ), is( false ) );
+      assertThat( systemUnderTest.isAssociatedWith( new JenkinsJobImpl( "anthing" ) ), is( false ) );
+   }//End Method
+   
 }//End Class

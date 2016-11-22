@@ -55,44 +55,32 @@ public class ColoursPanel extends GridPane {
       add( jobNameColourLabel, 0, 0 );
       
       jobNameColourPicker = new ColorPicker();
-      configureColorPicker( jobNameColourPicker, configuration.jobNameColour() );
+      styling.configureColorPicker( jobNameColourPicker, configuration.jobNameColour() );
       add( jobNameColourPicker, 1, 0 );
       
       buildNumberColourLabel = styling.createBoldLabel( "Build Number" );
       add( buildNumberColourLabel, 0, 1 );
       
       buildNumberColourPicker = new ColorPicker();
-      configureColorPicker( buildNumberColourPicker, configuration.buildNumberColour() );
+      styling.configureColorPicker( buildNumberColourPicker, configuration.buildNumberColour() );
       add( buildNumberColourPicker, 1, 1 );
       
       completionEstimateColourLabel = styling.createBoldLabel( "Build Time" );
       add( completionEstimateColourLabel, 0, 2 );
       
       completionEstimateColourPicker = new ColorPicker();
-      configureColorPicker( completionEstimateColourPicker, configuration.completionEstimateColour() );
+      styling.configureColorPicker( completionEstimateColourPicker, configuration.completionEstimateColour() );
       add( completionEstimateColourPicker, 1, 2 );
       
       detailColourLabel = styling.createBoldLabel( "Detail" );
       add( detailColourLabel, 0, 3 );
       
       detailColourPicker = new ColorPicker();
-      configureColorPicker( detailColourPicker, configuration.detailColour() );
+      styling.configureColorPicker( detailColourPicker, configuration.detailColour() );
       add( detailColourPicker, 1, 3 );
       
       styling.configureColumnConstraints( this );
    }//End Constructor
-   
-   /**
-    * Method to configure a {@link ColorPicker} to synchronise with the given property.
-    * @param colorPicker the {@link ColorPicker} for changing the {@link Color}.
-    * @param colorProperty the property being configured.
-    */
-   private void configureColorPicker( ColorPicker colorPicker, ObjectProperty< Color > colorProperty ){
-      colorPicker.setMaxWidth( Double.MAX_VALUE );
-      colorPicker.valueProperty().set( colorProperty.get() );
-      colorPicker.valueProperty().addListener( ( source, old, updated ) -> colorProperty.set( updated ) );
-      colorProperty.addListener( ( source, old, updated ) -> colorPicker.valueProperty().set( updated ) );
-   }//End Method
    
    /**
     * Method to determine whether the given {@link BuildWallConfiguration} is associated.

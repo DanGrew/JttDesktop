@@ -17,7 +17,6 @@ import org.junit.Test;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.buildwall.layout.BuildWallDisplayImpl;
 import uk.dangrew.jtt.buildwall.panel.JobBuildSimulator;
 import uk.dangrew.jtt.core.JttTestCoreImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;

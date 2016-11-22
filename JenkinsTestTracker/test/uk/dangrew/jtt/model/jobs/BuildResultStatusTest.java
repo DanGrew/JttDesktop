@@ -8,9 +8,12 @@
  */
 package uk.dangrew.jtt.model.jobs;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
-import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
@@ -24,6 +27,12 @@ public class BuildResultStatusTest {
    
    @Test public void shouldValueOfName() {
       TestCommon.assertEnumNameWithValueOf( BuildResultStatus.class );
+   }//End Method
+   
+   @Test public void shouldSupplyDisplayName(){
+      for ( BuildResultStatus status : BuildResultStatus.values() ) {
+         assertThat( status.displayName(), is( notNullValue() ) );
+      }
    }//End Method
 
 }//End Class

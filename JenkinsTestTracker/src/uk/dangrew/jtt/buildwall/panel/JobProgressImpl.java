@@ -153,6 +153,15 @@ public class JobProgressImpl extends BorderPane {
    }//End Method
    
    /**
+    * Method to determine whether the given {@link BuildWallTheme} is associated with this {@link JobProgressImpl}.
+    * @param theme the {@link BuildWallTheme} in question.
+    * @return true if associated.
+    */
+   public boolean isAssociatedWith( BuildWallTheme theme ) {
+      return this.theme == theme;
+   }//End Method
+   
+   /**
     * Method to determine whether the {@link JobProgressImpl} is detached and
     * not registered with anything in the system.
     * @return true if no registrations held.

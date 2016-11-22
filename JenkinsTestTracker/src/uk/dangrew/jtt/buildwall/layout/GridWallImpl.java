@@ -23,6 +23,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.buildwall.panel.JobPanelImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -37,6 +39,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
 
    private final JenkinsDatabase database;
    private final BuildWallConfiguration configuration;
+   private final BuildWallTheme theme;
    private final Map< JenkinsJob, JobPanelImpl > jobPanels;
    private final BooleanProperty emptyProperty;
    
@@ -49,6 +52,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
       this.jobPanels = new HashMap<>();
       this.database = database;
       this.configuration = configuration;
+      this.theme = new BuildWallThemeImpl( "Default" );
       this.emptyProperty = new SimpleBooleanProperty( true );
       
       constructLayout();
@@ -130,7 +134,7 @@ public class GridWallImpl extends GridPane implements BuildWall {
             rowCount++;
          }
          
-         JobPanelImpl panel = new JobPanelImpl( configuration, job );
+         JobPanelImpl panel = new JobPanelImpl( configuration, theme, job );
          jobPanels.put( job, panel );
          
          final int columnToAddTo = columnCount;

@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.panel;
 
 import javafx.scene.layout.StackPane;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
@@ -26,20 +26,23 @@ public class JobPanelImpl extends StackPane {
    private final JobProgressImpl progress;
    private JobPanelDescriptionBaseImpl description;
    private final JenkinsJob job;
+   private final BuildWallTheme theme;
    private final BuildWallConfiguration configuration;
    private final RegistrationManager registrations;
    
    /**
     * Constructs a new {@link JobPanelImpl}.
     * @param configuration the {@link BuildWallConfiguration}.
+    * @param theme the {@link BuildWallTheme} associated.
     * @param job the {@link JenkinsJob}.
     */
-   public JobPanelImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
+   public JobPanelImpl( BuildWallConfiguration configuration, BuildWallTheme theme, JenkinsJob job ) {
       this.configuration = configuration;
+      this.theme = theme;
       this.job = job;
       this.registrations = new RegistrationManager();
       
-      this.progress = new JobProgressImpl( job, new BuildWallThemeImpl( "Default" ) );
+      this.progress = new JobProgressImpl( job, theme );
       getChildren().add( progress );
 
       updateJobPanelDescriptionType( configuration.jobPanelDescriptionProvider().get() );
@@ -96,6 +99,15 @@ public class JobPanelImpl extends StackPane {
     */
    public boolean isDetached() {
       return progress.isDetached() && description.isDetached();
+   }//End Method
+   
+   /**
+    * Method to determine whether the {@link JobPanelImpl} is associated with the give {@link BuildWallTheme}.
+    * @param theme the {@link BuildWallTheme} in question.
+    * @return true if associated with it.
+    */
+   public boolean isAssociatedWith( BuildWallTheme theme ) {
+      return this.theme == theme;
    }//End Method
 
    JobProgressImpl progress() {
