@@ -9,6 +9,7 @@
 package uk.dangrew.jtt.buildwall.configuration.components.themebuilder;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -83,7 +84,7 @@ public class StatusConfigurationPaneTest {
       assertThat( systemUnderTest.barPicker().getValue(), is( Color.BLANCHEDALMOND ) );
       
       theme.barColoursMap().put( status, null );
-      assertThat( systemUnderTest.barPicker().getValue(), is( Color.BLANCHEDALMOND ) );
+      assertThat( systemUnderTest.barPicker().getValue(), is( nullValue() ) );
    }//End Method
    
    @Test public void shouldUpdateTrackElements() {
@@ -91,7 +92,7 @@ public class StatusConfigurationPaneTest {
       assertThat( systemUnderTest.trackPicker().getValue(), is( Color.BLANCHEDALMOND ) );
       
       theme.trackColoursMap().put( status, null );
-      assertThat( systemUnderTest.trackPicker().getValue(), is( Color.BLANCHEDALMOND ) );
+      assertThat( systemUnderTest.trackPicker().getValue(), is( nullValue() ) );
    }//End Method
    
    @Test public void shouldUpdateThemeFromBarElements() {
