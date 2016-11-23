@@ -49,5 +49,25 @@ public class BuildWallThemeImplTest {
       assertThat( systemUnderTest.trackColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
       assertThat( systemUnderTest.trackColoursMap(), is( systemUnderTest.trackColoursMap() ) );
    }//End Method
+   
+   @Test public void shouldProvideSynchronisedMapForJobNameColours() {
+      assertThat( systemUnderTest.jobNameTextColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
+      assertThat( systemUnderTest.jobNameTextColoursMap(), is( systemUnderTest.trackColoursMap() ) );
+   }//End Method
+   
+   @Test public void shouldProvideSynchronisedMapForBuildNumberColours() {
+      assertThat( systemUnderTest.buildNumberTextColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
+      assertThat( systemUnderTest.buildNumberTextColoursMap(), is( systemUnderTest.trackColoursMap() ) );
+   }//End Method
+   
+   @Test public void shouldProvideSynchronisedMapForCompletionEstimateColours() {
+      assertThat( systemUnderTest.completionEstimateTextColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
+      assertThat( systemUnderTest.completionEstimateTextColoursMap(), is( systemUnderTest.trackColoursMap() ) );
+   }//End Method
+   
+   @Test public void shouldProvideSynchronisedMapForDetailColours() {
+      assertThat( systemUnderTest.detailTextColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
+      assertThat( systemUnderTest.detailTextColoursMap(), is( systemUnderTest.trackColoursMap() ) );
+   }//End Method
 
 }//End Class

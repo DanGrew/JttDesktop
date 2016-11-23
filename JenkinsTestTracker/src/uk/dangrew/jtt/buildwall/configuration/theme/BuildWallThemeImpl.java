@@ -24,6 +24,10 @@ public class BuildWallThemeImpl implements BuildWallTheme {
    private final ObjectProperty< String > nameProperty;
    private final ObservableMap< BuildResultStatus, Color > barColoursMap;
    private final ObservableMap< BuildResultStatus, Color > trackColoursMap;
+   private final ObservableMap< BuildResultStatus, Color > jobNameColoursMap;
+   private final ObservableMap< BuildResultStatus, Color > buildNumberColoursMap;
+   private final ObservableMap< BuildResultStatus, Color > completionEstimateColoursMap;
+   private final ObservableMap< BuildResultStatus, Color > detailColoursMap;
    
    /**
     * Constructs a new {@link BuildWallThemeImpl}.
@@ -37,6 +41,10 @@ public class BuildWallThemeImpl implements BuildWallTheme {
       this.nameProperty = new SimpleObjectProperty<>( name );
       this.barColoursMap = new SynchronizedObservableMap<>();
       this.trackColoursMap = new SynchronizedObservableMap<>();
+      this.jobNameColoursMap = new SynchronizedObservableMap<>();
+      this.buildNumberColoursMap = new SynchronizedObservableMap<>();
+      this.completionEstimateColoursMap = new SynchronizedObservableMap<>();
+      this.detailColoursMap = new SynchronizedObservableMap<>();
    }//End Constructor
    
    /**
@@ -58,6 +66,34 @@ public class BuildWallThemeImpl implements BuildWallTheme {
     */
    @Override public ObservableMap< BuildResultStatus, Color > trackColoursMap() {
       return trackColoursMap;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObservableMap< BuildResultStatus, Color > jobNameTextColoursMap() {
+      return jobNameColoursMap;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObservableMap< BuildResultStatus, Color > buildNumberTextColoursMap() {
+      return buildNumberColoursMap;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObservableMap< BuildResultStatus, Color > completionEstimateTextColoursMap() {
+      return completionEstimateColoursMap;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObservableMap< BuildResultStatus, Color > detailTextColoursMap() {
+      return detailColoursMap;
    }//End Method
 
 }//End Class

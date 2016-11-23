@@ -193,7 +193,7 @@ public class JavaFxStyleTest {
       assertThat( button.getBackground(), is( nullValue() ) );
    }//End Method
    
-   @Test public void shouldConfigureColorPicker(){
+   @Test public void shouldConfigureColorPickerWithProperty(){
       ObjectProperty< Color > property = new SimpleObjectProperty<>( Color.BLACK );
       ColorPicker picker = new ColorPicker( Color.RED );
       
@@ -206,6 +206,14 @@ public class JavaFxStyleTest {
       
       picker.setValue( Color.PURPLE );
       assertThat( property.get(), is( Color.PURPLE ) );
+   }//End Method
+   
+   @Test public void shouldConfigureColorPicker(){
+      ColorPicker picker = new ColorPicker( Color.RED );
+      
+      systemUnderTest.configureColorPicker( picker, Color.BLACK );
+      assertThat( picker.getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( picker.getValue(), is( Color.BLACK ) );
    }//End Method
    
    @Test public void shouldConfigureColumnConstraints(){
@@ -237,6 +245,16 @@ public class JavaFxStyleTest {
    
    @Test public void shouldProvideHaldWidthColumn(){
       assertThat( systemUnderTest.halfColumnWidth(), is( JavaFxStyle.HALF_WIDTH_COLUMN ) );
+   }//End Method
+   
+   @Test public void shouldConfigureRowConstraints(){
+      GridPane pane = new GridPane();
+      systemUnderTest.configureConstraintsForRowPercentages( pane, 10, 20, 70 );
+      
+      assertThat( pane.getRowConstraints(), hasSize( 3 ) );
+      assertThat( pane.getRowConstraints().get( 0 ).getPercentHeight(), is( 10.0 ) );
+      assertThat( pane.getRowConstraints().get( 1 ).getPercentHeight(), is( 20.0 ) );
+      assertThat( pane.getRowConstraints().get( 2 ).getPercentHeight(), is( 70.0 ) );
    }//End Method
 
 }//End Class

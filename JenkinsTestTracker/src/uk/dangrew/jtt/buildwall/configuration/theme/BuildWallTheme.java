@@ -39,4 +39,32 @@ public interface BuildWallTheme {
     */
    public ObservableMap< BuildResultStatus, Color > trackColoursMap();
    
+   /**
+    * {@link ObservableMap} for the {@link Color}s associated with {@link uk.dangrew.jtt.buildwall.panel.JobProgressImpl}
+    * job name text.
+    * @return the {@link ObservableMap}.
+    */
+   public ObservableMap< BuildResultStatus, Color > jobNameTextColoursMap();
+   
+   /**
+    * {@link ObservableMap} for the {@link Color}s associated with {@link uk.dangrew.jtt.buildwall.panel.JobProgressImpl}
+    * build number text.
+    * @return the {@link ObservableMap}.
+    */
+   public ObservableMap< BuildResultStatus, Color > buildNumberTextColoursMap();
+   
+   /**
+    * {@link ObservableMap} for the {@link Color}s associated with {@link uk.dangrew.jtt.buildwall.panel.JobProgressImpl}
+    * completion estimate text.
+    * @return the {@link ObservableMap}.
+    */
+   public ObservableMap< BuildResultStatus, Color > completionEstimateTextColoursMap();
+   
+   /**
+    * {@link ObservableMap} for the {@link Color}s associated with {@link uk.dangrew.jtt.buildwall.panel.JobProgressImpl}
+    * detail text.
+    * @return the {@link ObservableMap}.
+    */
+   public ObservableMap< BuildResultStatus, Color > detailTextColoursMap();
+   
 }//End Method

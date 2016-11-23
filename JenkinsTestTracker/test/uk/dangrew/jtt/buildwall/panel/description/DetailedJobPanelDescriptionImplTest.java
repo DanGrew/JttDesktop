@@ -23,8 +23,6 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.buildwall.panel.description.DetailedJobPanelDescriptionImpl;
-import uk.dangrew.jtt.buildwall.panel.description.FailureDetail;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;

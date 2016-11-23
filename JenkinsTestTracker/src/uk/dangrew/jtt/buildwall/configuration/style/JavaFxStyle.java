@@ -22,6 +22,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -138,10 +139,19 @@ public class JavaFxStyle {
     * @param colorProperty the property being configured.
     */
    public void configureColorPicker( ColorPicker colorPicker, ObjectProperty< Color > colorProperty ){
-      colorPicker.setMaxWidth( Double.MAX_VALUE );
-      colorPicker.valueProperty().set( colorProperty.get() );
+      configureColorPicker( colorPicker, colorProperty.get() );
       colorPicker.valueProperty().addListener( ( source, old, updated ) -> colorProperty.set( updated ) );
       colorProperty.addListener( ( source, old, updated ) -> colorPicker.valueProperty().set( updated ) );
+   }//End Method
+   
+   /**
+    * Method to configure a {@link ColorPicker}.
+    * @param colorPicker the {@link ColorPicker} for changing the {@link Color}.
+    * @param initialValue the initial value.
+    */
+   public void configureColorPicker( ColorPicker colorPicker, Color initialValue ) {
+      colorPicker.setMaxWidth( Double.MAX_VALUE );
+      colorPicker.valueProperty().set( initialValue );
    }//End Method
    
    /**
@@ -182,6 +192,20 @@ public class JavaFxStyle {
          ColumnConstraints column = new ColumnConstraints();
          column.setPercentWidth( value );
          pane.getColumnConstraints().add( column );
+      }
+   }//End Method
+   
+   /**
+    * Method to configure the {@link RowConstraints} for the {@link GridPane} given.
+    * @param pane the {@link GridPane} to configure.
+    * @param percentages the percentages to add as constraints, {@link RowConstraints} per
+    * value provided.
+    */
+   public void configureConstraintsForRowPercentages( GridPane pane, double... percentages ){
+      for ( double value : percentages ) {
+         RowConstraints row = new RowConstraints();
+         row.setPercentHeight( value );
+         pane.getRowConstraints().add( row );
       }
    }//End Method
    
