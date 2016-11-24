@@ -11,6 +11,7 @@ package uk.dangrew.jtt.buildwall.panel.type;
 import java.util.function.BiFunction;
 
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.DetailedJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
@@ -23,25 +24,25 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
  */
 public enum JobPanelDescriptionProviders {
    
-   Simple( ( configuration, job ) -> new SimpleJobPanelDescriptionImpl( configuration, job ) ),
-   Default( ( configuration, job ) -> new DefaultJobPanelDescriptionImpl( configuration, job ) ),
-   Detailed( ( configuration, job ) -> new DetailedJobPanelDescriptionImpl( configuration, job ) );
+   Simple( ( configuration, theme, job ) -> new SimpleJobPanelDescriptionImpl( configuration, theme, job ) ),
+   Default( ( configuration, theme, job ) -> new DefaultJobPanelDescriptionImpl( configuration, theme, job ) ),
+   Detailed( ( configuration, theme, job ) -> new DetailedJobPanelDescriptionImpl( configuration, theme, job ) );
    
-   private transient BiFunction< BuildWallConfiguration, JenkinsJob, JobPanelDescriptionBaseImpl > provider;
+   private transient DescriptionCreator provider;
    
    /**
     * Constructs a new {@link JobPanelDescriptionProviders}.
-    * @param provider the {@link JobPanelDescriptionProvider} function.
+    * @param provider the {@link DescriptionCreator} function.
     */
-   private JobPanelDescriptionProviders( BiFunction< BuildWallConfiguration, JenkinsJob, JobPanelDescriptionBaseImpl > provider ) {
+   private JobPanelDescriptionProviders( DescriptionCreator provider ) {
       this.provider = provider;
    }//End Constructor
    
    /**
     * {@inheritDoc}
     */
-   public JobPanelDescriptionBaseImpl constructJobDescriptionPanel( BuildWallConfiguration configuration, JenkinsJob job ) {
-      return provider.apply( configuration, job );
+   public JobPanelDescriptionBaseImpl constructJobDescriptionPanel( BuildWallConfiguration configuration, BuildWallTheme theme, JenkinsJob job ) {
+      return provider.create( configuration, theme, job );
    }//End Method
 
 }//End Enum

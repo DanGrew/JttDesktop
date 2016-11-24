@@ -24,19 +24,31 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
  */
 class StatusConfigurationPane extends GridPane {
    
-   static final String TRACK_COLOUR_STRING = "Track Colour";
-   static final String BAR_COLOUR_STRING = "Bar Colour";
+   static final String TRACK_COLOUR_STRING = "Background Colour";
+   static final String BAR_COLOUR_STRING = "Progress Colour";
+   static final String JOB_NAME_COLOUR_STRING = "Job Name Colour";
+   static final String BUILD_NUMBER_COLOUR_STRING = "Build Number Colour";
+   static final String BUILD_ESTIMATE_COLOUR_STRING = "Build Estimate Colour";
+   static final String DETAIL_COLOUR_STRING = "Detail Colour";
    static final double PADDING = 10;
    
    private final JavaFxStyle styling;
    private final BuildWallTheme theme;
    private final BuildResultStatus status;
    
-   private Label barLabel;
-   private Label trackLabel;
+   private final Label barLabel;
+   private final Label trackLabel;
+   private final Label jobNameLabel;
+   private final Label buildNumberLabel;
+   private final Label completionEstimateLabel;
+   private final Label detailLabel;
    
-   private ColorPicker barPicker;
-   private ColorPicker trackPicker;
+   private final ColorPicker barPicker;
+   private final ColorPicker trackPicker;
+   private final ColorPicker jobNamePicker;
+   private final ColorPicker buildNumberPicker;
+   private final ColorPicker completionEstimatePicker;
+   private final ColorPicker detailPicker;
    
    /**
     * Constructs a new {@link StatusConfigurationPane}.
@@ -59,31 +71,32 @@ class StatusConfigurationPane extends GridPane {
       this.status = status;
       this.styling.configureHalfWidthConstraints( this );
       
-      addBarColorPicker();
-      addTrackColorPicker();
+      barLabel = styling.createBoldLabel( BAR_COLOUR_STRING );
+      barPicker = new ColorPicker();
+      addColorPicker( 0, barLabel, barPicker, theme.barColoursMap() );
+      
+      trackLabel = styling.createBoldLabel( TRACK_COLOUR_STRING );
+      trackPicker = new ColorPicker();
+      addColorPicker( 1, trackLabel, trackPicker, theme.trackColoursMap() );
+      
+      jobNameLabel = styling.createBoldLabel( JOB_NAME_COLOUR_STRING );
+      jobNamePicker = new ColorPicker();
+      addColorPicker( 2, jobNameLabel, jobNamePicker, theme.jobNameColoursMap() );
+      
+      buildNumberLabel = styling.createBoldLabel( BUILD_NUMBER_COLOUR_STRING );
+      buildNumberPicker = new ColorPicker();
+      addColorPicker( 3, buildNumberLabel, buildNumberPicker, theme.buildNumberColoursMap() );
+      
+      completionEstimateLabel = styling.createBoldLabel( BUILD_ESTIMATE_COLOUR_STRING );
+      completionEstimatePicker = new ColorPicker();
+      addColorPicker( 4, completionEstimateLabel, completionEstimatePicker, theme.completionEstimateColoursMap() );
+      
+      detailLabel = styling.createBoldLabel( DETAIL_COLOUR_STRING );
+      detailPicker = new ColorPicker();
+      addColorPicker( 5, detailLabel, detailPicker, theme.detailColoursMap() );
       
       setPadding( new Insets( PADDING ) );
    }//End Constructor
-   
-   /**
-    * Method to add a {@link ColorPicker} for a {@link BuildResultStatus} bar.
-    */
-   private void addBarColorPicker() {
-      barLabel = styling.createBoldLabel( BAR_COLOUR_STRING );
-      barPicker = new ColorPicker();
-      
-      addColorPicker( 0, barLabel, barPicker, theme.barColoursMap() );
-   }//End Method
-   
-   /**
-    * Method to add a {@link ColorPicker} for a {@link BuildResultStatus} track.
-    */
-   private void addTrackColorPicker() {
-      trackLabel = styling.createBoldLabel( TRACK_COLOUR_STRING );
-      trackPicker = new ColorPicker();
-      
-      addColorPicker( 1, trackLabel, trackPicker, theme.trackColoursMap() );
-   }//End Method
    
    /**
     * General mechanism for adding {@link ColorPicker}s.
@@ -129,6 +142,22 @@ class StatusConfigurationPane extends GridPane {
    Label trackLabel(){
       return trackLabel;
    }//End Method
+
+   Label jobNameLabel(){
+      return jobNameLabel;
+   }//End Method
+   
+   Label buildNumberLabel(){
+      return buildNumberLabel;
+   }//End Method
+   
+   Label completionEstimateLabel(){
+      return completionEstimateLabel;
+   }//End Method
+   
+   Label detailLabel(){
+      return detailLabel;
+   }//End Method
    
    ColorPicker barPicker(){
       return barPicker;
@@ -136,6 +165,22 @@ class StatusConfigurationPane extends GridPane {
    
    ColorPicker trackPicker(){
       return trackPicker;
+   }//End Method
+   
+   ColorPicker jobNamePicker(){
+      return jobNamePicker;
+   }//End Method
+   
+   ColorPicker buildNumberPicker(){
+      return buildNumberPicker;
+   }//End Method
+   
+   ColorPicker completionEstimatePicker(){
+      return completionEstimatePicker;
+   }//End Method
+   
+   ColorPicker detailPicker(){
+      return detailPicker;
    }//End Method
 
 }//End Class

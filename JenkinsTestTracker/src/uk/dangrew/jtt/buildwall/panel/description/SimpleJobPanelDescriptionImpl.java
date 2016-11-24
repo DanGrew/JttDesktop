@@ -12,6 +12,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.layout.ColumnConstraints;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
 /**
@@ -27,10 +28,11 @@ public class SimpleJobPanelDescriptionImpl extends JobPanelDescriptionBaseImpl {
    /**
     * Constructs a new {@link SimpleJobPanelDescriptionImpl}.
     * @param configuration the {@link BuildWallConfiguration}.
+    * @param theme the {@link BuildWallTheme}.
     * @param job the {@link JenkinsJob} being described.
     */
-   public SimpleJobPanelDescriptionImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
-      super( configuration, job );
+   public SimpleJobPanelDescriptionImpl( BuildWallConfiguration configuration, BuildWallTheme theme, JenkinsJob job ) {
+      super( configuration, theme, job );
    }//End Constructor
    
    /**

@@ -69,7 +69,7 @@ public class ThemeConfigurationPanelTest {
    @Parameters( source = BuildResultStatus.class )
    @Test public void shouldProvideTitledPanes( BuildResultStatus status ) {
       TitledPane pane = systemUnderTest.titledPaneFor( status );
-      assertThat( pane.isCollapsible(), is( false ) );
+      assertThat( pane.isCollapsible(), is( true ) );
       assertThat( systemUnderTest.getChildren().contains( pane ), is( true ) );
    }//End Method
    

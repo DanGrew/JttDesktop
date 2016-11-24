@@ -18,6 +18,8 @@ import org.junit.Test;
 
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.DetailedJobPanelDescriptionImpl;
 import uk.dangrew.jtt.buildwall.panel.description.JobPanelDescriptionBaseImpl;
@@ -34,6 +36,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
  */
 public class JobPanelDescriptionProvidersTest {
    
+   private BuildWallTheme theme;
    private BuildWallConfiguration configuration;
    private JenkinsJob job;
    
@@ -44,23 +47,24 @@ public class JobPanelDescriptionProvidersTest {
    
    @Before public void initialiseEnvironment(){
       configuration = new BuildWallConfigurationImpl();
+      theme = new BuildWallThemeImpl( "Test" );
       job = new JenkinsJobImpl( "some job" );
    }//End Method
 
    @Test public void simpleShouldProvideSimple() {
-      JobPanelDescriptionBaseImpl description = JobPanelDescriptionProviders.Simple.constructJobDescriptionPanel( configuration, job );
+      JobPanelDescriptionBaseImpl description = JobPanelDescriptionProviders.Simple.constructJobDescriptionPanel( configuration, theme, job );
       assertThat( description, notNullValue() );
       assertThat( description, instanceOf( SimpleJobPanelDescriptionImpl.class ) );
    }//End Method
    
    @Test public void defaultShouldProvideDefault() {
-      JobPanelDescriptionBaseImpl description = JobPanelDescriptionProviders.Default.constructJobDescriptionPanel( configuration, job );
+      JobPanelDescriptionBaseImpl description = JobPanelDescriptionProviders.Default.constructJobDescriptionPanel( configuration, theme, job );
       assertThat( description, notNullValue() );
       assertThat( description, instanceOf( DefaultJobPanelDescriptionImpl.class ) );
    }//End Method
    
    @Test public void detailedShouldProvideDetailed() {
-      JobPanelDescriptionBaseImpl description = JobPanelDescriptionProviders.Detailed.constructJobDescriptionPanel( configuration, job );
+      JobPanelDescriptionBaseImpl description = JobPanelDescriptionProviders.Detailed.constructJobDescriptionPanel( configuration, theme, job );
       assertThat( description, notNullValue() );
       assertThat( description, instanceOf( DetailedJobPanelDescriptionImpl.class ) );
    }//End Method

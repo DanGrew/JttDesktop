@@ -14,18 +14,25 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.concurrent.TimeUnit;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.collections.ObservableMap;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerBindingImpl;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
+import uk.dangrew.jtt.javafx.registrations.MapChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.PaintColorChangeListenerBindingImpl;
 import uk.dangrew.jtt.javafx.registrations.RegisteredComponent;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
+import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.utility.observable.FunctionMapChangeListenerImpl;
 
 /**
  * The {@link JobPanelDescriptionBaseImpl} is responsible for defining the structure and common
@@ -40,8 +47,9 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
    static final double DEFAULT_PROPERTY_OPACITY = 0.8;
    static final double PROPERTIES_INSET = 5;
    
-   private JenkinsJob job;
-   private BuildWallConfiguration configuration;
+   private final JenkinsJob job;
+   private final BuildWallTheme theme;
+   private final BuildWallConfiguration configuration;
    private Label jobName;
    private Label buildNumber;
    private Label completionEstimate;
@@ -52,16 +60,17 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
    /**
     * Constructs a new {@link DefaultJobPanelDescriptionImpl}.
     * @param configuration the {@link BuildWallConfiguration}.
+    * @param theme the {@link BuildWallTheme} providing configuration.
     * @param job the {@link JenkinsJob} being described.
     */
-   protected JobPanelDescriptionBaseImpl( BuildWallConfiguration configuration, JenkinsJob job ) {
+   protected JobPanelDescriptionBaseImpl( BuildWallConfiguration configuration, BuildWallTheme theme, JenkinsJob job ) {
       this.configuration = configuration;
+      this.theme = theme;
       this.job = job;
       this.registrations = new RegistrationManager();
       
       jobName = new Label( job.nameProperty().get() );
       updateJobNameFont();
-      updateJobNameColour();
       
       properties = new GridPane();
       buildNumber = new Label();
@@ -69,13 +78,17 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
       buildNumber.setOpacity( DEFAULT_PROPERTY_OPACITY );
 
       completionEstimate = new Label();
-      updateCompletionEstimate( job );
+      updateCompletionEstimate();
       completionEstimate.setOpacity( DEFAULT_PROPERTY_OPACITY );
       setPadding( new Insets( PROPERTIES_INSET ) );
 
       applyRegistrations();
       applyLayout();
       applyColumnConstraints();
+      
+      updateJobNameColour();
+      updateBuildNumberColour();
+      updateCompletionEstimateColour();
    }//End Class
    
    /**
@@ -96,9 +109,10 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
                ( source, old, updated ) -> jobName.setText( job.nameProperty().get() ) 
       ) );
       
-      registrations.apply( new PaintColorChangeListenerBindingImpl( 
-               configuration.buildNumberColour(), buildNumber.textFillProperty() ) 
-      );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               configuration.buildNumberColour(),
+               ( s, o, u ) -> updateBuildNumberColour()
+      ) );
       registrations.apply( new ChangeListenerBindingImpl<>( 
                configuration.buildNumberFont(), buildNumber.fontProperty() ) 
       );
@@ -112,20 +126,43 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
                ( source, old, updated ) -> updateBuildNumberAndTimestamp()
       ) );
       
-      registrations.apply( new PaintColorChangeListenerBindingImpl( 
-               configuration.completionEstimateColour(), completionEstimate.textFillProperty() ) 
-      );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               configuration.completionEstimateColour(),
+               ( s, o, u ) -> updateCompletionEstimateColour()
+      ) );
       registrations.apply( new ChangeListenerBindingImpl<>( 
                configuration.completionEstimateFont(), completionEstimate.fontProperty() ) 
       );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
                job.currentBuildTimeProperty(), 
-               ( source, old, updated ) -> updateCompletionEstimate( job ) 
+               ( source, old, updated ) -> updateCompletionEstimate() 
       ) );
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
                job.expectedBuildTimeProperty(), 
-               ( source, old, updated ) -> updateCompletionEstimate( job ) 
+               ( source, old, updated ) -> updateCompletionEstimate() 
+      ) );
+      
+      registrations.apply( new MapChangeListenerRegistrationImpl<>( theme.jobNameColoursMap(), 
+               new FunctionMapChangeListenerImpl< BuildResultStatus, Color >( 
+                     theme.jobNameColoursMap(), 
+                     ( k, v ) -> updateJobNameColour(), 
+                     ( k, v ) -> { /* do not respond to removal. */ }
+               ) 
+      ) );
+      registrations.apply( new MapChangeListenerRegistrationImpl<>( theme.buildNumberColoursMap(), 
+               new FunctionMapChangeListenerImpl< BuildResultStatus, Color >( 
+                     theme.buildNumberColoursMap(), 
+                     ( k, v ) -> updateBuildNumberColour(), 
+                     ( k, v ) -> { /* do not respond to removal. */ }
+               ) 
+      ) );
+      registrations.apply( new MapChangeListenerRegistrationImpl<>( theme.completionEstimateColoursMap(), 
+               new FunctionMapChangeListenerImpl< BuildResultStatus, Color >( 
+                     theme.completionEstimateColoursMap(), 
+                     ( k, v ) -> updateCompletionEstimateColour(), 
+                     ( k, v ) -> { /* do not respond to removal. */ }
+               ) 
       ) );
    }//End Method
 
@@ -148,17 +185,49 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
    }//End Method
    
    /**
-    * Method to update the job name {@link Color} in line with the {@link BuildWallConfiguration}.
+    * Method to update the job name {@link Label}s {@link Color}.
     */
    private void updateJobNameColour(){
-      jobName.textFillProperty().set( configuration.jobNameColour().get() );
+      updateColour( theme.jobNameColoursMap(), configuration.jobNameColour(), jobName );
    }//End Method
    
    /**
-    * Method to update the complete estimate for the given associated {@link JenkinsJob}.
-    * @param job the {@link JenkinsJob}.
+    * Method to update the build number {@link Label}s {@link Color}.
     */
-   private void updateCompletionEstimate( JenkinsJob job ){
+   private void updateBuildNumberColour(){
+      updateColour( theme.buildNumberColoursMap(), configuration.buildNumberColour(), buildNumber );
+   }//End Method
+   
+   /**
+    * Method to update the completion estimate {@link Label}s {@link Color}.
+    */
+   private void updateCompletionEstimateColour(){
+      updateColour( theme.completionEstimateColoursMap(), configuration.completionEstimateColour(), completionEstimate );
+   }//End Method
+   
+   /**
+    * Method to update the {@link Color} of a {@link Label}.
+    * @param coloursMap the {@link ObservableMap} of {@link Color}s to use.
+    * @param configurationProperty the {@link ObjectProperty} from the {@link BuildWallConfiguration}.
+    * @param textLabel the {@link Label} to update.
+    */
+   private void updateColour( 
+            ObservableMap< BuildResultStatus, Color > coloursMap, 
+            ObjectProperty< Color > configurationProperty,
+            Label textLabel
+   ){
+      Color themeColor = coloursMap.get( job.getLastBuildStatus() );
+      if ( themeColor != null ) {
+         textLabel.textFillProperty().set( themeColor );
+      } else {
+         textLabel.textFillProperty().set( configurationProperty.get() );
+      }
+   }//End Method
+   
+   /**
+    * Method to update the complete estimate for the associated {@link JenkinsJob}.
+    */
+   private void updateCompletionEstimate(){
       DecoupledPlatformImpl.runLater( () -> {
          completionEstimate.setText( formatCompletionEstimateInMilliseconds( 
                   job.currentBuildTimeProperty().get(),
@@ -246,7 +315,9 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
     * @return the formatted number.
     */
    static String formatBuildNumber( Integer buildNumber ) {
-      if ( buildNumber == null ) return BUILD_NUMBER_PREFIX + UNKNOWN_BUILD_NUMBER;
+      if ( buildNumber == null ) {
+         return BUILD_NUMBER_PREFIX + UNKNOWN_BUILD_NUMBER;
+      }
       
       return BUILD_NUMBER_PREFIX + buildNumber.intValue();
    }//End Method
@@ -269,7 +340,9 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
     * @return the displayable timestamp representation.
     */
    static String formatTimestamp( Long timestamp ) {
-      if ( timestamp == null ) return "?-?";
+      if ( timestamp == null ) {
+         return "?-?";
+      }
 
       return new Timestamp( timestamp ).toInstant()
                .atZone( ZoneId.of( "Europe/London" ) )

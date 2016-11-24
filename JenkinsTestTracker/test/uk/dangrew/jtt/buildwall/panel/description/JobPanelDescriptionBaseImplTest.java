@@ -23,9 +23,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
+import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
+import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.system.properties.DateAndTimes;
@@ -34,31 +37,12 @@ import uk.dangrew.jtt.utility.TestCommon;
 /**
  * {@link JobPanelDescriptionBaseImpl} test.
  */
-public class JobPanelDescriptionBaseImplTest {
+public abstract class JobPanelDescriptionBaseImplTest {
 
    protected JenkinsJob job;
-   protected BuildWallConfiguration configuration; 
+   protected BuildWallConfiguration configuration;
+   protected BuildWallTheme theme;
    protected JobPanelDescriptionBaseImpl systemUnderTest;
-   
-   /** Specific extension that does nothing but can be tested.**/
-   private static class TestJobPanelDescription extends JobPanelDescriptionBaseImpl {
-
-      /** 
-       * Constructs a new {@link TestJobPanelDescription}.
-       * @param configuration the {@link BuildWallConfiguration}.
-       * @param job the {@link JenkinsJob} to display for.
-       */
-      protected TestJobPanelDescription( BuildWallConfiguration configuration, JenkinsJob job ) {
-         super( configuration, job );
-      }//End Constructor
-
-      /** {@inheritDoc} */
-      @Override protected void applyLayout() {}
-
-      /** {@inheritDoc} */
-      @Override protected void applyColumnConstraints() {}
-      
-   }//End Method
    
    @BeforeClass public static void initialisePlatform(){
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
@@ -71,8 +55,36 @@ public class JobPanelDescriptionBaseImplTest {
       job.expectedBuildTimeProperty().set( 10000 );
       job.currentBuildNumberProperty().set( 345 );
       configuration = new BuildWallConfigurationImpl();
+      theme = new BuildWallThemeImpl( "Anything" );
       JavaFxInitializer.startPlatform();
-      systemUnderTest = new TestJobPanelDescription( configuration, job );
+      systemUnderTest = constructSut();
+   }//End Method
+   
+   /**
+    * Method to construct the particular {@link JobPanelDescriptionBaseImpl} being tested.
+    * @return the {@link JobPanelDescriptionBaseImpl}.
+    */
+   protected abstract JobPanelDescriptionBaseImpl constructSut();
+   
+   @Test public void shouldUseJobNameColourFromThemeInitially(){
+      systemUnderTest.detachFromSystem();
+      theme.jobNameColoursMap().put( job.getLastBuildStatus(), Color.AZURE );
+      systemUnderTest = constructSut();
+      assertThat( systemUnderTest.jobName().getTextFill(), is( Color.AZURE ) );
+   }//End Method
+   
+   @Test public void shouldUseBuildNumberColourFromThemeInitially(){
+      systemUnderTest.detachFromSystem();
+      theme.buildNumberColoursMap().put( job.getLastBuildStatus(), Color.AZURE );
+      systemUnderTest = constructSut();
+      assertThat( systemUnderTest.buildNumber().getTextFill(), is( Color.AZURE ) );
+   }//End Method
+   
+   @Test public void shouldUseCompletionEstimateColourFromThemeInitially(){
+      systemUnderTest.detachFromSystem();
+      theme.completionEstimateColoursMap().put( job.getLastBuildStatus(), Color.AZURE );
+      systemUnderTest = constructSut();
+      assertThat( systemUnderTest.completionEstimate().getTextFill(), is( Color.AZURE ) );
    }//End Method
    
    @Test public void shouldUseBuildNumberConfigurations() {
@@ -80,14 +92,59 @@ public class JobPanelDescriptionBaseImplTest {
       Assert.assertEquals( configuration.buildNumberFont().get(), systemUnderTest.buildNumber().fontProperty().get() );
    }//End Method
    
+   @Test public void shouldUseThemeForBuildNumberColourIfProvided(){
+      theme.buildNumberColoursMap().put( JenkinsJob.DEFAULT_LAST_BUILD_STATUS, Color.YELLOW );
+      assertThat( systemUnderTest.buildNumber().getTextFill(), is( Color.YELLOW ) );
+   }//End Method
+   
    @Test public void shouldUseCompletionEstimateConfigurations() {
       Assert.assertEquals( configuration.completionEstimateColour().get(), systemUnderTest.completionEstimate().textFillProperty().get() );
       Assert.assertEquals( configuration.completionEstimateFont().get(), systemUnderTest.completionEstimate().fontProperty().get() );
    }//End Method
    
+   @Test public void shouldUseThemeForCompletionEstimateColourIfProvided(){
+      theme.completionEstimateColoursMap().put( JenkinsJob.DEFAULT_LAST_BUILD_STATUS, Color.YELLOW );
+      assertThat( systemUnderTest.completionEstimate().getTextFill(), is( Color.YELLOW ) );
+   }//End Method
+   
    @Test public void shouldUseJobNameConfigurations() {
       Assert.assertEquals( configuration.jobNameColour().get(), systemUnderTest.jobName().textFillProperty().get() );
       Assert.assertEquals( configuration.jobNameFont().get(), systemUnderTest.jobName().fontProperty().get() );
+   }//End Method
+   
+   @Test public void shouldUseThemeForJobNameColourIfProvided(){
+      theme.jobNameColoursMap().put( JenkinsJob.DEFAULT_LAST_BUILD_STATUS, Color.YELLOW );
+      assertThat( systemUnderTest.jobName().getTextFill(), is( Color.YELLOW ) );
+   }//End Method
+   
+   @Test public void shouldUseStatusSpecificColourForJobName(){
+      theme.jobNameColoursMap().put( BuildResultStatus.SUCCESS, Color.YELLOW );
+      assertThat( systemUnderTest.jobName().getTextFill(), is( not( Color.YELLOW ) ) );
+   }//End Method
+   
+   @Test public void shouldUseStatusSpecificColourForBuildNumber(){
+      theme.buildNumberColoursMap().put( BuildResultStatus.SUCCESS, Color.YELLOW );
+      assertThat( systemUnderTest.buildNumber().getTextFill(), is( not( Color.YELLOW ) ) );
+   }//End Method
+   
+   @Test public void shouldUseStatusSpecificColourForCompletionEstimate(){
+      theme.completionEstimateColoursMap().put( BuildResultStatus.SUCCESS, Color.YELLOW );
+      assertThat( systemUnderTest.completionEstimate().getTextFill(), is( not( Color.YELLOW ) ) );
+   }//End Method
+   
+   @Test public void shouldAvoidFeedBackFromPropertyToConfigurationToThemeForJobName(){
+      systemUnderTest.jobName().setTextFill( Color.RED );
+      assertThat( configuration.jobNameColour().get(), is( not( Color.RED ) ) );
+   }//End Method
+   
+   @Test public void shouldAvoidFeedBackFromPropertyToConfigurationToThemeForBuildNumber(){
+      systemUnderTest.buildNumber().setTextFill( Color.RED );
+      assertThat( configuration.buildNumberColour().get(), is( not( Color.RED ) ) );
+   }//End Method
+   
+   @Test public void shouldAvoidFeedBackFromPropertyToConfigurationToThemeForCompletionEstimate(){
+      systemUnderTest.completionEstimate().setTextFill( Color.RED );
+      assertThat( configuration.completionEstimateColour().get(), is( not( Color.RED ) ) );
    }//End Method
    
    @Test public void shouldUpdateBuildNumberConfigurations() {
@@ -293,6 +350,9 @@ public class JobPanelDescriptionBaseImplTest {
       configuration.buildNumberColour().set( Color.AQUA );
       assertThat( systemUnderTest.buildNumber().textFillProperty().get(), not( Color.AQUA ) );
       
+      theme.buildNumberColoursMap().put( job.getLastBuildStatus(), Color.AQUA );
+      assertThat( systemUnderTest.buildNumber().textFillProperty().get(), not( Color.AQUA ) );
+      
       final Font testFont = new Font( 100 );
       configuration.buildNumberFont().set( testFont );
       assertThat( systemUnderTest.buildNumber().fontProperty().get(), not( testFont ) );
@@ -302,6 +362,9 @@ public class JobPanelDescriptionBaseImplTest {
       systemUnderTest.detachFromSystem();
       
       configuration.completionEstimateColour().set( Color.AQUA );
+      assertThat( systemUnderTest.completionEstimate().textFillProperty().get(), not( Color.AQUA ) );
+      
+      theme.completionEstimateColoursMap().put( job.getLastBuildStatus(), Color.AQUA );
       assertThat( systemUnderTest.completionEstimate().textFillProperty().get(), not( Color.AQUA ) );
       
       final Font testFont = new Font( 100 );
@@ -314,6 +377,9 @@ public class JobPanelDescriptionBaseImplTest {
       
       configuration.jobNameColour().set( Color.ANTIQUEWHITE );
       assertThat( systemUnderTest.jobName().textFillProperty().get(), not( Color.ANTIQUEWHITE ) );
+      
+      theme.jobNameColoursMap().put( job.getLastBuildStatus(), Color.AQUA );
+      assertThat( systemUnderTest.jobName().textFillProperty().get(), not( Color.AQUA ) );
       
       final Font testFont = new Font( 100 );
       configuration.jobNameFont().set( testFont );

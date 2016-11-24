@@ -67,7 +67,6 @@ class ThemeConfigurationPanel extends GridPane {
       
       for ( BuildResultStatus status : BuildResultStatus.values() ) {
          TitledPane pane = new TitledPane( status.displayName(), new StatusConfigurationPane( theme, status ) );
-         pane.setCollapsible( false );
          add( pane, 0, status.ordinal() );
          titledPanes.put( status, pane );
       }

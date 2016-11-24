@@ -12,7 +12,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -22,7 +21,6 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.buildwall.panel.description.SimpleJobPanelDescriptionImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.utility.TestCommon;
 
@@ -31,9 +29,8 @@ import uk.dangrew.jtt.utility.TestCommon;
  */
 public class SimpleJobPanelDescriptionImplTest extends JobPanelDescriptionBaseImplTest {
 
-   @Before @Override public void initialiseSystemUnderTest(){
-      super.initialiseSystemUnderTest();
-      systemUnderTest = new SimpleJobPanelDescriptionImpl( configuration, job );
+   @Override protected JobPanelDescriptionBaseImpl constructSut() {
+      return new SimpleJobPanelDescriptionImpl( configuration, theme, job );
    }//End Method
    
    @Ignore //For manual inspection.
@@ -42,7 +39,7 @@ public class SimpleJobPanelDescriptionImplTest extends JobPanelDescriptionBaseIm
          configuration.buildNumberColour().set( Color.BLACK );
          configuration.jobNameColour().set( Color.BLACK );
          configuration.completionEstimateColour().set( Color.BLACK );
-         return new SimpleJobPanelDescriptionImpl( configuration, job ); 
+         return new SimpleJobPanelDescriptionImpl( configuration, theme, job ); 
       } );
       Thread.sleep( 100000 );
    }//End Method

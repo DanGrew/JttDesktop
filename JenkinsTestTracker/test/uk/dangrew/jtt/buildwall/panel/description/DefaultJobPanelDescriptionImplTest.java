@@ -9,7 +9,6 @@
 package uk.dangrew.jtt.buildwall.panel.description;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -17,7 +16,6 @@ import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.utility.TestCommon;
 
@@ -26,14 +24,13 @@ import uk.dangrew.jtt.utility.TestCommon;
  */
 public class DefaultJobPanelDescriptionImplTest extends JobPanelDescriptionBaseImplTest {
 
-   @Before @Override public void initialiseSystemUnderTest(){
-      super.initialiseSystemUnderTest();
-      systemUnderTest = new DefaultJobPanelDescriptionImpl( configuration, job );
+   @Override protected JobPanelDescriptionBaseImpl constructSut() {
+      return new DefaultJobPanelDescriptionImpl( configuration, theme, job );
    }//End Method
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> { return new DefaultJobPanelDescriptionImpl( configuration, job ); } );
+      JavaFxInitializer.launchInWindow( () -> { return new DefaultJobPanelDescriptionImpl( configuration, theme, job ); } );
       Thread.sleep( 100000 );
    }//End Method
    

@@ -69,7 +69,7 @@ public class JobPanelImpl extends StackPane {
          description.detachFromSystem();
       }
       
-      this.description = provider.constructJobDescriptionPanel( configuration, job );
+      this.description = provider.constructJobDescriptionPanel( configuration, theme, job );
       getChildren().add( description );
    }//End Method
 

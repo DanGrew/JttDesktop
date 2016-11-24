@@ -18,6 +18,9 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
+import javafx.collections.ObservableMap;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
@@ -40,6 +43,10 @@ public class StatusConfigurationPaneTest {
       theme = new BuildWallThemeImpl( "Test" );
       theme.barColoursMap().put( status, Color.BLACK );
       theme.trackColoursMap().put( status, Color.RED );
+      theme.jobNameColoursMap().put( status, Color.YELLOW );
+      theme.buildNumberColoursMap().put( status, Color.GREEN );
+      theme.completionEstimateColoursMap().put( status, Color.ORANGE );
+      theme.detailColoursMap().put( status, Color.WHEAT );
       
       systemUnderTest = new StatusConfigurationPane( styling, theme, status );
    }//End Method
@@ -63,46 +70,137 @@ public class StatusConfigurationPaneTest {
       assertThat( systemUnderTest.trackPicker().getValue(), is( Color.RED ) );
    }//End Method
    
+   @Test public void shouldHaveInitialJobNameColour(){
+      assertThat( systemUnderTest.jobNamePicker().getValue(), is( Color.YELLOW ) );
+   }//End Method
+   
+   @Test public void shouldHaveInitialBuildNumberColour(){
+      assertThat( systemUnderTest.buildNumberPicker().getValue(), is( Color.GREEN ) );
+   }//End Method
+   
+   @Test public void shouldHaveInitialCompletionEstimateColour(){
+      assertThat( systemUnderTest.completionEstimatePicker().getValue(), is( Color.ORANGE ) );
+   }//End Method
+   
+   @Test public void shouldHaveInitialDetailColour(){
+      assertThat( systemUnderTest.detailPicker().getValue(), is( Color.WHEAT ) );
+   }//End Method
+   
+   private void assertThatElementsAreProvided( 
+            Label label, String labelText, 
+            ColorPicker picker, ObservableMap< BuildResultStatus, Color > map 
+   ){
+      assertThat( systemUnderTest.getChildren().contains( label ), is( true ) );
+      assertThat( label.getText(), is( labelText ) );
+      verify( styling ).createBoldLabel( labelText );
+      assertThat( systemUnderTest.getChildren().contains( picker ), is( true ) );
+      verify( styling ).configureColorPicker( picker, map.get( status ) );
+   }//End Method
+   
    @Test public void shouldProvideBarElements() {
-      assertThat( systemUnderTest.getChildren().contains( systemUnderTest.barLabel() ), is( true ) );
-      assertThat( systemUnderTest.barLabel().getText(), is( StatusConfigurationPane.BAR_COLOUR_STRING ) );
-      verify( styling ).createBoldLabel( StatusConfigurationPane.BAR_COLOUR_STRING );
-      assertThat( systemUnderTest.getChildren().contains( systemUnderTest.barPicker() ), is( true ) );
-      verify( styling ).configureColorPicker( systemUnderTest.barPicker(), theme.barColoursMap().get( status ) );
+      assertThatElementsAreProvided( 
+               systemUnderTest.barLabel(), StatusConfigurationPane.BAR_COLOUR_STRING, 
+               systemUnderTest.barPicker(), theme.barColoursMap()
+      );
    }//End Method
    
    @Test public void shouldProvideTrackElements() {
-      assertThat( systemUnderTest.getChildren().contains( systemUnderTest.trackLabel() ), is( true ) );
-      assertThat( systemUnderTest.trackLabel().getText(), is( StatusConfigurationPane.TRACK_COLOUR_STRING ) );
-      verify( styling ).createBoldLabel( StatusConfigurationPane.TRACK_COLOUR_STRING );
-      assertThat( systemUnderTest.getChildren().contains( systemUnderTest.trackPicker() ), is( true ) );
-      verify( styling ).configureColorPicker( systemUnderTest.trackPicker(), theme.trackColoursMap().get( status ) );
+      assertThatElementsAreProvided( 
+               systemUnderTest.trackLabel(), StatusConfigurationPane.TRACK_COLOUR_STRING, 
+               systemUnderTest.trackPicker(), theme.trackColoursMap()
+      );
+   }//End Method
+   
+   @Test public void shouldProvideJobNameElements() {
+      assertThatElementsAreProvided( 
+               systemUnderTest.jobNameLabel(), StatusConfigurationPane.JOB_NAME_COLOUR_STRING, 
+               systemUnderTest.jobNamePicker(), theme.jobNameColoursMap()
+      );
+   }//End Method
+   
+   @Test public void shouldProvideBuildNumberElements() {
+      assertThatElementsAreProvided( 
+               systemUnderTest.buildNumberLabel(), StatusConfigurationPane.BUILD_NUMBER_COLOUR_STRING, 
+               systemUnderTest.buildNumberPicker(), theme.buildNumberColoursMap()
+      );
+   }//End Method
+   
+   @Test public void shouldProvideCompletionEstimateElements() {
+      assertThatElementsAreProvided( 
+               systemUnderTest.completionEstimateLabel(), StatusConfigurationPane.BUILD_ESTIMATE_COLOUR_STRING, 
+               systemUnderTest.completionEstimatePicker(), theme.completionEstimateColoursMap()
+      );
+   }//End Method
+   
+   @Test public void shouldProvideDetailElements() {
+      assertThatElementsAreProvided( 
+               systemUnderTest.detailLabel(), StatusConfigurationPane.DETAIL_COLOUR_STRING, 
+               systemUnderTest.detailPicker(), theme.detailColoursMap()
+      );
+   }//End Method
+   
+   private void assertThatElementsAreUpdated(
+            ObservableMap< BuildResultStatus, Color > map,
+            ColorPicker picker
+   ) {
+      map.put( status, Color.BLANCHEDALMOND );
+      assertThat( picker.getValue(), is( Color.BLANCHEDALMOND ) );
+      
+      map.put( status, null );
+      assertThat( picker.getValue(), is( nullValue() ) );
    }//End Method
    
    @Test public void shouldUpdateBarElements() {
-      theme.barColoursMap().put( status, Color.BLANCHEDALMOND );
-      assertThat( systemUnderTest.barPicker().getValue(), is( Color.BLANCHEDALMOND ) );
-      
-      theme.barColoursMap().put( status, null );
-      assertThat( systemUnderTest.barPicker().getValue(), is( nullValue() ) );
+      assertThatElementsAreUpdated( theme.barColoursMap(), systemUnderTest.barPicker() );
    }//End Method
    
    @Test public void shouldUpdateTrackElements() {
-      theme.trackColoursMap().put( status, Color.BLANCHEDALMOND );
-      assertThat( systemUnderTest.trackPicker().getValue(), is( Color.BLANCHEDALMOND ) );
-      
-      theme.trackColoursMap().put( status, null );
-      assertThat( systemUnderTest.trackPicker().getValue(), is( nullValue() ) );
+      assertThatElementsAreUpdated( theme.trackColoursMap(), systemUnderTest.trackPicker() );
+   }//End Method
+   
+   @Test public void shouldUpdateJobNameElements() {
+      assertThatElementsAreUpdated( theme.jobNameColoursMap(), systemUnderTest.jobNamePicker() );
+   }//End Method
+   
+   @Test public void shouldUpdateBuildNumberElements() {
+      assertThatElementsAreUpdated( theme.buildNumberColoursMap(), systemUnderTest.buildNumberPicker() );
+   }//End Method
+   
+   @Test public void shouldUpdateCompletionEstimateElements() {
+      assertThatElementsAreUpdated( theme.completionEstimateColoursMap(), systemUnderTest.completionEstimatePicker() );
+   }//End Method
+   
+   @Test public void shouldUpdateDetailElements() {
+      assertThatElementsAreUpdated( theme.detailColoursMap(), systemUnderTest.detailPicker() );
+   }//End Method
+   
+   private void assertThatElementsUpdateTheme( ObservableMap< BuildResultStatus, Color > map, ColorPicker picker ) {
+      picker.setValue( Color.BLANCHEDALMOND );
+      assertThat( map.get( status ), is( Color.BLANCHEDALMOND ) );
    }//End Method
    
    @Test public void shouldUpdateThemeFromBarElements() {
-      systemUnderTest.barPicker().setValue( Color.BLANCHEDALMOND );
-      assertThat( theme.barColoursMap().get( status ), is( Color.BLANCHEDALMOND ) );
+      assertThatElementsUpdateTheme( theme.barColoursMap(), systemUnderTest.barPicker() );
    }//End Method
    
    @Test public void shouldUpdateThemeFromTrackElements() {
-      systemUnderTest.trackPicker().setValue( Color.BLANCHEDALMOND );
-      assertThat( theme.trackColoursMap().get( status ), is( Color.BLANCHEDALMOND ) );
+      assertThatElementsUpdateTheme( theme.trackColoursMap(), systemUnderTest.trackPicker() );
+   }//End Method
+   
+   @Test public void shouldUpdateThemeFromJobNameElements() {
+      assertThatElementsUpdateTheme( theme.jobNameColoursMap(), systemUnderTest.jobNamePicker() );
+   }//End Method
+   
+   @Test public void shouldUpdateThemeFromBuildNumberElements() {
+      assertThatElementsUpdateTheme( theme.buildNumberColoursMap(), systemUnderTest.buildNumberPicker() );
+   }//End Method
+   
+   @Test public void shouldUpdateThemeFromCompletionEstimateElements() {
+      assertThatElementsUpdateTheme( theme.completionEstimateColoursMap(), systemUnderTest.completionEstimatePicker() );
+   }//End Method
+   
+   @Test public void shouldUpdateThemeFromDetailElements() {
+      assertThatElementsUpdateTheme( theme.detailColoursMap(), systemUnderTest.detailPicker() );
    }//End Method
    
    @Test public void shouldBeAssociatedWithTheme(){

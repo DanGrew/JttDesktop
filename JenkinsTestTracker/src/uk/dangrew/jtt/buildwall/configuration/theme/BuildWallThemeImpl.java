@@ -71,28 +71,28 @@ public class BuildWallThemeImpl implements BuildWallTheme {
    /**
     * {@inheritDoc}
     */
-   @Override public ObservableMap< BuildResultStatus, Color > jobNameTextColoursMap() {
+   @Override public ObservableMap< BuildResultStatus, Color > jobNameColoursMap() {
       return jobNameColoursMap;
    }//End Method
 
    /**
     * {@inheritDoc}
     */
-   @Override public ObservableMap< BuildResultStatus, Color > buildNumberTextColoursMap() {
+   @Override public ObservableMap< BuildResultStatus, Color > buildNumberColoursMap() {
       return buildNumberColoursMap;
    }//End Method
 
    /**
     * {@inheritDoc}
     */
-   @Override public ObservableMap< BuildResultStatus, Color > completionEstimateTextColoursMap() {
+   @Override public ObservableMap< BuildResultStatus, Color > completionEstimateColoursMap() {
       return completionEstimateColoursMap;
    }//End Method
 
    /**
     * {@inheritDoc}
     */
-   @Override public ObservableMap< BuildResultStatus, Color > detailTextColoursMap() {
+   @Override public ObservableMap< BuildResultStatus, Color > detailColoursMap() {
       return detailColoursMap;
    }//End Method
 
