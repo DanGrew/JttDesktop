@@ -19,6 +19,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import javafx.collections.ObservableMap;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -32,6 +34,7 @@ public class StatusConfigurationPaneTest {
 
    @Spy private JavaFxStyle styling; 
    private BuildWallTheme theme;
+   private ThemeBuilderShortcutProperties shortcuts;
    private BuildResultStatus status;
    private StatusConfigurationPane systemUnderTest;
 
@@ -40,6 +43,8 @@ public class StatusConfigurationPaneTest {
       MockitoAnnotations.initMocks( this );
       
       status = BuildResultStatus.SUCCESS;
+      shortcuts = new ThemeBuilderShortcutProperties();
+      shortcuts.shortcutColorProperty().set( Color.GOLD );
       theme = new BuildWallThemeImpl( "Test" );
       theme.barColoursMap().put( status, Color.BLACK );
       theme.trackColoursMap().put( status, Color.RED );
@@ -48,18 +53,20 @@ public class StatusConfigurationPaneTest {
       theme.completionEstimateColoursMap().put( status, Color.ORANGE );
       theme.detailColoursMap().put( status, Color.WHEAT );
       
-      systemUnderTest = new StatusConfigurationPane( styling, theme, status );
+      systemUnderTest = new StatusConfigurationPane( styling, theme, shortcuts, status );
    }//End Method
    
    @Test public void shouldUsePadding(){
-      assertThat( systemUnderTest.getPadding().getBottom(), is( StatusConfigurationPane.PADDING ) );
-      assertThat( systemUnderTest.getPadding().getTop(), is( StatusConfigurationPane.PADDING ) );
-      assertThat( systemUnderTest.getPadding().getLeft(), is( StatusConfigurationPane.PADDING ) );
-      assertThat( systemUnderTest.getPadding().getRight(), is( StatusConfigurationPane.PADDING ) );
+      verify( styling ).applyBasicPadding( systemUnderTest );
    }//End Method
 
    @Test public void shouldUseHalfWidthColumns() {
-      verify( styling ).configureHalfWidthConstraints( systemUnderTest );
+      verify( styling ).configureConstraintsForColumnPercentages( 
+               systemUnderTest,
+               StatusConfigurationPane.LABEL_WIDTH_PERCENTAGE,
+               StatusConfigurationPane.PICKER_WIDTH_PERCENTAGE,
+               StatusConfigurationPane.SHORTCUT_WIDTH_PERCENTAGE
+      );
    }//End Method
    
    @Test public void shouldHaveInitialBarColour(){
@@ -88,54 +95,73 @@ public class StatusConfigurationPaneTest {
    
    private void assertThatElementsAreProvided( 
             Label label, String labelText, 
-            ColorPicker picker, ObservableMap< BuildResultStatus, Color > map 
+            ColorPicker picker,
+            Button button,
+            ObservableMap< BuildResultStatus, Color > map 
    ){
       assertThat( systemUnderTest.getChildren().contains( label ), is( true ) );
       assertThat( label.getText(), is( labelText ) );
       verify( styling ).createBoldLabel( labelText );
+      
       assertThat( systemUnderTest.getChildren().contains( picker ), is( true ) );
       verify( styling ).configureColorPicker( picker, map.get( status ) );
+      
+      assertThat( systemUnderTest.getChildren().contains( button ), is( true ) );
+      assertThat( button.getText(), is( StatusConfigurationPane.SHORTCUT_BUTTON_TEXT ) );
+      assertThat( button.getMaxWidth(), is( Double.MAX_VALUE ) );
    }//End Method
    
    @Test public void shouldProvideBarElements() {
       assertThatElementsAreProvided( 
                systemUnderTest.barLabel(), StatusConfigurationPane.BAR_COLOUR_STRING, 
-               systemUnderTest.barPicker(), theme.barColoursMap()
+               systemUnderTest.barPicker(),
+               systemUnderTest.barShortcut(),
+               theme.barColoursMap()
       );
    }//End Method
    
    @Test public void shouldProvideTrackElements() {
       assertThatElementsAreProvided( 
                systemUnderTest.trackLabel(), StatusConfigurationPane.TRACK_COLOUR_STRING, 
-               systemUnderTest.trackPicker(), theme.trackColoursMap()
+               systemUnderTest.trackPicker(), 
+               systemUnderTest.trackShortcut(), 
+               theme.trackColoursMap()
       );
    }//End Method
    
    @Test public void shouldProvideJobNameElements() {
       assertThatElementsAreProvided( 
                systemUnderTest.jobNameLabel(), StatusConfigurationPane.JOB_NAME_COLOUR_STRING, 
-               systemUnderTest.jobNamePicker(), theme.jobNameColoursMap()
+               systemUnderTest.jobNamePicker(),
+               systemUnderTest.jobNameShortcut(),
+               theme.jobNameColoursMap()
       );
    }//End Method
    
    @Test public void shouldProvideBuildNumberElements() {
       assertThatElementsAreProvided( 
                systemUnderTest.buildNumberLabel(), StatusConfigurationPane.BUILD_NUMBER_COLOUR_STRING, 
-               systemUnderTest.buildNumberPicker(), theme.buildNumberColoursMap()
+               systemUnderTest.buildNumberPicker(), 
+               systemUnderTest.buildNumberShortcut(),
+               theme.buildNumberColoursMap()
       );
    }//End Method
    
    @Test public void shouldProvideCompletionEstimateElements() {
       assertThatElementsAreProvided( 
                systemUnderTest.completionEstimateLabel(), StatusConfigurationPane.BUILD_ESTIMATE_COLOUR_STRING, 
-               systemUnderTest.completionEstimatePicker(), theme.completionEstimateColoursMap()
+               systemUnderTest.completionEstimatePicker(), 
+               systemUnderTest.completionEstimateShortcut(),
+               theme.completionEstimateColoursMap()
       );
    }//End Method
    
    @Test public void shouldProvideDetailElements() {
       assertThatElementsAreProvided( 
                systemUnderTest.detailLabel(), StatusConfigurationPane.DETAIL_COLOUR_STRING, 
-               systemUnderTest.detailPicker(), theme.detailColoursMap()
+               systemUnderTest.detailPicker(), 
+               systemUnderTest.detailShortcut(),
+               theme.detailColoursMap()
       );
    }//End Method
    
@@ -203,9 +229,50 @@ public class StatusConfigurationPaneTest {
       assertThatElementsUpdateTheme( theme.detailColoursMap(), systemUnderTest.detailPicker() );
    }//End Method
    
+   private void assertThatShortcutIsApplied(
+            Button shortcut,
+            ColorPicker picker
+   ) {
+      shortcut.getOnAction().handle( new ActionEvent() );
+      assertThat( picker.getValue(), is( Color.GOLD ) );
+      
+      shortcuts.shortcutColorProperty().set( Color.ANTIQUEWHITE );
+      shortcut.getOnAction().handle( new ActionEvent() );
+      assertThat( picker.getValue(), is( Color.ANTIQUEWHITE ) );
+   }//End Method
+   
+   @Test public void shouldApplyShortcutToBarColor() {
+      assertThatShortcutIsApplied( systemUnderTest.barShortcut(), systemUnderTest.barPicker() );
+   }//End Method
+   
+   @Test public void shouldApplyShortcutToTrackColor() {
+      assertThatShortcutIsApplied( systemUnderTest.trackShortcut(), systemUnderTest.trackPicker() );
+   }//End Method
+   
+   @Test public void shouldApplyShortcutToJobNameColor() {
+      assertThatShortcutIsApplied( systemUnderTest.jobNameShortcut(), systemUnderTest.jobNamePicker() );
+   }//End Method
+   
+   @Test public void shouldApplyShortcutToBuildNumberColor() {
+      assertThatShortcutIsApplied( systemUnderTest.buildNumberShortcut(), systemUnderTest.buildNumberPicker() );
+   }//End Method
+   
+   @Test public void shouldApplyShortcutToCompletionEstimateColor() {
+      assertThatShortcutIsApplied( systemUnderTest.completionEstimateShortcut(), systemUnderTest.completionEstimatePicker() );
+   }//End Method
+   
+   @Test public void shouldApplyShortcutToDetailColor() {
+      assertThatShortcutIsApplied( systemUnderTest.detailShortcut(), systemUnderTest.detailPicker() );
+   }//End Method
+   
    @Test public void shouldBeAssociatedWithTheme(){
       assertThat( systemUnderTest.isAssociatedWith( theme ), is( true ) );
       assertThat( systemUnderTest.isAssociatedWith( new BuildWallThemeImpl( "anything" ) ), is( false ) );
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWithShortcuts(){
+      assertThat( systemUnderTest.isAssociatedWith( shortcuts ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new ThemeBuilderShortcutProperties() ), is( false ) );
    }//End Method
    
    @Test public void shouldBeAssociatedWithStatus(){

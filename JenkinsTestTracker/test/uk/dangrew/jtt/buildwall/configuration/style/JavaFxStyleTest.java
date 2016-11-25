@@ -34,6 +34,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -255,6 +256,15 @@ public class JavaFxStyleTest {
       assertThat( pane.getRowConstraints().get( 0 ).getPercentHeight(), is( 10.0 ) );
       assertThat( pane.getRowConstraints().get( 1 ).getPercentHeight(), is( 20.0 ) );
       assertThat( pane.getRowConstraints().get( 2 ).getPercentHeight(), is( 70.0 ) );
+   }//End Method
+   
+   @Test public void shouldApplyBasicPaddingToRegion(){
+      BorderPane region = new BorderPane();
+      systemUnderTest.applyBasicPadding( region );
+      assertThat( region.getInsets().getBottom(), is( JavaFxStyle.PADDING ) );
+      assertThat( region.getInsets().getTop(), is( JavaFxStyle.PADDING ) );
+      assertThat( region.getInsets().getLeft(), is( JavaFxStyle.PADDING ) );
+      assertThat( region.getInsets().getRight(), is( JavaFxStyle.PADDING ) );
    }//End Method
 
 }//End Class

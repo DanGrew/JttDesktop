@@ -34,17 +34,23 @@ public class ThemeConfigurationPanelTest {
 
    @Spy private JavaFxStyle styling;
    private BuildWallTheme theme;
+   private ThemeBuilderShortcutProperties shortcuts;
    private ThemeConfigurationPanel systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
       theme = new BuildWallThemeImpl( "Test" );
-      systemUnderTest = new ThemeConfigurationPanel( styling, theme );
+      shortcuts = new ThemeBuilderShortcutProperties();
+      systemUnderTest = new ThemeConfigurationPanel( styling, theme, shortcuts );
    }//End Method
 
    @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullTheme() {
-      new ThemeConfigurationPanel( null );
+      new ThemeConfigurationPanel( null, shortcuts );
+   }//End Method
+   
+   @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullShortcuts() {
+      new ThemeConfigurationPanel( theme, null );
    }//End Method
    
    @Parameters( source = BuildResultStatus.class )
@@ -52,6 +58,7 @@ public class ThemeConfigurationPanelTest {
       assertThat( systemUnderTest.titledPaneFor( status ), is( notNullValue() ) );
       StatusConfigurationPane pane = ( StatusConfigurationPane ) systemUnderTest.titledPaneFor( status ).getContent();
       assertThat( pane.isAssociatedWith( theme ), is( true ) );
+      assertThat( pane.isAssociatedWith( shortcuts ), is( true ) );
       assertThat( pane.isAssociatedWith( status ), is( true ) );
    }//End Method
    

@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.buildwall.configuration.components.themebuilder;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
@@ -30,6 +31,7 @@ public class ThemeBuilderPanelTest {
 
    private BuildWallTheme theme;
    @Spy private JavaFxStyle styling;
+   private ThemeBuilderShortcutProperties shortcuts;
    private ThemeBuilderPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
@@ -39,7 +41,8 @@ public class ThemeBuilderPanelTest {
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       
       theme = new BuildWallThemeImpl( "Test" );
-      systemUnderTest = new ThemeBuilderPanel( styling, theme );
+      shortcuts = new ThemeBuilderShortcutProperties();
+      systemUnderTest = new ThemeBuilderPanel( styling, shortcuts, theme );
    }//End Method
    
    @Ignore
@@ -64,8 +67,20 @@ public class ThemeBuilderPanelTest {
    }//End Method
    
    @Test public void shouldHaveWrappedScrollerFittingToWidth(){
-      assertThat( systemUnderTest.getChildren().contains( systemUnderTest.scroller() ), is( true ) );
+      assertThat( systemUnderTest.scrollerSplit().getCenter(), is( systemUnderTest.scroller() ) );
       assertThat( systemUnderTest.scroller().isFitToWidth(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldHaveFixedNonScrollerShortcuts(){
+      assertThat( systemUnderTest.getChildren().contains( systemUnderTest.scrollerSplit() ), is( true ) );
+      assertThat( systemUnderTest.scrollerSplit().getTop(), is( systemUnderTest.shortcutsPane() ) );
+      assertThat( systemUnderTest.shortcutsPane().getContent(), is( instanceOf( ThemeBuilderShortcutsPane.class ) ) );
+      
+      ThemeBuilderShortcutsPane shortcutsPane = ( ThemeBuilderShortcutsPane ) systemUnderTest.shortcutsPane().getContent();
+      assertThat( shortcutsPane.isAssociatedWith( shortcuts ), is( true ) );
+      assertThat( systemUnderTest.shortcutsPane().getText(), is( ThemeBuilderPanel.SHORTCUTS_TITLE ) );
+      
+      verify( styling ).applyBasicPadding( systemUnderTest.shortcutsPane() );
    }//End Method
 
 }//End Class

@@ -36,7 +36,9 @@ public class ChangeListenerBindingImpl< PropertyTypeT > extends RegistrationImpl
     * {@inheritDoc}
     */
    @Override protected void register() {
-      if ( propertyARegistration != null ) throw new IllegalStateException( "Already bound." );
+      if ( propertyARegistration != null ) {
+         throw new IllegalStateException( "Already bound." );
+      }
       
       propertyBRegistration = new ChangeListenerRegistrationImpl<>( 
                propertyB, 

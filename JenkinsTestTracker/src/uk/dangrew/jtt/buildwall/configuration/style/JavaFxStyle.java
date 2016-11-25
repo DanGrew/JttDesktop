@@ -12,6 +12,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.ButtonBase;
@@ -22,6 +23,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -42,6 +44,7 @@ public class JavaFxStyle {
    static final int TITLE_FONT_SIZE = 30;
    static final double LABEL_PERCENTAGE_WIDTH = 40;
    static final double CONTROLS_PERCENTAGE_WIDTH = 60;
+   static final double PADDING = 10;
    
    /**
     * Method to get the column percentage for half of the width.
@@ -49,6 +52,14 @@ public class JavaFxStyle {
     */
    public double halfColumnWidth(){
       return HALF_WIDTH_COLUMN;
+   }//End Method
+   
+   /**
+    * Method to apply a standard padding across {@link Region}s.
+    * @param region the {@link Region} to apply to.
+    */
+   public void applyBasicPadding( Region region ) {
+      region.setPadding( new Insets( PADDING ) );
    }//End Method
    
    /**

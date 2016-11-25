@@ -29,6 +29,7 @@ class ThemeConfigurationPanel extends GridPane {
    static final double PADDING = 10;
    
    private final BuildWallTheme theme;
+   private final ThemeBuilderShortcutProperties shortcuts;
    private final JavaFxStyle styling;
    
    private final Map< BuildResultStatus, TitledPane > titledPanes;
@@ -36,22 +37,25 @@ class ThemeConfigurationPanel extends GridPane {
    /**
     * Constructs a new {@link ThemeConfigurationPanel}.
     * @param theme the {@link BuildWallTheme} being configured.
+    * @param shortcuts the {@link ThemeBuilderShortcutProperties}.
     */
-   public ThemeConfigurationPanel( BuildWallTheme theme ) {
-      this( new JavaFxStyle(), theme );
+   public ThemeConfigurationPanel( BuildWallTheme theme, ThemeBuilderShortcutProperties shortcuts ) {
+      this( new JavaFxStyle(), theme, shortcuts );
    }//End Constructor
    
    /**
     * Constructs a new {@link ThemeConfigurationPanel}.
     * @param styling the {@link JavaFxStyle}.
     * @param theme the {@link BuildWallTheme} being configured.
+    * @param shortcuts the {@link ThemeBuilderShortcutProperties}.
     */
-   ThemeConfigurationPanel( JavaFxStyle styling, BuildWallTheme theme ) {
-      if ( theme == null ) {
-         throw new IllegalArgumentException( "Must provide BuildWallTheme." );
+   ThemeConfigurationPanel( JavaFxStyle styling, BuildWallTheme theme, ThemeBuilderShortcutProperties shortcuts ) {
+      if ( theme == null || shortcuts == null ) {
+         throw new IllegalArgumentException( "Must provide non null arguments." );
       }
       
       this.theme = theme;
+      this.shortcuts = shortcuts;
       this.styling = styling;
       this.titledPanes = new EnumMap<>( BuildResultStatus.class );
       
@@ -66,7 +70,7 @@ class ThemeConfigurationPanel extends GridPane {
       styling.configureConstraintsForColumnPercentages( this, COLUMN_PERCENTAGE );
       
       for ( BuildResultStatus status : BuildResultStatus.values() ) {
-         TitledPane pane = new TitledPane( status.displayName(), new StatusConfigurationPane( theme, status ) );
+         TitledPane pane = new TitledPane( status.displayName(), new StatusConfigurationPane( theme, shortcuts, status ) );
          add( pane, 0, status.ordinal() );
          titledPanes.put( status, pane );
       }
