@@ -15,7 +15,7 @@ import javafx.scene.Parent;
  */
 public class SystemStyling {
 
-   private static SystemStyles instance = null; 
+   private static SystemStyles instance = new SystemStyles(); 
    
    /**
     * Getter for the singleton.

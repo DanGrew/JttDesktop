@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.buildwall.configuration.components.DualPropertiesPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfigurationImpl;
@@ -56,8 +57,11 @@ public class DualPropertiesTreeItemTest {
       assertThat( title.getTitle(), is( DualPropertiesTreeItem.TITLE ) );
       assertThat( title.getDescription(), is( DualPropertiesTreeItem.DESCRIPTION ) );
       
-      assertThat( contentCaptor.getValue(), is( instanceOf( DualPropertiesPanel.class ) ) );
-      DualPropertiesPanel panel = ( DualPropertiesPanel ) contentCaptor.getValue();
+      assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
+      ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
+      assertThat( scroller.getContent(), is( instanceOf( DualPropertiesPanel.class ) ) );
+      
+      DualPropertiesPanel panel = ( DualPropertiesPanel ) scroller.getContent();
       assertThat( panel.hasConfiguration( configuration ), is( true ) );
    }//End Method
    

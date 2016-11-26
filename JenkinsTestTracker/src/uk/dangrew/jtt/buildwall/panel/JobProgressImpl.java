@@ -12,7 +12,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
-import uk.dangrew.jtt.javafx.progressbar.DynamicProgressBarProperties;
+import uk.dangrew.jtt.javafx.css.DynamicCssOnlyProperties;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.MapChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
@@ -28,7 +28,7 @@ import uk.dangrew.jtt.utility.observable.FunctionMapChangeListenerImpl;
 public class JobProgressImpl extends BorderPane {
 
    private final JenkinsJob job;
-   private final DynamicProgressBarProperties dynamicProperties;
+   private final DynamicCssOnlyProperties dynamicProperties;
    private final BuildWallTheme theme;
    private ProgressBar progress;
    private RegistrationManager registrations;
@@ -39,17 +39,17 @@ public class JobProgressImpl extends BorderPane {
     * @param theme the {@link BuildWallTheme} associated to control the {@link Color}s.
     */
    public JobProgressImpl( JenkinsJob job, BuildWallTheme theme ) {
-      this( new DynamicProgressBarProperties(), job, theme );
+      this( new DynamicCssOnlyProperties(), job, theme );
    }//End Constructor
    
    /**
     * Constructs a new {@link JobProgressImpl}.
-    * @param dynamicProperties the {@link DynamicProgressBarProperties} for changing the {@link javafx.scene.paint.Color}
+    * @param dynamicProperties the {@link DynamicCssOnlyProperties} for changing the {@link javafx.scene.paint.Color}
     * of the {@link ProgressBar}.
     * @param job the associated {@link JenkinsJob}.
     * @param theme the {@link BuildWallTheme} associated to control the {@link Color}s.
     */
-   JobProgressImpl( DynamicProgressBarProperties dynamicProperties, JenkinsJob job, BuildWallTheme theme ) {
+   JobProgressImpl( DynamicCssOnlyProperties dynamicProperties, JenkinsJob job, BuildWallTheme theme ) {
       this.job = job;
       this.dynamicProperties = dynamicProperties;
       this.theme = theme;

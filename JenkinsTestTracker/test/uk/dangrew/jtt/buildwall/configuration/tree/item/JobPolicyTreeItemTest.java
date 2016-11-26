@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.buildwall.configuration.components.JobPolicyPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
@@ -59,8 +60,11 @@ public class JobPolicyTreeItemTest {
       assertThat( title.getTitle(), is( JobPolicyTreeItem.TITLE ) );
       assertThat( title.getDescription(), is( JobPolicyTreeItem.DESCRIPTION ) );
       
-      assertThat( contentCaptor.getValue(), is( instanceOf( JobPolicyPanel.class ) ) );
-      JobPolicyPanel panel = ( JobPolicyPanel ) contentCaptor.getValue();
+      assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
+      ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
+      assertThat( scroller.getContent(), is( instanceOf( JobPolicyPanel.class ) ) );
+      
+      JobPolicyPanel panel = ( JobPolicyPanel ) scroller.getContent();
       assertThat( panel.hasConfiguration( configuration ), is( true ) );
    }//End Method
    

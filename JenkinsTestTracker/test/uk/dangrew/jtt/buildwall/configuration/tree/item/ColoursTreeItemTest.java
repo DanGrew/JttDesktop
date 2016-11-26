@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.buildwall.configuration.components.ColoursPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
@@ -56,8 +57,11 @@ public class ColoursTreeItemTest {
       assertThat( title.getTitle(), is( ColoursTreeItem.TITLE ) );
       assertThat( title.getDescription(), is( ColoursTreeItem.DESCRIPTION ) );
       
-      assertThat( contentCaptor.getValue(), is( instanceOf( ColoursPanel.class ) ) );
-      ColoursPanel panel = ( ColoursPanel ) contentCaptor.getValue();
+      assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
+      ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
+      assertThat( scroller.getContent(), is( instanceOf( ColoursPanel.class ) ) );
+      
+      ColoursPanel panel = ( ColoursPanel ) scroller.getContent();
       assertThat( panel.hasConfiguration( configuration ), is( true ) );
    }//End Method
    

@@ -9,7 +9,7 @@
 package uk.dangrew.jtt.buildwall.configuration.tree.item;
 
 import uk.dangrew.jtt.buildwall.configuration.components.BuildWallDescriptionPanel;
-import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
+import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
@@ -17,7 +17,7 @@ import uk.dangrew.jtt.environment.preferences.PreferenceController;
  * The {@link BuildWallRootItem} provides the root of a set of configuration items
  * for an individual build wall.
  */
-public class BuildWallRootItem extends SimpleConfigurationItem {
+public class BuildWallRootItem extends ScrollableConfigurationItem {
    
    static final String NAME_SUFFIX = " Build Wall";
    static final String TITLE = "Configuring Build Walls";
@@ -32,7 +32,7 @@ public class BuildWallRootItem extends SimpleConfigurationItem {
                identifier + NAME_SUFFIX, 
                new SimpleConfigurationTitle( TITLE, null ), 
                controller, 
-               new BuildWallDescriptionPanel() 
+               new BuildWallDescriptionPanel()
       );
    }//End Constructor
 

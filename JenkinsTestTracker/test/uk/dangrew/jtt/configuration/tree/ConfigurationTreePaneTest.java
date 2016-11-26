@@ -16,8 +16,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
@@ -98,11 +96,9 @@ public class ConfigurationTreePaneTest {
       Thread.sleep( 1000000 );
    }//End Method
    
-   @Test public void shouldWrapContentInVerticalScrollerWithFixedWidth(){
-      ScrollPane center = ( ScrollPane ) systemUnderTest.getCenter();
-      
-      assertThat( center.isFitToWidth(), is( true ) );
-      assertThat( center.getHbarPolicy(), is( ScrollBarPolicy.NEVER ) );
+   @Test public void shouldLayoutTreeAndContent(){
+      assertThat( systemUnderTest.getLeft(), is( tree ) );
+      assertThat( systemUnderTest.getCenter(), is( content ) );
    }//End Method
    
    @Test public void shouldAutoSelectFirstItemOnConstruction(){

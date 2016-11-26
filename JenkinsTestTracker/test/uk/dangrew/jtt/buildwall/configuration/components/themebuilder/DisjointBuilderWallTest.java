@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
+import static uk.dangrew.jtt.buildwall.configuration.components.themebuilder.DisjointBuilderWall.COLUMN_WIDTH;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,8 @@ import org.mockito.Spy;
 import javafx.scene.layout.GridPane;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
+import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
@@ -36,6 +39,7 @@ import uk.dangrew.jtt.styling.SystemStyling;
 public class DisjointBuilderWallTest {
 
    @Spy private JavaFxStyle styling;
+   private BuildWallConfiguration configuration; 
    private BuildWallTheme theme;
    private DisjointBuilderWall systemUnderTest;
 
@@ -44,14 +48,20 @@ public class DisjointBuilderWallTest {
       SystemStyling.initialise();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
+      
+      configuration = new BuildWallConfigurationImpl();
       theme = new BuildWallThemeImpl( "Test" );
-      systemUnderTest = new DisjointBuilderWall( styling, theme );
+      systemUnderTest = new DisjointBuilderWall( styling, configuration, theme );
+   }//End Method
+   
+   @Test public void shouldReduceTextSizeForLayout() {
+      assertThat( configuration.buildNumberFont().get().getSize(), is( DisjointBuilderWall.REDUCED_TEXT_SIZE ) );
+      assertThat( configuration.completionEstimateFont().get().getSize(), is( DisjointBuilderWall.REDUCED_TEXT_SIZE ) );
    }//End Method
 
    @Test public void shouldConfigureColumnConstraints() {
-      double width = styling.halfColumnWidth();
       verify( styling ).configureConstraintsForColumnPercentages( 
-               systemUnderTest, width, width 
+               systemUnderTest, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH 
       );
    }//End Method
    
@@ -61,11 +71,11 @@ public class DisjointBuilderWallTest {
       assertThat( systemUnderTest.getChildren().contains( systemUnderTest.panelFor( status ) ), is( true ) );
    }//End Method
    
-   @Test public void shouldArrangePanelsInTwoColumns() {
+   @Test public void shouldArrangePanelsInColumns() {
       for ( BuildResultStatus status : BuildResultStatus.values() ) {
          JobPanelImpl panel = systemUnderTest.panelFor( status );
-         assertThat( GridPane.getRowIndex( panel ), is( status.ordinal() / 2 ) );
-         assertThat( GridPane.getColumnIndex( panel ), is( status.ordinal() % 2 ) );
+         assertThat( GridPane.getRowIndex( panel ), is( status.ordinal() / DisjointBuilderWall.COLUMN_COUNT ) );
+         assertThat( GridPane.getColumnIndex( panel ), is( status.ordinal() % DisjointBuilderWall.COLUMN_COUNT ) );
       }
    }//End Method
    

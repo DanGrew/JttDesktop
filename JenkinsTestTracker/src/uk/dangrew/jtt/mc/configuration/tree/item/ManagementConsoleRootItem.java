@@ -8,7 +8,7 @@
  */
 package uk.dangrew.jtt.mc.configuration.tree.item;
 
-import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
+import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.mc.configuration.components.ManagementConsoleDescriptionPanel;
@@ -17,7 +17,7 @@ import uk.dangrew.jtt.mc.configuration.components.ManagementConsoleDescriptionPa
  * The {@link ManagementConsoleRootItem} provides the root of a set of configuration items
  * for an individual build wall.
  */
-public class ManagementConsoleRootItem extends SimpleConfigurationItem {
+public class ManagementConsoleRootItem extends ScrollableConfigurationItem {
    
    static final String NAME = "Management Console";
    static final String TITLE = "Configuring the Management Console";
@@ -31,7 +31,7 @@ public class ManagementConsoleRootItem extends SimpleConfigurationItem {
                NAME, 
                new SimpleConfigurationTitle( TITLE, null ), 
                controller, 
-               new ManagementConsoleDescriptionPanel() 
+               new ManagementConsoleDescriptionPanel()
       );
    }//End Constructor
 

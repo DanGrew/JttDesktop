@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.javafx.progressbar;
+package uk.dangrew.jtt.javafx.css;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -22,15 +22,18 @@ import org.mockito.Spy;
 
 import javafx.scene.Node;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.javafx.css.CssOnlyProperties;
+import uk.dangrew.jtt.javafx.css.DynamicCssOnlyProperties;
 import uk.dangrew.jtt.styling.BuildWallStyles;
 import uk.dangrew.jtt.styling.BuildWallThemes;
 import uk.dangrew.jtt.styling.SystemStyles;
 import uk.dangrew.jtt.utility.conversion.ColorConverter;
 
-public class DynamicProgressBarPropertiesTest {
+public class DynamicCssOnlyPropertiesTest {
    
    private static final String EMPTY_STYLE = "";
    
@@ -40,8 +43,9 @@ public class DynamicProgressBarPropertiesTest {
    private Node barLookup;
    @Mock private ProgressBar progressBar;
    @Spy private ColorConverter colorConverter;
+   private CssOnlyProperties css;
    @Mock private SystemStyles styling;
-   private DynamicProgressBarProperties systemUnderTest;
+   private DynamicCssOnlyProperties systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
@@ -51,14 +55,15 @@ public class DynamicProgressBarPropertiesTest {
       barLookup = new BorderPane();
       
       colorConverterForTesting = new ColorConverter();
-      systemUnderTest = new DynamicProgressBarProperties( styling, colorConverter );
+      css = new CssOnlyProperties();
+      systemUnderTest = new DynamicCssOnlyProperties( styling, colorConverter, css );
    }//End Method
    
    @Ignore
    @Test public void manual() throws InterruptedException{
       progressBar = new ProgressBar( 0.4 );
       JavaFxInitializer.launchInWindow( () -> new BorderPane( progressBar ) );
-      systemUnderTest = new DynamicProgressBarProperties();
+      systemUnderTest = new DynamicCssOnlyProperties();
       
       Thread.sleep( 2000 );
       systemUnderTest.applyCustomColours( Color.BLACK, Color.AQUAMARINE, progressBar );
@@ -83,17 +88,17 @@ public class DynamicProgressBarPropertiesTest {
    }//End Method
    
    @Test public void shouldApplyCustomBarAndTrackColour(){
-      when( progressBar.lookup( DynamicProgressBarProperties.BAR_LOOKUP ) ).thenReturn( barLookup );
-      when( progressBar.lookup( DynamicProgressBarProperties.TRACK_LOOKUP ) ).thenReturn( trackLookup );
+      when( progressBar.lookup( DynamicCssOnlyProperties.BAR_LOOKUP ) ).thenReturn( barLookup );
+      when( progressBar.lookup( DynamicCssOnlyProperties.TRACK_LOOKUP ) ).thenReturn( trackLookup );
       
       systemUnderTest.applyCustomColours( Color.RED, Color.GREEN, progressBar );
-      assertThat( barLookup.getStyle(), is( DynamicProgressBarProperties.formatBackgroundColourProperty( colorConverterForTesting.colorToHex( Color.RED ) ) ) );
-      assertThat( trackLookup.getStyle(), is( DynamicProgressBarProperties.formatBackgroundColourProperty( colorConverterForTesting.colorToHex( Color.GREEN ) ) ) );
+      assertThat( barLookup.getStyle(), is( systemUnderTest.formatBackgroundColourProperty( colorConverterForTesting.colorToHex( Color.RED ) ) ) );
+      assertThat( trackLookup.getStyle(), is( systemUnderTest.formatBackgroundColourProperty( colorConverterForTesting.colorToHex( Color.GREEN ) ) ) );
    }//End Method
    
    @Test public void shouldIdentifyMissingBarLookupNodeAndHandle(){
-      when( progressBar.lookup( DynamicProgressBarProperties.BAR_LOOKUP ) ).thenReturn( null );
-      when( progressBar.lookup( DynamicProgressBarProperties.TRACK_LOOKUP ) ).thenReturn( trackLookup );
+      when( progressBar.lookup( DynamicCssOnlyProperties.BAR_LOOKUP ) ).thenReturn( null );
+      when( progressBar.lookup( DynamicCssOnlyProperties.TRACK_LOOKUP ) ).thenReturn( trackLookup );
       
       systemUnderTest.applyCustomColours( Color.RED, Color.GREEN, progressBar );
       assertThat( barLookup.getStyle(), is( EMPTY_STYLE ) );
@@ -101,8 +106,8 @@ public class DynamicProgressBarPropertiesTest {
    }//End Method
    
    @Test public void shouldIdentifyMissingTrackLookupNodeAndHandle(){
-      when( progressBar.lookup( DynamicProgressBarProperties.BAR_LOOKUP ) ).thenReturn( barLookup );
-      when( progressBar.lookup( DynamicProgressBarProperties.TRACK_LOOKUP ) ).thenReturn( null );
+      when( progressBar.lookup( DynamicCssOnlyProperties.BAR_LOOKUP ) ).thenReturn( barLookup );
+      when( progressBar.lookup( DynamicCssOnlyProperties.TRACK_LOOKUP ) ).thenReturn( null );
       
       systemUnderTest.applyCustomColours( Color.RED, Color.GREEN, progressBar );
       assertThat( barLookup.getStyle(), is( EMPTY_STYLE ) );
@@ -111,9 +116,20 @@ public class DynamicProgressBarPropertiesTest {
    
    @Test public void shouldFormatColourStringIntoFxProperty(){
       assertThat( 
-               DynamicProgressBarProperties.formatBackgroundColourProperty( "#120A8F" ),
+               systemUnderTest.formatBackgroundColourProperty( "#120A8F" ),
                is( "-fx-background-color: #120A8F;" )
       );
    }//End Method
+   
+   @Test public void shouldApplyBackgroundToScrollPane(){
+      ScrollPane scroller = new ScrollPane();
+      systemUnderTest.applyBackgroundColour( scroller, Color.RED );
+      assertThat( scroller.getStyle(), is( systemUnderTest.formatBackgroundColourProperty( colorConverterForTesting.colorToHex( Color.RED ) ) ) );
+   }//End Method
 
+   @Test public void shouldRemoveBackgroundFromScrollPane(){
+      ScrollPane scroller = new ScrollPane();
+      systemUnderTest.removeScrollPaneBorder( scroller );
+      assertThat( scroller.getStyle(), is( systemUnderTest.formatBackgroundColourProperty( css.transparent() ) ) );
+   }//End Method
 }//End Class

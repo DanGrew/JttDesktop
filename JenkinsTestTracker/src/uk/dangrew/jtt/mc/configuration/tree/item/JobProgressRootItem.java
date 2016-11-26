@@ -8,7 +8,7 @@
  */
 package uk.dangrew.jtt.mc.configuration.tree.item;
 
-import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
+import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.mc.configuration.components.JobProgressDescriptionPanel;
@@ -17,7 +17,7 @@ import uk.dangrew.jtt.mc.configuration.components.JobProgressDescriptionPanel;
  * The {@link JobProgressRootItem} provides the root of a set of configuration items
  * for the job progress view.
  */
-public class JobProgressRootItem extends SimpleConfigurationItem {
+public class JobProgressRootItem extends ScrollableConfigurationItem {
    
    static final String NAME = "Job Progress View";
    static final String TITLE = "Configuring the Job Progress View";
@@ -31,7 +31,7 @@ public class JobProgressRootItem extends SimpleConfigurationItem {
                NAME, 
                new SimpleConfigurationTitle( TITLE, null ), 
                controller, 
-               new JobProgressDescriptionPanel() 
+               new JobProgressDescriptionPanel()
       );
    }//End Constructor
 

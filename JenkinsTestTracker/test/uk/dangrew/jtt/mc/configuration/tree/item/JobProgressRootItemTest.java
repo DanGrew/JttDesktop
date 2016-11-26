@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -53,7 +54,9 @@ public class JobProgressRootItemTest {
       assertThat( title.getTitle(), is( JobProgressRootItem.TITLE ) );
       assertThat( title.getDescription(), is( nullValue() ) );
       
-      assertThat( contentCaptor.getValue(), is( instanceOf( JobProgressDescriptionPanel.class ) ) );
+      assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
+      ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
+      assertThat( scroller.getContent(), is( instanceOf( JobProgressDescriptionPanel.class ) ) );
    }//End Method
    
    @Test public void shouldProvideToStringUsingName(){

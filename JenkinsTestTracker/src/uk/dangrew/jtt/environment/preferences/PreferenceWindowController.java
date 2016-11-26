@@ -21,8 +21,8 @@ import javafx.stage.Stage;
  */
 public class PreferenceWindowController {
    
-   static final double HEIGHT = 400;
-   static final double WIDTH = 800;
+   static final double HEIGHT = 600;
+   static final double WIDTH = 900;
    
    private Stage configurationWindowStage;
    

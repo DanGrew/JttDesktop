@@ -40,7 +40,7 @@ public abstract class SimpleConfigurationItem implements ConfigurationItem {
       this.controller = controller;
       this.content = content;
    }//End Constructor
-
+   
    /**
     * {@inheritDoc}
     */

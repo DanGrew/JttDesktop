@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -52,11 +53,13 @@ public class SystemVersionItemTest {
       assertThat( title.getTitle(), is( SystemVersionItem.TITLE ) );
       assertThat( title.getDescription(), is( nullValue() ) );
       
-      assertThat( contentCaptor.getValue(), is( instanceOf( SystemVersionPanel.class ) ) );
+      assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
+      ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
+      assertThat( scroller.getContent(), is( instanceOf( SystemVersionPanel.class ) ) );
    }//End Method
    
    @Test public void shouldProvideToStringUsingName(){
       assertThat( systemUnderTest.toString(), is( SystemVersionItem.NAME ) );
    }//End Method
-
+   
 }//End Class

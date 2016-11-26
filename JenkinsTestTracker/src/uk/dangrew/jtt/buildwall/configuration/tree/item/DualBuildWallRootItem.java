@@ -9,7 +9,7 @@
 package uk.dangrew.jtt.buildwall.configuration.tree.item;
 
 import uk.dangrew.jtt.buildwall.configuration.components.DualBuildWallDescriptionPanel;
-import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
+import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
@@ -17,7 +17,7 @@ import uk.dangrew.jtt.environment.preferences.PreferenceController;
  * The {@link DualBuildWallRootItem} provides the root of a set of configuration items
  * the {@link uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl}.
  */
-public class DualBuildWallRootItem extends SimpleConfigurationItem {
+public class DualBuildWallRootItem extends ScrollableConfigurationItem {
    
    static final String NAME = "Dual Build Wall";
    static final String TITLE = "Configuring the Dual Build Wall";
@@ -31,7 +31,7 @@ public class DualBuildWallRootItem extends SimpleConfigurationItem {
                NAME, 
                new SimpleConfigurationTitle( TITLE, null ), 
                controller, 
-               new DualBuildWallDescriptionPanel() 
+               new DualBuildWallDescriptionPanel()
       );
    }//End Constructor
 

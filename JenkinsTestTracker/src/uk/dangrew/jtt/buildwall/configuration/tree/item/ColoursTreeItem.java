@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.configuration.tree.item;
 
 import uk.dangrew.jtt.buildwall.configuration.components.ColoursPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
+import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
@@ -18,13 +18,13 @@ import uk.dangrew.jtt.environment.preferences.PreferenceController;
  * The {@link ColoursTreeItem} provides the configuration items for the colour related
  * properties for an individual build wall.
  */
-public class ColoursTreeItem extends SimpleConfigurationItem {
+public class ColoursTreeItem extends ScrollableConfigurationItem {
 
    static final String NAME = "Colours";
    static final String TITLE = "Configuring Build Wall Colours";
    static final String DESCRIPTION = 
                      "Colours can be configured use standard colour pickers. Notice that they do support"
-                     + "transparency for differetn effects.";
+                     + "transparency for different effects.";
    
    private final BuildWallConfiguration configuration;
    
@@ -38,7 +38,7 @@ public class ColoursTreeItem extends SimpleConfigurationItem {
                NAME, 
                new SimpleConfigurationTitle( TITLE, DESCRIPTION ), 
                controller, 
-               new ColoursPanel( configuration ) 
+               new ColoursPanel( configuration )
       );
       this.configuration = configuration;
    }//End Constructor

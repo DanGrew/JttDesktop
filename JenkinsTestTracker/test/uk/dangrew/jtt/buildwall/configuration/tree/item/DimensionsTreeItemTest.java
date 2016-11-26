@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.buildwall.configuration.components.DimensionsPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
@@ -56,8 +57,12 @@ public class DimensionsTreeItemTest {
       assertThat( title.getTitle(), is( DimensionsTreeItem.TITLE ) );
       assertThat( title.getDescription(), is( DimensionsTreeItem.DESCRIPTION ) );
       
-      assertThat( contentCaptor.getValue(), is( instanceOf( DimensionsPanel.class ) ) );
-      DimensionsPanel panel = ( DimensionsPanel ) contentCaptor.getValue();
+      
+      assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
+      ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
+      assertThat( scroller.getContent(), is( instanceOf( DimensionsPanel.class ) ) );
+      
+      DimensionsPanel panel = ( DimensionsPanel ) scroller.getContent();
       assertThat( panel.hasConfiguration( configuration ), is( true ) );
    }//End Method
    

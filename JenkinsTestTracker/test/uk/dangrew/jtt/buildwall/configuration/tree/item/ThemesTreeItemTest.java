@@ -10,7 +10,6 @@ package uk.dangrew.jtt.buildwall.configuration.tree.item;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -22,28 +21,26 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
-import uk.dangrew.jtt.buildwall.configuration.components.BuildWallDescriptionPanel;
+import uk.dangrew.jtt.buildwall.configuration.components.themebuilder.ThemeBuilderPanel;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
+import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 
-/**
- * {@link BuildWallRootItem} test.
- */
-public class BuildWallRootItemTest {
+public class ThemesTreeItemTest {
 
-   private static final String PREFIX = "anything";
    @Mock private PreferenceController controller;
    @Captor private ArgumentCaptor< Node > contentTitleCaptor;
    @Captor private ArgumentCaptor< Node > contentCaptor;
    
-   private BuildWallRootItem systemUnderTest;
+   private ThemesTreeItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new BuildWallRootItem( PREFIX, controller );
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
+      systemUnderTest = new ThemesTreeItem( controller );
    }//End Method
    
    @Test public void shouldHandleClickByInstructingController() {
@@ -52,16 +49,18 @@ public class BuildWallRootItemTest {
       
       assertThat( contentTitleCaptor.getValue(), is( instanceOf( SimpleConfigurationTitle.class ) ) );
       SimpleConfigurationTitle title = ( SimpleConfigurationTitle ) contentTitleCaptor.getValue();
-      assertThat( title.getTitle(), is( BuildWallRootItem.TITLE ) );
-      assertThat( title.getDescription(), is( nullValue() ) );
+      assertThat( title.getTitle(), is( ThemesTreeItem.TITLE ) );
+      assertThat( title.getDescription(), is( ThemesTreeItem.DESCRIPTION ) );
       
-      assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
-      ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
-      assertThat( scroller.getContent(), is( instanceOf( BuildWallDescriptionPanel.class ) ) );
+      assertThat( contentCaptor.getValue(), is( instanceOf( ThemeBuilderPanel.class ) ) );
    }//End Method
    
    @Test public void shouldProvideToStringUsingName(){
-      assertThat( systemUnderTest.toString(), is( PREFIX + BuildWallRootItem.NAME_SUFFIX ) );
+      assertThat( systemUnderTest.toString(), is( ThemesTreeItem.NAME ) );
+   }//End Method
+   
+   @Test public void shouldNotBeAssociatedWithAnything(){
+      assertThat( systemUnderTest.isAssociatedWith( new Object() ), is( false ) );
    }//End Method
 
 }//End Class

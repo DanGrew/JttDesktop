@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.configuration.tree.item;
 
 import uk.dangrew.jtt.buildwall.configuration.components.DimensionsPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
+import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 
@@ -18,7 +18,7 @@ import uk.dangrew.jtt.environment.preferences.PreferenceController;
  * The {@link DimensionsTreeItem} provides the configuration items for the dimension related
  * properties for an individual build wall.
  */
-public class DimensionsTreeItem extends SimpleConfigurationItem {
+public class DimensionsTreeItem extends ScrollableConfigurationItem {
 
    static final String NAME = "Dimensions";
    static final String TITLE = "Configuring Build Wall Dimensions";
@@ -38,7 +38,7 @@ public class DimensionsTreeItem extends SimpleConfigurationItem {
                NAME, 
                new SimpleConfigurationTitle( TITLE, DESCRIPTION ),
                controller, 
-               new DimensionsPanel( configuration ) 
+               new DimensionsPanel( configuration )
       );
       this.configuration = configuration;
    }//End Constructor

@@ -8,7 +8,7 @@
  */
 package uk.dangrew.jtt.mc.configuration.tree.item;
 
-import uk.dangrew.jtt.configuration.item.SimpleConfigurationItem;
+import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.mc.configuration.components.UserAssignmentsDescriptionPanel;
@@ -17,7 +17,7 @@ import uk.dangrew.jtt.mc.configuration.components.UserAssignmentsDescriptionPane
  * The {@link UserAssignmentsRootItem} provides the root of a set of configuration items
  * for the user assignments system.
  */
-public class UserAssignmentsRootItem extends SimpleConfigurationItem {
+public class UserAssignmentsRootItem extends ScrollableConfigurationItem {
    
    static final String NAME = "User Assignments";
    static final String TITLE = "Configuring the User Assignment System";
@@ -31,7 +31,7 @@ public class UserAssignmentsRootItem extends SimpleConfigurationItem {
                NAME, 
                new SimpleConfigurationTitle( TITLE, null ), 
                controller, 
-               new UserAssignmentsDescriptionPanel() 
+               new UserAssignmentsDescriptionPanel()
       );
    }//End Constructor
 

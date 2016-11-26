@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.buildwall.configuration.components.FontsPanel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
@@ -56,8 +57,11 @@ public class FontsTreeItemTest {
       assertThat( title.getTitle(), is( FontsTreeItem.TITLE ) );
       assertThat( title.getDescription(), is( FontsTreeItem.DESCRIPTION ) );
       
-      assertThat( contentCaptor.getValue(), is( instanceOf( FontsPanel.class ) ) );
-      FontsPanel panel = ( FontsPanel ) contentCaptor.getValue();
+      assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
+      ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
+      assertThat( scroller.getContent(), is( instanceOf( FontsPanel.class ) ) );
+      
+      FontsPanel panel = ( FontsPanel ) scroller.getContent();
       assertThat( panel.hasConfiguration( configuration ), is( true ) );
    }//End Method
    

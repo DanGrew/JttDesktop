@@ -25,6 +25,7 @@ import uk.dangrew.jtt.buildwall.configuration.tree.item.DualBuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DualPropertiesTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
+import uk.dangrew.jtt.buildwall.configuration.tree.item.ThemesTreeItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
@@ -45,6 +46,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    private final TreeItem< ConfigurationItem > systemVersion;
    
    private final TreeItem< ConfigurationItem > dualWallProperties;
+   private final TreeItem< ConfigurationItem > themes;
    private final TreeItem< ConfigurationItem > dualWallRoot;
    private final TreeItem< ConfigurationItem > leftWallRoot;
    private final TreeItem< ConfigurationItem > rightWallRoot;
@@ -80,6 +82,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       this.root.getChildren().add( dualWallRoot );
       
       this.dualWallProperties = insertDualProperties( dualWallRoot, systemConfiguration.getDualConfiguration() );
+      this.themes = insertThemes( dualWallRoot );
       this.leftWallRoot = insertBuildWallConfiguration( dualWallRoot, "Left", systemConfiguration.getLeftConfiguration() );
       this.rightWallRoot = insertBuildWallConfiguration( dualWallRoot, "Right", systemConfiguration.getRightConfiguration() );
       
@@ -98,6 +101,21 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    }//End Constructor
    
    /**
+    * Method to insert the {@link ThemesTreeItem} items into the given root.
+    * @param root the {@link TreeItem} root to insert in to.
+    * @return the {@link TreeItem} inserted
+    */
+   private TreeItem<ConfigurationItem> insertThemes( TreeItem< ConfigurationItem > root ){
+      TreeItem<ConfigurationItem> item = new TreeItem<>(  
+               new ThemesTreeItem( controller ) 
+      );
+      item.setExpanded( true );  
+      root.getChildren().add( item );
+      
+      return item;
+   }//End Method
+   
+   /**
     * Method to insert the {@link DualConfiguration} items into the given root.
     * @param root the {@link TreeItem} root to insert in to.
     * @param configuration the {@link DualConfiguration} to configure.
@@ -107,7 +125,6 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
                new DualPropertiesTreeItem( controller, configuration ) 
       );
       dualProperties.setExpanded( true );  
-      
       root.getChildren().add( dualProperties );
       
       return dualProperties;
@@ -207,7 +224,8 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    private void populateItemMappings(){
       itemMapping.put( ConfigurationTreeItems.SystemVersion, systemVersion );
       
-      itemMapping.put( ConfigurationTreeItems.DualWallProperties, dualWallProperties ); 
+      itemMapping.put( ConfigurationTreeItems.DualWallProperties, dualWallProperties );
+      itemMapping.put( ConfigurationTreeItems.Themes, themes ); 
       itemMapping.put( ConfigurationTreeItems.DualWallRoot, dualWallRoot );
       itemMapping.put( ConfigurationTreeItems.LeftWallRoot, leftWallRoot );
       itemMapping.put( ConfigurationTreeItems.LeftDimension, leftWallRoot.getChildren().get( 0 ) );
@@ -224,7 +242,6 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       itemMapping.put( ConfigurationTreeItems.Notifications, notificationsRoot );
       itemMapping.put( ConfigurationTreeItems.UserAssignments, userAssignmentsRoot );
       itemMapping.put( ConfigurationTreeItems.JobProgress, jobProgressRoot );
-//      itemMapping.put( ConfigurationTreeItems.JobProgressFiltering, jobProgressRoot.getChildren().get( 0 ) );
    }//End Method
    
    /**
@@ -265,6 +282,10 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    TreeItem< ConfigurationItem > dualWallProperties(){
       return dualWallProperties;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > themes(){
+      return themes;
    }//End Method
    
    TreeItem< ConfigurationItem > leftWallRoot(){

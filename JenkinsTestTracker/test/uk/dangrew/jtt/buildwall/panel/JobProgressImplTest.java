@@ -26,7 +26,7 @@ import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.javafx.progressbar.DynamicProgressBarProperties;
+import uk.dangrew.jtt.javafx.css.DynamicCssOnlyProperties;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -40,7 +40,7 @@ import uk.dangrew.jtt.utility.TestCommon;
 public class JobProgressImplTest {
 
    private BuildWallTheme theme;
-   @Mock private DynamicProgressBarProperties dynamicProperties;
+   @Mock private DynamicCssOnlyProperties dynamicProperties;
    private JenkinsJob job;
    private JobProgressImpl systemUnderTest;
    

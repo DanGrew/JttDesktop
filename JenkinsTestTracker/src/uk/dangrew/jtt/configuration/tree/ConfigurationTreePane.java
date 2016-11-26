@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.configuration.tree;
 
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
 
@@ -35,11 +33,7 @@ public class ConfigurationTreePane extends BorderPane {
       this.tree.select( ConfigurationTreeItems.SystemVersion );
       this.content = content;
       setLeft( tree );
-      
-      ScrollPane scroller = new ScrollPane( content );
-      scroller.setHbarPolicy( ScrollBarPolicy.NEVER );
-      scroller.setFitToWidth( true );
-      setCenter( scroller );
+      setCenter( content );
    }//End Constructor
    
    /**

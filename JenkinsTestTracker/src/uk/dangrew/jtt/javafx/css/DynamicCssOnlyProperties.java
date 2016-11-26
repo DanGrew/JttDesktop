@@ -6,10 +6,11 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.javafx.progressbar;
+package uk.dangrew.jtt.javafx.css;
 
 import javafx.scene.Node;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.styling.BuildWallStyles;
 import uk.dangrew.jtt.styling.BuildWallThemes;
@@ -22,32 +23,32 @@ import uk.dangrew.jtt.utility.conversion.ColorConverter;
  * on the {@link ProgressBar} that can only be set by style sheets. This is potentially a fragile
  * mechanism however it seems the only way to achieve dynamic configuration.
  */
-public class DynamicProgressBarProperties {
+public class DynamicCssOnlyProperties {
 
    static final String TRACK_LOOKUP = ".track";
    static final String BAR_LOOKUP = ".bar";
    
-   static final String BACKGROUND_COLOUR_FX_PROPERTY = "-fx-background-color: ";
-   static final String FX_PROPERTY_SUFFIX = ";";
-   
    private final ColorConverter colorConverter;
    private final SystemStyles styling;
+   private final CssOnlyProperties css; 
    
    /**
     * Constructs a new {@link DynamicProgressBarProperties}.
     */
-   public DynamicProgressBarProperties() {
-      this( SystemStyling.get(), new ColorConverter() );
+   public DynamicCssOnlyProperties() {
+      this( SystemStyling.get(), new ColorConverter(), new CssOnlyProperties() );
    }//End Constructor
    
    /**
     * Constructs a new {@link DynamicProgressBarProperties}.
     * @param styling the {@link SystemStyles} for built in properties.
     * @param colorConverter the {@link ColorConverter} for converter to hex.
+    * @param css the {@link CssOnlyProperties}.
     */
-   DynamicProgressBarProperties( SystemStyles styling, ColorConverter colorConverter ) {
+   DynamicCssOnlyProperties( SystemStyles styling, ColorConverter colorConverter, CssOnlyProperties css ) {
       this.styling = styling;
       this.colorConverter = colorConverter;
+      this.css = css;
    }//End Constructor
 
    /**
@@ -90,6 +91,23 @@ public class DynamicProgressBarProperties {
    }//End Method
    
    /**
+    * Method to remove the {@link ScrollPane} background by making it transparent.
+    * @param scrollPane the {@link ScrollPane} to configure.
+    */
+   public void removeScrollPaneBorder( ScrollPane scrollPane ) {
+      scrollPane.setStyle( formatBackgroundColourProperty( css.transparent() ) );
+   }//End Method
+   
+   /**
+    * Method to change the {@link ScrollPane} background.
+    * @param scrollPane the {@link ScrollPane} to configure.
+    * @param colour the {@link Color} to change to.
+    */
+   public void applyBackgroundColour( ScrollPane scrollPane, Color colour ) {
+      scrollPane.setStyle( formatBackgroundColourProperty( colorConverter.colorToHex( colour ) ) );
+   }//End Method
+   
+   /**
     * Method to look up the node identifier in the given {@link Node}.
     * @param nodeIdentifier the id of the {@link Node}.
     * @param lookInside the {@link Node} to look in.
@@ -110,8 +128,8 @@ public class DynamicProgressBarProperties {
     * @param colour the {@link Color} to apply.
     * @return the {@link String} property in css style.
     */
-   static String formatBackgroundColourProperty( String colour ) {
-      return BACKGROUND_COLOUR_FX_PROPERTY + colour + FX_PROPERTY_SUFFIX;
+   String formatBackgroundColourProperty( String colour ) {
+      return css.backgroundProperty() + colour + css.propertySuffix();
    }//End Method
 
 }//End Constructor

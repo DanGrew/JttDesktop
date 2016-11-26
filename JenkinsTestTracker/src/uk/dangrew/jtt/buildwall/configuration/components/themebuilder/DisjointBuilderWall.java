@@ -12,6 +12,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
@@ -27,6 +28,9 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
  */
 class DisjointBuilderWall extends GridPane {
    
+   static final int COLUMN_COUNT = 3;
+   static final double COLUMN_WIDTH = 33;
+   static final double REDUCED_TEXT_SIZE = 12;
    static final long JOB_EXPECTED_BUILD_TIME = 100;
    static final long JOB_PROGRESS = 25;
    static final long JOB_TIMESTAMP = 0;
@@ -42,22 +46,25 @@ class DisjointBuilderWall extends GridPane {
     * @param theme the {@link BuildWallTheme} to configure.
     */
    public DisjointBuilderWall( BuildWallTheme theme ) {
-      this( new JavaFxStyle(), theme );
+      this( new JavaFxStyle(), new BuildWallConfigurationImpl(), theme );
    }//End Constructor
    
    /**
     * Constructs a new {@link DisjointBuilderWall}.
     * @param styling the {@link JavaFxStyle} for customizing the graphics.
+    * @param configuration the {@link BuildWallConfiguration}.
     * @param theme the {@link BuildWallTheme} to configure.
     */
-   DisjointBuilderWall( JavaFxStyle styling, BuildWallTheme theme ) {
+   DisjointBuilderWall( JavaFxStyle styling, BuildWallConfiguration configuration, BuildWallTheme theme ) {
       this.styling = styling;
       this.theme = theme;
-      this.configuration = new BuildWallConfigurationImpl();
+      this.configuration = configuration;
+      this.configuration.buildNumberFont().set( Font.font( REDUCED_TEXT_SIZE ) );
+      this.configuration.completionEstimateFont().set( Font.font( REDUCED_TEXT_SIZE ) );
       this.panels = new EnumMap<>( BuildResultStatus.class );
       
       this.createAndLayoutJobPanels();
-      this.styling.configureConstraintsForColumnPercentages( this, styling.halfColumnWidth(), styling.halfColumnWidth() );
+      this.styling.configureConstraintsForColumnPercentages( this, COLUMN_WIDTH, COLUMN_WIDTH, COLUMN_WIDTH );
    }//End Constructor
    
    /**
@@ -73,7 +80,7 @@ class DisjointBuilderWall extends GridPane {
          this.add( panel, column, row );
          
          column++;
-         if ( column == 2 ) {
+         if ( column == COLUMN_COUNT ) {
             column = 0;
             row++;
          }
