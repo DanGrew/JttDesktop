@@ -90,6 +90,42 @@ public class LaunchOptions extends VBox {
       window.bindDimensions( console );
    }//End Method
    
+   /**
+    * Method to determine whether the given is associated.
+    * @param window the {@link EnvironmentWindow} in question.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( EnvironmentWindow window ) {
+      return this.window == window;
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is associated.
+    * @param window the {@link SystemConfiguration} in question.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( SystemConfiguration configuration ) {
+      return this.configuration == configuration;
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is associated.
+    * @param window the {@link JenkinsDatabase} in question.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( JenkinsDatabase database ) {
+      return this.database == database;
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is associated.
+    * @param window the {@link DigestViewer} in question.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( DigestViewer digest ) {
+      return this.digest == digest;
+   }//End Method
+   
    Button managementConsoleButton() {
       return managementConsoleButton;
    }//End Method

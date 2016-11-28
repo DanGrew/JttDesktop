@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -54,8 +55,8 @@ public class LaunchOptionsTest {
    
    /** Extended {@link EnvironmentWindow} to exposed width and height.*/
    private static class EnvironmentWindowWithExposedWidth extends EnvironmentWindow {
-      public EnvironmentWindowWithExposedWidth( SystemConfiguration configuration, JenkinsDatabase database, DigestViewer digest ) {
-         super( configuration, database, digest );
+      public EnvironmentWindowWithExposedWidth( SystemConfiguration configuration ) {
+         super( configuration );
       }//End Constructor
 
       @Override protected void setWidth( double value ) {
@@ -74,7 +75,7 @@ public class LaunchOptionsTest {
       MockitoAnnotations.initMocks( this );
       configuration = new SystemConfiguration();
       database = new JenkinsDatabaseImpl();
-      window = spy( new EnvironmentWindowWithExposedWidth( configuration, database, digest ) );
+      window = spy( new EnvironmentWindowWithExposedWidth( configuration ) );
       systemUnderTest = new LaunchOptions( window, configuration, database, digest );
    }//End Method
 
@@ -155,6 +156,18 @@ public class LaunchOptionsTest {
    
    @Test public void shouldHaveNotificationCenter(){
       assertThat( systemUnderTest.notificationCenter(), is( notNullValue() ) );
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWith(){
+      assertThat( systemUnderTest.isAssociatedWith( digest ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( window ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( database ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( configuration ), is( true ) );
+      
+      assertThat( systemUnderTest.isAssociatedWith( mock( DigestViewer.class ) ), is( false ) );
+      assertThat( systemUnderTest.isAssociatedWith( mock( EnvironmentWindow.class ) ), is( false ) );
+      assertThat( systemUnderTest.isAssociatedWith( new JenkinsDatabaseImpl() ), is( false ) );
+      assertThat( systemUnderTest.isAssociatedWith( new SystemConfiguration() ), is( false ) );
    }//End Method
 
 }//End Class

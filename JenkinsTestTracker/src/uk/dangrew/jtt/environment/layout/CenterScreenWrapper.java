@@ -18,6 +18,14 @@ import javafx.scene.Node;
 public class CenterScreenWrapper extends Group {
    
    /**
+    * Constructs a new {@link CenterScreenWrapper} with nothing
+    * at the center.
+    */
+   public CenterScreenWrapper() {
+      //empty group
+   }//End Constructor
+   
+   /**
     * Constructs a new {@link CenterScreenWrapper}.
     * @param center the {@link Node} at the center.
     */
@@ -39,6 +47,9 @@ public class CenterScreenWrapper extends Group {
     * @return the center.
     */
    public Node getCenter(){
+      if ( getChildren().isEmpty() ) {
+         return null;
+      }
       return getChildren().get( 0 );
    }//End Method
 

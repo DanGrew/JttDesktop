@@ -15,11 +15,12 @@ import uk.dangrew.jtt.api.sources.JenkinsApiImpl;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.core.JenkinsTestTrackerCoreImpl;
-import uk.dangrew.jtt.core.JttSystemCoreImpl;
+import uk.dangrew.jtt.core.JttInitializer;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 /**
  * The {@link JttSceneConstructor} is responsible for constructing the {@link Scene}
@@ -30,6 +31,7 @@ public class JttSceneConstructor {
    private final JttApplicationController controller;
    private final SystemDigestController digestController;
    
+   private JttInitializer initializer;
    private SystemConfiguration configuration;
    private BuildWallConfigurationSessions buildWallSessions;
    private DualWallConfigurationSessions dualWallSessions;
@@ -67,19 +69,25 @@ public class JttSceneConstructor {
       }
       
       configuration = new SystemConfiguration();
-      JenkinsTestTrackerCoreImpl core = new JttSystemCoreImpl( api );
+      JenkinsDatabase database = new JenkinsDatabaseImpl();
+      
       buildWallSessions = new BuildWallConfigurationSessions( 
-               core.getJenkinsDatabase(), 
+               database, 
                configuration.getLeftConfiguration(), 
                configuration.getRightConfiguration() 
       );
       dualWallSessions = new DualWallConfigurationSessions( configuration.getDualConfiguration() );
-      core.initialiseTimeKeepers();
       
-      EnvironmentWindow window = new EnvironmentWindow( configuration, core.getJenkinsDatabase(), digestController.getDigestViewer() );
+      EnvironmentWindow window = new EnvironmentWindow( configuration );
+      
+      initializer = new JttInitializer( api, database, window, configuration, digestController.getDigestViewer() );
       return new Scene( window );
    }//End Method
 
+   JttInitializer initializer(){
+      return initializer;
+   }//End Method
+   
    SystemConfiguration configuration(){
       return configuration;
    }//End Method

@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.utility.synchronisation.SynchronizedObservableMap;
+import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
 
 /**
  * The {@link BuildWallConfigurationImpl} provides an implementation of the {@link BuildWallConfiguration}.

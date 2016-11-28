@@ -10,6 +10,7 @@ package uk.dangrew.jtt.environment.layout;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -59,6 +60,11 @@ public class CenterScreenWrapperTest {
       assertThat( systemUnderTest.getChildren(), contains( center ) );
       assertThat( systemUnderTest.getChildren().contains( initialCenter ), is( false ) );
       assertThat( systemUnderTest.getCenter(), is( center ) );
+   }//End Method
+   
+   @Test public void shouldProvideCenterEvenWhenNull(){
+      systemUnderTest = new CenterScreenWrapper();
+      assertThat( systemUnderTest.getCenter(), is( nullValue() ) );
    }//End Method
 
 }//End Class

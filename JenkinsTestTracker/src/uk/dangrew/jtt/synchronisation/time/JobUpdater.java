@@ -22,26 +22,29 @@ public class JobUpdater extends TimeKeeper {
    static final long UPDATE_DELAY = TimeKeeper.TASK_DELAY;
    static final long INTERVAL = 5000L;
    
-   /**
-    * Constructs a new {@link JobUpdater}.
-    * @param timer the {@link Timer} to time events.
-    * @param jenkinsProcessing the {@link JenkinsProcessing} to request job updates on.
-    * @param interval the interval between updates.
-    */
-   public JobUpdater( Timer timer, JenkinsProcessing jenkinsProcessing, Long interval ) {
-      super( 
-               timer, 
-               () -> jenkinsProcessing.fetchJobsAndUpdateDetails(),
-               interval
-      );
-   }//End Constructor
+   private final JenkinsProcessing processing;
    
    /**
     * Constructs a new {@link JobUpdater}.
     * @param jenkinsProcessing the {@link JenkinsProcessing} to request job updates on.
+    * @param timer the {@link Timer} to time events.
+    * @param interval the interval between updates.
     */
-   public JobUpdater( JenkinsProcessing jenkinsProcessing ) {
-      super( () -> jenkinsProcessing.fetchJobsAndUpdateDetails() );
+   public JobUpdater( JenkinsProcessing jenkinsProcessing, Timer timer, Long interval ) {
+      super( 
+               () -> jenkinsProcessing.fetchJobsAndUpdateDetails(),
+               timer, 
+               interval
+      );
+      this.processing = jenkinsProcessing;
    }//End Constructor
-
+   
+   /**
+    * Method to determine whether the given is associated with this.
+    * @param processing the {@link JenkinsProcessing} in question.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( JenkinsProcessing processing ) {
+      return this.processing == processing;
+   }//End Method
 }//End Class

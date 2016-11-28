@@ -38,11 +38,15 @@ public class BuildProgressCalculator implements Runnable {
     */
    @Override public void run() {
       for ( JenkinsJob job : database.jenkinsJobs() ) {
-         if ( job.buildStateProperty().get().equals( BuildState.Built ) ) continue;
+         if ( job.buildStateProperty().get().equals( BuildState.Built ) ) {
+            continue;
+         }
          
          long currentTime = clock.millis();
          long timestamp = job.currentBuildTimestampProperty().get();
-         if ( timestamp > currentTime ) continue;
+         if ( timestamp > currentTime ) {
+            continue;
+         }
          
          job.currentBuildTimeProperty().set( currentTime - timestamp );
       }

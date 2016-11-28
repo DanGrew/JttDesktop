@@ -8,6 +8,10 @@
  */
 package uk.dangrew.jtt.synchronisation.time;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,7 +25,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.api.handling.JenkinsProcessing;
-import uk.dangrew.jtt.synchronisation.time.JobUpdater;
 
 /**
  * {@link JobUpdater} test.
@@ -40,7 +43,7 @@ public class JobUpdaterTest {
    @Before public void initialiseSystemUnderTest(){
       interval = 1000l;
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new JobUpdater( timer, jenkinsProcessing, interval );
+      systemUnderTest = new JobUpdater( jenkinsProcessing, timer, interval );
    }//End Method
    
    @Test public void shouldScheduleTimerTaskOnTimer(){
@@ -72,9 +75,14 @@ public class JobUpdaterTest {
 
    @Test public void manualConstructorPollShouldRunRunnable(){
       Mockito.verifyZeroInteractions( jenkinsProcessing );
-      systemUnderTest = new JobUpdater( jenkinsProcessing );
+      systemUnderTest = new JobUpdater( jenkinsProcessing, null, null );
       systemUnderTest.poll();
       Mockito.verify( jenkinsProcessing ).fetchJobsAndUpdateDetails();
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWith(){
+      assertThat( systemUnderTest.isAssociatedWith( jenkinsProcessing ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( mock( JenkinsProcessing.class ) ), is( false ) );
    }//End Method
 
 }//End Class

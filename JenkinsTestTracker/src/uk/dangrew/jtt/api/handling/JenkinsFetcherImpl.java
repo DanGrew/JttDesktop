@@ -81,7 +81,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     * {@inheritDoc}
     */
    @Override public void updateJobDetails( JenkinsJob jenkinsJob ) {
-      if ( jenkinsJob == null ) return;
+      if ( jenkinsJob == null ) {
+         return;
+      }
       
       updateBuildState( jenkinsJob );
       
@@ -139,7 +141,9 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
     * {@inheritDoc}
     */
    @Override public void updateTestResults( JenkinsJob jenkinsJob ) {
-      if ( jenkinsJob == null ) return;
+      if ( jenkinsJob == null ) {
+         return;
+      }
       
       String response = externalApi.getLatestTestResultsWrapped( jenkinsJob );
       testsImporter.updateTestResults( jenkinsJob, response );

@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.sd.utility.TestCommon;
 
 /**
  * Abstract pattern for testing {@link EventManager} extensions.

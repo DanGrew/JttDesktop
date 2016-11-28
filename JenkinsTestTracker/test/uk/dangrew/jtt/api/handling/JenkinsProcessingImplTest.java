@@ -28,8 +28,8 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
-import uk.dangrew.jtt.utility.TestCommon;
 import uk.dangrew.jtt.utility.mockito.DoAnswerNullReturn;
+import uk.dangrew.sd.utility.TestCommon;
 
 /**
  * {@link JenkinsProcessingImpl} test.

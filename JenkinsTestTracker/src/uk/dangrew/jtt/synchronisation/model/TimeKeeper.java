@@ -24,28 +24,25 @@ public class TimeKeeper {
    
    /**
     * Constructs a new {@link TimeKeeper}.
-    * @param timer the {@link Timer} to schedule calls to the {@link Runnable}.
     * @param runnable the {@link Runnable} to run.
+    * @param timer the {@link Timer} to schedule calls to the {@link Runnable}.
     * @param interval the interval between calls to the {@link Runnable}.
     */
-   protected TimeKeeper( Timer timer, Runnable runnable, Long interval ) {
-      if ( timer == null ) throw new IllegalArgumentException( "Null Timer provided." );
-      if ( runnable == null ) throw new IllegalArgumentException( "Null runnable provided." );
-      if ( interval == null ) throw new IllegalArgumentException( "Null interval provided." );
+   protected TimeKeeper( Runnable runnable, Timer timer, Long interval ) {
+      if ( runnable == null ) {
+         throw new IllegalArgumentException( "Null runnable provided." );
+      }
       
       this.timer = timer;
       this.runnable = runnable;
       this.interval = interval;
-      schedule();
-   }//End Constructor
-   
-   /**
-    * Constructs a new {@link TimeKeeper}.
-    * @param runnable the {@link Runnable} to manually poll.
-    */
-   protected TimeKeeper( Runnable runnable ) {
-      if ( runnable == null ) throw new IllegalArgumentException( "Null runnable provided." );
-      this.runnable = runnable;
+      
+      if ( timer != null ) {
+         if ( interval == null ) {
+            throw new IllegalArgumentException( "Timer provided: must provide interval." );
+         }
+         schedule();
+      }
    }//End Constructor
    
    /**
@@ -73,6 +70,14 @@ public class TimeKeeper {
     */
    public boolean hasTimer() {
       return timer != null;
+   }//End Method
+   
+   /**
+    * Getter for the interval associated with the running of the task.
+    * @return the interval, can be null.
+    */
+   public Long getInterval(){
+      return interval;
    }//End Method
    
 }//End Class

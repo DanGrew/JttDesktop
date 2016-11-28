@@ -19,7 +19,7 @@ import org.junit.Test;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
-import uk.dangrew.jtt.utility.synchronisation.SynchronizedObservableMap;
+import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
 
 /**
  * {@link BuildWallConfigurationImpl} test.

@@ -14,7 +14,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.utility.synchronisation.SynchronizedObservableMap;
+import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
 
 /**
  * Basic implementation of the {@link BuildWallTheme}.

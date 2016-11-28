@@ -8,6 +8,9 @@
  */
 package uk.dangrew.jtt.synchronisation.time;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,6 +25,7 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.collections.FXCollections;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.synchronisation.time.BuildProgressor;
 import uk.dangrew.jtt.synchronisation.time.JobUpdater;
 
@@ -44,7 +48,7 @@ public class BuildProgressorTest {
       database = Mockito.mock( JenkinsDatabase.class );
       Mockito.when( database.jenkinsJobs() ).thenReturn( FXCollections.observableArrayList() );
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new BuildProgressor( timer, database, interval );
+      systemUnderTest = new BuildProgressor( database, timer, interval );
    }//End Method
    
    @Test public void shouldScheduleTimerTaskOnTimer(){
@@ -72,6 +76,11 @@ public class BuildProgressorTest {
       Mockito.verifyZeroInteractions( database );
       systemUnderTest.poll();
       Mockito.verify( database ).jenkinsJobs();
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWith(){
+      assertThat( systemUnderTest.isAssociatedWith( database ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new JenkinsDatabaseImpl() ), is( false ) );
    }//End Method
    
 }//End Class

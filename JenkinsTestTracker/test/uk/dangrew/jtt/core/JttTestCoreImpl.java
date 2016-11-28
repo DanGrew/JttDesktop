@@ -38,8 +38,8 @@ public class JttTestCoreImpl extends JenkinsTestTrackerCoreImpl {
     */
    @Override public void initialiseTimeKeepers() {
       simulationClock = Mockito.mock( Clock.class );
-      TimeKeeper jobUpdater = new JobUpdater( getJenkinsProcessing() );
-      TimeKeeper buildProgressor = new BuildProgressor( getJenkinsDatabase(), simulationClock );
+      TimeKeeper jobUpdater = new JobUpdater( getJenkinsProcessing(), null, null );
+      TimeKeeper buildProgressor = new BuildProgressor( getJenkinsDatabase(), null, simulationClock, null );
       setTimeKeepers( jobUpdater, buildProgressor );
    }//End Method
    

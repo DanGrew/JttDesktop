@@ -8,6 +8,9 @@
  */
 package uk.dangrew.jtt.synchronisation.model;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,23 +42,23 @@ public class TimeKeeperTest {
    @Before public void initialiseSystemUnderTest(){
       interval = 1000l;
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new TimeKeeper( timer, runnable, interval );
+      systemUnderTest = new TimeKeeper( runnable, timer, interval );
    }//End Method
    
-   @Test( expected = IllegalArgumentException.class ) public void constructorShouldRejectNullTimer(){
-      new TimeKeeper( null, runnable, interval );
+   @Test public void constructorShouldAcceptNullTimer(){
+      new TimeKeeper( runnable, null, interval );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void constructorShouldRejectNullRunnable(){
-      new TimeKeeper( timer, null, interval );
+      new TimeKeeper( null, timer, interval );
    }//End Method
    
-   @Test( expected = IllegalArgumentException.class ) public void constructorShouldRejectNullRunnableIndependently(){
-      new TimeKeeper( null );
+   @Test( expected = IllegalArgumentException.class ) public void constructorShouldRejectNullIntervalWithTimer(){
+      new TimeKeeper( runnable, timer, null );
    }//End Method
    
-   @Test( expected = IllegalArgumentException.class ) public void constructorShouldRejectNullInterval(){
-      new TimeKeeper( timer, runnable, null );
+   @Test public void constructorShouldAcceptNullIntervalWithNullTimer(){
+      new TimeKeeper( runnable, null, null );
    }//End Method
    
    @Test public void shouldScheduleTimerTaskOnTimer(){
@@ -90,7 +93,11 @@ public class TimeKeeperTest {
    }//End Method
    
    @Test public void shouldNotHaveTimer(){
-      Assert.assertFalse( new TimeKeeper( Mockito.mock( Runnable.class ) ).hasTimer() );
+      Assert.assertFalse( new TimeKeeper( Mockito.mock( Runnable.class ), null, null ).hasTimer() );
+   }//End Method
+   
+   @Test public void shouldProvideInterval(){
+      assertThat( systemUnderTest.getInterval(), is( interval ) );
    }//End Method
    
 }//End Class

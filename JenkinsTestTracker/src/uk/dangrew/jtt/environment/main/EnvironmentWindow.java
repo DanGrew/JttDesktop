@@ -27,24 +27,30 @@ public class EnvironmentWindow extends BorderPane {
    static final String NEW_VERSIONS_MESSAGE = "New versions of JTT are available. Click here to install...";
    
    private final CenterScreenWrapper centerWrapper;
-   private final SystemConfiguration configuration;
    private final PreferenceController preferenceOpener;
    private final EnvironmentMenuBar menuBar;
    
    /**
     * Constructs a new {@link EnvironmentWindow}.
-    * @param database the {@link JenkinsDatabase} used for launching the relevant system.
-    * @param digest the {@link DigestViewer} for the system.
+    * @param configuration the {@link SystemConfiguration}.
     */
-   public EnvironmentWindow( SystemConfiguration configuration, JenkinsDatabase database, DigestViewer digest ) {
-      this.configuration = configuration;
+   public EnvironmentWindow( SystemConfiguration configuration ) {
+      this( new CenterScreenWrapper(), configuration );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link EnvironmentWindow}.
+    * @param wrapper the {@link CenterScreenWrapper}.
+    * @param configuration the {@link SystemConfiguration}.
+    */
+   EnvironmentWindow( CenterScreenWrapper wrapper, SystemConfiguration configuration ) {
       this.preferenceOpener = new PreferenceController( configuration );
       
       this.menuBar = new EnvironmentMenuBar();
-      setTop( menuBar );
-      centerWrapper = new CenterScreenWrapper( new LaunchOptions( this, configuration, database, digest ) );
+      this.setTop( menuBar );
+      this.centerWrapper = wrapper;
       
-      setCenter( centerWrapper );
+      this.setCenter( centerWrapper );
    }//End Constructor
    
    /**

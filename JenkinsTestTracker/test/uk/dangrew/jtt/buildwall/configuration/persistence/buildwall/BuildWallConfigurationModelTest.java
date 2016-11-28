@@ -29,7 +29,6 @@ import org.junit.Test;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationModel;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
@@ -38,8 +37,8 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
-import uk.dangrew.jtt.utility.TestCommon;
 import uk.dangrew.jtt.utility.conversion.ColorConverter;
+import uk.dangrew.sd.utility.TestCommon;
 
 /**
  * {@link BuildWallConfigurationModel} test.

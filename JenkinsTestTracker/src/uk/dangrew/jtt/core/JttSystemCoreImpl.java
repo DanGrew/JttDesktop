@@ -32,8 +32,8 @@ public class JttSystemCoreImpl extends JenkinsTestTrackerCoreImpl {
     * {@inheritDoc}
     */
    @Override public void initialiseTimeKeepers() {
-      TimeKeeper jobUpdater = new JobUpdater( new Timer(), getJenkinsProcessing(), 5000l );
-      TimeKeeper buildProgressor = new BuildProgressor( new Timer(), getJenkinsDatabase(), 1000l );
+      TimeKeeper jobUpdater = new JobUpdater( getJenkinsProcessing(), new Timer(), 5000l );
+      TimeKeeper buildProgressor = new BuildProgressor( getJenkinsDatabase(), new Timer(), 1000l );
       setTimeKeepers( jobUpdater, buildProgressor );
    }//End Method
 

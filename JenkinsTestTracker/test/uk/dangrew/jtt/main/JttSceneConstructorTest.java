@@ -60,6 +60,7 @@ public class JttSceneConstructorTest {
 
       assertThat( scene.getRoot(), instanceOf( EnvironmentWindow.class ) );
       assertThat( scene.getAccelerators().isEmpty(), is( true ) );
+      assertThat( systemUnderTest.initializer(), is( notNullValue() ) );
    }// End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowRecallOfConstruction(){
@@ -77,5 +78,5 @@ public class JttSceneConstructorTest {
                systemUnderTest.configuration().getRightConfiguration() 
       ), is( true ) );
    }//End Method
-
+   
 }//End Class

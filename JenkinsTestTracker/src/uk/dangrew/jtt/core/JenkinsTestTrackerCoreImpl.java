@@ -51,7 +51,9 @@ public abstract class JenkinsTestTrackerCoreImpl {
     * @param buildProgressor the {@link TimeKeeper} for the {@link BuildProgressor}.
     */
    protected void setTimeKeepers( TimeKeeper jobUpdater, TimeKeeper buildProgressor ) {
-      if ( this.jobUpdater != null || this.buildProgressor != null ) throw new IllegalArgumentException( "Already initialised." );
+      if ( this.jobUpdater != null || this.buildProgressor != null ) {
+         throw new IllegalArgumentException( "Already initialised." );
+      }
       
       this.jobUpdater = jobUpdater;
       this.buildProgressor = buildProgressor;

@@ -79,7 +79,7 @@ public class JttCoreJobUpdatingTest {
          
       } ).start();
       
-      new BuildProgressor( new Timer(), core.getJenkinsDatabase(), 500l );
+      new BuildProgressor( core.getJenkinsDatabase(), new Timer(), 500l );
       JavaFxInitializer.launchInWindow( () -> { return new BuildWallDisplayImpl( core.getJenkinsDatabase() ); } );
       Thread.sleep( 100000 );
    }//End Method
