@@ -1,3 +1,8 @@
+Release, "1.5.184"
+Date, "(Nov 28, 2016 10:59:50 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.184/JenkinsTestTracker-1.5.184-runnable.jar"
+Description, "Brand new configuration for themes - No support for saving or applying yet, demonstration version for early feedback. Accessible through Preferences > Themes. Resolved issue where build wall launches before database is ready resulting in multiple notifications and redrawing of the build wall. A progress bar is now shown while initializing and once complete the launch options are shown. This results in the build wall being drawn once, and thus appearing ready."
+
 Release, "1.5.172"
 Date, "(Nov 17, 2016 10:58:32 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.172/JenkinsTestTracker-1.5.172-runnable.jar"
