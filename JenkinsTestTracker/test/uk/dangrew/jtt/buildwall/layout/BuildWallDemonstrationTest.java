@@ -10,15 +10,18 @@ package uk.dangrew.jtt.buildwall.layout;
 
 import static org.mockito.Mockito.mock;
 
+import java.util.Timer;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import uk.dangrew.jtt.api.handling.JenkinsFetcherImpl;
+import uk.dangrew.jtt.api.handling.JenkinsProcessingImpl;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.panel.JobBuildSimulator;
-import uk.dangrew.jtt.core.JttTestCoreImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
@@ -26,7 +29,9 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
+import uk.dangrew.jtt.synchronisation.time.JobUpdater;
 
 /**
  * Provides a demonstration of the {@link BuildWallDisplayImpl} showing various
@@ -34,7 +39,6 @@ import uk.dangrew.jtt.styling.SystemStyling;
  */
 public class BuildWallDemonstrationTest {
    
-   private JttTestCoreImpl jttCore;
    private JenkinsDatabase database;
    private JenkinsJob coreProject;
    private JenkinsJob graphicalProject;
@@ -46,8 +50,10 @@ public class BuildWallDemonstrationTest {
    private JenkinsJob invisibleEventSystem;
 
    @Before public void initialiseSystemUnderTest(){
-      jttCore = new JttTestCoreImpl( mock( ExternalApi.class ) );
-      database = jttCore.getJenkinsDatabase();
+      database = new JenkinsDatabaseImpl();
+      new JobUpdater( new JenkinsProcessingImpl( 
+               database, new JenkinsFetcherImpl( database, mock( ExternalApi.class ) ) 
+      ), new Timer(), 5000L );
       
       coreProject = new JenkinsJobImpl( "Core Project" );
       graphicalProject = new JenkinsJobImpl( "Graphics" );
