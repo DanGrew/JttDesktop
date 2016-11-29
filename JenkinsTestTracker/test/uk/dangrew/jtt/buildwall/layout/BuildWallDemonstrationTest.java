@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import uk.dangrew.jtt.api.handling.JenkinsFetcherImpl;
 import uk.dangrew.jtt.api.handling.JenkinsProcessingImpl;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
@@ -52,7 +51,7 @@ public class BuildWallDemonstrationTest {
    @Before public void initialiseSystemUnderTest(){
       database = new JenkinsDatabaseImpl();
       new JobUpdater( new JenkinsProcessingImpl( 
-               database, new JenkinsFetcherImpl( database, mock( ExternalApi.class ) ) 
+               database, mock( ExternalApi.class ) 
       ), new Timer(), 5000L );
       
       coreProject = new JenkinsJobImpl( "Core Project" );

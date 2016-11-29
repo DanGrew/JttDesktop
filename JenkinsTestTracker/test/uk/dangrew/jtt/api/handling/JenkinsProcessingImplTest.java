@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.util.Pair;
+import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -41,6 +42,7 @@ public class JenkinsProcessingImplTest {
    private JenkinsJob secondJob;
    private JenkinsJob thirdJob;
    
+   @Mock private ExternalApi api;
    @Mock private JenkinsFetcher fetcher;
    @Mock private JenkinsProcessingDigest digest;
    private JenkinsProcessingImpl systemUnderTest;
@@ -60,7 +62,7 @@ public class JenkinsProcessingImplTest {
    }//End Method
 
    @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullDatabase(){
-      new JenkinsProcessingImpl( null, fetcher );
+      new JenkinsProcessingImpl( null, api );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullFetcher(){

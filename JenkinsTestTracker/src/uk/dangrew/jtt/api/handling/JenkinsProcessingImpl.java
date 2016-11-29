@@ -11,6 +11,7 @@ package uk.dangrew.jtt.api.handling;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
@@ -28,10 +29,10 @@ public class JenkinsProcessingImpl implements JenkinsProcessing {
    /**
     * Constructs a new {@link JenkinsProcessing}.
     * @param database the {@link JenkinsDatabase} associated
-    * @param fetcher the {@link JenkinsFetcher} to retrieve information for jenkins.
+    * @param api the {@link ExternalApi} for communicating with.
     */
-   public JenkinsProcessingImpl( JenkinsDatabase database, JenkinsFetcher fetcher ) {
-      this( database, fetcher, new JenkinsProcessingDigest() );
+   public JenkinsProcessingImpl( JenkinsDatabase database, ExternalApi api ) {
+      this( database, new JenkinsFetcherImpl( database, api ), new JenkinsProcessingDigest() );
    }//End Constructor
    
    /**

@@ -13,7 +13,6 @@ import java.util.function.Function;
 
 import com.sun.javafx.application.PlatformImpl;
 
-import uk.dangrew.jtt.api.handling.JenkinsFetcherImpl;
 import uk.dangrew.jtt.api.handling.JenkinsProcessing;
 import uk.dangrew.jtt.api.handling.JenkinsProcessingImpl;
 import uk.dangrew.jtt.api.sources.ExternalApi;
@@ -67,7 +66,7 @@ public class JttInitializer {
    ) {
       this( 
                r -> new Thread( r ), 
-               new JenkinsProcessingImpl( database, new JenkinsFetcherImpl( database, api ) ),
+               new JenkinsProcessingImpl( database, api ),
                database, window, configuration, viewer 
       );
    }//End Constructor

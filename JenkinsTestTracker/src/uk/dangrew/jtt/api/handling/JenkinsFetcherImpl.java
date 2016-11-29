@@ -25,7 +25,7 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
  * {@link JenkinsFetcherImpl} provides an implementation of the {@link JenkinsFetcher} interface
  * for updating {@link JenkinsJob}s.
  */
-public class JenkinsFetcherImpl implements JenkinsFetcher {
+class JenkinsFetcherImpl implements JenkinsFetcher {
 
    private final ExternalApi externalApi;
    private final JsonJobImporter jobsImporter;
