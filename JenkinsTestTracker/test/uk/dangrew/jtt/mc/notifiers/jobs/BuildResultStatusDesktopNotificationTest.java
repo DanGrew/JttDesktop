@@ -76,7 +76,7 @@ public class BuildResultStatusDesktopNotificationTest {
       ArgumentCaptor< ImageView > captor = ArgumentCaptor.forClass( ImageView.class );
       systemUnderTest.showNotification( notification, notifications, EXPECTED_DURATION );
       verify( notifications ).graphic( captor.capture() );
-      assertThat( captor.getValue().getImage(), is( BuildResultStatusChange.ActionRequired.constructImage().getImage() ) );
+      assertThat( captor.getValue().getImage(), is( BuildResultStatusHighLevelChange.ActionRequired.constructImage().getImage() ) );
    }//End Method
    
    @Test public void shouldShowOnceConfigured() {

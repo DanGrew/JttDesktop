@@ -18,20 +18,20 @@ import javafx.scene.image.ImageView;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
- * {@link BuildResultStatusChange} test.
+ * {@link BuildResultStatusHighLevelChange} test.
  */
-public class BuildResultStatusChangeTest {
+public class BuildResultStatusHighLevelChangeTest {
 
    @Test public void shouldMapEnumNameWithValueOf() {
-      TestCommon.assertEnumNameWithValueOf( BuildResultStatusChange.class );
+      TestCommon.assertEnumNameWithValueOf( BuildResultStatusHighLevelChange.class );
    }//End Method 
    
    @Test public void shouldMapToStringWithValueOf() {
-      TestCommon.assertEnumToStringWithValueOf( BuildResultStatusChange.class );
+      TestCommon.assertEnumToStringWithValueOf( BuildResultStatusHighLevelChange.class );
    }//End Method 
    
    @Test public void shouldProvideImageViewWithImage(){
-      for ( BuildResultStatusChange change : BuildResultStatusChange.values() ) {
+      for ( BuildResultStatusHighLevelChange change : BuildResultStatusHighLevelChange.values() ) {
          ImageView view = change.constructImage();
          assertThat( view, is( notNullValue() ) );
          assertThat( view.getImage(), is( notNullValue() ) );

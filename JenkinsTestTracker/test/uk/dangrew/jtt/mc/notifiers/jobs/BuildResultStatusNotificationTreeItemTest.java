@@ -67,7 +67,7 @@ public class BuildResultStatusNotificationTreeItemTest {
       
       when( changeIdentifier.identifyChangeType( 
                notification.getPreviousBuildResultStatus(), notification.getNewBuildResultStatus() 
-      ) ).thenReturn( BuildResultStatusChange.Passed );
+      ) ).thenReturn( BuildResultStatusHighLevelChange.Passed );
       when( images.constuctPeopleImage() ).thenReturn( PEOPLE_IMAGE );
       when( images.constuctCloseImage() ).thenReturn( CLOSE_IMAGE );
       
@@ -113,7 +113,7 @@ public class BuildResultStatusNotificationTreeItemTest {
    
    @Test public void shouldProvideStatus(){
       ImageView view = ( ImageView ) systemUnderTest.status();
-      assertThat( view.getImage(), is( BuildResultStatusChange.Passed.constructImage().getImage() ) );
+      assertThat( view.getImage(), is( BuildResultStatusHighLevelChange.Passed.constructImage().getImage() ) );
       assertThat( view.getFitWidth(), is( BuildResultStatusNotificationTreeItem.PREFERRED_IMAGE_WIDTH ) );
       assertThat( view.getFitHeight(), is( BuildResultStatusNotificationTreeItem.PREFERRED_IMAGE_HEIGHT ) );
    }//End Method

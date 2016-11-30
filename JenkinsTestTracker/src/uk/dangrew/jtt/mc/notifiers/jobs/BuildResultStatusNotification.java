@@ -88,7 +88,7 @@ public class BuildResultStatusNotification implements Notification {
     * Method to identify the {@link BuildResultStatusChange} for this {@link Notification}.
     * @return the {@link BuildResultStatusChange} identified.
     */
-   public BuildResultStatusChange identifyChange(){
+   public BuildResultStatusHighLevelChange identifyChange(){
       return changeIdentifier.identifyChangeType( getPreviousBuildResultStatus(), getNewBuildResultStatus() );
    }//End Method
    

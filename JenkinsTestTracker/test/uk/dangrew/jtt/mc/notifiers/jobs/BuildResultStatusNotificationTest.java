@@ -74,17 +74,17 @@ public class BuildResultStatusNotificationTest {
    }//End Method
    
    @Test public void shouldFormatBuildResultStatusChange(){
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.Unchanged );
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusHighLevelChange.Unchanged );
       assertThat( 
                systemUnderTest.formatBuildResultStatusChange( BuildResultStatus.FAILURE, BuildResultStatus.FAILURE ), 
                is( "Build has remained at FAILURE" )
       );
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.ActionRequired );
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusHighLevelChange.ActionRequired );
       assertThat( 
                systemUnderTest.formatBuildResultStatusChange( BuildResultStatus.SUCCESS, BuildResultStatus.FAILURE ), 
                is( "Build has only achieved FAILURE when it was SUCCESS and may require action" )
       );
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.Passed );
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusHighLevelChange.Passed );
       assertThat( 
                systemUnderTest.formatBuildResultStatusChange( BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS ), 
                is( "Build has achieved SUCCESS from FAILURE" )
@@ -98,14 +98,14 @@ public class BuildResultStatusNotificationTest {
    }//End Method
    
    @Test public void shouldProvideChangeViaChangeIdentifier(){
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.ActionRequired );
-      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusChange.ActionRequired ) );
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusHighLevelChange.ActionRequired );
+      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusHighLevelChange.ActionRequired ) );
       
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.Passed );
-      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusChange.Passed ) );
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusHighLevelChange.Passed );
+      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusHighLevelChange.Passed ) );
       
-      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusChange.Unchanged );
-      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusChange.Unchanged ) );
+      when( changeIdentifier.identifyChangeType( Mockito.any(), Mockito.any() ) ).thenReturn( BuildResultStatusHighLevelChange.Unchanged );
+      assertThat( systemUnderTest.identifyChange(), is( BuildResultStatusHighLevelChange.Unchanged ) );
    }//End Method
    
    @Test public void shouldShowDesktopNotificationWithNewNotifications(){

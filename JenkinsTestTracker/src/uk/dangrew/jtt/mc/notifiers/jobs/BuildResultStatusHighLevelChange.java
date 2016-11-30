@@ -15,9 +15,9 @@ import javafx.scene.image.ImageView;
 import uk.dangrew.jtt.mc.resources.ManagementConsoleImages;
 
 /**
- * The {@link BuildResultStatusChange} provides the different levels of change.
+ * The {@link BuildResultStatusHighLevelChange} provides the different levels of change.
  */
-public enum BuildResultStatusChange {
+public enum BuildResultStatusHighLevelChange {
 
    Passed( images -> images.constuctPassedImage() ),
    ActionRequired( images -> images.constuctActionImage() ),
@@ -27,10 +27,10 @@ public enum BuildResultStatusChange {
    private final Function< ManagementConsoleImages, Image > imageSupplier;
    
    /**
-    * Constructs a new {@link BuildResultStatusChange}.
+    * Constructs a new {@link BuildResultStatusHighLevelChange}.
     * @param imageSupplier the {@link Function} supplying the {@link Image}.
     */
-   private BuildResultStatusChange( Function< ManagementConsoleImages, Image > imageSupplier ) {
+   private BuildResultStatusHighLevelChange( Function< ManagementConsoleImages, Image > imageSupplier ) {
       this.imageSupplier = imageSupplier;
    }//End Constructor
    
