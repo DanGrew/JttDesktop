@@ -35,7 +35,7 @@ public class SoundPlayerTest {
    @Before public void initialiseSystemUnderTest() {
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      when( converter.apply( Mockito.anyString() ) ).thenReturn( player );
+      when( converter.convert( Mockito.anyString() ) ).thenReturn( player );
       
       events = new SoundTriggerEvent();
       events.clearAllSubscriptions();
@@ -46,7 +46,7 @@ public class SoundPlayerTest {
    @Ignore
    @Test public void manual() throws InterruptedException {
       Thread.sleep( 1000 );
-      new StringMediaConverter().apply( "/Users/Amelia/Desktop/Sad_Trombone-Joe_Lamb-665429450.wav" ).friendly_play();
+      new StringMediaConverter().convert( "/Users/Amelia/Desktop/Sad_Trombone.wav" ).friendly_play();
       Thread.sleep( 1000000 );
    }//End Method
    
@@ -57,8 +57,8 @@ public class SoundPlayerTest {
    @Test public void shouldPlayMediaPlayerWhenEventIsReceived(){
       BuildResultStatusChange change = new BuildResultStatusChange( BuildResultStatus.ABORTED, BuildResultStatus.FAILURE );
       String fileName = "anything";
-      when( converter.apply( Mockito.anyString() ) ).thenReturn( null );
-      when( converter.apply( fileName ) ).thenReturn( player );
+      when( converter.convert( Mockito.anyString() ) ).thenReturn( null );
+      when( converter.convert( fileName ) ).thenReturn( player );
       
       configuration.statusChangeSounds().put( change, fileName );
       events.fire( new Event<>( change ) );
@@ -69,7 +69,7 @@ public class SoundPlayerTest {
    @Test public void shouldNotPlaySoundWhenNoMedia(){
       BuildResultStatusChange change = new BuildResultStatusChange( BuildResultStatus.ABORTED, BuildResultStatus.FAILURE );
       String fileName = "anything";
-      when( converter.apply( Mockito.anyString() ) ).thenReturn( null );
+      when( converter.convert( Mockito.anyString() ) ).thenReturn( null );
       
       configuration.statusChangeSounds().put( change, fileName );
       events.fire( new Event<>( change ) );

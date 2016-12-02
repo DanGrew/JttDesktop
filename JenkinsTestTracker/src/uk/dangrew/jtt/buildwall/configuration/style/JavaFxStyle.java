@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.buildwall.configuration.style;
 
+import java.io.File;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -29,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import uk.dangrew.jtt.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.javafx.spinner.DefensiveDoubleSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DoublePropertySpinner;
@@ -45,6 +48,8 @@ public class JavaFxStyle {
    static final double LABEL_PERCENTAGE_WIDTH = 40;
    static final double CONTROLS_PERCENTAGE_WIDTH = 60;
    static final double PADDING = 10;
+   
+   static final File USER_HOME_FILE = new File( System.getProperty( "user.home" ) );
    
    /**
     * Method to get the column percentage for half of the width.
@@ -234,6 +239,16 @@ public class JavaFxStyle {
     */
    public void configureHalfWidthConstraints( GridPane pane ) {
       configureConstraintsForColumnPercentages( pane, HALF_WIDTH_COLUMN, HALF_WIDTH_COLUMN );
+   }//End Method
+   
+   /**
+    * Method to configure the {@link FriendlyFileChooser}.
+    * @param fileChooser the {@link FriendlyFileChooser} to configure.
+    * @param title the title to set.
+    */
+   public void configureFileChooser( FriendlyFileChooser fileChooser, String title ) {
+      fileChooser.setTitle( title );
+      fileChooser.setInitialDirectory( USER_HOME_FILE );
    }//End Method
    
    /**

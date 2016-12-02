@@ -48,7 +48,7 @@ public class SoundPlayer {
     * @param event the {@link Event} with the {@link BuildResultStatusChange}.
     */
    private void playSoundFromConfiguration( Event< BuildResultStatusChange > event ){
-      FriendlyMediaPlayer player = converter.apply( configuration.statusChangeSounds().get( event.getValue() ) );
+      FriendlyMediaPlayer player = converter.convert( configuration.statusChangeSounds().get( event.getValue() ) );
       if ( player != null ) {
          player.friendly_play();
       }

@@ -9,7 +9,6 @@
 package uk.dangrew.jtt.buildwall.effects.sound;
 
 import java.io.File;
-import java.util.function.Function;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
@@ -19,12 +18,14 @@ import uk.dangrew.jtt.friendly.javafx.FriendlyMediaPlayer;
  * The {@link StringMediaConverter} is responsible for taking a {@link String} file name
  * and turning it into a {@link javafx.scene.media.MediaPlayer}.
  */
-public class StringMediaConverter implements Function< String, FriendlyMediaPlayer >{
+public class StringMediaConverter {
 
    /**
-    * {@inheritDoc}
+    * Method to convert the given media file into a {@link FriendlyMediaPlayer}.
+    * @param mediaFile the path to the media.
+    * @return the {@link FriendlyMediaPlayer} or null if invalid.
     */
-   @Override public FriendlyMediaPlayer apply( String mediaFile ) {
+   public FriendlyMediaPlayer convert( String mediaFile ) {
       Media media = extractMedia( mediaFile );
       if ( media == null ) {
          return null;
@@ -49,5 +50,14 @@ public class StringMediaConverter implements Function< String, FriendlyMediaPlay
          return null;
       }
    }//End Method
-
+   
+   /**
+    * Method to determine whether the given media file is valid media.
+    * @param mediaFile the media file in question.
+    * @return true if valid.
+    */
+   public boolean isValidMedia( String mediaFile ) {
+      return extractMedia( mediaFile ) != null;
+   }//End Method
+   
 }//End Class

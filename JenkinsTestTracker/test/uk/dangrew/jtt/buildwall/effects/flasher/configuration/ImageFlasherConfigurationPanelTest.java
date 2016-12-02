@@ -25,6 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,11 +37,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser.ExtensionFilter;
+import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyleTest;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
-import uk.dangrew.jtt.buildwall.effects.flasher.configuration.ImageFlasherConfigurationPanel;
 import uk.dangrew.jtt.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -52,7 +53,10 @@ import uk.dangrew.jtt.utility.TestCommon;
  */
 public class ImageFlasherConfigurationPanelTest {
    
+   private static final String TEST_FLASHER_TITLE = "Test Flasher";
+   
    private final File ALERT_IMAGE_FILE = new File( ImageFlasherImplTest.class.getResource( "alert-image.png" ).getFile() );
+   @Spy private JavaFxStyle styling;
    @Mock private FriendlyFileChooser fileChooser; 
    private ObservableList< ExtensionFilter > extensionFilters;
    private ImageFlasherProperties properties;
@@ -68,7 +72,7 @@ public class ImageFlasherConfigurationPanelTest {
       when( fileChooser.getExtensionFilters() ).thenReturn( extensionFilters );
       
       properties = new ImageFlasherPropertiesImpl();
-      systemUnderTest = new ImageFlasherConfigurationPanel( "Test Flasher", properties, fileChooser );
+      systemUnderTest = new ImageFlasherConfigurationPanel( styling, TEST_FLASHER_TITLE, properties, fileChooser );
    }//End Method
 
    @Ignore
@@ -76,7 +80,7 @@ public class ImageFlasherConfigurationPanelTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       JavaFxInitializer.launchInWindow( () -> {
-         systemUnderTest = new ImageFlasherConfigurationPanel( "Test Flasher", properties );
+         systemUnderTest = new ImageFlasherConfigurationPanel( TEST_FLASHER_TITLE, properties );
          return systemUnderTest;
       } );
       
@@ -105,8 +109,7 @@ public class ImageFlasherConfigurationPanelTest {
    }//End Method
    
    @Test public void fileChooserShouldBeConfiguredForImageSelection() {
-      verify( fileChooser ).setTitle( ImageFlasherConfigurationPanel.IMAGE_CHOOSER_TITLE );
-      verify( fileChooser ).setInitialDirectory( ImageFlasherConfigurationPanel.USER_HOME_FILE );
+      verify( styling ).configureFileChooser( fileChooser, ImageFlasherConfigurationPanel.IMAGE_CHOOSER_TITLE );
       assertThat( extensionFilters, hasSize( 1 ) );
       assertThat( extensionFilters.get( 0 ), is( ImageFlasherConfigurationPanel.IMAGE_FILTER ) );
    }//End Method

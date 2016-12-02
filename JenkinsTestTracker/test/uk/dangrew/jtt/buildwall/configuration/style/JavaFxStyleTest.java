@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -40,6 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
+import uk.dangrew.jtt.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.javafx.spinner.DefensiveDoubleSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
@@ -265,6 +267,13 @@ public class JavaFxStyleTest {
       assertThat( region.getInsets().getTop(), is( JavaFxStyle.PADDING ) );
       assertThat( region.getInsets().getLeft(), is( JavaFxStyle.PADDING ) );
       assertThat( region.getInsets().getRight(), is( JavaFxStyle.PADDING ) );
+   }//End Method
+   
+   @Test public void shouldConfigureFriendlyFileChooser(){
+      FriendlyFileChooser chooser = mock( FriendlyFileChooser.class );
+      systemUnderTest.configureFileChooser( chooser, "anything" );
+      verify( chooser ).setTitle( "anything" );
+      verify( chooser ).setInitialDirectory( JavaFxStyle.USER_HOME_FILE );
    }//End Method
 
 }//End Class

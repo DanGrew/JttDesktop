@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.scene.media.MediaPlayer;
+import uk.dangrew.jtt.friendly.javafx.FriendlyMediaPlayer;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 
 public class StringMediaConverterTest {
@@ -30,25 +31,30 @@ public class StringMediaConverterTest {
    }//End Method
 
    @Test public void shouldHandleNullValue() {
-      assertThat( systemUnderTest.apply( null ), is( nullValue() ) );
+      assertThat( systemUnderTest.convert( null ), is( nullValue() ) );
+      assertThat( systemUnderTest.isValidMedia( null ), is( false ) );
    }//End Method
    
    @Test public void shouldHandleEmptyString() {
-      assertThat( systemUnderTest.apply( "    " ), is( nullValue() ) );
+      assertThat( systemUnderTest.convert( "    " ), is( nullValue() ) );
+      assertThat( systemUnderTest.isValidMedia( "    " ), is( false ) );
    }//End Method
 
    @Test public void shouldHandleMissingMediaFile() {
-      assertThat( systemUnderTest.apply( "missing-media-file.txt" ), is( nullValue() ) );
+      assertThat( systemUnderTest.convert( "missing-media-file.txt" ), is( nullValue() ) );
+      assertThat( systemUnderTest.isValidMedia( "missing-media-file.txt" ), is( false ) );
    }//End Method
    
    @Test public void shouldHandleInvalidMediaFile() {
       String fileName = getClass().getResource( "invalid-media-file.txt" ).getPath();
-      assertThat( systemUnderTest.apply( fileName ), is( nullValue() ) );
+      assertThat( systemUnderTest.convert( fileName ), is( nullValue() ) );
+      assertThat( systemUnderTest.isValidMedia( fileName ), is( false ) );
    }//End Method
    
    @Test public void shouldHandleValidMediaFile() {
       String fileName = getClass().getResource( "valid-media-file.m4a" ).getPath();
-      assertThat( systemUnderTest.apply( fileName ), is( notNullValue() ) );
-      assertThat( systemUnderTest.apply( fileName ), is( instanceOf( MediaPlayer.class ) ) );
+      assertThat( systemUnderTest.convert( fileName ), is( notNullValue() ) );
+      assertThat( systemUnderTest.convert( fileName ), is( instanceOf( FriendlyMediaPlayer.class ) ) );
+      assertThat( systemUnderTest.isValidMedia( fileName ), is( true ) );
    }//End Method
 }//End Class

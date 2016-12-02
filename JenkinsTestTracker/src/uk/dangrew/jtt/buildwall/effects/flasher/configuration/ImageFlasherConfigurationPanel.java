@@ -41,7 +41,6 @@ public class ImageFlasherConfigurationPanel extends GridPane {
    static final double IMAGE_BUTTON_GRAPHIC_WIDTH = 100.0;
    static final String IMAGE_CHOOSER_TITLE = "Select Image";
    
-   static final File USER_HOME_FILE = new File( System.getProperty( "user.home" ) );
    static final ExtensionFilter IMAGE_FILTER = new ExtensionFilter( "images only", "*.png", "*.jpg" );
    
    static final String IMAGE_LABEL_TEXT = "Choose Image";
@@ -79,19 +78,20 @@ public class ImageFlasherConfigurationPanel extends GridPane {
     * @param configuration the {@link ImageFlasherProperties} to configure.
     */
    public ImageFlasherConfigurationPanel( String title, ImageFlasherProperties properties ) {
-      this( title, properties, new FriendlyFileChooser() );
+      this( new JavaFxStyle(), title, properties, new FriendlyFileChooser() );
    }//End Constructor
    
    /**
     * Constructs a new {@link ImageFlasherConfigurationPanel}.
+    * @param styling the {@link JavaFxStyle}.
     * @param title the title for the configuration pane.
     * @param configuration the {@link ImageFlasherProperties} to configure.
     * @param fileChooser the {@link FriendlyFileChooser} to use.
     */
-   ImageFlasherConfigurationPanel( String title, ImageFlasherProperties properties, FriendlyFileChooser fileChooser ) {
+   ImageFlasherConfigurationPanel( JavaFxStyle styling, String title, ImageFlasherProperties properties, FriendlyFileChooser fileChooser ) {
       this.properties = properties;
       this.imageChooser = fileChooser;
-      this.styling = new JavaFxStyle();
+      this.styling = styling;
       
       provideTitle( title );
       provideImageConfiguration();
@@ -121,9 +121,8 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       imageLabel = styling.createBoldLabel( IMAGE_LABEL_TEXT );
       add( imageLabel, 0, 1 );
       
-      imageChooser.setTitle( IMAGE_CHOOSER_TITLE );
-      imageChooser.setInitialDirectory( USER_HOME_FILE );
-      imageChooser.getExtensionFilters().add( IMAGE_FILTER ); 
+      styling.configureFileChooser( imageChooser, IMAGE_CHOOSER_TITLE );
+      imageChooser.getExtensionFilters().add( IMAGE_FILTER );
       
       imageButtonGraphic = new ImageView();
       imageButtonGraphic.setFitWidth( IMAGE_BUTTON_GRAPHIC_WIDTH );
