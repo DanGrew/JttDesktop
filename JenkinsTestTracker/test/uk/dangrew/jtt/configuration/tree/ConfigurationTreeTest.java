@@ -32,6 +32,7 @@ import uk.dangrew.jtt.buildwall.configuration.tree.item.DualBuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DualPropertiesTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
+import uk.dangrew.jtt.buildwall.configuration.tree.item.SoundsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.ThemesTreeItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
@@ -51,8 +52,8 @@ import uk.dangrew.jtt.mc.configuration.tree.item.UserAssignmentsRootItem;
  */
 public class ConfigurationTreeTest {
 
-   private static final int LEFT_ROOT_INDEX = 2;
-   private static final int RIGHT_ROOT_INDEX = 3;
+   private static final int LEFT_ROOT_INDEX = 3;
+   private static final int RIGHT_ROOT_INDEX = 4;
    
    @Mock private PreferenceController controller;
    private SystemConfiguration systemConfiguration;
@@ -148,6 +149,15 @@ public class ConfigurationTreeTest {
       assertThat( themes, is( systemUnderTest.themes() ) );
       
       themes.getValue().handleBeingSelected();
+      verify( controller ).displayContent( Mockito.any(), Mockito.any() );
+   }//End Method
+   
+   @Test public void soundsShouldBePresentAndAssociated(){
+      TreeItem< ConfigurationItem > sounds = systemUnderTest.dualWallRoot().getChildren().get( 2 );
+      assertThat( sounds.getValue(), is( instanceOf( SoundsTreeItem.class ) ) );
+      assertThat( sounds, is( systemUnderTest.sounds() ) );
+      
+      sounds.getValue().handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
    }//End Method
    
@@ -257,6 +267,13 @@ public class ConfigurationTreeTest {
       systemUnderTest.select( ConfigurationTreeItems.Themes );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.themes() ) );
       assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.Themes ), is( true ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( false ) );
+   }//End Method   
+   
+   @Test public void shouldSelectSounds(){
+      systemUnderTest.select( ConfigurationTreeItems.Sounds );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.sounds() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.Sounds ), is( true ) );
       assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( false ) );
    }//End Method   
    

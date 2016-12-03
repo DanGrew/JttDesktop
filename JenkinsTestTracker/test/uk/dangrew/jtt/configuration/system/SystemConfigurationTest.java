@@ -30,6 +30,7 @@ public class SystemConfigurationTest {
       assertThat( systemUnderTest.getDualConfiguration(), is( notNullValue() ) );
       assertThat( systemUnderTest.getLeftConfiguration(), is( notNullValue() ) );
       assertThat( systemUnderTest.getRightConfiguration(), is( notNullValue() ) );
+      assertThat( systemUnderTest.getSoundConfiguration(), is( notNullValue() ) );
    }//End Method
 
 }//End Class

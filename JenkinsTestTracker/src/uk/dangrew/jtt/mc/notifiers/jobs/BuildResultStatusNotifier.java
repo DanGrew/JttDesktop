@@ -8,8 +8,13 @@
  */
 package uk.dangrew.jtt.mc.notifiers.jobs;
 
+import javafx.util.Pair;
+import uk.dangrew.jtt.buildwall.effects.sound.BuildResultStatusChange;
+import uk.dangrew.jtt.buildwall.effects.sound.SoundTriggerEvent;
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.mc.view.tree.NotificationEvent;
+import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
@@ -18,7 +23,8 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
  */
 public class BuildResultStatusNotifier {
 
-   private final NotificationEvent events;
+   private final NotificationEvent notifiations;
+   private final SoundTriggerEvent sounds;
    private final JenkinsDatabase database;
    
    /**
@@ -28,12 +34,22 @@ public class BuildResultStatusNotifier {
    public BuildResultStatusNotifier( JenkinsDatabase database ) {
       this.database = database;
       
-      this.events = new NotificationEvent();
-      this.database.jenkinsJobProperties().addBuildResultStatusListener( 
-               ( job, old, updated ) -> events.fire( 
-                        new Event<>( new BuildResultStatusNotification( job, old.getValue(), updated.getValue() ) ) 
-               ) 
-      );
+      this.notifiations = new NotificationEvent();
+      this.sounds = new SoundTriggerEvent();
+      this.database.jenkinsJobProperties().addBuildResultStatusListener( this::handleStatusChange );
    }//End Constructor
+   
+   /**
+    * Method to handle the change in status.
+    * @param job the {@link JenkinsJob} changed.
+    * @param old the old build number and {@link BuildResultStatus}.
+    * @param updated the updated build number and {@link BuildResultStatus}.
+    */
+   private void handleStatusChange( JenkinsJob job, Pair< Integer, BuildResultStatus > old, Pair< Integer, BuildResultStatus > updated ) {
+      notifiations.fire( 
+            new Event<>( new BuildResultStatusNotification( job, old.getValue(), updated.getValue() ) ) 
+      );
+      sounds.fire( new Event<>( new BuildResultStatusChange( old.getValue(), updated.getValue() ) ) );
+   }//End Method
    
 }//End Class

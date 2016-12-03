@@ -13,6 +13,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
+import uk.dangrew.jtt.buildwall.effects.sound.SoundPlayer;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.mc.NotificationCenter;
@@ -37,6 +38,8 @@ public class LaunchOptions extends VBox {
    
    private final Button buildWallButton;
    private final Button managementConsoleButton;
+   
+   private SoundPlayer soundPlayer;
    
    /**
     * Constructs a new {@link LaunchOptions}.
@@ -79,6 +82,8 @@ public class LaunchOptions extends VBox {
       BorderPane content = new BorderPane( digestWrapper );
       window.setContent( content );
       window.bindDimensions( content );
+      
+      soundPlayer = new SoundPlayer( configuration.getSoundConfiguration() );
    }//End Method
    
    /**
@@ -136,5 +141,9 @@ public class LaunchOptions extends VBox {
    
    NotificationCenter notificationCenter(){
       return notificationCenter;
+   }//End Method
+   
+   SoundPlayer soundPlayer(){
+      return soundPlayer;
    }//End Method
 }//End Class

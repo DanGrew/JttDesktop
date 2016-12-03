@@ -126,4 +126,9 @@ public class SoundConfigurationPanelTest {
       }
    }//End Method
    
+   @Test public void shouldBeAssociatedWithConfiguration(){
+      assertThat( systemUnderTest.isAssociatedWith( configuration ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new SoundConfiguration() ), is( false ) );
+   }//End Method
+   
 }//End Class

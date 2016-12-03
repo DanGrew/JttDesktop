@@ -25,7 +25,9 @@ import uk.dangrew.jtt.buildwall.configuration.tree.item.DualBuildWallRootItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.DualPropertiesTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.JobPolicyTreeItem;
+import uk.dangrew.jtt.buildwall.configuration.tree.item.SoundsTreeItem;
 import uk.dangrew.jtt.buildwall.configuration.tree.item.ThemesTreeItem;
+import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
@@ -47,6 +49,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    private final TreeItem< ConfigurationItem > dualWallProperties;
    private final TreeItem< ConfigurationItem > themes;
+   private final TreeItem< ConfigurationItem > sounds;
    private final TreeItem< ConfigurationItem > dualWallRoot;
    private final TreeItem< ConfigurationItem > leftWallRoot;
    private final TreeItem< ConfigurationItem > rightWallRoot;
@@ -83,6 +86,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       
       this.dualWallProperties = insertDualProperties( dualWallRoot, systemConfiguration.getDualConfiguration() );
       this.themes = insertThemes( dualWallRoot );
+      this.sounds = insertSounds( dualWallRoot, systemConfiguration.getSoundConfiguration() );
       this.leftWallRoot = insertBuildWallConfiguration( dualWallRoot, "Left", systemConfiguration.getLeftConfiguration() );
       this.rightWallRoot = insertBuildWallConfiguration( dualWallRoot, "Right", systemConfiguration.getRightConfiguration() );
       
@@ -108,6 +112,21 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    private TreeItem<ConfigurationItem> insertThemes( TreeItem< ConfigurationItem > root ){
       TreeItem<ConfigurationItem> item = new TreeItem<>(  
                new ThemesTreeItem( controller ) 
+      );
+      item.setExpanded( true );  
+      root.getChildren().add( item );
+      
+      return item;
+   }//End Method
+   
+   /**
+    * Method to insert the {@link SoundsTreeItem} items into the given root.
+    * @param root the {@link TreeItem} root to insert in to.
+    * @return the {@link TreeItem} inserted
+    */
+   private TreeItem<ConfigurationItem> insertSounds( TreeItem< ConfigurationItem > root, SoundConfiguration configuration ){
+      TreeItem<ConfigurationItem> item = new TreeItem<>(  
+               new SoundsTreeItem( configuration, controller ) 
       );
       item.setExpanded( true );  
       root.getChildren().add( item );
@@ -226,6 +245,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       
       itemMapping.put( ConfigurationTreeItems.DualWallProperties, dualWallProperties );
       itemMapping.put( ConfigurationTreeItems.Themes, themes ); 
+      itemMapping.put( ConfigurationTreeItems.Sounds, sounds ); 
       itemMapping.put( ConfigurationTreeItems.DualWallRoot, dualWallRoot );
       itemMapping.put( ConfigurationTreeItems.LeftWallRoot, leftWallRoot );
       itemMapping.put( ConfigurationTreeItems.LeftDimension, leftWallRoot.getChildren().get( 0 ) );
@@ -286,6 +306,10 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    TreeItem< ConfigurationItem > themes(){
       return themes;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > sounds(){
+      return sounds;
    }//End Method
    
    TreeItem< ConfigurationItem > leftWallRoot(){

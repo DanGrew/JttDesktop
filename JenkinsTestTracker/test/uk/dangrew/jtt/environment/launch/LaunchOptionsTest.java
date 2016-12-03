@@ -11,6 +11,7 @@ package uk.dangrew.jtt.environment.launch;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -168,6 +169,17 @@ public class LaunchOptionsTest {
       assertThat( systemUnderTest.isAssociatedWith( mock( EnvironmentWindow.class ) ), is( false ) );
       assertThat( systemUnderTest.isAssociatedWith( new JenkinsDatabaseImpl() ), is( false ) );
       assertThat( systemUnderTest.isAssociatedWith( new SystemConfiguration() ), is( false ) );
+   }//End Method
+   
+   @Test public void shouldHaveSoundPlayerAssociated(){
+      systemUnderTest.buildWallButton().getOnAction().handle( new ActionEvent() );
+      assertThat( systemUnderTest.soundPlayer(), is( notNullValue() ) );
+      assertThat( systemUnderTest.soundPlayer().isAssociatedWith( configuration.getSoundConfiguration() ), is( true ) );
+   }//End Method
+   
+   @Test public void shouldNotHaveSoundPlayerForMc(){
+      systemUnderTest.managementConsoleButton().getOnAction().handle( new ActionEvent() );
+      assertThat( systemUnderTest.soundPlayer(), is( nullValue() ) );
    }//End Method
 
 }//End Class

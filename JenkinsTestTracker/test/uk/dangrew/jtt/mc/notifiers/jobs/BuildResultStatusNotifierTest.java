@@ -19,6 +19,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import uk.dangrew.jtt.buildwall.effects.sound.BuildResultStatusChange;
+import uk.dangrew.jtt.buildwall.effects.sound.SoundTriggerEvent;
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.event.structure.EventSubscription;
 import uk.dangrew.jtt.mc.model.Notification;
@@ -35,7 +37,9 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 public class BuildResultStatusNotifierTest {
 
    @Mock private EventSubscription< Notification > notificationSubscriber;
+   @Mock private EventSubscription< BuildResultStatusChange > soundSubscriber;
    @Captor private ArgumentCaptor< Event< Notification > > notificationCaptor;
+   @Captor private ArgumentCaptor< Event< BuildResultStatusChange > > soundCaptor;
    private JenkinsJob job;
    private JenkinsDatabase database;
    private BuildResultStatusNotifier systemUnderTest;
@@ -44,13 +48,15 @@ public class BuildResultStatusNotifierTest {
       MockitoAnnotations.initMocks( this );
       new NotificationEvent().clearAllSubscriptions();
       new NotificationEvent().register( notificationSubscriber );
+      new SoundTriggerEvent().clearAllSubscriptions();
+      new SoundTriggerEvent().register( soundSubscriber );
       database = new JenkinsDatabaseImpl();
       job = new JenkinsJobImpl( "Initialised Job" );
       database.store( job );
       systemUnderTest = new BuildResultStatusNotifier( database );
    }//End Method
    
-   @Test public void shouldRaiseEventWhenJobStateChanges() {
+   @Test public void shouldRaiseNotificationEventWhenJobStateChanges() {
       job.setLastBuildStatus( BuildResultStatus.SUCCESS );
       verify( notificationSubscriber ).notify( notificationCaptor.capture() );
       
@@ -60,7 +66,7 @@ public class BuildResultStatusNotifierTest {
       assertThat( notification.getNewBuildResultStatus(), is( BuildResultStatus.SUCCESS ) );
    }//End Method   
    
-   @Test public void shouldRaiseEventWhenJobNumberChanges() {
+   @Test public void shouldRaiseNotificationEventWhenJobNumberChanges() {
       job.setLastBuildNumber( 20 );
       verify( notificationSubscriber ).notify( notificationCaptor.capture() );
       
@@ -70,7 +76,7 @@ public class BuildResultStatusNotifierTest {
       assertThat( notification.getNewBuildResultStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
    }//End Method   
    
-   @Test public void shouldRaiseEventWhenNewJobStateChanges() {
+   @Test public void shouldRaiseNotificationEventWhenNewJobStateChanges() {
       JenkinsJob newJob = new JenkinsJobImpl( "something new" );
       database.store( newJob );
       newJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
@@ -81,6 +87,36 @@ public class BuildResultStatusNotifierTest {
       assertThat( notification.getJenkinsJob(), is( newJob ) );
       assertThat( notification.getPreviousBuildResultStatus(), is( BuildResultStatus.NOT_BUILT ) );
       assertThat( notification.getNewBuildResultStatus(), is( BuildResultStatus.SUCCESS ) );
-   }//End Method  
+   }//End Method 
+   
+   @Test public void shouldRaiseSoundEventWhenJobStateChanges() {
+      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      verify( soundSubscriber ).notify( soundCaptor.capture() );
+      
+      BuildResultStatusChange change = ( BuildResultStatusChange ) soundCaptor.getValue().getValue();
+      assertThat( change.getPreviousStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      assertThat( change.getCurrentStatus(), is( BuildResultStatus.SUCCESS ) );
+   }//End Method   
+   
+   @Test public void shouldRaiseSoundEventWhenJobNumberChanges() {
+      job.setLastBuildNumber( 20 );
+      verify( soundSubscriber ).notify( soundCaptor.capture() );
+      
+      BuildResultStatusChange change = ( BuildResultStatusChange ) soundCaptor.getValue().getValue();
+      assertThat( change.getPreviousStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      assertThat( change.getCurrentStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+   }//End Method   
+   
+   @Test public void shouldRaiseSoundEventWhenNewJobStateChanges() {
+      JenkinsJob newJob = new JenkinsJobImpl( "something new" );
+      database.store( newJob );
+      newJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      
+      verify( soundSubscriber ).notify( soundCaptor.capture() );
+      
+      BuildResultStatusChange change = ( BuildResultStatusChange ) soundCaptor.getValue().getValue();
+      assertThat( change.getPreviousStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      assertThat( change.getCurrentStatus(), is( BuildResultStatus.SUCCESS ) );
+   }//End Method 
 
 }//End Class

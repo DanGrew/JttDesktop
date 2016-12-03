@@ -123,6 +123,15 @@ public class SoundConfigurationPanel extends GridPane {
       }
    }//End Method
    
+   /**
+    * Method to determine whether the given is associated.
+    * @param configuration the {@link SoundConfiguration} in question.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( SoundConfiguration configuration ) {
+      return this.configuration == configuration;
+   }//End Method
+   
    TitledPane simple(){
       return simplePane;
    }//End Method

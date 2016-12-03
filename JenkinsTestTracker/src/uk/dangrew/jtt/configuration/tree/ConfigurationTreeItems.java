@@ -16,6 +16,7 @@ public enum ConfigurationTreeItems {
    SystemVersion,
    DualWallProperties,
    Themes,
+   Sounds,
    DualWallRoot,
    LeftWallRoot,
    LeftDimension,

@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.buildwall.effects.sound;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -75,6 +77,11 @@ public class SoundPlayerTest {
       events.fire( new Event<>( change ) );
       
       verify( player, never() ).friendly_play();
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWith(){
+      assertThat( systemUnderTest.isAssociatedWith( configuration ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new SoundConfiguration() ), is( false ) );
    }//End Method
    
 }//End Class
