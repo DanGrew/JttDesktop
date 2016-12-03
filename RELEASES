@@ -1,3 +1,8 @@
+Release, "1.5.189"
+Date, "(Dec 3, 2016 10:46:34 AM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.189/JenkinsTestTracker-1.5.189-runnable.jar"
+Description, "Brand new configuration for sounds that can be triggered on job status change. They can be configured based on simple rules or configured per type of change. No persistence yet."
+
 Release, "1.5.184"
 Date, "(Nov 28, 2016 10:59:50 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.184/JenkinsTestTracker-1.5.184-runnable.jar"
