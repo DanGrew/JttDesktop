@@ -8,6 +8,11 @@
  */
 package uk.dangrew.jtt.api.handling;
 
+import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildBuildingStateRequest;
+import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildJobDetailsRequest;
+import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildTestResultsUnwrappedRequest;
+import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildTestResultsWrappedRequest;
+
 import org.json.JSONObject;
 
 import uk.dangrew.jtt.api.sources.ExternalApi;
@@ -69,7 +74,7 @@ class JenkinsFetcherImpl implements JenkinsFetcher {
     */
    @Override public void updateBuildState( JenkinsJob jenkinsJob ) {
       digest.fetching( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
-      String response = externalApi.getLastBuildBuildingState( jenkinsJob );
+      String response = externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob );
       digest.parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
       
       JSONObject converted = converter.convert( response );
@@ -89,7 +94,7 @@ class JenkinsFetcherImpl implements JenkinsFetcher {
       
       if ( isOutDated( jenkinsJob ) ) {
          digest.fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-         String response = externalApi.getLastBuildJobDetails( jenkinsJob );
+         String response = externalApi.executeRequest( LastBuildJobDetailsRequest, jenkinsJob );
          digest.parsing( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
          
          JSONObject converted = converter.convert( response );
@@ -145,9 +150,9 @@ class JenkinsFetcherImpl implements JenkinsFetcher {
          return;
       }
       
-      String response = externalApi.getLatestTestResultsWrapped( jenkinsJob );
+      String response = externalApi.executeRequest( LastBuildTestResultsWrappedRequest, jenkinsJob );
       testsImporter.updateTestResults( jenkinsJob, response );
-      response = externalApi.getLatestTestResultsUnwrapped( jenkinsJob );
+      response = externalApi.executeRequest( LastBuildTestResultsUnwrappedRequest, jenkinsJob );
       testsImporter.updateTestResults( jenkinsJob, response );
    }//End Method
 

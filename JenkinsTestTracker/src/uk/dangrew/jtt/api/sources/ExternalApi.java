@@ -34,19 +34,13 @@ public interface ExternalApi {
    public boolean isLoggedIn();
    
    /**
-    * Method to get the current build state as a json {@link String}.
-    * @param jenkinsJob the {@link JenkinsJob} to get the state for.
-    * @return the {@link String} response from the api. 
+    * Method to execute the given {@link JenkinsApiJobRequest} against the given {@link JenkinsJob}.
+    * @param request the {@link JenkinsApiJobRequest} to execute.
+    * @param job the {@link JenkinsJob} the request is for.
+    * @return the {@link String} response from the api.
     */
-   public String getLastBuildBuildingState( JenkinsJob jenkinsJob );
-
-   /**
-    * Method to get the job details of the last build as a json {@link String}.
-    * @param jenkinsJob the {@link JenkinsJob} to get the details for.
-    * @return the {@link String} response from the api. 
-    */
-   public String getLastBuildJobDetails( JenkinsJob jenkinsJob );
-
+   public String executeRequest( JenkinsApiJobRequest request, JenkinsJob job );
+   
    /**
     * Method to get the list of job names currently available.
     * @return the {@link String} response from the api.
@@ -58,21 +52,5 @@ public interface ExternalApi {
     * @return the {@link String} response from the api.
     */
    public String getUsersList();
-
-   /**
-    * Method to get the results of the latest build of the given {@link JenkinsJob} using the wrapped
-    * api request.
-    * @param jenkinsJob the {@link JenkinsJob} in question.
-    * @return the {@link String} response from the api.
-    */
-   public String getLatestTestResultsWrapped( JenkinsJob jenkinsJob );
-   
-   /**
-    * Method to get the results of the latest build of the given {@link JenkinsJob} using the unwrapped 
-    * api request.
-    * @param jenkinsJob the {@link JenkinsJob} in question.
-    * @return the {@link String} response from the api.
-    */
-   public String getLatestTestResultsUnwrapped( JenkinsJob jenkinsJob );
 
 }//End Interface

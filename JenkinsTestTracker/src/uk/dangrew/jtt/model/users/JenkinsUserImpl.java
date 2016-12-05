@@ -23,8 +23,12 @@ public class JenkinsUserImpl implements JenkinsUser {
     * @param name the name of the user.
     */
    public JenkinsUserImpl( String name ) {
-      if ( name == null ) throw new IllegalArgumentException( "No User name provided." );
-      if ( name.trim().length() == 0 ) throw new IllegalArgumentException( "Invalid User name provided." );
+      if ( name == null ) {
+         throw new IllegalArgumentException( "No User name provided." );
+      }
+      if ( name.trim().length() == 0 ) {
+         throw new IllegalArgumentException( "Invalid User name provided." );
+      }
       
       nameProperty = new SimpleObjectProperty<>( name );
    }//End Constructor

@@ -15,6 +15,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildBuildingStateRequest;
+import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildJobDetailsRequest;
+import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildTestResultsUnwrappedRequest;
+import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildTestResultsWrappedRequest;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,13 +71,13 @@ public class JenkinsFetcherImplTest {
       Assert.assertEquals( BuildState.Built, jenkinsJob.buildStateProperty().get() );
       
       String response = TestCommon.readFileIntoString( getClass(), "building-state.json" );
-      Mockito.when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( response );
+      Mockito.when( externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob ) ).thenReturn( response );
       systemUnderTest.updateBuildState( jenkinsJob );
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
       
       InOrder digestOrdering = inOrder( digest, externalApi );
       digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
-      digestOrdering.verify( externalApi ).getLastBuildBuildingState( jenkinsJob );
+      digestOrdering.verify( externalApi ).executeRequest( LastBuildBuildingStateRequest, jenkinsJob );
       digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
       digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
    }//End Method
@@ -83,7 +87,7 @@ public class JenkinsFetcherImplTest {
       Assert.assertEquals( BuildState.Building, jenkinsJob.buildStateProperty().get() );
       
       String response = TestCommon.readFileIntoString( getClass(), "built-state.json" );
-      Mockito.when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( response );
+      Mockito.when( externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob ) ).thenReturn( response );
       systemUnderTest.updateBuildState( jenkinsJob );
       Assert.assertEquals( BuildState.Built, jenkinsJob.buildStateProperty().get() );
    }//End Method
@@ -91,11 +95,11 @@ public class JenkinsFetcherImplTest {
    @Test public void shouldUpdateJobDetailsWhenBuilt() {
       String buildingResponse = TestCommon.readFileIntoString( getClass(), "built-state.json" );
       Assert.assertNotNull( buildingResponse );
-      Mockito.when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
+      Mockito.when( externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob ) ).thenReturn( buildingResponse );
       
       String response = TestCommon.readFileIntoString( getClass(), "job-details.json" );
       Assert.assertNotNull( response );
-      Mockito.when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( response );
+      Mockito.when( externalApi.executeRequest( LastBuildJobDetailsRequest, jenkinsJob ) ).thenReturn( response );
       
       Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
       Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
@@ -105,7 +109,7 @@ public class JenkinsFetcherImplTest {
       
       InOrder digestOrdering = inOrder( digest, externalApi );
       digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-      digestOrdering.verify( externalApi ).getLastBuildJobDetails( jenkinsJob );
+      digestOrdering.verify( externalApi ).executeRequest( LastBuildJobDetailsRequest, jenkinsJob );
       digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
       digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
    }//End Method
@@ -113,7 +117,7 @@ public class JenkinsFetcherImplTest {
    @Test public void shouldNotUpdateJobDetailsWhenBuilding() {
       String buildingResponse = TestCommon.readFileIntoString( getClass(), "building-state.json" );
       Assert.assertNotNull( buildingResponse );
-      Mockito.when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
+      Mockito.when( externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob ) ).thenReturn( buildingResponse );
 
       Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
       Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
@@ -121,20 +125,20 @@ public class JenkinsFetcherImplTest {
       Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
       Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
       
-      verify( externalApi, Mockito.times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
+      verify( externalApi, Mockito.times( 0 ) ).executeRequest( Mockito.eq( LastBuildJobDetailsRequest ), Mockito.any() );
       
       InOrder digestOrdering = inOrder( digest, externalApi );
       digestOrdering.verify( digest ).fetching( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
-      digestOrdering.verify( externalApi ).getLastBuildBuildingState( jenkinsJob );
+      digestOrdering.verify( externalApi ).executeRequest( LastBuildBuildingStateRequest, jenkinsJob );
       digestOrdering.verify( digest ).parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
       digestOrdering.verify( digest ).updated( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
    }//End Method
    
    @Test public void shouldUpdateJobDetailsWhenBuildingAndCurrentBuildNumberIsNotAfterLastBuildNumber() {
       String buildingResponse = TestCommon.readFileIntoString( getClass(), "building-state-24.json" );
-      when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
+      when( externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob ) ).thenReturn( buildingResponse );
       String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
-      when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
+      when( externalApi.executeRequest( LastBuildJobDetailsRequest, jenkinsJob ) ).thenReturn( jobDetailsResponse );
 
       jenkinsJob.lastBuildProperty().set( new Pair<>( 22, BuildResultStatus.ABORTED ) );
       systemUnderTest.updateJobDetails( jenkinsJob );
@@ -144,9 +148,9 @@ public class JenkinsFetcherImplTest {
    
    @Test public void shouldNotUpdateJobDetailsWhenBuildingAndCurrentBuildNumberIsOneAfterLastBuildNumber() {
       String buildingResponse = TestCommon.readFileIntoString( getClass(), "building-state-24.json" );
-      when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
+      when( externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob ) ).thenReturn( buildingResponse );
       String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
-      when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
+      when( externalApi.executeRequest( LastBuildJobDetailsRequest, jenkinsJob ) ).thenReturn( jobDetailsResponse );
 
       jenkinsJob.lastBuildProperty().set( new Pair<>( 23, BuildResultStatus.FAILURE ) );
       systemUnderTest.updateJobDetails( jenkinsJob );
@@ -157,9 +161,9 @@ public class JenkinsFetcherImplTest {
    
    @Test public void shouldUpdateJobDetailsWhenBuildingAndLastBuildNumberIsDefault() {
       String buildingResponse = TestCommon.readFileIntoString( getClass(), "building-state-24.json" );
-      when( externalApi.getLastBuildBuildingState( jenkinsJob ) ).thenReturn( buildingResponse );
+      when( externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob ) ).thenReturn( buildingResponse );
       String jobDetailsResponse = TestCommon.readFileIntoString( getClass(), "job-details-23.json" );
-      when( externalApi.getLastBuildJobDetails( jenkinsJob ) ).thenReturn( jobDetailsResponse );
+      when( externalApi.executeRequest( LastBuildJobDetailsRequest, jenkinsJob ) ).thenReturn( jobDetailsResponse );
 
       assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
       systemUnderTest.updateJobDetails( jenkinsJob );
@@ -173,8 +177,8 @@ public class JenkinsFetcherImplTest {
       Assert.assertEquals( 0, jenkinsJob.lastBuildProperty().get().getKey().intValue() );
       Assert.assertEquals( BuildResultStatus.FAILURE, jenkinsJob.lastBuildProperty().get().getValue() );
       
-      verify( externalApi, times( 0 ) ).getLastBuildJobDetails( Mockito.any() );
-      verify( externalApi, times( 0 ) ).getLastBuildBuildingState( Mockito.any() );
+      verify( externalApi, times( 0 ) ).executeRequest( Mockito.any(), Mockito.any() );
+      verify( externalApi, times( 0 ) ).executeRequest( Mockito.any(), Mockito.any() );
       
       verify( digest ).attachSource( systemUnderTest );
       verifyNoMoreInteractions( digest );
@@ -212,7 +216,7 @@ public class JenkinsFetcherImplTest {
    @Test public void shouldFetchTestResultsWrapped(){
       String response = TestCommon.readFileIntoString( getClass(), "single-test-case.json" );
       Assert.assertNotNull( response );
-      Mockito.when( externalApi.getLatestTestResultsWrapped( jenkinsJob ) ).thenReturn( response );
+      Mockito.when( externalApi.executeRequest( LastBuildTestResultsWrappedRequest, jenkinsJob ) ).thenReturn( response );
       
       systemUnderTest.updateTestResults( jenkinsJob );
       Assert.assertEquals( 1, database.testClasses().size() );
@@ -222,8 +226,8 @@ public class JenkinsFetcherImplTest {
    @Test public void shouldFetchTestResultsUnwrapped(){
       String response = TestCommon.readFileIntoString( getClass(), "single-test-case-suites-only.json" );
       Assert.assertNotNull( response );
-      Mockito.when( externalApi.getLatestTestResultsWrapped( jenkinsJob ) ).thenReturn( "{ }" );
-      Mockito.when( externalApi.getLatestTestResultsUnwrapped( jenkinsJob ) ).thenReturn( response );
+      Mockito.when( externalApi.executeRequest( LastBuildTestResultsWrappedRequest, jenkinsJob ) ).thenReturn( "{ }" );
+      Mockito.when( externalApi.executeRequest( LastBuildTestResultsUnwrappedRequest, jenkinsJob ) ).thenReturn( response );
       
       systemUnderTest.updateTestResults( jenkinsJob );
       Assert.assertEquals( 1, database.testClasses().size() );
@@ -232,8 +236,8 @@ public class JenkinsFetcherImplTest {
    
    @Test public void shouldFetchTestResultsForEnabledTestResults(){
       systemUnderTest.updateTestResults( jenkinsJob );
-      verify( externalApi ).getLatestTestResultsWrapped( jenkinsJob );
-      verify( externalApi ).getLatestTestResultsUnwrapped( jenkinsJob );
+      verify( externalApi ).executeRequest( LastBuildTestResultsWrappedRequest, jenkinsJob );
+      verify( externalApi ).executeRequest( LastBuildTestResultsUnwrappedRequest, jenkinsJob );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullDatabaseInConstructor(){
