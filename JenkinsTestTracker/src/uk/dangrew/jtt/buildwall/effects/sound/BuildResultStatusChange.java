@@ -81,4 +81,11 @@ public class BuildResultStatusChange {
       return true;
    }//End Method
    
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String toString() {
+      return previous.name() + " -> " + current.name();
+   }//End Method
+   
 }//End Class

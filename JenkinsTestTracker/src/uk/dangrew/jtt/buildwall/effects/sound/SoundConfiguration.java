@@ -8,7 +8,12 @@
  */
 package uk.dangrew.jtt.buildwall.effects.sound;
 
+import java.util.LinkedHashMap;
+
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
 import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
 
 /**
@@ -17,12 +22,14 @@ import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
 public class SoundConfiguration {
 
    private final ObservableMap< BuildResultStatusChange, String > statusChangeSoundsMap;
+   private final ObservableList< JenkinsJob > excludedJobs;
    
    /**
     * Constructs a new {@link SoundConfiguration}.
     */
    public SoundConfiguration() {
-      this.statusChangeSoundsMap = new SynchronizedObservableMap<>();
+      this.statusChangeSoundsMap = new SynchronizedObservableMap<>( new LinkedHashMap<>() );
+      this.excludedJobs = new SynchronizedObservableList<>();
    }//End Constructor
    
    /**
@@ -31,6 +38,14 @@ public class SoundConfiguration {
     */
    public ObservableMap< BuildResultStatusChange, String > statusChangeSounds() {
       return statusChangeSoundsMap;
+   }//End Method
+
+   /**
+    * Access to the {@link ObservableList} of {@link JenkinsJob}s excluded from sound effects.
+    * @return the {@link ObservableList}.
+    */
+   public ObservableList< JenkinsJob > excludedJobs() {
+      return excludedJobs;
    }//End Method
 
 }//End Class

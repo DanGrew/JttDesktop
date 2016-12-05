@@ -262,5 +262,5 @@ public class SoundConfigurationRowTest {
       assertThat( systemUnderTest.isAssociatedWithType( PassPassApplier.class ), is( true ) );
       assertThat( systemUnderTest.isAssociatedWithType( BrsChangeListApplier.class ), is( false ) );
    }//End Method
-   
+
 }//End Class

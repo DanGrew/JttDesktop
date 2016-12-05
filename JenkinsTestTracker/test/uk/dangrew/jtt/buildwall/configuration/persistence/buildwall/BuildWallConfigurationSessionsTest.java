@@ -388,10 +388,10 @@ public class BuildWallConfigurationSessionsTest {
    }//End Method
    
    @Test public void shouldUseCorrectConfiguration(){
-      assertThat( systemUnderTest.usesConfiguration( leftConfiguration, rightConfiguration ), is( true ) );
-      assertThat( systemUnderTest.usesConfiguration( new BuildWallConfigurationImpl(), rightConfiguration ), is( false ) );
-      assertThat( systemUnderTest.usesConfiguration( leftConfiguration, new BuildWallConfigurationImpl() ), is( false ) );
-      assertThat( systemUnderTest.usesConfiguration( new BuildWallConfigurationImpl(), new BuildWallConfigurationImpl() ), is( false ) );
+      assertThat( systemUnderTest.uses( leftConfiguration, rightConfiguration ), is( true ) );
+      assertThat( systemUnderTest.uses( new BuildWallConfigurationImpl(), rightConfiguration ), is( false ) );
+      assertThat( systemUnderTest.uses( leftConfiguration, new BuildWallConfigurationImpl() ), is( false ) );
+      assertThat( systemUnderTest.uses( new BuildWallConfigurationImpl(), new BuildWallConfigurationImpl() ), is( false ) );
    }//End Method
    
 }//End Class

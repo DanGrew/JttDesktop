@@ -14,6 +14,7 @@ import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.api.sources.JenkinsApiImpl;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
+import uk.dangrew.jtt.buildwall.configuration.persistence.sound.SoundConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.core.JttInitializer;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin;
@@ -32,9 +33,11 @@ public class JttSceneConstructor {
    private final SystemDigestController digestController;
    
    private JttInitializer initializer;
+   private JenkinsDatabase database;
    private SystemConfiguration configuration;
    private BuildWallConfigurationSessions buildWallSessions;
    private DualWallConfigurationSessions dualWallSessions;
+   private SoundConfigurationSessions soundSessions;
    
    /**
     * Constructs a new {@link JttSceneConstructor}.
@@ -69,7 +72,7 @@ public class JttSceneConstructor {
       }
       
       configuration = new SystemConfiguration();
-      JenkinsDatabase database = new JenkinsDatabaseImpl();
+      database = new JenkinsDatabaseImpl();
       
       buildWallSessions = new BuildWallConfigurationSessions( 
                database, 
@@ -77,6 +80,7 @@ public class JttSceneConstructor {
                configuration.getRightConfiguration() 
       );
       dualWallSessions = new DualWallConfigurationSessions( configuration.getDualConfiguration() );
+      soundSessions = new SoundConfigurationSessions( configuration.getSoundConfiguration(), database );
       
       EnvironmentWindow window = new EnvironmentWindow( configuration );
       
@@ -86,6 +90,10 @@ public class JttSceneConstructor {
 
    JttInitializer initializer(){
       return initializer;
+   }//End Method
+   
+   JenkinsDatabase database(){
+      return database;
    }//End Method
    
    SystemConfiguration configuration(){
@@ -98,6 +106,10 @@ public class JttSceneConstructor {
    
    DualWallConfigurationSessions dualWallSessions() {
       return dualWallSessions;
+   }//End Method
+
+   SoundConfigurationSessions soundSessions() {
+      return soundSessions;
    }//End Method
    
 }//End Class

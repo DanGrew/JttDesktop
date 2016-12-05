@@ -131,4 +131,17 @@ public class SoundConfigurationPanelTest {
       assertThat( systemUnderTest.isAssociatedWith( new SoundConfiguration() ), is( false ) );
    }//End Method
    
+   @Test public void shouldInitiallyUseSelectedFilesFromConfiguration(){
+      configuration.statusChangeSounds().put( 
+               new BuildResultStatusChange( BuildResultStatus.ABORTED, BuildResultStatus.FAILURE ), FILENAME 
+      );
+      configuration.statusChangeSounds().put( 
+               new BuildResultStatusChange( BuildResultStatus.NOT_BUILT, BuildResultStatus.UNSTABLE ), FILENAME 
+      );
+      systemUnderTest = new SoundConfigurationPanel( stying, configuration );
+      
+      assertThat( systemUnderTest.rowFor( BuildResultStatus.ABORTED, BuildResultStatus.FAILURE ).getSelectedFile(), is( FILENAME ) );
+      assertThat( systemUnderTest.rowFor( BuildResultStatus.NOT_BUILT, BuildResultStatus.UNSTABLE ).getSelectedFile(), is( FILENAME ) );
+   }//End Method
+   
 }//End Class

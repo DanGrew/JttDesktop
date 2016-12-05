@@ -81,6 +81,8 @@ public class SoundConfigurationPanel extends GridPane {
       
       constructSimplePane();
       constructAdvancedPane();
+      
+      this.configuration.statusChangeSounds().forEach( ( c, f ) -> rows.get( c ).updateSelectedFile( f ) );
    }//End Constructor
       
    /**

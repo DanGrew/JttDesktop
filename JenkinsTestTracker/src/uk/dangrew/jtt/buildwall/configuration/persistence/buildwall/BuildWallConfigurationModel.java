@@ -32,8 +32,8 @@ class BuildWallConfigurationModel {
    private final JenkinsDatabase database;
    private final ColorConverter colorConverter;
    
-   private List< JenkinsJob > jobBuffer;
-   private List< BuildWallJobPolicy > policyBuffer; 
+   private final List< JenkinsJob > jobBuffer;
+   private final List< BuildWallJobPolicy > policyBuffer; 
    
    /**
     * Constructs a new {@link BuildWallConfigurationModel}.

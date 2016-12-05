@@ -27,6 +27,7 @@ public class BuildWallConfigurationSessions {
    static final String LEFT_BUILD_WALL_FILE_NAME = "left-build-wall.json";
    static final String RIGHT_BUILD_WALL_FILE_NAME = "right-build-wall.json";
    
+   private final JenkinsDatabase database;
    private final BuildWallConfiguration leftConfiguration;
    private final SessionManager leftSessions;
    private final JarJsonPersistingProtocol leftConfigurationFileLocation;
@@ -71,6 +72,8 @@ public class BuildWallConfigurationSessions {
             BuildWallConfiguration rightConfiguration, 
             JarJsonPersistingProtocol rightProtocol 
    ) {
+      this.database = database;
+      
       this.leftConfiguration = leftConfiguration;
       this.leftConfigurationFileLocation = leftProtocol;
       
@@ -156,8 +159,17 @@ public class BuildWallConfigurationSessions {
     * @param right the right {@link BuildWallConfiguration}.
     * @return true if same as given.
     */
-   public boolean usesConfiguration( BuildWallConfiguration left, BuildWallConfiguration right ) {
+   public boolean uses( BuildWallConfiguration left, BuildWallConfiguration right ) {
       return this.leftConfiguration == left && this.rightConfiguration == right;
+   }//End Method
+   
+   /**
+    * Method to determine whether this object uses the given.
+    * @param database the {@link JenkinsDatabase} in question.
+    * @return true if same as given.
+    */
+   public boolean uses( JenkinsDatabase database ) {
+      return this.database == database;
    }//End Method
    
    FileLocationProtocol rightConfigurationFileLocation(){

@@ -73,10 +73,18 @@ public class JttSceneConstructorTest {
       when( controller.login( Mockito.any() ) ).thenReturn( true );
       systemUnderTest.makeScene();
       assertThat( systemUnderTest.buildWallSessions(), is( notNullValue() ) );
-      assertThat( systemUnderTest.buildWallSessions().usesConfiguration( 
+      assertThat( systemUnderTest.buildWallSessions().uses( 
                systemUnderTest.configuration().getLeftConfiguration(),
                systemUnderTest.configuration().getRightConfiguration() 
       ), is( true ) );
+      assertThat( systemUnderTest.buildWallSessions().uses( systemUnderTest.database() ), is( true ) );
    }//End Method
    
+   @Test public void shouldConstructSoundSessions(){
+      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      systemUnderTest.makeScene();
+      assertThat( systemUnderTest.soundSessions(), is( notNullValue() ) );
+      assertThat( systemUnderTest.soundSessions().uses( systemUnderTest.configuration().getSoundConfiguration() ), is( true ) );
+      assertThat( systemUnderTest.soundSessions().uses( systemUnderTest.database() ), is( true ) );
+   }//End Method
 }//End Class

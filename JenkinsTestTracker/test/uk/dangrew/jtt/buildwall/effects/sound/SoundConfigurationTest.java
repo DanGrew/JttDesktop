@@ -16,6 +16,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
 import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
 
 public class SoundConfigurationTest {
@@ -29,6 +30,11 @@ public class SoundConfigurationTest {
    @Test public void shouldProvideBuildResultStatusChangeSoundMap() {
       assertThat( systemUnderTest.statusChangeSounds(), is( notNullValue() ) );
       assertThat( systemUnderTest.statusChangeSounds(), is( instanceOf( SynchronizedObservableMap.class ) ) );
+   }//End Method
+   
+   @Test public void shouldProvideExcludedJobs() {
+      assertThat( systemUnderTest.excludedJobs(), is( notNullValue() ) );
+      assertThat( systemUnderTest.excludedJobs(), is( instanceOf( SynchronizedObservableList.class ) ) );
    }//End Method
 
 }//End Class
