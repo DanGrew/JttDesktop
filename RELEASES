@@ -1,3 +1,8 @@
+Release, "1.5.190"
+Date, "(Dec 5, 2016 8:17:14 AM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.190/JenkinsTestTracker-1.5.190-runnable.jar"
+Description, "Sound configuration now persisted to file when changes are made. These are loaded back in next time the application is launched, using the same mechanism as the other configuration files."
+
 Release, "1.5.189"
 Date, "(Dec 3, 2016 10:46:34 AM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.189/JenkinsTestTracker-1.5.189-runnable.jar"
