@@ -21,7 +21,10 @@ class JenkinsApiRequests {
    static final String LOCATION_PREFIX = "http://";
    static final String BASE_REQUEST = "/api/json?tree=jobs[name]&pretty=true";
    static final String LAST_BUILD_BUILDING = "/lastBuild/api/json?tree=building,estimatedDuration,timestamp,number,builtOn";
+   static final String LIST_OF_BUILDS = "/api/json?tree=builds[number]";
    static final String LAST_BUILD_DETAILS = "/lastCompletedBuild/api/json?tree=number,result,culprits[fullName]";
+   static final String HISTORIC_DETAILS = "api/json?tree=actions[failCount,skipCount,totalCount],"
+            + "duration,estimatedDuration,result,timestamp,builtOn,culprits[fullName]";
    
    static final String TEST_CASES_PROPERTIES = "duration,name,className,failedSince,skipped,status,age";
    static final String TEST_CLASS_PROPERTIES = "duration,name,cases[" + TEST_CASES_PROPERTIES +"]";
@@ -66,6 +69,15 @@ class JenkinsApiRequests {
     */
    String extractAndPrefixJob( JenkinsJob jenkinsJob ) {
       return JOB + jenkinsJob.nameProperty().get().replaceAll( " ", "%20" );
+   }//End Method
+   
+   /**
+    * Method to wrap the given item in forward slashes.
+    * @param item the item to wrap.
+    * @return the wrapped item.
+    */
+   String wrap( String item ) {
+      return "/" + item + "/";
    }//End Method
 
    /**
@@ -113,6 +125,27 @@ class JenkinsApiRequests {
     */
    HttpGet constructLastBuildJobDetailsRequest( String jenkinsLocation, JenkinsJob jenkinsJob ) {
       return new HttpGet( jenkinsLocation + extractAndPrefixJob( jenkinsJob ) + LAST_BUILD_DETAILS );
+   }//End Method
+   
+   /**
+    * Method to construct the request for getting the list of builds associated with a {@link JenkinsJob}.
+    * @param jenkinsLocation the location.
+    * @param jenkinsJob the {@link JenkinsJob} in question.
+    * @return the {@link HttpGet} to execute.
+    */
+   HttpGet constructListOfBuildsRequest( String jenkinsLocation, JenkinsJob jenkinsJob ) {
+      return new HttpGet( jenkinsLocation + extractAndPrefixJob( jenkinsJob ) + LIST_OF_BUILDS );
+   }//End Method
+   
+   /**
+    * Method to construct the request for getting details of the given build number.
+    * @param jenkinsLocation the location.
+    * @param job the {@link JenkinsJob} in question.
+    * @param buildNumber the request is for.
+    * @return the {@link HttpGet} to execute.
+    */
+   HttpGet constructHistoricDetailsRequest( String jenkinsLocation, JenkinsJob job, int buildNumber ) {
+      return new HttpGet( jenkinsLocation + extractAndPrefixJob( job ) + wrap( Integer.toString( buildNumber ) ) + HISTORIC_DETAILS );
    }//End Method
 
    /**

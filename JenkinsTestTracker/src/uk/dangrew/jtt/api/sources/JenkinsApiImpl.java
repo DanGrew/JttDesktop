@@ -131,12 +131,24 @@ public class JenkinsApiImpl implements ExternalApi {
    /**
     * {@inheritDoc}
     */
-   @Override public String executeRequest( JenkinsApiJobRequest request, JenkinsJob job ) {
+   @Override public String executeRequest( JobRequest request, JenkinsJob job ) {
       if ( !isLoggedIn() ) {
          return null;
       }
       
       HttpGet get = request.execute( jenkinsLocation, job );
+      return executeRequestAndUnpack( get );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String executeRequest( BuildRequest request, JenkinsJob job, int buildNumber ) {
+      if ( !isLoggedIn() ) {
+         return null;
+      }
+      
+      HttpGet get = request.execute( jenkinsLocation, job, buildNumber );
       return executeRequestAndUnpack( get );
    }//End Method
 

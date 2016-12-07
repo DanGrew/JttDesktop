@@ -12,14 +12,14 @@ import org.junit.Test;
 
 import uk.dangrew.jtt.utility.TestCommon;
 
-public class JenkinsApiJobRequestTest {
+public class JobRequestTest {
 
    @Test public void shouldMapNameToEnum() {
-      TestCommon.assertEnumNameWithValueOf( JenkinsApiJobRequest.class );
+      TestCommon.assertEnumNameWithValueOf( JobRequest.class );
    }//End Method
    
    @Test public void shouldMapToStringToEnum() {
-      TestCommon.assertEnumToStringWithValueOf( JenkinsApiJobRequest.class );
+      TestCommon.assertEnumToStringWithValueOf( JobRequest.class );
    }//End Method
    
 }//End Class

@@ -39,7 +39,16 @@ public interface ExternalApi {
     * @param job the {@link JenkinsJob} the request is for.
     * @return the {@link String} response from the api.
     */
-   public String executeRequest( JenkinsApiJobRequest request, JenkinsJob job );
+   public String executeRequest( JobRequest request, JenkinsJob job );
+   
+   /**
+    * Method to execute the given {@link BuildRequest} against the given {@link JenkinsJob}.
+    * @param request the {@link BuildRequest} to execute.
+    * @param job the {@link JenkinsJob} the request is for.
+    * @param buildNumber the build number the request is for.
+    * @return the {@link String} response from the api.
+    */
+   public String executeRequest( BuildRequest request, JenkinsJob job, int buildNumber );
    
    /**
     * Method to get the list of job names currently available.

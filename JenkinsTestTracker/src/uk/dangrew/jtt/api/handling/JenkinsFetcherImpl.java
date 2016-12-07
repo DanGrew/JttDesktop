@@ -8,10 +8,10 @@
  */
 package uk.dangrew.jtt.api.handling;
 
-import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildBuildingStateRequest;
-import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildJobDetailsRequest;
-import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildTestResultsUnwrappedRequest;
-import static uk.dangrew.jtt.api.sources.JenkinsApiJobRequest.LastBuildTestResultsWrappedRequest;
+import static uk.dangrew.jtt.api.sources.JobRequest.LastBuildBuildingStateRequest;
+import static uk.dangrew.jtt.api.sources.JobRequest.LastBuildJobDetailsRequest;
+import static uk.dangrew.jtt.api.sources.JobRequest.LastBuildTestResultsUnwrappedRequest;
+import static uk.dangrew.jtt.api.sources.JobRequest.LastBuildTestResultsWrappedRequest;
 
 import org.json.JSONObject;
 

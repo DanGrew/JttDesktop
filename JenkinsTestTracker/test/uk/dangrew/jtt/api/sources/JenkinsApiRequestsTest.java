@@ -85,6 +85,22 @@ public class JenkinsApiRequestsTest {
       );
    }//End Method
    
+   @Test public void shouldConstructListOfBuildsRequest(){
+      final String expectedRequest = "http://some-location/job/SomeJenkinsProject/api/json?tree=builds[number]";
+      Assert.assertEquals( 
+               expectedRequest, 
+               systemUnderTest.constructListOfBuildsRequest( "http://some-location", jenkinsJob ).getURI().toString() 
+      );
+   }//End Method
+   
+   @Test public void shouldConstructHistoricRequest(){
+      final String expectedRequest = "http://some-location/job/SomeJenkinsProject/100/" + JenkinsApiRequests.HISTORIC_DETAILS;
+      Assert.assertEquals( 
+               expectedRequest, 
+               systemUnderTest.constructHistoricDetailsRequest( "http://some-location", jenkinsJob, 100 ).getURI().toString() 
+      );
+   }//End Method
+   
    @Test public void shouldSubstituteSpacesInJenkinsJobs(){
       JenkinsJob jobWithSpaces = new JenkinsJobImpl( "anything with spaces" );
       Assert.assertEquals( "/job/anything%20with%20spaces", systemUnderTest.extractAndPrefixJob( jobWithSpaces ) );
