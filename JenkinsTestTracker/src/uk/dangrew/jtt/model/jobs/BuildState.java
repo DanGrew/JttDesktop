@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.api.handling;
+package uk.dangrew.jtt.model.jobs;
 
 /**
  * Enum defining the current state of the build.

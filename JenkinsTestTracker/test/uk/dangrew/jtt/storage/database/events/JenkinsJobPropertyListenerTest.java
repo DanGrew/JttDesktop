@@ -19,8 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.util.Pair;
-import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;

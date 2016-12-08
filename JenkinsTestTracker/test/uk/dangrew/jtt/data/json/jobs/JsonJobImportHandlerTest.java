@@ -27,9 +27,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.util.Pair;
-import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.api.handling.JenkinsProcessing;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.nodes.JenkinsNode;

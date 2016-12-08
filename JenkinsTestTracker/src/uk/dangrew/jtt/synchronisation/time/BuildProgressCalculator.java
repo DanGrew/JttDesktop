@@ -10,7 +10,7 @@ package uk.dangrew.jtt.synchronisation.time;
 
 import java.time.Clock;
 
-import uk.dangrew.jtt.api.handling.BuildState;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 

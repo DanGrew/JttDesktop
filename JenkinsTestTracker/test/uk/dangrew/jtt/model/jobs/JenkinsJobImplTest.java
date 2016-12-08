@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import javafx.beans.value.ChangeListener;
 import javafx.util.Pair;
-import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.model.tests.TestCase;

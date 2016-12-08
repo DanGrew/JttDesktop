@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.configuration.properties;
 
 import java.util.function.Predicate;
 
-import uk.dangrew.jtt.api.handling.BuildState;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
 /**

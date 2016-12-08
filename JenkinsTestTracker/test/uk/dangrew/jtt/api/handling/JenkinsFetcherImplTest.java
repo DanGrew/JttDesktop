@@ -31,6 +31,7 @@ import org.mockito.MockitoAnnotations;
 import javafx.util.Pair;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;

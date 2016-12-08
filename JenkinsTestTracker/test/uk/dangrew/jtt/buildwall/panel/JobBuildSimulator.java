@@ -9,8 +9,8 @@
 package uk.dangrew.jtt.buildwall.panel;
 
 import javafx.util.Pair;
-import uk.dangrew.jtt.api.handling.BuildState;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
 /**

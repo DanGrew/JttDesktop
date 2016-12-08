@@ -10,7 +10,7 @@ package uk.dangrew.jtt.api.handling;
 
 import org.junit.Test;
 
-import uk.dangrew.jtt.api.handling.BuildState;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
