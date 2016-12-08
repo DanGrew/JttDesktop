@@ -93,11 +93,11 @@ public class JenkinsApiRequestsTest {
       );
    }//End Method
    
-   @Test public void shouldConstructHistoricRequest(){
-      final String expectedRequest = "http://some-location/job/SomeJenkinsProject/100/" + JenkinsApiRequests.HISTORIC_DETAILS;
+   @Test public void shouldConstructJobDetailsRequest(){
+      final String expectedRequest = "http://some-location" + JenkinsApiRequests.JOB_DETAILS;
       Assert.assertEquals( 
                expectedRequest, 
-               systemUnderTest.constructHistoricDetailsRequest( "http://some-location", jenkinsJob, 100 ).getURI().toString() 
+               systemUnderTest.constructJobDetailsRequest( "http://some-location" ).getURI().toString() 
       );
    }//End Method
    

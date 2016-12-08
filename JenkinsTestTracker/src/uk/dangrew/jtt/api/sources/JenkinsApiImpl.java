@@ -102,20 +102,7 @@ public class JenkinsApiImpl implements ExternalApi {
          String responseString = clientHandler.handleResponse( response );
          digest.responseReady();
          return responseString;
-      } catch ( HttpResponseException exception ) {
-//         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (HttpResponseException):" );
-         if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
-//         exception.printStackTrace();
-         digest.connectionException( exception );
-      } catch ( ClientProtocolException exception ) {
-//         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (ClientProtocolException):" );
-         if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
-         exception.printStackTrace();
-         digest.connectionException( exception );
       } catch ( IOException exception ) {
-//         System.out.println( "Providing StackTrace for refusal, not necessarily a problem (IOException):" );
-         if ( getRequest.getURI() != null ) System.out.println( "Attempted: " + getRequest.getURI().toString() );
-//         exception.printStackTrace();
          digest.connectionException( exception );
       }
       return null;
@@ -126,6 +113,18 @@ public class JenkinsApiImpl implements ExternalApi {
     */
    @Override public boolean isLoggedIn() {
       return connectedClient != null;
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String executeRequest( JenkinsBaseRequest request ) {
+      if ( !isLoggedIn() ) {
+         return null;
+      }
+      
+      HttpGet get = request.execute( jenkinsLocation );
+      return executeRequestAndUnpack( get );
    }//End Method
    
    /**

@@ -34,8 +34,15 @@ public interface ExternalApi {
    public boolean isLoggedIn();
    
    /**
-    * Method to execute the given {@link JenkinsApiJobRequest} against the given {@link JenkinsJob}.
-    * @param request the {@link JenkinsApiJobRequest} to execute.
+    * Method to execute the given {@link JenkinsBaseRequest}.
+    * @param request the {@link JenkinsBaseRequest} to execute.
+    * @return the {@link String} response from the api.
+    */
+   public String executeRequest( JenkinsBaseRequest request );
+   
+   /**
+    * Method to execute the given {@link JobRequest} against the given {@link JenkinsJob}.
+    * @param request the {@link JobRequest} to execute.
     * @param job the {@link JenkinsJob} the request is for.
     * @return the {@link String} response from the api.
     */

@@ -18,7 +18,9 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
  */
 public enum BuildRequest {
    
-   HistoricDetails( ( l, j, n ) -> JenkinsApiRequests.get().constructHistoricDetailsRequest( l, j, n ) );
+   HistoricDetails( ( l, j, n ) -> {
+      throw new UnsupportedOperationException( "Not implemented yet" );  
+   } );
    
    
    private final transient BuildRequestExecutor executor;

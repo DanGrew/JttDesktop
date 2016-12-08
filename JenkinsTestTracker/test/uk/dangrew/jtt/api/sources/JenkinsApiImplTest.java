@@ -188,6 +188,20 @@ public class JenkinsApiImplTest {
       );
    }//End Method
    
+   @Test public void shouldExecuteJobDetailsRequest() throws ClientProtocolException, IOException {
+      systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
+      
+      String response = systemUnderTest.executeRequest( JenkinsBaseRequest.JobDetailsRequest );
+      Assert.assertEquals( EXPECTED_RESPONSE, response );
+      
+      Assert.assertNotNull( request.get() );
+      Assert.assertTrue( request.get() instanceof HttpGet );
+      HttpGet get = ( HttpGet )request.get();
+      Assert.assertEquals( 
+               requests.constructJobDetailsRequest( requests.prefixJenkinsLocation( JENKINS_LOCATION ) 
+      ).getURI().toString(), get.getURI().toString() );
+   }//End Method
+   
    @Test public void shouldGetLatestTestResultsWrapped() {
       systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       
@@ -222,20 +236,9 @@ public class JenkinsApiImplTest {
       );
    }//End Method
    
-   @Test public void shouldGetHistoricDetails() throws ClientProtocolException, IOException {
+   @Test( expected = UnsupportedOperationException.class ) public void shouldNotSupportHistoricDetails() throws ClientProtocolException, IOException {
       systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
-      
-      String response = systemUnderTest.executeRequest( BuildRequest.HistoricDetails, jenkinsJob, 100 );
-      Assert.assertEquals( EXPECTED_RESPONSE, response );
-      
-      Assert.assertNotNull( request.get() );
-      Assert.assertTrue( request.get() instanceof HttpGet );
-      HttpGet get = ( HttpGet )request.get();
-      Assert.assertEquals( 
-               requests.constructHistoricDetailsRequest( 
-                        requests.prefixJenkinsLocation( JENKINS_LOCATION ), jenkinsJob, 100 ).getURI().toString(), 
-               get.getURI().toString() 
-      );
+      systemUnderTest.executeRequest( BuildRequest.HistoricDetails, jenkinsJob, 100 );
    }//End Method
 
    @Test public void shouldNotGetJobListWhenNotLoggedIn() {
@@ -311,6 +314,11 @@ public class JenkinsApiImplTest {
    
    @Test public void shouldNotExecuteRequestWhenNotLoggedIn() {
       systemUnderTest.executeRequest( JobRequest.LastBuildBuildingStateRequest, Mockito.mock( JenkinsJob.class ) );
+      Mockito.verifyNoMoreInteractions( clientHandler, client );
+   }//End Method
+   
+   @Test public void shouldNotExecuteBaseRequestWhenNotLoggedIn() {
+      systemUnderTest.executeRequest( JenkinsBaseRequest.JobDetailsRequest );
       Mockito.verifyNoMoreInteractions( clientHandler, client );
    }//End Method
    
