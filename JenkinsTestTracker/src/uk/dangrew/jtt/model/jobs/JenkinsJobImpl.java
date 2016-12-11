@@ -28,16 +28,20 @@ import uk.dangrew.jtt.model.users.JenkinsUser;
  */
 public class JenkinsJobImpl implements JenkinsJob {
 
-   private StringProperty name;
-   private IntegerProperty currentBuildNumber;
-   private ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildStatus;
-   private ObjectProperty< BuildState > buildState;
-   private LongProperty expectedBuildTime;
-   private LongProperty currentBuildTime;
-   private LongProperty currentBuildTimestamp;
-   private ObjectProperty< JenkinsNode > lastBuiltOn;
-   private ObservableList< JenkinsUser > culprits;
-   private ObservableList< TestCase > failingTestCases;
+   private final StringProperty name;
+   private final IntegerProperty currentBuildNumber;
+   private final ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildStatus;
+   private final ObjectProperty< BuildState > buildState;
+   private final LongProperty expectedBuildTime;
+   private final LongProperty currentBuildTime;
+   private final LongProperty currentBuildTimestamp;
+   private final ObjectProperty< JenkinsNode > lastBuiltOn;
+   private final ObservableList< JenkinsUser > culprits;
+   private final ObservableList< TestCase > failingTestCases;
+   private final ObjectProperty< Long > totalBuildTime;
+   private final ObjectProperty< Integer > testFailureCount;
+   private final ObjectProperty< Integer > testSkipCount;
+   private final ObjectProperty< Integer > testTotalCount;
    
    /**
     * Constructs a new {@link JenkinsJobImpl}.
@@ -52,15 +56,19 @@ public class JenkinsJobImpl implements JenkinsJob {
       }
       
       this.name = new SimpleStringProperty( name );
-      currentBuildNumber = new SimpleIntegerProperty( DEFAULT_CURRENT_BUILD_NUMBER );
-      lastBuildStatus = new SimpleObjectProperty<>( new Pair<>( DEFAULT_LAST_BUILD_NUMBER, DEFAULT_LAST_BUILD_STATUS ) );
-      buildState = new SimpleObjectProperty<>( DEFAULT_BUILD_STATE );
-      expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
-      currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
-      currentBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
-      lastBuiltOn = new SimpleObjectProperty<>( DEFAULT_LAST_BUILT_ON );
-      culprits = FXCollections.observableArrayList();
-      failingTestCases = FXCollections.observableArrayList();
+      this.currentBuildNumber = new SimpleIntegerProperty( DEFAULT_CURRENT_BUILD_NUMBER );
+      this.lastBuildStatus = new SimpleObjectProperty<>( new Pair<>( DEFAULT_LAST_BUILD_NUMBER, DEFAULT_LAST_BUILD_STATUS ) );
+      this.buildState = new SimpleObjectProperty<>( DEFAULT_BUILD_STATE );
+      this.expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
+      this.currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
+      this.currentBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
+      this.lastBuiltOn = new SimpleObjectProperty<>( DEFAULT_LAST_BUILT_ON );
+      this.culprits = FXCollections.observableArrayList();
+      this.failingTestCases = FXCollections.observableArrayList();
+      this.totalBuildTime = new SimpleObjectProperty<>( DEFAULT_TOTAL_BUILD_TIME );
+      this.testFailureCount = new SimpleObjectProperty<>( DEFAULT_FAILURE_COUNT );
+      this.testSkipCount = new SimpleObjectProperty<>( DEFAULT_SKIP_COUNT );
+      this.testTotalCount = new SimpleObjectProperty<>( DEFAULT_TOTAL_TEST_COUNT );
    }//End Constructor
 
    /**
@@ -159,6 +167,34 @@ public class JenkinsJobImpl implements JenkinsJob {
     */
    @Override public ObservableList< TestCase > failingTestCases() {
       return failingTestCases;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObjectProperty< Long > totalBuildTimeProperty() {
+      return totalBuildTime;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObjectProperty< Integer > testFailureCount() {
+      return testFailureCount;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObjectProperty< Integer > testSkipCount() {
+      return testSkipCount;
+   }//End Method
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override public ObjectProperty< Integer > testTotalCount() {
+      return testTotalCount;
    }//End Method
 
 }//End Class

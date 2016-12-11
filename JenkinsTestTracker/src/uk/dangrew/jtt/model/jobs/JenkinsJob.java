@@ -33,6 +33,10 @@ public interface JenkinsJob {
    public static final long DEFAULT_BUILD_TIMESTAMP = 0;
    public static final boolean DEFAULT_TEST_RESULTS_ARE_SYNC = false;
    public static final JenkinsNode DEFAULT_LAST_BUILT_ON = null;
+   public static final long DEFAULT_TOTAL_BUILD_TIME = 0;
+   public static final int DEFAULT_FAILURE_COUNT = 0;
+   public static final int DEFAULT_SKIP_COUNT = 0;
+   public static final int DEFAULT_TOTAL_TEST_COUNT = 0;
 
    /**
     * Provides the name {@link StringProperty} of the {@link JenkinsJob}.
@@ -103,6 +107,12 @@ public interface JenkinsJob {
    public LongProperty currentBuildTimestampProperty();
    
    /**
+    * Access to the time taken to complete the last build.
+    * @return the property.
+    */
+   public ObjectProperty< Long > totalBuildTimeProperty();
+   
+   /**
     * Provides the {@link JenkinsNode} the job was last built on.
     * @return the {@link ObjectProperty}. Note that the node can be null.
     */
@@ -121,5 +131,23 @@ public interface JenkinsJob {
     * @return the {@link ObservableList}.
     */
    public ObservableList< TestCase > failingTestCases();
+
+   /**
+    * Access to the number of test failures property.
+    * @return the property.
+    */
+   public ObjectProperty< Integer > testFailureCount();
+
+   /**
+    * Access to the number of tests skipped property.
+    * @return the property.
+    */
+   public ObjectProperty< Integer > testSkipCount();
+
+   /**
+    * Access to the number of tests in total property.
+    * @return the property.
+    */
+   public ObjectProperty< Integer > testTotalCount();
 
 }//End Interface

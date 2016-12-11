@@ -1,0 +1,80 @@
+{
+  "jobs" : [
+    {
+      "name" : "Dans Project",
+      "lastBuild" : {
+        "actions" : [
+          {
+            
+          },
+          {
+            
+          },
+          {
+            
+          }
+        ],
+        "duration" : 12975,
+        "estimatedDuration" : 11149,
+        "number" : 15,
+        "result" : "SUCCESS",
+        "timestamp" : 1481218445438,
+        "builtOn" : "Lizs Machine",
+        "culprits" : [
+          {
+            "fullName" : "Dan Grew"
+          }
+        ]
+      }
+    },
+    {
+      "name" : "Lizs Project",
+      "lastBuild" : {
+        "actions" : [
+          {
+            
+          },
+          {
+            
+          },
+          {
+            
+          },
+          {
+            "failCount" : 12,
+            "skipCount" : 1,
+            "totalCount" : 15
+          }
+        ],
+        "duration" : 77521,
+        "estimatedDuration" : 124821,
+        "number" : 560,
+        "result" : "SUCCESS",
+        "timestamp" : 1481218487257,
+        "builtOn" : "Dans Machine",
+        "culprits" : [
+          {
+            "fullName" : "Dan Grew"
+          }
+        ]
+      }
+    },
+    {
+      "name" : "Jeffs Stuff",
+      "lastBuild" : {
+        "actions" : [
+          {
+            
+          },
+          {
+            
+          },
+          {
+            
+          }
+        ],
+        "building" : true
+      }
+    }
+  ]
+}

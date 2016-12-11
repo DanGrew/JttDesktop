@@ -216,5 +216,29 @@ public class JenkinsJobImplTest {
       systemUnderTest.failingTestCases().addAll( firstTestCase, secondTestCase );
       assertThat( systemUnderTest.failingTestCases(), contains( firstTestCase, secondTestCase ) );
    }//End Method
+   
+   @Test public void shouldProvideTotalBuildTime(){
+      assertThat( systemUnderTest.totalBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_TOTAL_BUILD_TIME ) );
+      systemUnderTest.totalBuildTimeProperty().set( 1234L );
+      assertThat( systemUnderTest.totalBuildTimeProperty().get(), is( 1234L ) );
+   }//End Method
+   
+   @Test public void shouldProvideTestFailureCount(){
+      assertThat( systemUnderTest.testFailureCount().get(), is( JenkinsJob.DEFAULT_FAILURE_COUNT ) );
+      systemUnderTest.testFailureCount().set( 1234 );
+      assertThat( systemUnderTest.testFailureCount().get(), is( 1234 ) );
+   }//End Method
+   
+   @Test public void shouldProvideTestSkipCount(){
+      assertThat( systemUnderTest.testSkipCount().get(), is( JenkinsJob.DEFAULT_SKIP_COUNT ) );
+      systemUnderTest.testSkipCount().set( 1234 );
+      assertThat( systemUnderTest.testSkipCount().get(), is( 1234 ) );
+   }//End Method
+   
+   @Test public void shouldProvideTotalTestCount(){
+      assertThat( systemUnderTest.testTotalCount().get(), is( JenkinsJob.DEFAULT_TOTAL_TEST_COUNT ) );
+      systemUnderTest.testTotalCount().set( 1234 );
+      assertThat( systemUnderTest.testTotalCount().get(), is( 1234 ) );
+   }//End Method
 
 }//End Class
