@@ -191,14 +191,14 @@ public class JenkinsApiImplTest {
    @Test public void shouldExecuteJobDetailsRequest() throws ClientProtocolException, IOException {
       systemUnderTest.attemptLogin( JENKINS_LOCATION, USERNAME, PASSWORD );
       
-      String response = systemUnderTest.executeRequest( JenkinsBaseRequest.JobDetailsRequest );
+      String response = systemUnderTest.executeRequest( JenkinsBaseRequest.CurrentJobDetailsRequest );
       Assert.assertEquals( EXPECTED_RESPONSE, response );
       
       Assert.assertNotNull( request.get() );
       Assert.assertTrue( request.get() instanceof HttpGet );
       HttpGet get = ( HttpGet )request.get();
       Assert.assertEquals( 
-               requests.constructJobDetailsRequest( requests.prefixJenkinsLocation( JENKINS_LOCATION ) 
+               requests.constructCurrentJobDetailsRequest( requests.prefixJenkinsLocation( JENKINS_LOCATION ) 
       ).getURI().toString(), get.getURI().toString() );
    }//End Method
    
@@ -318,7 +318,7 @@ public class JenkinsApiImplTest {
    }//End Method
    
    @Test public void shouldNotExecuteBaseRequestWhenNotLoggedIn() {
-      systemUnderTest.executeRequest( JenkinsBaseRequest.JobDetailsRequest );
+      systemUnderTest.executeRequest( JenkinsBaseRequest.CurrentJobDetailsRequest );
       Mockito.verifyNoMoreInteractions( clientHandler, client );
    }//End Method
    

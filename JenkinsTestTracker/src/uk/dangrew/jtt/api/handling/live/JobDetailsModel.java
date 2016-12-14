@@ -26,6 +26,9 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
  */
 class JobDetailsModel {
    
+   static final String MASTER_ID = "";
+   static final String MASTER_NAME = "Master Node";
+   
    private final JenkinsDatabase database;
    
    private String jobName;
@@ -86,6 +89,7 @@ class JobDetailsModel {
          database.store( job );
       }
       if ( buildNumber != null ) {
+         job.currentBuildNumberProperty().set( buildNumber );
          job.setLastBuildNumber( buildNumber );
       }
       if ( result != null ) {
@@ -93,7 +97,21 @@ class JobDetailsModel {
       }
       if ( buildState != null ) {
          job.buildStateProperty().set( buildState );
+         if ( buildState == BuildState.Built ) {
+            job.currentBuildTimeProperty().set( 0 );
+         }
       }
+      updateJobTimings( job );
+      updateBuiltOn( job );
+      updateTestResults( job );
+      updateCulprits( job );
+   }//End Method
+   
+   /**
+    * Method to update the {@link JenkinsJob} time related properties.
+    * @param job the {@link JenkinsJob} to update.
+    */
+   private void updateJobTimings( JenkinsJob job ) {
       if ( timestamp != null ) {
          job.currentBuildTimestampProperty().set( timestamp );
       }
@@ -103,6 +121,13 @@ class JobDetailsModel {
       if ( estimatedDuration != null ) {
          job.expectedBuildTimeProperty().set( estimatedDuration );
       }
+   }//End Method
+   
+   /**
+    * Method to update the {@link JenkinsNode} built on.
+    * @param job the {@link JenkinsJob} to update.
+    */
+   private void updateBuiltOn( JenkinsJob job ) {
       if ( builtOn != null ) {
          JenkinsNode node = database.getJenkinsNode( builtOn );
          if ( node == null ) {
@@ -111,6 +136,13 @@ class JobDetailsModel {
          }
          job.lastBuiltOnProperty().set( node );
       }
+   }//End Method
+
+   /**
+    * Method to update the {@link JenkinsJob} test results.
+    * @param job the {@link JenkinsJob} to update.
+    */
+   private void updateTestResults( JenkinsJob job ) {
       if ( failCount != null ) {
          job.testFailureCount().set( failCount );
       }
@@ -120,14 +152,26 @@ class JobDetailsModel {
       if ( totalTestCount != null ) {
          job.testTotalCount().set( totalTestCount );
       }
-      job.culprits().clear();
+   }//End Method
+   
+   /**
+    * Method to update the {@link JenkinsJob} {@link JenkinsUser} culprits.
+    * @param job the {@link JenkinsJob} to update.
+    */
+   private void updateCulprits( JenkinsJob job ){
+      List< JenkinsUser > cupritsIdentified = new ArrayList<>();
       for ( String user : culprits ) {
          JenkinsUser jenkinsUser = database.getJenkinsUser( user );
          if ( jenkinsUser == null ) {
             jenkinsUser = new JenkinsUserImpl( user );
             database.store( jenkinsUser );
          }
-         job.culprits().add( jenkinsUser );
+         cupritsIdentified.add( jenkinsUser );
+      }
+      
+      if ( !cupritsIdentified.equals( job.culprits() ) ) {
+         job.culprits().clear();
+         job.culprits().addAll( cupritsIdentified );
       }
    }//End Method
    
@@ -155,7 +199,13 @@ class JobDetailsModel {
     * @param value the parsed value.
     */
    void setBuiltOn( String key, String value ) {
-      this.builtOn = value;
+      if ( value == null ) {
+         builtOn = null;
+      } else if ( value.equals( MASTER_ID ) ) {
+         builtOn = MASTER_NAME;
+      } else {
+         builtOn = value;
+      }
    }//End Method
    
    /**

@@ -13,10 +13,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.collections.ListChangeListener;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -72,6 +75,7 @@ public class JobDetailsModelTest {
       
       assertThat( job.buildStateProperty().get(), is( BuildState.Built ) );
       assertThat( job.getLastBuildNumber(), is( not( 101 ) ) );
+      assertThat( job.currentBuildNumberProperty().get(), is( not( 101 ) ) );
       assertThat( job.lastBuiltOnProperty().get(), is( nullValue() ) );
       assertThat( job.totalBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_TOTAL_BUILD_TIME ) );
       assertThat( job.expectedBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME ) );
@@ -122,6 +126,27 @@ public class JobDetailsModelTest {
       assertThat( job.lastBuiltOnProperty().get(), is( node ) );
    }//End Method
    
+   @Test public void shoulduUseMasterNodeIfNameIsNotFullString(){
+      database.store( job );
+      node.nameProperty().set( JobDetailsModel.MASTER_NAME );
+      database.store( node );
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.setBuiltOn( ANYTHING, JobDetailsModel.MASTER_ID );
+      systemUnderTest.finishJob( ANYTHING );
+      
+      assertThat( job.lastBuiltOnProperty().get(), is( node ) );
+   }//End Method
+   
+   @Test public void shouldCreateMasterNodeIfNameIsNotFullString(){
+      database.store( job );
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.setBuiltOn( ANYTHING, JobDetailsModel.MASTER_ID );
+      systemUnderTest.finishJob( ANYTHING );
+      
+      JenkinsNode master = database.getJenkinsNode( JobDetailsModel.MASTER_NAME );
+      assertThat( job.lastBuiltOnProperty().get(), is( master ) );
+   }//End Method
+   
    @Test public void shouldCreateUserIfItDoesntExist() {
       String user = "User";
       database.store( job );
@@ -167,6 +192,24 @@ public class JobDetailsModelTest {
       assertThat( job.buildStateProperty().get(), is( BuildState.Building ) ); 
    }//End Method
    
+   @Test public void shouldResetCurrentBuildTimeWhenBuilt(){
+      job.currentBuildTimeProperty().set( 100 );
+      database.store( job );
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.setBuildingState( ANYTHING, false );
+      systemUnderTest.finishJob( ANYTHING );
+      assertThat( job.currentBuildTimeProperty().get(), is( 0L ) );
+   }//End Method
+   
+   @Test public void shouldNotResetCurrentBuildTimeWhenBuilding(){
+      job.currentBuildTimeProperty().set( 100 );
+      database.store( job );
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.setBuildingState( ANYTHING, true );
+      systemUnderTest.finishJob( ANYTHING );
+      assertThat( job.currentBuildTimeProperty().get(), is( 100L ) );
+   }//End Method
+   
    @Test public void shouldHoldDurationAndUseWhenPopulating() {
       database.store( job );
       systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
@@ -197,6 +240,7 @@ public class JobDetailsModelTest {
       systemUnderTest.setBuildNumber( ANYTHING, 456 );
       systemUnderTest.finishJob( ANYTHING );
       assertThat( job.getLastBuildNumber(), is( 456 ) );
+      assertThat( job.currentBuildNumberProperty().get(), is( 456 ) );
    }//End Method
    
    @Test public void shouldHoldResultingStateAndUseWhenPopulating() {
@@ -236,6 +280,7 @@ public class JobDetailsModelTest {
       
       job.buildStateProperty().set( BuildState.Building );
       job.setLastBuildNumber( 101 );
+      job.currentBuildNumberProperty().set( 101 );
       job.lastBuiltOnProperty().set( node );
       job.totalBuildTimeProperty().set( 12345L );
       job.expectedBuildTimeProperty().set( 12345L );
@@ -251,6 +296,7 @@ public class JobDetailsModelTest {
       
       assertThat( job.buildStateProperty().get(), is( BuildState.Building ) );
       assertThat( job.getLastBuildNumber(), is( 101 ) );
+      assertThat( job.currentBuildNumberProperty().get(), is( 101 ) );
       assertThat( job.lastBuiltOnProperty().get(), is( node ) );
       assertThat( job.totalBuildTimeProperty().get(), is( 12345L ) );
       assertThat( job.expectedBuildTimeProperty().get(), is( 12345L ) );
@@ -260,6 +306,28 @@ public class JobDetailsModelTest {
       assertThat( job.getLastBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
       assertThat( job.currentBuildTimestampProperty().get(), is( 12345L ) );
       assertThat( job.culprits(), is( empty() ) );
+   }//End Method
+   
+   @Test public void shouldNotClearCulpritsWhenSame(){
+      JenkinsUser user2 = new JenkinsUserImpl( "User2" );
+      JenkinsUser user3 = new JenkinsUserImpl( "User3" );
+      database.store( job );
+      database.store( user );
+      database.store( user2 );
+      database.store( user3 );
+      job.culprits().addAll( user, user2, user3 );
+      
+      @SuppressWarnings("unchecked") //mocking genericized 
+      ListChangeListener< JenkinsUser > userChanges = mock( ListChangeListener.class );
+      job.culprits().addListener( userChanges );
+      
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.addCulprit( ANYTHING, user.nameProperty().get() );
+      systemUnderTest.addCulprit( ANYTHING, user2.nameProperty().get() );
+      systemUnderTest.addCulprit( ANYTHING, user3.nameProperty().get() );
+      systemUnderTest.finishJob( ANYTHING );
+      
+      verifyZeroInteractions( userChanges );
    }//End Method
 
 }//End Class

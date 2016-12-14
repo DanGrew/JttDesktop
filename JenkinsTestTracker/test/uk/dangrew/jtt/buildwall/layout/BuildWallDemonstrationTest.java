@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import uk.dangrew.jtt.api.handling.JenkinsProcessingImpl;
+import uk.dangrew.jtt.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
@@ -50,7 +50,7 @@ public class BuildWallDemonstrationTest {
 
    @Before public void initialiseSystemUnderTest(){
       database = new JenkinsDatabaseImpl();
-      new JobUpdater( new JenkinsProcessingImpl( 
+      new JobUpdater( new LiveStateFetcher( 
                database, mock( ExternalApi.class ) 
       ), new Timer(), 5000L );
       

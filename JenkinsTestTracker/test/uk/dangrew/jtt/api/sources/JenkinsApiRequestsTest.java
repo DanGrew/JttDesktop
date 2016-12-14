@@ -93,11 +93,19 @@ public class JenkinsApiRequestsTest {
       );
    }//End Method
    
-   @Test public void shouldConstructJobDetailsRequest(){
-      final String expectedRequest = "http://some-location" + JenkinsApiRequests.JOB_DETAILS;
+   @Test public void shouldConstructCurrentJobDetailsRequest(){
+      final String expectedRequest = "http://some-location" + JenkinsApiRequests.CURRENT_JOB_DETAILS;
       Assert.assertEquals( 
                expectedRequest, 
-               systemUnderTest.constructJobDetailsRequest( "http://some-location" ).getURI().toString() 
+               systemUnderTest.constructCurrentJobDetailsRequest( "http://some-location" ).getURI().toString() 
+      );
+   }//End Method
+   
+   @Test public void shouldConstructLastJobDetailsRequest(){
+      final String expectedRequest = "http://some-location" + JenkinsApiRequests.LAST_COMPLETE_JOB_DETAILS;
+      Assert.assertEquals( 
+               expectedRequest, 
+               systemUnderTest.constructLastCompleteJobDetailsRequest( "http://some-location" ).getURI().toString() 
       );
    }//End Method
    

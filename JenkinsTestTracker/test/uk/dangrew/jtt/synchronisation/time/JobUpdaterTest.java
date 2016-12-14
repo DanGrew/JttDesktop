@@ -24,7 +24,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.api.handling.JenkinsProcessing;
+import uk.dangrew.jtt.api.handling.live.LiveStateFetcher;
 
 /**
  * {@link JobUpdater} test.
@@ -36,14 +36,14 @@ public class JobUpdaterTest {
    @Captor private ArgumentCaptor< Long > intervalCaptor;
    
    @Mock private Timer timer;
-   @Mock private JenkinsProcessing jenkinsProcessing;
+   @Mock private LiveStateFetcher fetcher;
    private Long interval;
    private JobUpdater systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       interval = 1000l;
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new JobUpdater( jenkinsProcessing, timer, interval );
+      systemUnderTest = new JobUpdater( fetcher, timer, interval );
    }//End Method
    
    @Test public void shouldScheduleTimerTaskOnTimer(){
@@ -61,28 +61,28 @@ public class JobUpdaterTest {
       
       Assert.assertEquals( 1, timerTaskCaptor.getAllValues().size() );
       Assert.assertNotNull( timerTaskCaptor.getValue() );
-      Mockito.verifyZeroInteractions( jenkinsProcessing );
+      Mockito.verifyZeroInteractions( fetcher );
       
       timerTaskCaptor.getValue().run();
-      Mockito.verify( jenkinsProcessing ).fetchJobsAndUpdateDetails();
+      Mockito.verify( fetcher ).updateBuildState();
    }//End Method
    
    @Test public void pollShouldRunRunnable(){
-      Mockito.verifyZeroInteractions( jenkinsProcessing );
+      Mockito.verifyZeroInteractions( fetcher );
       systemUnderTest.poll();
-      Mockito.verify( jenkinsProcessing ).fetchJobsAndUpdateDetails();
+      Mockito.verify( fetcher ).updateBuildState();
    }//End Method
 
    @Test public void manualConstructorPollShouldRunRunnable(){
-      Mockito.verifyZeroInteractions( jenkinsProcessing );
-      systemUnderTest = new JobUpdater( jenkinsProcessing, null, null );
+      Mockito.verifyZeroInteractions( fetcher );
+      systemUnderTest = new JobUpdater( fetcher, null, null );
       systemUnderTest.poll();
-      Mockito.verify( jenkinsProcessing ).fetchJobsAndUpdateDetails();
+      Mockito.verify( fetcher ).updateBuildState();
    }//End Method
    
    @Test public void shouldBeAssociatedWith(){
-      assertThat( systemUnderTest.isAssociatedWith( jenkinsProcessing ), is( true ) );
-      assertThat( systemUnderTest.isAssociatedWith( mock( JenkinsProcessing.class ) ), is( false ) );
+      assertThat( systemUnderTest.isAssociatedWith( fetcher ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( mock( LiveStateFetcher.class ) ), is( false ) );
    }//End Method
 
 }//End Class

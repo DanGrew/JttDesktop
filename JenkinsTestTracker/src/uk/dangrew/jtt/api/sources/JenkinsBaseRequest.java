@@ -18,7 +18,8 @@ import org.apache.http.client.methods.HttpGet;
  */
 public enum JenkinsBaseRequest {
    
-   JobDetailsRequest( ( l ) -> JenkinsApiRequests.get().constructJobDetailsRequest( l ) );
+   CurrentJobDetailsRequest( JenkinsApiRequests.get()::constructCurrentJobDetailsRequest ), 
+   LastCompleteJobDetailsRequest( JenkinsApiRequests.get()::constructLastCompleteJobDetailsRequest );
    
    private final transient Function< String, HttpGet > executor;
    

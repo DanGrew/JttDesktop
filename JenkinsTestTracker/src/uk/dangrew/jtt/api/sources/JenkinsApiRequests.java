@@ -23,9 +23,11 @@ class JenkinsApiRequests {
    static final String LAST_BUILD_BUILDING = "/lastBuild/api/json?tree=building,estimatedDuration,timestamp,number,builtOn";
    static final String LIST_OF_BUILDS = "/api/json?tree=builds[number]";
    static final String LAST_BUILD_DETAILS = "/lastCompletedBuild/api/json?tree=number,result,culprits[fullName]";
-   static final String JOB_DETAILS = 
-            "/api/json?tree=jobs[name,lastBuild[actions[failCount,skipCount,totalCount],building,duration,estimatedDuration,"
+   
+   static final String BUILD_DETAILS = "[actions[failCount,skipCount,totalCount],building,duration,estimatedDuration,"
             + "result,number,timestamp,builtOn,culprits[fullName]]]";
+   static final String CURRENT_JOB_DETAILS       = "/api/json?tree=jobs[name,lastBuild" + BUILD_DETAILS;
+   static final String LAST_COMPLETE_JOB_DETAILS = "/api/json?tree=jobs[name,lastCompletedBuild" + BUILD_DETAILS;
    
    static final String TEST_CASES_PROPERTIES = "duration,name,className,failedSince,skipped,status,age";
    static final String TEST_CLASS_PROPERTIES = "duration,name,cases[" + TEST_CASES_PROPERTIES +"]";
@@ -139,12 +141,23 @@ class JenkinsApiRequests {
    }//End Method
    
    /**
-    * Method to construct the request for getting details of all builds in jenkins.
+    * Method to construct the request for getting details of all builds in jenkins and their
+    * current state.
     * @param jenkinsLocation the location.
     * @return the {@link HttpGet} to execute.
     */
-   HttpGet constructJobDetailsRequest( String jenkinsLocation ) {
-      return new HttpGet( jenkinsLocation + JOB_DETAILS );
+   HttpGet constructCurrentJobDetailsRequest( String jenkinsLocation ) {
+      return new HttpGet( jenkinsLocation + CURRENT_JOB_DETAILS );
+   }//End Method
+   
+   /**
+    * Method to construct the request for getting details of all builds in jenkins and the
+    * state of their last completed build.
+    * @param jenkinsLocation the location.
+    * @return the {@link HttpGet} to execute.
+    */
+   HttpGet constructLastCompleteJobDetailsRequest( String jenkinsLocation ) {
+      return new HttpGet( jenkinsLocation + LAST_COMPLETE_JOB_DETAILS );
    }//End Method
 
    /**

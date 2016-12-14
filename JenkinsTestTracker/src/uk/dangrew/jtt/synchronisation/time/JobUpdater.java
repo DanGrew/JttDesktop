@@ -10,7 +10,7 @@ package uk.dangrew.jtt.synchronisation.time;
 
 import java.util.Timer;
 
-import uk.dangrew.jtt.api.handling.JenkinsProcessing;
+import uk.dangrew.jtt.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.synchronisation.model.TimeKeeper;
 
 /**
@@ -22,29 +22,29 @@ public class JobUpdater extends TimeKeeper {
    static final long UPDATE_DELAY = TimeKeeper.TASK_DELAY;
    static final long INTERVAL = 5000L;
    
-   private final JenkinsProcessing processing;
+   private final LiveStateFetcher fetcher;
    
    /**
     * Constructs a new {@link JobUpdater}.
-    * @param jenkinsProcessing the {@link JenkinsProcessing} to request job updates on.
+    * @param fetcher the {@link LiveStateFetcher} to request job updates on.
     * @param timer the {@link Timer} to time events.
     * @param interval the interval between updates.
     */
-   public JobUpdater( JenkinsProcessing jenkinsProcessing, Timer timer, Long interval ) {
+   public JobUpdater( LiveStateFetcher fetcher, Timer timer, Long interval ) {
       super( 
-               () -> jenkinsProcessing.fetchJobsAndUpdateDetails(),
+               () -> fetcher.updateBuildState(),
                timer, 
                interval
       );
-      this.processing = jenkinsProcessing;
+      this.fetcher = fetcher;
    }//End Constructor
    
    /**
     * Method to determine whether the given is associated with this.
-    * @param processing the {@link JenkinsProcessing} in question.
+    * @param fetcher the {@link LiveStateFetcher} in question.
     * @return true if identical.
     */
-   public boolean isAssociatedWith( JenkinsProcessing processing ) {
-      return this.processing == processing;
+   public boolean isAssociatedWith( LiveStateFetcher fetcher ) {
+      return this.fetcher == fetcher;
    }//End Method
 }//End Class
