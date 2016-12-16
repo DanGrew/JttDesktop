@@ -1,3 +1,8 @@
+Release, "1.5.197"
+Date, "(Dec 16, 2016 8:57:54 AM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.197/JenkinsTestTracker-1.5.197-runnable.jar"
+Description, "Job detail requests reworked to execute a single command to obtain detail. This significantly reduces the requests made to the Jenkins server from the number of jobs to one, per poll. This update is strongly recommended to help ease the strain on both the machine running the wall and the Jenkins server."
+
 Release, "1.5.190"
 Date, "(Dec 5, 2016 8:17:14 AM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.190/JenkinsTestTracker-1.5.190-runnable.jar"
