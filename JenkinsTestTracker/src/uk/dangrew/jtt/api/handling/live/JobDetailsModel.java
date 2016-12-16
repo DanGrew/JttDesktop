@@ -30,6 +30,7 @@ class JobDetailsModel {
    static final String MASTER_NAME = "Master Node";
    
    private final JenkinsDatabase database;
+   private final StateChangeIdentifier stateChanges;
    
    private String jobName;
    private Integer buildNumber;
@@ -49,11 +50,21 @@ class JobDetailsModel {
     * @param database the {@link JenkinsDatabase}.
     */
    public JobDetailsModel( JenkinsDatabase database ) {
+      this( database, new StateChangeIdentifier() );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link JobDetailsModel}.
+    * @param database the {@link JenkinsDatabase}.
+    * @param stateChanges the {@link StateChangeIdentifier}.
+    */
+   JobDetailsModel( JenkinsDatabase database, StateChangeIdentifier stateChanges ) {
       if ( database == null ) {
          throw new IllegalArgumentException( "Must supply non null database." );
       }
       this.database = database;
       this.culprits = new ArrayList<>();
+      this.stateChanges = stateChanges;
    }//End Constructor
    
    /**
@@ -88,6 +99,14 @@ class JobDetailsModel {
          job = new JenkinsJobImpl( jobName );
          database.store( job );
       }
+      
+      stateChanges.recordState( job );
+      if ( buildState != null ) {
+         job.buildStateProperty().set( buildState );
+         if ( buildState == BuildState.Built ) {
+            job.currentBuildTimeProperty().set( 0 );
+         }
+      }
       if ( buildNumber != null ) {
          job.currentBuildNumberProperty().set( buildNumber );
          job.setLastBuildNumber( buildNumber );
@@ -95,16 +114,12 @@ class JobDetailsModel {
       if ( result != null ) {
          job.setLastBuildStatus( result );
       }
-      if ( buildState != null ) {
-         job.buildStateProperty().set( buildState );
-         if ( buildState == BuildState.Built ) {
-            job.currentBuildTimeProperty().set( 0 );
-         }
-      }
       updateJobTimings( job );
       updateBuiltOn( job );
       updateTestResults( job );
       updateCulprits( job );
+      
+      stateChanges.identifyStateChanges();
    }//End Method
    
    /**

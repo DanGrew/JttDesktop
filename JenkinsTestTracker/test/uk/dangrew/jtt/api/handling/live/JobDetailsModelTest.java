@@ -11,13 +11,18 @@ package uk.dangrew.jtt.api.handling.live;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import javafx.collections.ListChangeListener;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
@@ -38,15 +43,17 @@ public class JobDetailsModelTest {
    private JenkinsJob job;
    private JenkinsNode node;
    private JenkinsUser user;
+   @Mock private StateChangeIdentifier statusChanges;
    private JenkinsDatabase database;
    private JobDetailsModel systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
+      MockitoAnnotations.initMocks( this );
       job = new JenkinsJobImpl( "Job" );
       node = new JenkinsNodeImpl( "Node" );
       user = new JenkinsUserImpl( "User" );
       database = new JenkinsDatabaseImpl();
-      systemUnderTest = new JobDetailsModel( database );
+      systemUnderTest = new JobDetailsModel( database, statusChanges );
    }//End Method
 
    @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullDatabase() {
@@ -328,6 +335,59 @@ public class JobDetailsModelTest {
       systemUnderTest.finishJob( ANYTHING );
       
       verifyZeroInteractions( userChanges );
+   }//End Method
+   
+   @Test public void shouldRecordStateChangesBeforeApplyingAnyIdentifyingAfter(){
+      database.store( job );
+      
+      doAnswer( i -> {
+         assertThat( job.buildStateProperty().get(), is( BuildState.Built ) );
+         assertThat( job.getLastBuildNumber(), is( not( 101 ) ) );
+         assertThat( job.currentBuildNumberProperty().get(), is( not( 101 ) ) );
+         assertThat( job.lastBuiltOnProperty().get(), is( nullValue() ) );
+         assertThat( job.totalBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_TOTAL_BUILD_TIME ) );
+         assertThat( job.expectedBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME ) );
+         assertThat( job.testFailureCount().get(), is( JenkinsJob.DEFAULT_FAILURE_COUNT ) );
+         assertThat( job.testSkipCount().get(), is( JenkinsJob.DEFAULT_SKIP_COUNT ) );
+         assertThat( job.testTotalCount().get(), is( JenkinsJob.DEFAULT_TOTAL_TEST_COUNT ) );
+         assertThat( job.getLastBuildStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+         assertThat( job.currentBuildTimestampProperty().get(), is( JenkinsJob.DEFAULT_BUILD_TIMESTAMP ) );
+         assertThat( job.culprits(), is( empty() ) );
+         return null;
+      } ).when( statusChanges ).recordState( job );
+      
+      doAnswer( i -> {
+         assertThat( job.buildStateProperty().get(), is( BuildState.Building ) );
+         assertThat( job.getLastBuildNumber(), is( 101 ) );
+         assertThat( job.currentBuildNumberProperty().get(), is( 101 ) );
+         assertThat( job.lastBuiltOnProperty().get(), is( notNullValue() ) );
+         assertThat( job.totalBuildTimeProperty().get(), is( 123456L ) );
+         assertThat( job.expectedBuildTimeProperty().get(), is( 234567L ) );
+         assertThat( job.testFailureCount().get(), is( 98 ) );
+         assertThat( job.testSkipCount().get(), is( 87 ) );
+         assertThat( job.testTotalCount().get(), is( 9876 ) );
+         assertThat( job.getLastBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
+         assertThat( job.currentBuildTimestampProperty().get(), is( 345678L ) );
+         assertThat( job.culprits(), is( not( empty() ) ) );
+         return null;
+      } ).when( statusChanges ).identifyStateChanges();
+      
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.setBuildingState( ANYTHING, true );
+      systemUnderTest.setBuildNumber( ANYTHING, 101 );
+      systemUnderTest.setBuiltOn( ANYTHING, "Node" );
+      systemUnderTest.setDuration( ANYTHING, 123456L );
+      systemUnderTest.setEstimatedDuration( ANYTHING, 234567L );
+      systemUnderTest.setFailCount( ANYTHING, 98 );
+      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
+      systemUnderTest.setSkipCount( ANYTHING, 87 );
+      systemUnderTest.setTimestamp( ANYTHING, 345678L );
+      systemUnderTest.setTotalTestCount( ANYTHING, 9876 );
+      systemUnderTest.addCulprit( ANYTHING, "Dan" );
+      
+      systemUnderTest.finishJob( ANYTHING );
+      verify( statusChanges ).recordState( job );
+      verify( statusChanges ).identifyStateChanges();
    }//End Method
 
 }//End Class

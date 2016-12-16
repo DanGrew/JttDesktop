@@ -25,7 +25,7 @@ public class NotificationCenter {
     * @param database the {@link JenkinsDatabase} associated.
     */
    public NotificationCenter( JenkinsDatabase database ) {
-      notifier = new BuildResultStatusNotifier( database );
+      this.notifier = new BuildResultStatusNotifier();
       new NotificationEvent().register( event -> event.getValue().showDesktopNotification() );
    }//End Constructor
    
