@@ -38,15 +38,13 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    static final String CULPRITS_PREFIX = "Suspects: ";
    static final String NO_CULPRITS = "No Suspects.";
    
-   static final String FAILING_TEST_CLASS_PREFIX = "Failure:";
-   static final String FAILING_TEST_CLASSES_PREFIX = "Failures:";
    static final String NO_FAILING_TESTS = "No Failures.";
    static final double CULPRITS_ROW_PERCENT = 25.0;
    static final double BUILT_ON_ROW_PERCENT = 10.0;
    static final double FAILURES_ROW_PERCENT = 65.0;
    
-   static final Object ABORTED_DESCRIPTION = "ABORTED: Manual, Build Timeout, etc.";
-   static final Object FAILURE_DESCRIPTION = "FAILURE: Compilation Problem, Partial Checkout, etc.";
+   static final String ABORTED_DESCRIPTION = "ABORTED: Manual, Build Timeout, etc.";
+   static final String FAILURE_DESCRIPTION = "FAILURE: Compilation Problem, Partial Checkout, etc.";
    
    private final BuildWallConfiguration configuration;
    private final JenkinsJob jenkinsJob;
@@ -158,12 +156,9 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
          return failingTests;
       }
       
-      if ( uniqueTestClasses.size() == 1 ) {
-         failingTests.append( FAILING_TEST_CLASS_PREFIX );
-      } else {
-         failingTests.append( FAILING_TEST_CLASSES_PREFIX );
-      }
-      failingTests.append( "\n" );
+      failingTests.append( jenkinsJob.testFailureCount().get() ).append( "/" )
+         .append( jenkinsJob.testTotalCount().get() )
+         .append( " Failed:" ).append( "\n" );
       
       uniqueTestClasses.forEach( test -> {
          failingTests.append( test.nameProperty().get() );
@@ -222,6 +217,13 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
                new FunctionListChangeListenerImpl<>( 
                         added -> updateFailuresText(), removed -> updateFailuresText()
                )
+      ) );
+      
+      registrations.apply( new ChangeListenerRegistrationImpl<>(
+               jenkinsJob.testFailureCount(), ( s, o, n ) -> updateFailuresText() 
+      ) );
+      registrations.apply( new ChangeListenerRegistrationImpl<>(
+               jenkinsJob.testTotalCount(), ( s, o, n ) -> updateFailuresText() 
       ) );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 

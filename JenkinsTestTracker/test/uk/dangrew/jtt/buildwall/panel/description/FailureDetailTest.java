@@ -48,6 +48,7 @@ import uk.dangrew.jtt.model.users.JenkinsUserImpl;
  */
 public class FailureDetailTest {
    
+   private static final String FAILURES_PREFIX = "0/0 Failed:";
    private BuildWallConfiguration configuration;
    private JenkinsUser rick;
    private JenkinsUser daryl;
@@ -97,12 +98,16 @@ public class FailureDetailTest {
       
       Thread.sleep( 2000 );
       PlatformImpl.runLater( () -> {
+         jenkinsJob.testFailureCount().set( 10 );
+         jenkinsJob.testTotalCount().set( 1001 );
          jenkinsJob.culprits().remove( 1 );
          jenkinsJob.failingTestCases().clear();
       } );
       
       Thread.sleep( 2000 );
       PlatformImpl.runLater( () -> {
+         jenkinsJob.testFailureCount().set( 11 );
+         jenkinsJob.testTotalCount().set( 23001 );
          jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Maggie" ), new JenkinsUserImpl( "Carol" ) );
          jenkinsJob.failingTestCases().addAll( survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase );
       } );
@@ -114,6 +119,8 @@ public class FailureDetailTest {
       
       Thread.sleep( 2000 );
       PlatformImpl.runLater( () -> {
+         jenkinsJob.testFailureCount().set( 999 );
+         jenkinsJob.testTotalCount().set( 1000 );
          jenkinsJob.culprits().remove( 4 );
       } );
       
@@ -412,7 +419,7 @@ public class FailureDetailTest {
    @Test public void shouldDetachFailuresUpdatesFromSystem(){
       systemUnderTest.detachFromSystem();
       
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failures:" + constructFailuresString( 
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + constructFailuresString( 
                survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase 
       ) ) );
       
@@ -422,7 +429,7 @@ public class FailureDetailTest {
       String expected = constructFailuresString( 
                survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase
       );
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failures:" + expected ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + expected ) );
       
       jenkinsJob.failingTestCases().removeAll( 
                jenkinsJob.failingTestCases().get( 2 ), 
@@ -430,7 +437,7 @@ public class FailureDetailTest {
       );
       jenkinsJob.failingTestCases().remove( jenkinsJob.failingTestCases().get( 1 ) );
       
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failures:" + expected ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + expected ) );
    }//End Method
    
    @Test public void shouldUseDecoupledPlatformToSetCulpritText(){
@@ -464,7 +471,7 @@ public class FailureDetailTest {
       String expected = constructFailuresString( 
                survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase
       );
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failures:" + expected ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + expected ) );
       
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       jenkinsJob.failingTestCases().add( anotherTestCase );
@@ -472,24 +479,24 @@ public class FailureDetailTest {
       expected = constructFailuresString( 
                survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase, anotherTestCase
       );
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failures:" + expected ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + expected ) );
    }//End Method
    
    @Test public void shouldPrefixFailuresDescription(){
-      assertThat( systemUnderTest.failuresLabel().getText(), startsWith( FailureDetail.FAILING_TEST_CLASSES_PREFIX ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), startsWith( FAILURES_PREFIX ) );
    }//End Method
    
    @Test public void shouldListAllFailuresInOrderDefinedByJob(){
       assertThat( 
                systemUnderTest.failuresLabel().getText(), 
-               is( "Failures:" + constructFailuresString( survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase ) ) 
+               is( FAILURES_PREFIX + constructFailuresString( survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase ) ) 
       );
    }//End Method
    
    @Test public void shouldShowFailureForSingle(){
       jenkinsJob.failingTestCases().clear();
       jenkinsJob.failingTestCases().add( zombieKillingTestCase );
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failure:\nZombieKillingTest" ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), is( "0/0 Failed:\nZombieKillingTest" ) );
    }//End Method
    
    @Test public void shouldShowNoFailuresWhenNoneAvailable(){
@@ -507,7 +514,7 @@ public class FailureDetailTest {
                survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase,
                crossBowTest
       );
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failures:" + expected ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + expected ) );
       
       TestCase lucilleTest = constructTestCase( "LucilleIsEvilTest", "anything" ); 
       TestCase comicTest = constructTestCase( "ComicWasBetterTest", "anything" ); 
@@ -517,7 +524,7 @@ public class FailureDetailTest {
                survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase,
                crossBowTest, lucilleTest, comicTest
       );
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failures:" + expected ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + expected ) );
    }//End Method
    
    @Test public void shouldUpdateFailuresListWhenFailuresRemoved(){
@@ -529,10 +536,10 @@ public class FailureDetailTest {
       String expected = constructFailuresString( 
                survivalTestCase, cliffHangerTestCase
       );
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failures:" + expected ) );
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + expected ) );
       jenkinsJob.failingTestCases().remove( 1 );
       
-      assertThat( systemUnderTest.failuresLabel().getText(), is( "Failure:" + constructFailuresString( 
+      assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + constructFailuresString( 
                survivalTestCase
       ) ) );
    }//End Method
@@ -568,6 +575,28 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.isDetached(), is( false ) );
       systemUnderTest.detachFromSystem();
       assertThat( systemUnderTest.isDetached(), is( true ) );
+   }//End Method
+   
+   @Test public void shouldPrefixFailuresWithNumberOfFailedOverTotal(){
+      jenkinsJob.testFailureCount().set( 201 );
+      jenkinsJob.testTotalCount().set( 9876 );
+      assertThat( systemUnderTest.failuresLabel().getText(), startsWith( "201/9876 Failed:" ) );
+   }//End Method
+   
+   @Test public void shouldUpdateFailedNumberInFailuresText(){
+      jenkinsJob.testFailureCount().set( 201 );
+      jenkinsJob.testTotalCount().set( 9876 );
+      assertThat( systemUnderTest.failuresLabel().getText(), startsWith( "201/9876 Failed:" ) );
+      jenkinsJob.testFailureCount().set( 564 );
+      assertThat( systemUnderTest.failuresLabel().getText(), startsWith( "564/9876 Failed:" ) );
+   }//End Method
+   
+   @Test public void shouldUpdateTotalNumberInFailuresText(){
+      jenkinsJob.testFailureCount().set( 201 );
+      jenkinsJob.testTotalCount().set( 9876 );
+      assertThat( systemUnderTest.failuresLabel().getText(), startsWith( "201/9876 Failed:" ) );
+      jenkinsJob.testTotalCount().set( 202 );
+      assertThat( systemUnderTest.failuresLabel().getText(), startsWith( "201/202 Failed:" ) );
    }//End Method
 
 }//End Class
