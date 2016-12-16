@@ -8,7 +8,9 @@
  */
 package uk.dangrew.jtt.api.handling.live;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.api.sources.JenkinsBaseRequest;
 import uk.dangrew.jtt.data.json.conversion.ApiResponseToJsonConverter;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
@@ -32,7 +35,7 @@ public class LiveStateFetcher {
    private final JobDetailsParser parser;
    private final JenkinsFetcher fetcher;
    
-   private final Set< JenkinsJob > unstableJobs;
+   private final Map< JenkinsJob, Integer > unstableJobsLastBuildNumbersTestRetrievedFor;
    
    /**
     * Constructs a new {@link LiveStateFetcher}.
@@ -73,7 +76,7 @@ public class LiveStateFetcher {
       this.parser = parser;
       this.fetcher = fetcher;
       
-      this.unstableJobs = new HashSet<>();
+      this.unstableJobsLastBuildNumbersTestRetrievedFor = new HashMap<>();
    }//End Constructor
 
    /**
@@ -108,14 +111,23 @@ public class LiveStateFetcher {
     * @param job the {@link JenkinsJob} to check.
     */
    private void detectAndRequestTestResultUpdates( JenkinsJob job ){
+      if ( job.buildStateProperty().get() == BuildState.Building ) {
+         return;
+      }
       BuildResultStatus current = job.getLastBuildStatus();
       if ( current != BuildResultStatus.UNSTABLE ) {
-         unstableJobs.remove( job );
+         unstableJobsLastBuildNumbersTestRetrievedFor.remove( job );
          return;
       }
       
-      unstableJobs.add( job );
-      fetcher.updateTestResults( job );
+      Integer lastNumberUpdatedFor = unstableJobsLastBuildNumbersTestRetrievedFor.get( job );
+      if ( lastNumberUpdatedFor == null ) {
+         unstableJobsLastBuildNumbersTestRetrievedFor.put( job, job.getLastBuildNumber() );
+         fetcher.updateTestResults( job );
+      } else if ( !lastNumberUpdatedFor.equals( job.getLastBuildNumber() ) ) {
+         unstableJobsLastBuildNumbersTestRetrievedFor.put( job, job.getLastBuildNumber() );
+         fetcher.updateTestResults( job );
+      }
    }//End Method
 
 }//End Class

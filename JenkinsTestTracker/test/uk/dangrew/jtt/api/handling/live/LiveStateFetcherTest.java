@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.api.handling.live;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -27,6 +28,7 @@ import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.api.sources.JenkinsBaseRequest;
 import uk.dangrew.jtt.data.json.conversion.ApiResponseToJsonConverter;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
@@ -152,6 +154,72 @@ public class LiveStateFetcherTest {
       systemUnderTest.loadLastCompletedBuild();
       
       verify( fetcher ).updateTestResults( job2 );
+      verifyNoMoreInteractions( fetcher );
+   }//End Method
+   
+   @Test public void shouldNotUpdateTestsForJobWhenUpdatingBuildStateIfBuilding(){
+      job1.buildStateProperty().set( BuildState.Building );
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      systemUnderTest.updateBuildState();
+      
+      verifyZeroInteractions( fetcher );
+   }//End Method
+   
+   @Test public void shouldNotUpdateTestsForJobWhenLoadingCompletedBuildsIfBuilding(){
+      job1.buildStateProperty().set( BuildState.Building );
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      systemUnderTest.loadLastCompletedBuild();
+      
+      verifyZeroInteractions( fetcher );
+   }//End Method
+   
+   @Test public void shouldNotUpdateTestsAgainForJobWhenUpdatingBuildState(){
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      
+      systemUnderTest.updateBuildState();
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      systemUnderTest.updateBuildState();
+      
+      verify( fetcher, times( 1 ) ).updateTestResults( job1 );
+      verifyNoMoreInteractions( fetcher );
+   }//End Method
+   
+   @Test public void shouldNotUpdateTestsAgainForJobWhenLoadingCompletedBuilds(){
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      
+      systemUnderTest.loadLastCompletedBuild();
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      systemUnderTest.loadLastCompletedBuild();
+      
+      verify( fetcher, times( 1 ) ).updateTestResults( job1 );
+      verifyNoMoreInteractions( fetcher );
+   }//End Method
+   
+   @Test public void shouldUpdateTestsAgainForJobWhenUpdatingBuildStateIfBuildNumberHasChanged(){
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      
+      systemUnderTest.updateBuildState();
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setLastBuildNumber( 23 );
+      systemUnderTest.updateBuildState();
+      job1.setLastBuildNumber( new Integer( 23 ) );
+      systemUnderTest.loadLastCompletedBuild();
+      
+      verify( fetcher, times( 2 ) ).updateTestResults( job1 );
+      verifyNoMoreInteractions( fetcher );
+   }//End Method
+   
+   @Test public void shouldUpdateTestsAgainForJobWhenLoadingCompletedBuildsIfBuildNumberHasChanged(){
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      
+      systemUnderTest.loadLastCompletedBuild();
+      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setLastBuildNumber( 23 );
+      systemUnderTest.loadLastCompletedBuild();
+      job1.setLastBuildNumber( new Integer( 23 ) );
+      systemUnderTest.loadLastCompletedBuild();
+      
+      verify( fetcher, times( 2 ) ).updateTestResults( job1 );
       verifyNoMoreInteractions( fetcher );
    }//End Method
 
