@@ -212,6 +212,20 @@ public class JavaFxStyle {
    }//End Method
    
    /**
+    * Method to configure an even number of columns, fairly sharing the width.
+    * @param pane the {@link GridPane} to configure.
+    * @param numberOfColumns the number of columns to divide the width in to.
+    */
+   public void configureConstraintsForEvenColumns( GridPane pane, int numberOfColumns ){
+      double percentage = 100.0 / numberOfColumns;
+      for ( int i = 0; i < numberOfColumns; i++ ) {
+         ColumnConstraints column = new ColumnConstraints();
+         column.setPercentWidth( percentage );
+         pane.getColumnConstraints().add( column );
+      }
+   }//End Method
+   
+   /**
     * Method to configure the {@link RowConstraints} for the {@link GridPane} given.
     * @param pane the {@link GridPane} to configure.
     * @param percentages the percentages to add as constraints, {@link RowConstraints} per

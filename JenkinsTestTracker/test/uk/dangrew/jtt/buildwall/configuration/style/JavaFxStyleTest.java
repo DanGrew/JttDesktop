@@ -238,6 +238,16 @@ public class JavaFxStyleTest {
       assertThat( pane.getColumnConstraints().get( 1 ).getPercentWidth(), is( JavaFxStyle.HALF_WIDTH_COLUMN ) );
    }//End Method
    
+   @Test public void shouldConfigureEvenWidthColumnConstraints(){
+      GridPane pane = new GridPane();
+      systemUnderTest.configureConstraintsForEvenColumns( pane, 5 );
+      
+      assertThat( pane.getColumnConstraints(), hasSize( 5 ) );
+      for ( int i = 0; i < 5; i++ ) {
+         assertThat( pane.getColumnConstraints().get( i ).getPercentWidth(), is( 20.0 ) );
+      }
+   }//End Method
+   
    @Test public void shouldConfigureFullWithColumnConstraints(){
       GridPane pane = new GridPane();
       systemUnderTest.configureFullWidthConstraints( pane );
