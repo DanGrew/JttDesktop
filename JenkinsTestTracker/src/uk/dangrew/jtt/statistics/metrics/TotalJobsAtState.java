@@ -14,17 +14,13 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticView;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * {@link TotalJobsAtState} provides an object responsible for calculating the total number
  * of {@link JenkinsJob}s currently passing in the system.
  */
-public class TotalJobsAtState {
+public class TotalJobsAtState extends StatisticCalculatorBase {
 
-   private final StatisticsConfiguration configuration;
-   private final JenkinsDatabase database;
-   private final StatisticView statistic;
    private final BuildResultStatus monitoredState;
    
    private int count;
@@ -43,60 +39,34 @@ public class TotalJobsAtState {
             StatisticView statistic, 
             BuildResultStatus status 
    ) {
-      if ( configuration == null || database == null || statistic == null || status == null ) {
+      super( configuration, database, statistic );
+      if ( status == null ) {
          throw new IllegalArgumentException( "Must supply non null parameters." );
       }
       
-      this.configuration = configuration;
-      this.database = database;
-      this.statistic = statistic;
       this.monitoredState = status;
-      
-      this.database.jenkinsJobProperties().addBuildResultStatusListener( ( s, o, u ) -> recalculateStatistic() );
-      FunctionListChangeListenerImpl< JenkinsJob > listener = new FunctionListChangeListenerImpl<>( 
-               c -> recalculateStatistic(), c -> recalculateStatistic() 
-      );
-      this.database.jenkinsJobs().addListener( listener );
-      this.configuration.excludedJobs().addListener( listener );
-      
       recalculateStatistic();
+      
+      database().jenkinsJobProperties().addBuildResultStatusListener( ( s, o, u ) -> recalculateStatistic() );
    }//End Constructor
    
    /**
     * Method to recalculate the statistic value.
+    * @param relevantJobs the {@link FilteredList} of {@link JenkinsJob}s to use in the statistic.
+    * @return the {@link String} representation of the statistic.
     */
-   private void recalculateStatistic(){
-      FilteredList< JenkinsJob > relevantJobs = database.jenkinsJobs()
-               .filtered( j -> !configuration.excludedJobs().contains( j ) ); 
+   @Override protected String constructStatisticRepresentation( FilteredList< JenkinsJob > relevantJobs ){
       final int recalculatedTotal = relevantJobs.size();
       final int recalculatedCount = relevantJobs
                .filtered( j -> j.getLastBuildStatus() == monitoredState ).size();
       
       if ( this.total == recalculatedTotal && this.count == recalculatedCount ) {
-         return;
+         return null;
       }
       
       this.total = recalculatedTotal;
       this.count = recalculatedCount;
-      statistic.setStatisticValue( recalculatedCount + "/" + recalculatedTotal );
-   }//End Method
-
-   /**
-    * Method to determine whether this is associated with the given.
-    * @param configuration the {@link StatisticsConfiguration} in question.
-    * @return true if identical.
-    */
-   public boolean uses( StatisticsConfiguration configuration ) {
-      return this.configuration == configuration;
-   }//End Method
-
-   /**
-    * Method to determine whether this is associated with the given.
-    * @param database the {@link JenkinsDatabase} in question.
-    * @return true if identical.
-    */
-   public boolean uses( JenkinsDatabase database ) {
-      return this.database == database;
+      return recalculatedCount + "/" + recalculatedTotal;
    }//End Method
 
    /**
