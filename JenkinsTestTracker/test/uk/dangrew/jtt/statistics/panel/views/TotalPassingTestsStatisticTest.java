@@ -14,7 +14,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
@@ -23,11 +22,11 @@ import uk.dangrew.jtt.statistics.panel.StatisticPanelTest;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
-public class TotalSuccessStatisticTest extends StatisticPanelTest {
+public class TotalPassingTestsStatisticTest extends StatisticPanelTest {
 
    private StatisticsConfiguration configuration;
    private JenkinsDatabase database;
-   private TotalSuccessStatistic systemUnderTest;
+   private TotalPassingTestsStatistic systemUnderTest;
 
    /**
     * {@inheritDoc}
@@ -35,7 +34,7 @@ public class TotalSuccessStatisticTest extends StatisticPanelTest {
    @Override protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration ) {
       this.database = new JenkinsDatabaseImpl();
       this.configuration = configuration;
-      this.systemUnderTest = new TotalSuccessStatistic( configuration, database );
+      this.systemUnderTest = new TotalPassingTestsStatistic( configuration, database );
       return systemUnderTest;
    }//End Method
    
@@ -43,28 +42,28 @@ public class TotalSuccessStatisticTest extends StatisticPanelTest {
     * {@inheritDoc}
     */
    @Override protected String getDescriptionText() {
-      return TotalSuccessStatistic.DESCRIPTION_TEXT;
+      return TotalPassingTestsStatistic.DESCRIPTION_TEXT;
    }//End Method
    
    /**
     * {@inheritDoc}
     */
    @Override protected String getInitialValue() {
-      return TotalSuccessStatistic.INITIAL_VALUE;
+      return TotalPassingTestsStatistic.INITIAL_VALUE;
    }//End Method
 
    @Test public void shouldConfigureStatistic() {
       assertThat( systemUnderTest.statistic().uses( configuration ), is( true ) );
       assertThat( systemUnderTest.statistic().uses( database ), is( true ) );
-      assertThat( systemUnderTest.statistic().isMonitoring( BuildResultStatus.SUCCESS ), is( true ) );
    }//End Method
    
    @Test public void shouldPopulatePanelWhenStatChanges(){
       JenkinsJob job = new JenkinsJobImpl( "Anything" );
-      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job.testFailureCount().set( 10 );
+      job.testTotalCount().set( 100 );
       database.store( job );
       
-      assertThat( systemUnderTest.getStatisticValue(), is( "1/1" ) );
+      assertThat( systemUnderTest.getStatisticValue(), is( "90/100" ) );
    }//End Method
 
 }//End Class

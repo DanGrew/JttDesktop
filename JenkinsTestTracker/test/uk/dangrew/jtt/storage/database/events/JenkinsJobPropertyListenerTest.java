@@ -42,6 +42,10 @@ public class JenkinsJobPropertyListenerTest {
    private List< Pair< JenkinsJob, BuildState > > buildStateNotifications;
    private JttChangeListener< JenkinsJob, BuildState > buildStateListener;
    
+   private List< Pair< JenkinsJob, Integer > > integerNotifications;
+   private JttChangeListener< JenkinsJob, Integer > testTotalListener;
+   private JttChangeListener< JenkinsJob, Integer > testFailuresListener;
+   
    @Before public void initialiseSystemUnderTest(){
       databse = new JenkinsDatabaseImpl();
       job1 = new JenkinsJobImpl( "first job" );
@@ -60,8 +64,18 @@ public class JenkinsJobPropertyListenerTest {
       buildStateListener = ( job, old, updated ) -> buildStateNotifications.add( 
                new Pair< JenkinsJob, BuildState >( job, updated ) 
       );
+      integerNotifications = new ArrayList<>();
+      testFailuresListener = ( j, o, n ) -> integerNotifications.add(
+               new Pair< JenkinsJob, Integer >( j, n ) 
+      );
+      testTotalListener = ( j, o, n ) -> integerNotifications.add(
+               new Pair< JenkinsJob, Integer >( j, n ) 
+      );
+      
       systemUnderTest.addBuildResultStatusListener( buildResultListener );
       systemUnderTest.addBuildStateListener( buildStateListener );
+      systemUnderTest.addTestTotalCountListener( testTotalListener );
+      systemUnderTest.addTestFailureCountListener( testFailuresListener );
    }//End Method
    
    @Test public void shouldNotifyLastBuildResultStatusWhenChanged() {
@@ -92,6 +106,34 @@ public class JenkinsJobPropertyListenerTest {
       Pair< JenkinsJob, BuildState > result2 = buildStateNotifications.remove( 0 );
       assertThat( result2.getKey(), is( job2 ) );
       assertThat( result2.getValue(), is( BuildState.Building ) );
+   }//End Method
+   
+   @Test public void shouldNotifyTestTotalWhenChanged() {
+      assertThat( integerNotifications.isEmpty(), is( true ) );
+      job1.testTotalCount().set( 100 );
+      job2.testTotalCount().set( 765 );
+      
+      assertThat( integerNotifications, hasSize( 2 ) );
+      Pair< JenkinsJob, Integer > result = integerNotifications.remove( 0 );
+      assertThat( result.getKey(), is( job1 ) );
+      assertThat( result.getValue(), is( 100 ) );
+      Pair< JenkinsJob, Integer > result2 = integerNotifications.remove( 0 );
+      assertThat( result2.getKey(), is( job2 ) );
+      assertThat( result2.getValue(), is( 765 ) );
+   }//End Method
+   
+   @Test public void shouldNotifyTestFailuresWhenChanged() {
+      assertThat( integerNotifications.isEmpty(), is( true ) );
+      job1.testFailureCount().set( 100 );
+      job2.testFailureCount().set( 765 );
+      
+      assertThat( integerNotifications, hasSize( 2 ) );
+      Pair< JenkinsJob, Integer > result = integerNotifications.remove( 0 );
+      assertThat( result.getKey(), is( job1 ) );
+      assertThat( result.getValue(), is( 100 ) );
+      Pair< JenkinsJob, Integer > result2 = integerNotifications.remove( 0 );
+      assertThat( result2.getKey(), is( job2 ) );
+      assertThat( result2.getValue(), is( 765 ) );
    }//End Method
    
 }//End Class

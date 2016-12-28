@@ -22,6 +22,8 @@ public class JenkinsJobPropertyListener {
 
    private GlobalPropertyListenerImpl< JenkinsJob, Pair< Integer, BuildResultStatus > > buildResultStatusPropertyListener;
    private GlobalPropertyListenerImpl< JenkinsJob, BuildState > buildStatePropertyListener;
+   private GlobalPropertyListenerImpl< JenkinsJob, Integer > testTotalCountPropertyListener;
+   private GlobalPropertyListenerImpl< JenkinsJob, Integer > testFailureCountPropertyListener;
    
    /**
     * Constructs a new {@link JenkinsJobPropertyListener}.
@@ -35,6 +37,14 @@ public class JenkinsJobPropertyListener {
       buildStatePropertyListener = new GlobalPropertyListenerImpl<>(
                database.jenkinsJobs(), 
                job -> job.buildStateProperty()
+      );
+      testFailureCountPropertyListener = new GlobalPropertyListenerImpl<>(
+               database.jenkinsJobs(), 
+               job -> job.testFailureCount()
+      );
+      testTotalCountPropertyListener = new GlobalPropertyListenerImpl<>(
+               database.jenkinsJobs(), 
+               job -> job.testTotalCount()
       );
    }//End Constructor
 
@@ -52,6 +62,22 @@ public class JenkinsJobPropertyListener {
     */
    public void addBuildStateListener( JttChangeListener< JenkinsJob, BuildState > buildStateListener ) {
       buildStatePropertyListener.addListener( buildStateListener );
+   }//End Method
+
+   /**
+    * Method to add a {@link JttChangeListener} as a listener for changes in {@link JenkinsJob#testTotalCount()}.
+    * @param testTotalListener the {@link JttChangeListener}.
+    */
+   public void addTestTotalCountListener( JttChangeListener< JenkinsJob, Integer > testTotalListener ) {
+      testTotalCountPropertyListener.addListener( testTotalListener );
+   }//End Method
+
+   /**
+    * Method to add a {@link JttChangeListener} as a listener for changes in {@link JenkinsJob#testFailureCount()}.
+    * @param testTotalListener the {@link JttChangeListener}.
+    */
+   public void addTestFailureCountListener( JttChangeListener< JenkinsJob, Integer > testFailuresListener ) {
+      testFailureCountPropertyListener.addListener( testFailuresListener );
    }//End Method
 
 }//End Class
