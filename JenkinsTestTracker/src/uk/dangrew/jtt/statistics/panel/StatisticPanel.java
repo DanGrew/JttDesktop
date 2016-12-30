@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.statistics.panel;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -113,7 +115,7 @@ public class StatisticPanel extends BorderPane implements StatisticView {
     * {@inheritDoc}
     */
    @Override public void setStatisticValue( String value ) {
-      statValue.setText( value );
+      PlatformImpl.runAndWait( () -> statValue.setText( value ) );
    }//End Method
    
    /**

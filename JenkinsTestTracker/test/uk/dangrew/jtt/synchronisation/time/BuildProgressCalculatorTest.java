@@ -105,11 +105,11 @@ public class BuildProgressCalculatorTest {
       Mockito.when( clock.millis() ).thenReturn( 10l );
       
       JenkinsJob job = database.jenkinsJobs().get( 0 );
-      job.currentBuildTimestampProperty().set( 0 );
+      job.currentBuildTimestampProperty().set( 0L );
       job.buildStateProperty().set( BuildState.Built );
       
       JenkinsJob job2 = database.jenkinsJobs().get( 1 );
-      job2.currentBuildTimestampProperty().set( 0 );
+      job2.currentBuildTimestampProperty().set( 0L );
       
       Assert.assertEquals( 0, job.currentBuildTimeProperty().doubleValue(), TestCommon.precision() );
       Assert.assertEquals( 0, job2.currentBuildTimeProperty().doubleValue(), TestCommon.precision() );

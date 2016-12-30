@@ -13,7 +13,7 @@ package uk.dangrew.jtt.statistics.panel;
  * graphical element.
  */
 public interface StatisticView {
-
+   
    /**
     * Method to set the value of the statistic. It is provided as a {@link String} to provide
     * a flexible interface, that should interact with most ui elements.

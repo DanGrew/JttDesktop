@@ -12,6 +12,7 @@ import javafx.util.Pair;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
@@ -24,6 +25,8 @@ public class JenkinsJobPropertyListener {
    private GlobalPropertyListenerImpl< JenkinsJob, BuildState > buildStatePropertyListener;
    private GlobalPropertyListenerImpl< JenkinsJob, Integer > testTotalCountPropertyListener;
    private GlobalPropertyListenerImpl< JenkinsJob, Integer > testFailureCountPropertyListener;
+   private GlobalPropertyListenerImpl< JenkinsJob, JenkinsNode > builtOnPropertyListener;
+   private GlobalPropertyListenerImpl< JenkinsJob, Long > timestampPropertyListener;
    
    /**
     * Constructs a new {@link JenkinsJobPropertyListener}.
@@ -45,6 +48,14 @@ public class JenkinsJobPropertyListener {
       testTotalCountPropertyListener = new GlobalPropertyListenerImpl<>(
                database.jenkinsJobs(), 
                job -> job.testTotalCount()
+      );
+      builtOnPropertyListener = new GlobalPropertyListenerImpl<>(
+               database.jenkinsJobs(), 
+               job -> job.lastBuiltOnProperty()
+      );
+      timestampPropertyListener = new GlobalPropertyListenerImpl<>(
+               database.jenkinsJobs(), 
+               job -> job.currentBuildTimestampProperty()
       );
    }//End Constructor
 
@@ -78,6 +89,22 @@ public class JenkinsJobPropertyListener {
     */
    public void addTestFailureCountListener( JttChangeListener< JenkinsJob, Integer > testFailuresListener ) {
       testFailureCountPropertyListener.addListener( testFailuresListener );
+   }//End Method
+
+   /**
+    * Method to add a {@link JttChangeListener} as a listener for changes in {@link JenkinsJob#lastBuiltOnProperty()}.
+    * @param builtOnListener the {@link JttChangeListener}.
+    */
+   public void addBuiltOnListener( JttChangeListener< JenkinsJob, JenkinsNode > builtOnListener ) {
+      builtOnPropertyListener.addListener( builtOnListener );
+   }//End Method
+
+   /**
+    * Method to add a {@link JttChangeListener} as a listener for changes in {@link JenkinsJob#currentBuildTimestampProperty()}.
+    * @param timestampListener the {@link JttChangeListener}.
+    */
+   public void addTimestampListener( JttChangeListener< JenkinsJob, Long > timestampListener ) {
+      timestampPropertyListener.addListener( timestampListener );
    }//End Method
 
 }//End Class

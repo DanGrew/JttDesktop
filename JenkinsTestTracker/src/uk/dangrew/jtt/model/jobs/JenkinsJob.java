@@ -102,9 +102,9 @@ public interface JenkinsJob {
    /**
     * Provides the most current build's timestamp. This is defined as the point at which
     * the build was started.
-    * @return the {@link LongProperty}.
+    * @return the {@link ObjectProperty}.
     */
-   public LongProperty currentBuildTimestampProperty();
+   public ObjectProperty< Long > currentBuildTimestampProperty();
    
    /**
     * Access to the time taken to complete the last build.

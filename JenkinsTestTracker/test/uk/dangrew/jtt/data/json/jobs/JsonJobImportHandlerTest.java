@@ -97,7 +97,7 @@ public class JsonJobImportHandlerTest {
    }//End Method
 
    @Test public void shouldUpdateTimestamp(){
-      job.currentBuildTimestampProperty().set( 12345 );
+      job.currentBuildTimestampProperty().set( 12345L );
       
       final long expected = 9879076;
       systemUnderTest.handleBuildTimestamp( job, expected );

@@ -144,15 +144,15 @@ public class JenkinsJobImplTest {
    }//End Method
    
    @Test public void shouldProvideCurrentBuildTimestampProperty() {
-      Assert.assertEquals( JenkinsJob.DEFAULT_BUILD_TIMESTAMP, systemUnderTest.currentBuildTimestampProperty().get() );
+      assertThat( systemUnderTest.currentBuildTimestampProperty().get(), is( JenkinsJob.DEFAULT_BUILD_TIMESTAMP ) );
    }//End Method
    
    @Test public void shouldUpdateCurrentBuildTimestampProperty() {
       shouldProvideCurrentBuildTimestampProperty();
       
-      final int value = 1000;
+      final long value = 1000;
       systemUnderTest.currentBuildTimestampProperty().set( value );
-      Assert.assertEquals( value, systemUnderTest.currentBuildTimestampProperty().get() );
+      assertThat( systemUnderTest.currentBuildTimestampProperty().get() , is( value ) );
    }//End Method
    
    @Test public void shouldProvideLastBuiltOnProperty() {

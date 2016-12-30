@@ -34,7 +34,7 @@ public class JenkinsJobImpl implements JenkinsJob {
    private final ObjectProperty< BuildState > buildState;
    private final LongProperty expectedBuildTime;
    private final LongProperty currentBuildTime;
-   private final LongProperty currentBuildTimestamp;
+   private final ObjectProperty< Long > currentBuildTimestamp;
    private final ObjectProperty< JenkinsNode > lastBuiltOn;
    private final ObservableList< JenkinsUser > culprits;
    private final ObservableList< TestCase > failingTestCases;
@@ -61,7 +61,7 @@ public class JenkinsJobImpl implements JenkinsJob {
       this.buildState = new SimpleObjectProperty<>( DEFAULT_BUILD_STATE );
       this.expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
       this.currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
-      this.currentBuildTimestamp = new SimpleLongProperty( DEFAULT_BUILD_TIMESTAMP );
+      this.currentBuildTimestamp = new SimpleObjectProperty<>( DEFAULT_BUILD_TIMESTAMP );
       this.lastBuiltOn = new SimpleObjectProperty<>( DEFAULT_LAST_BUILT_ON );
       this.culprits = FXCollections.observableArrayList();
       this.failingTestCases = FXCollections.observableArrayList();
@@ -144,7 +144,7 @@ public class JenkinsJobImpl implements JenkinsJob {
    /**
     * {@inheritDoc}
     */
-   @Override public LongProperty currentBuildTimestampProperty() {
+   @Override public ObjectProperty< Long > currentBuildTimestampProperty() {
       return currentBuildTimestamp;
    }//End Method
    
