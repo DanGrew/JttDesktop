@@ -42,7 +42,7 @@ public class TotalSuccessStatistic extends StatisticPanel {
     * @param database the {@link JenkinsDatabase}.
     */
    TotalSuccessStatistic( JavaFxStyle styling, StatisticsConfiguration configuration, JenkinsDatabase database ) {
-      super( styling, configuration, DESCRIPTION_TEXT, INITIAL_VALUE );
+      super( styling, configuration, database, DESCRIPTION_TEXT, INITIAL_VALUE );
       statistic = new TotalJobsAtState( 
                configuration, 
                database, 

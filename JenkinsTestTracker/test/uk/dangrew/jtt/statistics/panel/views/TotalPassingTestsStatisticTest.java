@@ -20,7 +20,6 @@ import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticPanel;
 import uk.dangrew.jtt.statistics.panel.StatisticPanelTest;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 public class TotalPassingTestsStatisticTest extends StatisticPanelTest {
 
@@ -31,8 +30,8 @@ public class TotalPassingTestsStatisticTest extends StatisticPanelTest {
    /**
     * {@inheritDoc}
     */
-   @Override protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration ) {
-      this.database = new JenkinsDatabaseImpl();
+   @Override protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration, JenkinsDatabase database ) {
+      this.database = database;
       this.configuration = configuration;
       this.systemUnderTest = new TotalPassingTestsStatistic( configuration, database );
       return systemUnderTest;

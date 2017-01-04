@@ -41,7 +41,7 @@ public class NodesInUseStatistic extends StatisticPanel {
     * @param database the {@link JenkinsDatabase}.
     */
    NodesInUseStatistic( JavaFxStyle styling, StatisticsConfiguration configuration, JenkinsDatabase database ) {
-      super( styling, configuration, DESCRIPTION_TEXT, INITIAL_VALUE );
+      super( styling, configuration, database, DESCRIPTION_TEXT, INITIAL_VALUE );
       statistic = new NodesInUse( 
                configuration, 
                database, 

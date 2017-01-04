@@ -23,6 +23,7 @@ import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link StatisticPanel} provides a {@link StatisticView} for a general value with
@@ -35,6 +36,7 @@ public class StatisticPanel extends BorderPane implements StatisticView {
    static final double SHAPE_SIDE_LENGTH = 100;
    
    private final StatisticsConfiguration configuration;
+   private final JenkinsDatabase database;
    private final JavaFxStyle styling;
    
    private final Button button;
@@ -49,12 +51,20 @@ public class StatisticPanel extends BorderPane implements StatisticView {
     * Constructs a new {@link StatisticPanel}.
     * @param styling the {@link JavaFxStyle}.
     * @param configuration the {@link StatisticsConfiguration}.
+    * @param database the {@link JenkinsDatabase}.
     * @param description the description of the statistic.
     * @param initialValue the initial value.
     */
-   protected StatisticPanel( JavaFxStyle styling, StatisticsConfiguration configuration, String description, String initialValue ) {
+   protected StatisticPanel( 
+            JavaFxStyle styling, 
+            StatisticsConfiguration configuration, 
+            JenkinsDatabase database, 
+            String description, 
+            String initialValue 
+   ) {
       this.styling = styling;
       this.configuration = configuration;
+      this.database = database;
       
       this.panelShape = new Rectangle();
       this.panelShape.setWidth( SHAPE_SIDE_LENGTH );
@@ -123,6 +133,24 @@ public class StatisticPanel extends BorderPane implements StatisticView {
     */
    @Override public String getStatisticValue() {
       return statValue.getText();
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is associated.
+    * @param configuration the {@link StatisticsConfiguration}.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( StatisticsConfiguration configuration ) {
+      return this.configuration == configuration;
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is associated.
+    * @param database the {@link JenkinsDatabase}.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( JenkinsDatabase database ) {
+      return this.database == database;
    }//End Method
    
    Label statValue(){

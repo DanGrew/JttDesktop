@@ -31,8 +31,8 @@ public class LastBuildStartedStatisticTest extends StatisticPanelTest {
    /**
     * {@inheritDoc}
     */
-   @Override protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration ) {
-      this.database = new JenkinsDatabaseImpl();
+   @Override protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration, JenkinsDatabase database ) {
+      this.database = database;
       this.configuration = configuration;
       this.systemUnderTest = new LastBuildStartedStatistic( configuration, database );
       return systemUnderTest;

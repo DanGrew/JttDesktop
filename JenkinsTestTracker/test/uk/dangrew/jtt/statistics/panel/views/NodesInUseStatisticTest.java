@@ -33,8 +33,8 @@ public class NodesInUseStatisticTest extends StatisticPanelTest {
    /**
     * {@inheritDoc}
     */
-   @Override protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration ) {
-      this.database = new JenkinsDatabaseImpl();
+   @Override protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration, JenkinsDatabase database ) {
+      this.database = database;
       this.configuration = configuration;
       this.systemUnderTest = new NodesInUseStatistic( configuration, database );
       return systemUnderTest;

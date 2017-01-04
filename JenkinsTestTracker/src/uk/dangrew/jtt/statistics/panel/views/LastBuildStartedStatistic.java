@@ -41,7 +41,7 @@ public class LastBuildStartedStatistic extends StatisticPanel {
     * @param database the {@link JenkinsDatabase}.
     */
    LastBuildStartedStatistic( JavaFxStyle styling, StatisticsConfiguration configuration, JenkinsDatabase database ) {
-      super( styling, configuration, DESCRIPTION_TEXT, INITIAL_VALUE );
+      super( styling, configuration, database, DESCRIPTION_TEXT, INITIAL_VALUE );
       statistic = new LastBuildStarted( 
                configuration, 
                database, 

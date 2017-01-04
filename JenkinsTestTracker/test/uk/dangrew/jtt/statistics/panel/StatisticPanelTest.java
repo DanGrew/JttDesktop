@@ -26,6 +26,8 @@ import javafx.scene.shape.Shape;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 public class StatisticPanelTest {
    
@@ -33,14 +35,16 @@ public class StatisticPanelTest {
    private static final String INITIAL_VALUE = "really good stat";
    
    @Spy private JavaFxStyle styling;
+   private JenkinsDatabase database;
    private StatisticsConfiguration configuration;
    private StatisticPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
+      database = new JenkinsDatabaseImpl();
       configuration = new StatisticsConfiguration();
-      systemUnderTest = constructSut( styling, configuration );
+      systemUnderTest = constructSut( styling, configuration, database );
    }//End Method
    
    /**
@@ -48,8 +52,8 @@ public class StatisticPanelTest {
     * @param styling the {@link JavaFxStyle}.
     * @param configuration the {@link StatisticsConfiguration}.
     */
-   protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration ){
-      return new StatisticPanel( styling, configuration, DESCRIPTION, INITIAL_VALUE );
+   protected StatisticPanel constructSut( JavaFxStyle styling, StatisticsConfiguration configuration, JenkinsDatabase database ){
+      return new StatisticPanel( styling, configuration, database, DESCRIPTION, INITIAL_VALUE );
    }//End Method
    
    /**
@@ -152,4 +156,13 @@ public class StatisticPanelTest {
       assertThat( systemUnderTest.getPadding().getRight(), is( StatisticPanel.PADDING ) );
    }//End Method
    
+   @Test public void shouldBeAssociatedWithConfiguration(){
+      assertThat( systemUnderTest.isAssociatedWith( configuration ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new StatisticsConfiguration() ), is( false ) );
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWithDatabase(){
+      assertThat( systemUnderTest.isAssociatedWith( database ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new JenkinsDatabaseImpl() ), is( false ) );
+   }//End Method
 }//End Class
