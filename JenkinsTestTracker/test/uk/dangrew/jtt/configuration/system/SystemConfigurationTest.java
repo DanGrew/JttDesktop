@@ -31,6 +31,7 @@ public class SystemConfigurationTest {
       assertThat( systemUnderTest.getLeftConfiguration(), is( notNullValue() ) );
       assertThat( systemUnderTest.getRightConfiguration(), is( notNullValue() ) );
       assertThat( systemUnderTest.getSoundConfiguration(), is( notNullValue() ) );
+      assertThat( systemUnderTest.getStatisticsConfiguration(), is( notNullValue() ) );
    }//End Method
 
 }//End Class

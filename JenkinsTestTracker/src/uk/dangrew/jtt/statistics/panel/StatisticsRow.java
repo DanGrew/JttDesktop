@@ -27,6 +27,8 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
  */
 public class StatisticsRow extends GridPane {
    
+   private final JenkinsDatabase database;
+   private final StatisticsConfiguration configuration;
    private final TotalSuccessStatistic totalSuccess;
    private final TotalPassingTestsStatistic totalPassingTests;
    private final NodesInUseStatistic nodesInUse;
@@ -48,6 +50,9 @@ public class StatisticsRow extends GridPane {
     * @param configuration the {@link StatisticsConfiguration}.
     */
    StatisticsRow( JavaFxStyle styling, JenkinsDatabase database, StatisticsConfiguration configuration ) {
+      this.database = database;
+      this.configuration = configuration;
+      
       int columnPosition = 0;
       
       placeStatisticView( 
@@ -79,6 +84,24 @@ public class StatisticsRow extends GridPane {
    private void placeStatisticView( StatisticPanel panel, int columnPosition ){
       add( panel, columnPosition, 0 );
       GridPane.setHalignment( panel, HPos.CENTER );
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is associated with this.
+    * @param database the {@link JenkinsDatabase}.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( JenkinsDatabase database ) {
+      return this.database == database;
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is associated with this.
+    * @param database the {@link StatisticsConfiguration}.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( StatisticsConfiguration statisticsConfiguration ) {
+      return this.configuration == statisticsConfiguration;
    }//End Method
    
    TotalSuccessStatistic totalSuccessStatistic(){

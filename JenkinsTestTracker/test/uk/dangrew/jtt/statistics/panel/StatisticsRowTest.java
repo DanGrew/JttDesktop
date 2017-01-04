@@ -84,4 +84,14 @@ public class StatisticsRowTest {
    @Test public void shouldProvideEvenColumnSplit(){
       verify( styling ).configureConstraintsForEvenColumns( systemUnderTest, 4 );
    }//End Method
+   
+   @Test public void shouldBeAssociatedWithConfiguration(){
+      assertThat( systemUnderTest.isAssociatedWith( configuration ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new StatisticsConfiguration() ), is( false ) );
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWithDatabase(){
+      assertThat( systemUnderTest.isAssociatedWith( database ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new JenkinsDatabaseImpl() ), is( false ) );
+   }//End Method
 }//End Class

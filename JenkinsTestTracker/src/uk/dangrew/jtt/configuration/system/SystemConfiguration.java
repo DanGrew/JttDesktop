@@ -13,6 +13,7 @@ import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationI
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
+import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 
 /**
  * The {@link SystemConfiguration} collects the different configuration items
@@ -24,12 +25,14 @@ public class SystemConfiguration {
    private final SoundConfiguration soundConfiguration;
    private final BuildWallConfiguration leftConfiguration;
    private final BuildWallConfiguration rightConfiguration;
+   private final StatisticsConfiguration statisticsConfiguration;
    
    public SystemConfiguration() {
       this.dualConfiguration = new DualWallConfigurationImpl();
       this.soundConfiguration = new SoundConfiguration();
       this.leftConfiguration = new BuildWallConfigurationImpl();
       this.rightConfiguration = new BuildWallConfigurationImpl();
+      this.statisticsConfiguration = new StatisticsConfiguration();
    }//End Constructor
 
    /**
@@ -62,6 +65,14 @@ public class SystemConfiguration {
     */
    public BuildWallConfiguration getRightConfiguration() {
       return rightConfiguration;
+   }//End Method
+
+   /**
+    * Getter for the {@link StatisticsConfiguration}.
+    * @return the {@link StatisticsConfiguration}.
+    */
+   public StatisticsConfiguration getStatisticsConfiguration() {
+      return statisticsConfiguration;
    }//End Method
    
 }//End Class

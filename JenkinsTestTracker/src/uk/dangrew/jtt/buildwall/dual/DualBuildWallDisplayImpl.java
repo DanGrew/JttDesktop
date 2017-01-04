@@ -8,8 +8,11 @@
  */
 package uk.dangrew.jtt.buildwall.dual;
 
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.updating.JobPolicyUpdater;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImpl;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherProperties;
@@ -18,6 +21,7 @@ import uk.dangrew.jtt.buildwall.effects.flasher.configuration.ImageFlasherConfig
 import uk.dangrew.jtt.buildwall.effects.triggers.JobFailureTrigger;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.statistics.panel.StatisticsRow;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
@@ -75,7 +79,9 @@ public class DualBuildWallDisplayImpl extends StackPane {
       leftGridWall = new GridWallImpl( systemConfiguration.getLeftConfiguration(), database );
       
       buildWallSplitter = new DualBuildWallSplitter( systemConfiguration.getDualConfiguration(), leftGridWall, rightGridWall );
+      buildWallSplitter.setBackground( new Background( new BackgroundFill( Color.BLACK, null, null ) ) );
       buildWallPane = new BorderPane();
+      buildWallPane.setTop( new StatisticsRow( database, systemConfiguration.getStatisticsConfiguration() ) );
       buildWallPane.setCenter( buildWallSplitter );
       getChildren().add( buildWallPane );
    }//End Method
@@ -138,7 +144,9 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Method to show the right {@link GridWallImpl}, if not already showing.
     */
    public void showRightWall() {
-      if ( isRightWallShowing() ) return;
+      if ( isRightWallShowing() ) {
+         return;
+      }
       
       buildWallSplitter.showRightWall();
    }//End Method
@@ -162,7 +170,9 @@ public class DualBuildWallDisplayImpl extends StackPane {
     * Method to show the left {@link GridWallImpl}, if not already showing.
     */
    public void showLeftWall() {
-      if ( isLeftWallShowing() ) return;
+      if ( isLeftWallShowing() ) {
+         return;
+      }
       
       buildWallSplitter.showLeftWall();
    }//End Method

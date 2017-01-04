@@ -32,7 +32,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.util.Pair;
+import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
@@ -45,6 +45,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.jtt.statistics.panel.StatisticsRow;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
@@ -222,6 +223,16 @@ public class DualBuildWallDisplayImplTest {
    @Test public void shouldProvideGridWallsInSplitPaneForManualSplitting(){
       assertThat( systemUnderTest.buildWallPane().getCenter(), instanceOf( SplitPane.class ) );
       assertSplitPaneItems( systemUnderTest.leftGridWall(), systemUnderTest.rightGridWall() );
+   }//End Method
+   
+   @Test public void shouldColourSplitBackgroundConsistentWithPanels(){
+      assertThat( systemUnderTest.splitPane().getBackground().getFills().get( 0 ).getFill(), is( Color.BLACK ) );
+   }//End Method
+   
+   @Test public void shouldProvideStatisticsAtTopOfPane(){
+      StatisticsRow row = ( StatisticsRow ) systemUnderTest.buildWallPane().getTop();
+      assertThat( row.isAssociatedWith( database ), is( true ) );
+      assertThat( row.isAssociatedWith( systemConfiguration.getStatisticsConfiguration() ), is( true ) );
    }//End Method
    
    /**
