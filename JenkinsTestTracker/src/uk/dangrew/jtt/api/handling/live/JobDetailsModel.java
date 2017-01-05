@@ -50,7 +50,7 @@ class JobDetailsModel {
     * @param database the {@link JenkinsDatabase}.
     */
    public JobDetailsModel( JenkinsDatabase database ) {
-      this( database, new StateChangeIdentifier() );
+      this( database, new BuildTimeStateChangeIdentifier() );
    }//End Constructor
    
    /**

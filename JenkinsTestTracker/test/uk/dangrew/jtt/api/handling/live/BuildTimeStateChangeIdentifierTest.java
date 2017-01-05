@@ -26,7 +26,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 
-public class StateChangeIdentifierTest {
+public class BuildTimeStateChangeIdentifierTest {
 
    private JenkinsJob job;
    @Mock private EventSubscription< JobBuiltResult > subscription;
@@ -42,7 +42,7 @@ public class StateChangeIdentifierTest {
       events.register( subscription );
       
       job = new JenkinsJobImpl( "Job" );
-      systemUnderTest = new StateChangeIdentifier();
+      systemUnderTest = new BuildTimeStateChangeIdentifier();
    }//End Method
 
    @Test public void shouldNotifyJobBuiltEventWhenLastBuildTimeChanges() {
@@ -77,7 +77,7 @@ public class StateChangeIdentifierTest {
    @Test public void shouldIgnoreJobWhenBuildingWhenBuildTimeIsSetToZero() {
       job.totalBuildTimeProperty().set( 100L );
       systemUnderTest.recordState( job );
-      job.totalBuildTimeProperty().set( StateChangeIdentifier.BUILD_TIME_WHEN_BUILDING );
+      job.totalBuildTimeProperty().set( BuildTimeStateChangeIdentifier.BUILD_TIME_WHEN_BUILDING );
       systemUnderTest.identifyStateChanges();
       
       verifyZeroInteractions( subscription );
