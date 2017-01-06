@@ -17,7 +17,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import javafx.scene.media.MediaPlayer;
 import uk.dangrew.jtt.friendly.javafx.FriendlyMediaPlayer;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 

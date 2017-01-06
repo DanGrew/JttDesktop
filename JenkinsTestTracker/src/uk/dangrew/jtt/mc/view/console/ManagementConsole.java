@@ -11,7 +11,6 @@ package uk.dangrew.jtt.mc.view.console;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotifier;
 import uk.dangrew.jtt.mc.sides.jobs.JobProgressTree;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentsTree;
 import uk.dangrew.jtt.mc.sides.users.detail.AssignmentDetailArea;

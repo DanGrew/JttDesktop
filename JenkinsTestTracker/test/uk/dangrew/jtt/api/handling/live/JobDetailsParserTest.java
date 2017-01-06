@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -45,7 +45,6 @@ public class JobDetailsParserTest {
       assertThat( dansProject.expectedBuildTimeProperty().get(), is( 11149L ) );
       assertThat( dansProject.failingTestCases(), is( empty() ) );
       assertThat( dansProject.getLastBuildNumber(), is( 15 ) );
-      assertThat( dansProject.currentBuildNumberProperty().get(), is( 15 ) );
       assertThat( dansProject.getLastBuildStatus(), is( BuildResultStatus.SUCCESS ) );
       assertThat( dansProject.lastBuiltOnProperty().get(), is( database.getJenkinsNode( "Lizs Machine" ) ) );
       assertThat( dansProject.testFailureCount().get(), is( 0 ) );
@@ -61,7 +60,6 @@ public class JobDetailsParserTest {
       assertThat( lizsProject.expectedBuildTimeProperty().get(), is( 124821L ) );
       assertThat( lizsProject.failingTestCases(), is( empty() ) );
       assertThat( lizsProject.getLastBuildNumber(), is( 560 ) );
-      assertThat( lizsProject.currentBuildNumberProperty().get(), is( 560 ) );
       assertThat( lizsProject.getLastBuildStatus(), is( BuildResultStatus.SUCCESS ) );
       assertThat( lizsProject.lastBuiltOnProperty().get(), is( database.getJenkinsNode( "Dans Machine" ) ) );
       assertThat( lizsProject.testFailureCount().get(), is( 12 ) );
@@ -77,7 +75,6 @@ public class JobDetailsParserTest {
       assertThat( jeffsProject.expectedBuildTimeProperty().get(), is( 0L ) );
       assertThat( jeffsProject.failingTestCases(), is( empty() ) );
       assertThat( jeffsProject.getLastBuildNumber(), is( 0 ) );
-      assertThat( jeffsProject.currentBuildNumberProperty().get(), is( 0 ) );
       assertThat( jeffsProject.getLastBuildStatus(), is( BuildResultStatus.NOT_BUILT ) );
       assertThat( jeffsProject.lastBuiltOnProperty().get(), is( nullValue() ) );
       assertThat( jeffsProject.testFailureCount().get(), is( 0 ) );

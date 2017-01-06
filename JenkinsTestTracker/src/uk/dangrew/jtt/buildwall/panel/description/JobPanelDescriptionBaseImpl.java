@@ -27,7 +27,6 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerBindingImpl;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.MapChangeListenerRegistrationImpl;
-import uk.dangrew.jtt.javafx.registrations.PaintColorChangeListenerBindingImpl;
 import uk.dangrew.jtt.javafx.registrations.RegisteredComponent;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
@@ -118,7 +117,7 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
       );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               job.currentBuildNumberProperty(), 
+               job.lastBuildProperty(), 
                ( source, old, updated ) -> updateBuildNumberAndTimestamp()
       ) );
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
@@ -241,7 +240,7 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
     */
    private void updateBuildNumberAndTimestamp(){
       DecoupledPlatformImpl.runLater( () -> {
-         buildNumber.setText( formatBuildNumberAndTimestamp( job.currentBuildNumberProperty().get(), job.currentBuildTimestampProperty().get() ) );
+         buildNumber.setText( formatBuildNumberAndTimestamp( job.getLastBuildNumber(), job.currentBuildTimestampProperty().get() ) );
       } );
    }//End Method
    

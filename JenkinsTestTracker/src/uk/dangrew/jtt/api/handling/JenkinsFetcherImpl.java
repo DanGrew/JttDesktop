@@ -8,22 +8,12 @@
  */
 package uk.dangrew.jtt.api.handling;
 
-import static uk.dangrew.jtt.api.sources.JobRequest.LastBuildBuildingStateRequest;
-import static uk.dangrew.jtt.api.sources.JobRequest.LastBuildJobDetailsRequest;
 import static uk.dangrew.jtt.api.sources.JobRequest.LastBuildTestResultsUnwrappedRequest;
 import static uk.dangrew.jtt.api.sources.JobRequest.LastBuildTestResultsWrappedRequest;
 
-import org.json.JSONObject;
-
 import uk.dangrew.jtt.api.sources.ExternalApi;
-import uk.dangrew.jtt.data.json.conversion.ApiResponseToJsonConverter;
-import uk.dangrew.jtt.data.json.jobs.JsonJobImporter;
-import uk.dangrew.jtt.data.json.jobs.JsonJobImporterImpl;
 import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporter;
 import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporterImpl;
-import uk.dangrew.jtt.data.json.users.JsonUserImporter;
-import uk.dangrew.jtt.data.json.users.JsonUserImporterImpl;
-import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
@@ -34,11 +24,8 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 public class JenkinsFetcherImpl implements JenkinsFetcher {
 
    private final ExternalApi externalApi;
-   private final JsonJobImporter jobsImporter;
-   private final JsonUserImporter usersImporter;
    private final JsonTestResultsImporter testsImporter;
    private final JenkinsFetcherDigest digest;
-   private final ApiResponseToJsonConverter converter;
    
    /**
     * Constructs a new {@link JenkinsFetcherImpl}.
@@ -60,89 +47,12 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
       if ( externalApi == null ) throw new IllegalArgumentException( "Null api provided." );
       
       this.externalApi = externalApi;
-      this.jobsImporter = new JsonJobImporterImpl( database, this );
-      this.usersImporter = new JsonUserImporterImpl( database );
       this.testsImporter = new JsonTestResultsImporterImpl( database );
       
       this.digest = digest;
       this.digest.attachSource( this );
-      
-      this.converter = new ApiResponseToJsonConverter();
    }//End Constructor
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override public void updateBuildState( JenkinsJob jenkinsJob ) {
-      digest.fetching( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
-      String response = externalApi.executeRequest( LastBuildBuildingStateRequest, jenkinsJob );
-      digest.parsing( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
-      
-      JSONObject converted = converter.convert( response );
-      jobsImporter.updateBuildState( jenkinsJob, converted );
-      digest.updated( JenkinsFetcherDigest.BUILD_STATE, jenkinsJob );
-   }//End Method
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override public void updateJobDetails( JenkinsJob jenkinsJob ) {
-      if ( jenkinsJob == null ) {
-         return;
-      }
-      
-      updateBuildState( jenkinsJob );
-      
-      if ( isOutDated( jenkinsJob ) ) {
-         digest.fetching( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-         String response = externalApi.executeRequest( LastBuildJobDetailsRequest, jenkinsJob );
-         digest.parsing( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-         
-         JSONObject converted = converter.convert( response );
-         jobsImporter.updateJobDetails( jenkinsJob, converted );
-         digest.updated( JenkinsFetcherDigest.JOB_DETAIL, jenkinsJob );
-      }
-   }//End Method
-   
-   private boolean isOutDated( JenkinsJob job ) {
-      BuildState buildState = job.buildStateProperty().get();
-      if ( buildState == BuildState.Built ) {
-         return true;
-      }
-      
-      int lastBuild = job.lastBuildProperty().get().getKey();
-      int currentBuild = job.currentBuildNumberProperty().get();
-      
-      int difference = currentBuild - lastBuild;
-      return difference > 1;
-   }
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override public void fetchJobs() {
-      digest.fetching( JenkinsFetcherDigest.JOBS );
-      String response = externalApi.getJobsList();
-      digest.parsing( JenkinsFetcherDigest.JOBS );
-      
-      JSONObject converted = converter.convert( response );
-      jobsImporter.importJobs( converted );
-      digest.updated( JenkinsFetcherDigest.JOBS );
-   }//End Method
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override public void fetchUsers() {
-      digest.fetching( JenkinsFetcherDigest.USERS );
-      String response = externalApi.getUsersList();
-      digest.parsing( JenkinsFetcherDigest.USERS );
-      
-      JSONObject converted = converter.convert( response );
-      usersImporter.importUsers( converted );
-      digest.updated( JenkinsFetcherDigest.USERS );
-   }//End Method
-   
    /**
     * {@inheritDoc}
     */

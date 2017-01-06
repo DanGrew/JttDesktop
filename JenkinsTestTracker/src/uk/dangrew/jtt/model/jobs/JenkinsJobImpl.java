@@ -29,7 +29,6 @@ import uk.dangrew.jtt.model.users.JenkinsUser;
 public class JenkinsJobImpl implements JenkinsJob {
 
    private final StringProperty name;
-   private final IntegerProperty currentBuildNumber;
    private final ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildStatus;
    private final ObjectProperty< BuildState > buildState;
    private final LongProperty expectedBuildTime;
@@ -56,7 +55,6 @@ public class JenkinsJobImpl implements JenkinsJob {
       }
       
       this.name = new SimpleStringProperty( name );
-      this.currentBuildNumber = new SimpleIntegerProperty( DEFAULT_CURRENT_BUILD_NUMBER );
       this.lastBuildStatus = new SimpleObjectProperty<>( new Pair<>( DEFAULT_LAST_BUILD_NUMBER, DEFAULT_LAST_BUILD_STATUS ) );
       this.buildState = new SimpleObjectProperty<>( DEFAULT_BUILD_STATE );
       this.expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
@@ -76,13 +74,6 @@ public class JenkinsJobImpl implements JenkinsJob {
     */
    @Override public StringProperty nameProperty() {
       return name;
-   }//End Method
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override public IntegerProperty currentBuildNumberProperty() {
-      return currentBuildNumber;
    }//End Method
 
    /**

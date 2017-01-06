@@ -108,7 +108,6 @@ class JobDetailsModel {
          }
       }
       if ( buildNumber != null ) {
-         job.currentBuildNumberProperty().set( buildNumber );
          job.setLastBuildNumber( buildNumber );
       }
       if ( result != null ) {

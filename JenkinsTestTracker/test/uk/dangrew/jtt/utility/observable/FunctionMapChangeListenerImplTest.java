@@ -43,7 +43,6 @@ public class FunctionMapChangeListenerImplTest {
    @Mock private BiConsumer< String, Object > removeFunction;
    private MapChangeListener< String, Object > systemUnderTest;
    
-   @SuppressWarnings("unchecked") //Mocking, safe. 
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
       

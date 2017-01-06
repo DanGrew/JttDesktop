@@ -82,7 +82,6 @@ public class JobDetailsModelTest {
       
       assertThat( job.buildStateProperty().get(), is( BuildState.Built ) );
       assertThat( job.getLastBuildNumber(), is( not( 101 ) ) );
-      assertThat( job.currentBuildNumberProperty().get(), is( not( 101 ) ) );
       assertThat( job.lastBuiltOnProperty().get(), is( nullValue() ) );
       assertThat( job.totalBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_TOTAL_BUILD_TIME ) );
       assertThat( job.expectedBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME ) );
@@ -247,7 +246,6 @@ public class JobDetailsModelTest {
       systemUnderTest.setBuildNumber( ANYTHING, 456 );
       systemUnderTest.finishJob( ANYTHING );
       assertThat( job.getLastBuildNumber(), is( 456 ) );
-      assertThat( job.currentBuildNumberProperty().get(), is( 456 ) );
    }//End Method
    
    @Test public void shouldHoldResultingStateAndUseWhenPopulating() {
@@ -287,7 +285,6 @@ public class JobDetailsModelTest {
       
       job.buildStateProperty().set( BuildState.Building );
       job.setLastBuildNumber( 101 );
-      job.currentBuildNumberProperty().set( 101 );
       job.lastBuiltOnProperty().set( node );
       job.totalBuildTimeProperty().set( 12345L );
       job.expectedBuildTimeProperty().set( 12345L );
@@ -303,7 +300,6 @@ public class JobDetailsModelTest {
       
       assertThat( job.buildStateProperty().get(), is( BuildState.Building ) );
       assertThat( job.getLastBuildNumber(), is( 101 ) );
-      assertThat( job.currentBuildNumberProperty().get(), is( 101 ) );
       assertThat( job.lastBuiltOnProperty().get(), is( node ) );
       assertThat( job.totalBuildTimeProperty().get(), is( 12345L ) );
       assertThat( job.expectedBuildTimeProperty().get(), is( 12345L ) );
@@ -343,7 +339,6 @@ public class JobDetailsModelTest {
       doAnswer( i -> {
          assertThat( job.buildStateProperty().get(), is( BuildState.Built ) );
          assertThat( job.getLastBuildNumber(), is( not( 101 ) ) );
-         assertThat( job.currentBuildNumberProperty().get(), is( not( 101 ) ) );
          assertThat( job.lastBuiltOnProperty().get(), is( nullValue() ) );
          assertThat( job.totalBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_TOTAL_BUILD_TIME ) );
          assertThat( job.expectedBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME ) );
@@ -359,7 +354,6 @@ public class JobDetailsModelTest {
       doAnswer( i -> {
          assertThat( job.buildStateProperty().get(), is( BuildState.Building ) );
          assertThat( job.getLastBuildNumber(), is( 101 ) );
-         assertThat( job.currentBuildNumberProperty().get(), is( 101 ) );
          assertThat( job.lastBuiltOnProperty().get(), is( notNullValue() ) );
          assertThat( job.totalBuildTimeProperty().get(), is( 123456L ) );
          assertThat( job.expectedBuildTimeProperty().get(), is( 234567L ) );

@@ -20,7 +20,6 @@ import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticPanel;
 import uk.dangrew.jtt.statistics.panel.StatisticPanelTest;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 public class LastBuildStartedStatisticTest extends StatisticPanelTest {
 

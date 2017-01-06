@@ -167,18 +167,6 @@ public class JenkinsJobImplTest {
       Assert.assertEquals( value, systemUnderTest.lastBuiltOnProperty().get() );
    }//End Method
    
-   @Test public void shouldProvideCurrentBuildNumberProperty() {
-      Assert.assertEquals( JenkinsJob.DEFAULT_CURRENT_BUILD_NUMBER, systemUnderTest.currentBuildNumberProperty().get() );
-   }//End Method
-   
-   @Test public void shouldUpdateCurrentBuildNumberProperty() {
-      shouldProvideCurrentBuildNumberProperty();
-      
-      final int value = 1000;
-      systemUnderTest.currentBuildNumberProperty().set( value );
-      Assert.assertEquals( value, systemUnderTest.currentBuildNumberProperty().get() );
-   }//End Method
-   
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullNameInConstructor(){
       new JenkinsJobImpl( null );
    }//End Method

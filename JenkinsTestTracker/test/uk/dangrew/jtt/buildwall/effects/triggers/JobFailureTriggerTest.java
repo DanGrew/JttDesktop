@@ -14,7 +14,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import javafx.util.Pair;
 import uk.dangrew.jtt.buildwall.effects.flasher.control.ImageFlasherControls;
 import uk.dangrew.jtt.buildwall.effects.flasher.control.ImageFlasherControlsImpl;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;

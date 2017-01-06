@@ -10,11 +10,8 @@ package uk.dangrew.jtt.mc.sides.jobs;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.event.structure.Event;
-import uk.dangrew.jtt.friendly.javafx.FriendlyContextMenu;
 import uk.dangrew.jtt.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentEvent;
