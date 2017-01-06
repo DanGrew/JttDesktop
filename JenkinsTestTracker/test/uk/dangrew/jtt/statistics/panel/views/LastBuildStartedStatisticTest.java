@@ -58,7 +58,7 @@ public class LastBuildStartedStatisticTest extends StatisticPanelTest {
    
    @Test public void shouldPopulatePanelWhenStatChanges(){
       JenkinsJob job = new JenkinsJobImpl( "Anything" );
-      job.currentBuildTimestampProperty().set( 1234567890L );
+      job.buildTimestampProperty().set( 1234567890L );
       database.store( job );
       
       assertThat( systemUnderTest.getStatisticValue(), is( "15/01/70-07:56:07" ) );

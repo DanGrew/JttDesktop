@@ -50,13 +50,13 @@ public class JobBuiltIdentifierTest {
    }//End Method
 
    @Test public void shouldTakeResultWhenBuildingStartedAndNotifyCurrentWhenBuilt() {
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Building );
       systemUnderTest.recordState( job1 );
       
-      job1.setLastBuildNumber( 124 );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildNumber( 124 );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       job1.buildStateProperty().set( BuildState.Built );
       
       assertThatNoEventsHaveBeenFired();
@@ -66,22 +66,22 @@ public class JobBuiltIdentifierTest {
    }//End Method
    
    @Test public void shouldNotifyForMultipleJobs() {
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Building );
       systemUnderTest.recordState( job1 );
       
-      job2.setLastBuildNumber( 234 );
-      job2.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildNumber( 234 );
+      job2.setBuildStatus( BuildResultStatus.SUCCESS );
       job2.buildStateProperty().set( BuildState.Building );
       systemUnderTest.recordState( job2 );
       
-      job1.setLastBuildNumber( 124 );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildNumber( 124 );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       job1.buildStateProperty().set( BuildState.Built );
       
-      job2.setLastBuildNumber( 235 );
-      job2.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildNumber( 235 );
+      job2.setBuildStatus( BuildResultStatus.SUCCESS );
       job2.buildStateProperty().set( BuildState.Built );
       
       assertThatNoEventsHaveBeenFired();
@@ -92,13 +92,13 @@ public class JobBuiltIdentifierTest {
    }//End Method
    
    @Test public void shouldTakeResultWhenBuildingStartedAndNotifyCurrentWhenBuiltEvenWhenSameStatus() {
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Building );
       systemUnderTest.recordState( job1 );
       
-      job1.setLastBuildNumber( 124 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 124 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Built );
       
       assertThatNoEventsHaveBeenFired();
@@ -129,13 +129,13 @@ public class JobBuiltIdentifierTest {
    }//End Method
    
    @Test public void shouldImmediatelyNotifyIfWasBuildingAndBuildNumberHasChanged() {
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Building );
       systemUnderTest.recordState( job1 );
       
-      job1.setLastBuildNumber( 124 );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildNumber( 124 );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       job1.buildStateProperty().set( BuildState.Building );
       
       assertThatNoEventsHaveBeenFired();
@@ -145,13 +145,13 @@ public class JobBuiltIdentifierTest {
    }//End Method
    
    @Test public void shouldImmediatelyNotifyIfWasBuiltAndBuildNumberHasChanged() {
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Built );
       systemUnderTest.recordState( job1 );
       
-      job1.setLastBuildNumber( 124 );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildNumber( 124 );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       job1.buildStateProperty().set( BuildState.Built );
       
       assertThatNoEventsHaveBeenFired();
@@ -161,13 +161,13 @@ public class JobBuiltIdentifierTest {
    }//End Method
    
    @Test public void shouldNotNotifyIfStillBuildingWithSameBuildNumber() {
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Building );
       systemUnderTest.recordState( job1 );
       
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Building );
       
       assertThatNoEventsHaveBeenFired();
@@ -176,13 +176,13 @@ public class JobBuiltIdentifierTest {
    }//End Method
 
    @Test public void shouldUpdateStateAfterNotifying() {
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Building );
       systemUnderTest.recordState( job1 );
       
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       job1.buildStateProperty().set( BuildState.Built );
       
       assertThatNoEventsHaveBeenFired();
@@ -193,13 +193,13 @@ public class JobBuiltIdentifierTest {
    }//End Method
    
    @Test public void shouldNotUpdateDetailsWhenRecording(){
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       job1.buildStateProperty().set( BuildState.Building );
       systemUnderTest.recordState( job1 );
       
-      job1.setLastBuildNumber( 123 );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildNumber( 123 );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       job1.buildStateProperty().set( BuildState.Built );
       systemUnderTest.recordState( job1 );
       

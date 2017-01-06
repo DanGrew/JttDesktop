@@ -35,7 +35,7 @@ public class JenkinsJobPropertyListener {
    public JenkinsJobPropertyListener( JenkinsDatabase database ) {
       buildResultStatusPropertyListener = new GlobalPropertyListenerImpl<>(
                database.jenkinsJobs(), 
-               job -> job.lastBuildProperty()
+               job -> job.buildProperty()
       );
       buildStatePropertyListener = new GlobalPropertyListenerImpl<>(
                database.jenkinsJobs(), 
@@ -51,11 +51,11 @@ public class JenkinsJobPropertyListener {
       );
       builtOnPropertyListener = new GlobalPropertyListenerImpl<>(
                database.jenkinsJobs(), 
-               job -> job.lastBuiltOnProperty()
+               job -> job.builtOnProperty()
       );
       timestampPropertyListener = new GlobalPropertyListenerImpl<>(
                database.jenkinsJobs(), 
-               job -> job.currentBuildTimestampProperty()
+               job -> job.buildTimestampProperty()
       );
    }//End Constructor
 

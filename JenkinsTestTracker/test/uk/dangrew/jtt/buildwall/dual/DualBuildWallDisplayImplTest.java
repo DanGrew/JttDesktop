@@ -93,7 +93,7 @@ public class DualBuildWallDisplayImplTest {
       for ( JenkinsJob job : database.jenkinsJobs() ) {
          int userCount = random.nextInt( 20 );
          for ( int i = 0; i < userCount; i++ ) {
-            job.setLastBuildStatus( BuildResultStatus.values()[ i %BuildResultStatus.values().length ] );
+            job.setBuildStatus( BuildResultStatus.values()[ i %BuildResultStatus.values().length ] );
             job.culprits().add( new JenkinsUserImpl( "User " + userCount + "_" + i ) );
          }
       }
@@ -342,9 +342,9 @@ public class DualBuildWallDisplayImplTest {
    }//End Method
    
    @Test public void shouldStartFlasherWhenFailureHappens(){
-      database.jenkinsJobs().get( 0 ).setLastBuildStatus( BuildResultStatus.SUCCESS );
+      database.jenkinsJobs().get( 0 ).setBuildStatus( BuildResultStatus.SUCCESS );
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( false ) );
-      database.jenkinsJobs().get( 0 ).setLastBuildStatus( BuildResultStatus.FAILURE );
+      database.jenkinsJobs().get( 0 ).setBuildStatus( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.imageFlasherConfiguration().flashingSwitch().get(), is( true ) );
    }//End Method
 }//End Class

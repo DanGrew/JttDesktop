@@ -101,8 +101,8 @@ public class JenkinsJobPropertyListenerTest {
    
    @Test public void shouldNotifyLastBuildResultStatusWhenChanged() {
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
-      job2.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildStatus( BuildResultStatus.FAILURE );
       
       assertThat( buildResultStatusNotifications, hasSize( 2 ) );
       Pair< JenkinsJob, Pair< Integer, BuildResultStatus > > result = buildResultStatusNotifications.remove( 0 );
@@ -159,8 +159,8 @@ public class JenkinsJobPropertyListenerTest {
    
    @Test public void shouldNotifyBuiltOnWhenChanged() {
       assertThat( builtOnNotifications.isEmpty(), is( true ) );
-      job1.lastBuiltOnProperty().set( node1 );
-      job2.lastBuiltOnProperty().set( node2 );
+      job1.builtOnProperty().set( node1 );
+      job2.builtOnProperty().set( node2 );
       
       assertThat( builtOnNotifications, hasSize( 2 ) );
       Pair< JenkinsJob, JenkinsNode > result = builtOnNotifications.remove( 0 );
@@ -173,8 +173,8 @@ public class JenkinsJobPropertyListenerTest {
    
    @Test public void shouldNotifyTimestampWhenChanged() {
       assertThat( longNotifications.isEmpty(), is( true ) );
-      job1.currentBuildTimestampProperty().set( 1000L );
-      job2.currentBuildTimestampProperty().set( 6543L );
+      job1.buildTimestampProperty().set( 1000L );
+      job2.buildTimestampProperty().set( 6543L );
       
       assertThat( longNotifications, hasSize( 2 ) );
       Pair< JenkinsJob, Long > result = longNotifications.remove( 0 );

@@ -58,7 +58,7 @@ public class NodesInUse extends StatisticCalculatorBase {
          if ( j.buildStateProperty().get() == BuildState.Built ) {
             continue;
          }
-         JenkinsNode node = j.lastBuiltOnProperty().get();
+         JenkinsNode node = j.builtOnProperty().get();
          if ( node == null ) {
             continue;
          }

@@ -112,7 +112,7 @@ public class LiveStateFetcher {
       if ( job.buildStateProperty().get() == BuildState.Building ) {
          return;
       }
-      BuildResultStatus current = job.getLastBuildStatus();
+      BuildResultStatus current = job.getBuildStatus();
       if ( current != BuildResultStatus.UNSTABLE ) {
          unstableJobsLastBuildNumbersTestRetrievedFor.remove( job );
          return;
@@ -120,10 +120,10 @@ public class LiveStateFetcher {
       
       Integer lastNumberUpdatedFor = unstableJobsLastBuildNumbersTestRetrievedFor.get( job );
       if ( lastNumberUpdatedFor == null ) {
-         unstableJobsLastBuildNumbersTestRetrievedFor.put( job, job.getLastBuildNumber() );
+         unstableJobsLastBuildNumbersTestRetrievedFor.put( job, job.getBuildNumber() );
          fetcher.updateTestResults( job );
-      } else if ( !lastNumberUpdatedFor.equals( job.getLastBuildNumber() ) ) {
-         unstableJobsLastBuildNumbersTestRetrievedFor.put( job, job.getLastBuildNumber() );
+      } else if ( !lastNumberUpdatedFor.equals( job.getBuildNumber() ) ) {
+         unstableJobsLastBuildNumbersTestRetrievedFor.put( job, job.getBuildNumber() );
          fetcher.updateTestResults( job );
       }
    }//End Method

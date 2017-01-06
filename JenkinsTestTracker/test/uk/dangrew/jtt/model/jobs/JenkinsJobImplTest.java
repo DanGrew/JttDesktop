@@ -57,51 +57,51 @@ public class JenkinsJobImplTest {
    @Test public void shouldProvideLastBuildProperty() {
       Assert.assertEquals( 
                new Pair<>( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ), 
-               systemUnderTest.lastBuildProperty().get() 
+               systemUnderTest.buildProperty().get() 
       );
       
-      assertThat( systemUnderTest.getLastBuildNumber(), is( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER ) );
-      assertThat( systemUnderTest.getLastBuildStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      assertThat( systemUnderTest.getBuildNumber(), is( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER ) );
+      assertThat( systemUnderTest.getBuildStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
    }//End Method
    
    @Test public void shouldUpdateLastBuildNumberProperty() {
       shouldProvideLastBuildProperty();
       
       final int newBuild = 100;
-      systemUnderTest.lastBuildProperty().set( new Pair<>( newBuild, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
-      Assert.assertEquals( newBuild, systemUnderTest.lastBuildProperty().get().getKey().intValue() );
-      assertThat( systemUnderTest.getLastBuildNumber(), is( newBuild ) );
+      systemUnderTest.buildProperty().set( new Pair<>( newBuild, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      Assert.assertEquals( newBuild, systemUnderTest.buildProperty().get().getKey().intValue() );
+      assertThat( systemUnderTest.getBuildNumber(), is( newBuild ) );
       
       final BuildResultStatus newStatus = BuildResultStatus.SUCCESS;
-      systemUnderTest.lastBuildProperty().set( new Pair<>( newBuild, newStatus ) );
-      Assert.assertEquals( newStatus, systemUnderTest.lastBuildProperty().get().getValue() );
-      assertThat( systemUnderTest.getLastBuildStatus(), is( newStatus ) );
+      systemUnderTest.buildProperty().set( new Pair<>( newBuild, newStatus ) );
+      Assert.assertEquals( newStatus, systemUnderTest.buildProperty().get().getValue() );
+      assertThat( systemUnderTest.getBuildStatus(), is( newStatus ) );
    }//End Method
    
    @Test public void shouldUpdateBuildNumberAndStatus(){
-      systemUnderTest.setLastBuildNumber( 2000 );
-      assertThat( systemUnderTest.lastBuildProperty().get().getKey(), is( 2000 ) );
-      assertThat( systemUnderTest.lastBuildProperty().get().getValue(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      systemUnderTest.setBuildNumber( 2000 );
+      assertThat( systemUnderTest.buildProperty().get().getKey(), is( 2000 ) );
+      assertThat( systemUnderTest.buildProperty().get().getValue(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
       
-      systemUnderTest.setLastBuildStatus( BuildResultStatus.UNSTABLE );
-      assertThat( systemUnderTest.lastBuildProperty().get().getKey(), is( 2000 ) );
-      assertThat( systemUnderTest.lastBuildProperty().get().getValue(), is( BuildResultStatus.UNSTABLE ) );
+      systemUnderTest.setBuildStatus( BuildResultStatus.UNSTABLE );
+      assertThat( systemUnderTest.buildProperty().get().getKey(), is( 2000 ) );
+      assertThat( systemUnderTest.buildProperty().get().getValue(), is( BuildResultStatus.UNSTABLE ) );
    }//End Method
    
    @Test public void shouldNotifyLastBuildListenersWhenEitherValueChanges(){
       @SuppressWarnings("unchecked") //generic mocking 
       ChangeListener< Pair< Integer, BuildResultStatus > > listener = mock( ChangeListener.class );
       
-      systemUnderTest.lastBuildProperty().addListener( listener );
-      systemUnderTest.setLastBuildNumber( 10 );
+      systemUnderTest.buildProperty().addListener( listener );
+      systemUnderTest.setBuildNumber( 10 );
       verify( listener ).changed( 
-               systemUnderTest.lastBuildProperty(), 
+               systemUnderTest.buildProperty(), 
                new Pair<>( JenkinsJob.DEFAULT_LAST_BUILD_NUMBER, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ), 
                new Pair<>( 10, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) 
       );
-      systemUnderTest.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      systemUnderTest.setBuildStatus( BuildResultStatus.SUCCESS );
       verify( listener ).changed( 
-               systemUnderTest.lastBuildProperty(), 
+               systemUnderTest.buildProperty(), 
                new Pair<>( 10, JenkinsJob.DEFAULT_LAST_BUILD_STATUS ), 
                new Pair<>( 10, BuildResultStatus.SUCCESS ) 
       );
@@ -144,27 +144,27 @@ public class JenkinsJobImplTest {
    }//End Method
    
    @Test public void shouldProvideCurrentBuildTimestampProperty() {
-      assertThat( systemUnderTest.currentBuildTimestampProperty().get(), is( JenkinsJob.DEFAULT_BUILD_TIMESTAMP ) );
+      assertThat( systemUnderTest.buildTimestampProperty().get(), is( JenkinsJob.DEFAULT_BUILD_TIMESTAMP ) );
    }//End Method
    
    @Test public void shouldUpdateCurrentBuildTimestampProperty() {
       shouldProvideCurrentBuildTimestampProperty();
       
       final long value = 1000;
-      systemUnderTest.currentBuildTimestampProperty().set( value );
-      assertThat( systemUnderTest.currentBuildTimestampProperty().get() , is( value ) );
+      systemUnderTest.buildTimestampProperty().set( value );
+      assertThat( systemUnderTest.buildTimestampProperty().get() , is( value ) );
    }//End Method
    
    @Test public void shouldProvideLastBuiltOnProperty() {
-      Assert.assertEquals( JenkinsJob.DEFAULT_LAST_BUILT_ON, systemUnderTest.lastBuiltOnProperty().get() );
+      Assert.assertEquals( JenkinsJob.DEFAULT_LAST_BUILT_ON, systemUnderTest.builtOnProperty().get() );
    }//End Method
    
    @Test public void shouldUpdateLastBuiltOnProperty() {
       shouldProvideLastBuiltOnProperty();
       
       final JenkinsNode value = new JenkinsNodeImpl( "anything" );
-      systemUnderTest.lastBuiltOnProperty().set( value );
-      Assert.assertEquals( value, systemUnderTest.lastBuiltOnProperty().get() );
+      systemUnderTest.builtOnProperty().set( value );
+      Assert.assertEquals( value, systemUnderTest.builtOnProperty().get() );
    }//End Method
    
    @Test( expected = IllegalArgumentException.class ) public void shouldRejectNullNameInConstructor(){

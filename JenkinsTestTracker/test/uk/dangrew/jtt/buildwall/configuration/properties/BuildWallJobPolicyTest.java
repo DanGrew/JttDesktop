@@ -48,42 +48,42 @@ public class BuildWallJobPolicyTest {
    }//End Method
    
    @Test public void shouldDecideForShowFailuresOnly() {
-      job.setLastBuildStatus( BuildResultStatus.ABORTED );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
       assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( true ) );
       
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( true ) );
       
-      job.setLastBuildStatus( BuildResultStatus.NOT_BUILT );
+      job.setBuildStatus( BuildResultStatus.NOT_BUILT );
       assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( false ) );
       
-      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
       assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( false ) );
       
-      job.setLastBuildStatus( BuildResultStatus.UNKNOWN );
+      job.setBuildStatus( BuildResultStatus.UNKNOWN );
       assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( false ) );
       
-      job.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job.setBuildStatus( BuildResultStatus.UNSTABLE );
       assertThat( BuildWallJobPolicy.OnlyShowFailures.shouldShow( job ), is( true ) );
    }//End Method
    
    @Test public void shouldDecideForShowPassingOnly() {
-      job.setLastBuildStatus( BuildResultStatus.ABORTED );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
       assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
       
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
       
-      job.setLastBuildStatus( BuildResultStatus.NOT_BUILT );
+      job.setBuildStatus( BuildResultStatus.NOT_BUILT );
       assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
       
-      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
       assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( true ) );
       
-      job.setLastBuildStatus( BuildResultStatus.UNKNOWN );
+      job.setBuildStatus( BuildResultStatus.UNKNOWN );
       assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
       
-      job.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job.setBuildStatus( BuildResultStatus.UNSTABLE );
       assertThat( BuildWallJobPolicy.OnlyShowPassing.shouldShow( job ), is( false ) );
    }//End Method
    

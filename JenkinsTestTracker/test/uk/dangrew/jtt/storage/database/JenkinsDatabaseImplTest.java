@@ -319,7 +319,7 @@ public class JenkinsDatabaseImplTest {
       
       systemUnderTest.store( jenkinsJob );
       systemUnderTest.jenkinsJobProperties().addBuildResultStatusListener( listener );
-      jenkinsJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      jenkinsJob.setBuildStatus( BuildResultStatus.SUCCESS );
       
       verify( listener ).changed( 
                jenkinsJob, 

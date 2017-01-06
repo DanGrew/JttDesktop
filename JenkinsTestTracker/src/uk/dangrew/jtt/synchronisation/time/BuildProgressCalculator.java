@@ -43,7 +43,7 @@ public class BuildProgressCalculator implements Runnable {
          }
          
          long currentTime = clock.millis();
-         long timestamp = job.currentBuildTimestampProperty().get();
+         long timestamp = job.buildTimestampProperty().get();
          if ( timestamp > currentTime ) {
             continue;
          }

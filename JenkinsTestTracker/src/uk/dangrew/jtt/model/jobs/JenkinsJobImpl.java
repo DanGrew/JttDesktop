@@ -8,10 +8,8 @@
  */
 package uk.dangrew.jtt.model.jobs;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -29,12 +27,12 @@ import uk.dangrew.jtt.model.users.JenkinsUser;
 public class JenkinsJobImpl implements JenkinsJob {
 
    private final StringProperty name;
-   private final ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildStatus;
+   private final ObjectProperty< Pair< Integer, BuildResultStatus > > buildStatus;
    private final ObjectProperty< BuildState > buildState;
    private final LongProperty expectedBuildTime;
    private final LongProperty currentBuildTime;
-   private final ObjectProperty< Long > currentBuildTimestamp;
-   private final ObjectProperty< JenkinsNode > lastBuiltOn;
+   private final ObjectProperty< Long > buildTimestamp;
+   private final ObjectProperty< JenkinsNode > builtOn;
    private final ObservableList< JenkinsUser > culprits;
    private final ObservableList< TestCase > failingTestCases;
    private final ObjectProperty< Long > totalBuildTime;
@@ -55,12 +53,12 @@ public class JenkinsJobImpl implements JenkinsJob {
       }
       
       this.name = new SimpleStringProperty( name );
-      this.lastBuildStatus = new SimpleObjectProperty<>( new Pair<>( DEFAULT_LAST_BUILD_NUMBER, DEFAULT_LAST_BUILD_STATUS ) );
+      this.buildStatus = new SimpleObjectProperty<>( new Pair<>( DEFAULT_LAST_BUILD_NUMBER, DEFAULT_LAST_BUILD_STATUS ) );
       this.buildState = new SimpleObjectProperty<>( DEFAULT_BUILD_STATE );
       this.expectedBuildTime = new SimpleLongProperty( DEFAULT_EXPECTED_BUILD_TIME );
       this.currentBuildTime = new SimpleLongProperty( DEFAULT_CURRENT_BUILD_TIME );
-      this.currentBuildTimestamp = new SimpleObjectProperty<>( DEFAULT_BUILD_TIMESTAMP );
-      this.lastBuiltOn = new SimpleObjectProperty<>( DEFAULT_LAST_BUILT_ON );
+      this.buildTimestamp = new SimpleObjectProperty<>( DEFAULT_BUILD_TIMESTAMP );
+      this.builtOn = new SimpleObjectProperty<>( DEFAULT_LAST_BUILT_ON );
       this.culprits = FXCollections.observableArrayList();
       this.failingTestCases = FXCollections.observableArrayList();
       this.totalBuildTime = new SimpleObjectProperty<>( DEFAULT_TOTAL_BUILD_TIME );
@@ -79,36 +77,36 @@ public class JenkinsJobImpl implements JenkinsJob {
    /**
     * {@inheritDoc}
     */
-   @Override public ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildProperty() {
-      return lastBuildStatus;
+   @Override public ObjectProperty< Pair< Integer, BuildResultStatus > > buildProperty() {
+      return buildStatus;
    }//End Method
    
    /**
     * {@inheritDoc}
     */
-   @Override public Integer getLastBuildNumber() {
-      return lastBuildProperty().get().getKey();
+   @Override public Integer getBuildNumber() {
+      return buildProperty().get().getKey();
    }//End Method
    
    /**
     * {@inheritDoc}
     */
-   @Override public void setLastBuildNumber( Integer number ) {
-      lastBuildProperty().set( new Pair<>( number, lastBuildProperty().get().getValue() ) );
+   @Override public void setBuildNumber( Integer number ) {
+      buildProperty().set( new Pair<>( number, buildProperty().get().getValue() ) );
    }//End Method
    
    /**
     * {@inheritDoc}
     */
-   @Override public BuildResultStatus getLastBuildStatus() {
-      return lastBuildProperty().get().getValue();
+   @Override public BuildResultStatus getBuildStatus() {
+      return buildProperty().get().getValue();
    }//End Method
    
    /**
     * {@inheritDoc}
     */
-   @Override public void setLastBuildStatus( BuildResultStatus status ) {
-      lastBuildProperty().set( new Pair<>( lastBuildProperty().get().getKey(), status ) );
+   @Override public void setBuildStatus( BuildResultStatus status ) {
+      buildProperty().set( new Pair<>( buildProperty().get().getKey(), status ) );
    }//End Method
 
    /**
@@ -135,15 +133,15 @@ public class JenkinsJobImpl implements JenkinsJob {
    /**
     * {@inheritDoc}
     */
-   @Override public ObjectProperty< Long > currentBuildTimestampProperty() {
-      return currentBuildTimestamp;
+   @Override public ObjectProperty< Long > buildTimestampProperty() {
+      return buildTimestamp;
    }//End Method
    
    /**
     * {@inheritDoc}
     */
-   @Override public ObjectProperty< JenkinsNode > lastBuiltOnProperty() {
-      return lastBuiltOn;
+   @Override public ObjectProperty< JenkinsNode > builtOnProperty() {
+      return builtOn;
    }//End Method
    
    /**

@@ -22,7 +22,7 @@ public enum BuildWallJobPolicy {
    AlwaysShow( job -> true ),
    
    OnlyShowFailures( job -> {
-      switch ( job.lastBuildProperty().get().getValue() ) {
+      switch ( job.buildProperty().get().getValue() ) {
          case FAILURE:
          case UNSTABLE:
          case ABORTED:
@@ -36,7 +36,7 @@ public enum BuildWallJobPolicy {
    } ),
    
    OnlyShowPassing( job -> {
-      switch ( job.lastBuildProperty().get().getValue() ) {
+      switch ( job.buildProperty().get().getValue() ) {
          case SUCCESS:
             return true;
          case UNSTABLE:

@@ -61,7 +61,7 @@ public class NodesInUseStatisticTest extends StatisticPanelTest {
    @Test public void shouldPopulatePanelWhenStatChanges(){
       JenkinsJob job = new JenkinsJobImpl( "Anything" );
       job.buildStateProperty().set( BuildState.Building );
-      job.lastBuiltOnProperty().set( new JenkinsNodeImpl( "node" ) );
+      job.builtOnProperty().set( new JenkinsNodeImpl( "node" ) );
       database.store( job );
       
       assertThat( systemUnderTest.getStatisticValue(), is( "1" ) );

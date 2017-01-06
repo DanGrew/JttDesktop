@@ -51,14 +51,14 @@ public class GlobalPropertyListenerImplTest {
       
       systemUnderTest = new GlobalPropertyListenerImpl<>( 
                databaseJobs,
-               job -> { return job.lastBuildProperty(); } 
+               job -> { return job.buildProperty(); } 
       );
       systemUnderTest.addListener( buildResultListener );
    }//End Method
    
    @Test public void shouldDetectChangeInItemsAlreadyPresent() {
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       
       assertNextResult( job1, BuildResultStatus.SUCCESS );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
@@ -66,7 +66,7 @@ public class GlobalPropertyListenerImplTest {
    
    @Test public void shouldNotNotifyLastBuildResultStatusWhenSameValueSet() {
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
-      job1.setLastBuildStatus( job1.lastBuildProperty().get().getValue() );
+      job1.setBuildStatus( job1.buildProperty().get().getValue() );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
    }//End Method
    
@@ -75,7 +75,7 @@ public class GlobalPropertyListenerImplTest {
       
       JenkinsJob addedJob = new JenkinsJobImpl( "another job" );
       databaseJobs.add( addedJob );
-      addedJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      addedJob.setBuildStatus( BuildResultStatus.SUCCESS );
       
       assertNextResult( addedJob, BuildResultStatus.SUCCESS );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
@@ -85,7 +85,7 @@ public class GlobalPropertyListenerImplTest {
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
       
       databaseJobs.remove( job1 );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
    }//End Method
@@ -96,7 +96,7 @@ public class GlobalPropertyListenerImplTest {
       databaseJobs.add( job1 );
       databaseJobs.add( job1 );
       databaseJobs.add( job1 );
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       
       assertNextResult( job1, BuildResultStatus.SUCCESS );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
@@ -110,7 +110,7 @@ public class GlobalPropertyListenerImplTest {
    @Test public void shouldAllowListenersToBeRemoved() {
       systemUnderTest.removeListener( buildResultListener );
       
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       assertThat( buildResultStatusNotifications.isEmpty(), is( true ) );
    }//End Method
    

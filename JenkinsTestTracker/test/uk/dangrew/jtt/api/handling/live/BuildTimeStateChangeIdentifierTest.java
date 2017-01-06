@@ -47,10 +47,10 @@ public class BuildTimeStateChangeIdentifierTest {
 
    @Test public void shouldNotifyJobBuiltEventWhenLastBuildTimeChanges() {
       job.totalBuildTimeProperty().set( 100L );
-      job.setLastBuildStatus( BuildResultStatus.ABORTED );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
       systemUnderTest.recordState( job );
       job.totalBuildTimeProperty().set( 101L );
-      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
       systemUnderTest.identifyStateChanges();
       
       assertThatJobBuiltResultProvidesStatus( BuildResultStatus.ABORTED, BuildResultStatus.SUCCESS );

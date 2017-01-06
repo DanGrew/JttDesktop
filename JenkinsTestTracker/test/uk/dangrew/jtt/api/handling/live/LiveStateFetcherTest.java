@@ -101,9 +101,9 @@ public class LiveStateFetcherTest {
    
    @Parameters( source = BuildResultStatus.class )
    @Test public void shouldNotUpdateTestsForJobWhenUpdatingBuildStateIfStateIsNotUnstable( BuildResultStatus status ){
-      job1.setLastBuildStatus( status );
-      job2.setLastBuildStatus( status );
-      job3.setLastBuildStatus( status );
+      job1.setBuildStatus( status );
+      job2.setBuildStatus( status );
+      job3.setBuildStatus( status );
       
       systemUnderTest.updateBuildState();
       if ( status == BuildResultStatus.UNSTABLE ) {
@@ -117,9 +117,9 @@ public class LiveStateFetcherTest {
    
    @Parameters( source = BuildResultStatus.class )
    @Test public void shouldNotUpdateTestsForJobWhenLoadingCompletedBuildsIfStateIsNotUnstable( BuildResultStatus status ){
-      job1.setLastBuildStatus( status );
-      job2.setLastBuildStatus( status );
-      job3.setLastBuildStatus( status );
+      job1.setBuildStatus( status );
+      job2.setBuildStatus( status );
+      job3.setBuildStatus( status );
       
       systemUnderTest.loadLastCompletedBuild();
       if ( status == BuildResultStatus.UNSTABLE ) {
@@ -132,12 +132,12 @@ public class LiveStateFetcherTest {
    }//End Method
    
    @Test public void shouldUpdateTestsForJobWhenUpdatingBuildState(){
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
-      job2.setLastBuildStatus( BuildResultStatus.SUCCESS );
-      job3.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildStatus( BuildResultStatus.SUCCESS );
+      job3.setBuildStatus( BuildResultStatus.SUCCESS );
       
       systemUnderTest.updateBuildState();
-      job2.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job2.setBuildStatus( BuildResultStatus.UNSTABLE );
       systemUnderTest.updateBuildState();
       
       verify( fetcher ).updateTestResults( job2 );
@@ -145,12 +145,12 @@ public class LiveStateFetcherTest {
    }//End Method
    
    @Test public void shouldUpdateTestsForJobWhenLoadingCompletedBuilds(){
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
-      job2.setLastBuildStatus( BuildResultStatus.SUCCESS );
-      job3.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildStatus( BuildResultStatus.SUCCESS );
+      job3.setBuildStatus( BuildResultStatus.SUCCESS );
       
       systemUnderTest.loadLastCompletedBuild();
-      job2.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job2.setBuildStatus( BuildResultStatus.UNSTABLE );
       systemUnderTest.loadLastCompletedBuild();
       
       verify( fetcher ).updateTestResults( job2 );
@@ -159,7 +159,7 @@ public class LiveStateFetcherTest {
    
    @Test public void shouldNotUpdateTestsForJobWhenUpdatingBuildStateIfBuilding(){
       job1.buildStateProperty().set( BuildState.Building );
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
       systemUnderTest.updateBuildState();
       
       verifyZeroInteractions( fetcher );
@@ -167,17 +167,17 @@ public class LiveStateFetcherTest {
    
    @Test public void shouldNotUpdateTestsForJobWhenLoadingCompletedBuildsIfBuilding(){
       job1.buildStateProperty().set( BuildState.Building );
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
       systemUnderTest.loadLastCompletedBuild();
       
       verifyZeroInteractions( fetcher );
    }//End Method
    
    @Test public void shouldNotUpdateTestsAgainForJobWhenUpdatingBuildState(){
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
       
       systemUnderTest.updateBuildState();
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
       systemUnderTest.updateBuildState();
       
       verify( fetcher, times( 1 ) ).updateTestResults( job1 );
@@ -185,10 +185,10 @@ public class LiveStateFetcherTest {
    }//End Method
    
    @Test public void shouldNotUpdateTestsAgainForJobWhenLoadingCompletedBuilds(){
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
       
       systemUnderTest.loadLastCompletedBuild();
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
       systemUnderTest.loadLastCompletedBuild();
       
       verify( fetcher, times( 1 ) ).updateTestResults( job1 );
@@ -196,13 +196,13 @@ public class LiveStateFetcherTest {
    }//End Method
    
    @Test public void shouldUpdateTestsAgainForJobWhenUpdatingBuildStateIfBuildNumberHasChanged(){
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
       
       systemUnderTest.updateBuildState();
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
-      job1.setLastBuildNumber( 23 );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildNumber( 23 );
       systemUnderTest.updateBuildState();
-      job1.setLastBuildNumber( new Integer( 23 ) );
+      job1.setBuildNumber( new Integer( 23 ) );
       systemUnderTest.loadLastCompletedBuild();
       
       verify( fetcher, times( 2 ) ).updateTestResults( job1 );
@@ -210,13 +210,13 @@ public class LiveStateFetcherTest {
    }//End Method
    
    @Test public void shouldUpdateTestsAgainForJobWhenLoadingCompletedBuildsIfBuildNumberHasChanged(){
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
       
       systemUnderTest.loadLastCompletedBuild();
-      job1.setLastBuildStatus( BuildResultStatus.UNSTABLE );
-      job1.setLastBuildNumber( 23 );
+      job1.setBuildStatus( BuildResultStatus.UNSTABLE );
+      job1.setBuildNumber( 23 );
       systemUnderTest.loadLastCompletedBuild();
-      job1.setLastBuildNumber( new Integer( 23 ) );
+      job1.setBuildNumber( new Integer( 23 ) );
       systemUnderTest.loadLastCompletedBuild();
       
       verify( fetcher, times( 2 ) ).updateTestResults( job1 );

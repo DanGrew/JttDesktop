@@ -69,7 +69,7 @@ public class JobProgressImpl extends BorderPane {
                job.expectedBuildTimeProperty(), ( source, old, updated ) -> updateProgress( job ) 
       ) );
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               job.lastBuildProperty(), ( source, old, updated ) -> updateStyle( job ) 
+               job.buildProperty(), ( source, old, updated ) -> updateStyle( job ) 
       ) );
       
       FunctionMapChangeListenerImpl< BuildResultStatus, Color > coloursListener = new FunctionMapChangeListenerImpl<>(
@@ -94,7 +94,7 @@ public class JobProgressImpl extends BorderPane {
     * @param job the {@link JenkinsJob} to update for.
     */
    void updateStyle( JenkinsJob job ) {
-      BuildResultStatus status = job.lastBuildProperty().get().getValue();
+      BuildResultStatus status = job.buildProperty().get().getValue();
       
       Color trackColour = theme.trackColoursMap().get( status );
       Color barColour = theme.barColoursMap().get( status );

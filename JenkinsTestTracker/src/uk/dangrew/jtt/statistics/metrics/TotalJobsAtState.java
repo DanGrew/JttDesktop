@@ -58,7 +58,7 @@ public class TotalJobsAtState extends StatisticCalculatorBase {
    @Override protected String constructStatisticRepresentation( FilteredList< JenkinsJob > relevantJobs ){
       final int recalculatedTotal = relevantJobs.size();
       final int recalculatedCount = relevantJobs
-               .filtered( j -> j.getLastBuildStatus() == monitoredState ).size();
+               .filtered( j -> j.getBuildStatus() == monitoredState ).size();
       
       if ( this.total == recalculatedTotal && this.count == recalculatedCount ) {
          return null;

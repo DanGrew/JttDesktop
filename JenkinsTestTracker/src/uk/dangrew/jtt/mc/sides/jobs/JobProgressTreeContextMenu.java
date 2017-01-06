@@ -111,7 +111,7 @@ public class JobProgressTreeContextMenu extends ContextMenuWithCancel {
     * @return a {@link String} description of the assignment.
     */
    static String constructDescriptionFor( JenkinsJob job ) {
-      return job.nameProperty().get() + " with state " + job.lastBuildProperty().get().getValue().name();
+      return job.nameProperty().get() + " with state " + job.buildProperty().get().getValue().name();
    }//End Method
    
    Menu assignMenu(){

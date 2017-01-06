@@ -117,11 +117,11 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
       );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               job.lastBuildProperty(), 
+               job.buildProperty(), 
                ( source, old, updated ) -> updateBuildNumberAndTimestamp()
       ) );
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               job.currentBuildTimestampProperty(), 
+               job.buildTimestampProperty(), 
                ( source, old, updated ) -> updateBuildNumberAndTimestamp()
       ) );
       
@@ -215,7 +215,7 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
             ObjectProperty< Color > configurationProperty,
             Label textLabel
    ){
-      Color themeColor = coloursMap.get( job.getLastBuildStatus() );
+      Color themeColor = coloursMap.get( job.getBuildStatus() );
       if ( themeColor != null ) {
          textLabel.textFillProperty().set( themeColor );
       } else {
@@ -240,7 +240,7 @@ public abstract class JobPanelDescriptionBaseImpl extends BorderPane implements 
     */
    private void updateBuildNumberAndTimestamp(){
       DecoupledPlatformImpl.runLater( () -> {
-         buildNumber.setText( formatBuildNumberAndTimestamp( job.getLastBuildNumber(), job.currentBuildTimestampProperty().get() ) );
+         buildNumber.setText( formatBuildNumberAndTimestamp( job.getBuildNumber(), job.buildTimestampProperty().get() ) );
       } );
    }//End Method
    

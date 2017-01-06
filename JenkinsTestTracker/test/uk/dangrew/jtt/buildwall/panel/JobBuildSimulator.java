@@ -38,7 +38,7 @@ public class JobBuildSimulator {
             int interval 
    ) throws InterruptedException{
       job.buildStateProperty().set( BuildState.Building );
-      job.lastBuildProperty().set( new Pair<>( number, intialStatus ) );
+      job.buildProperty().set( new Pair<>( number, intialStatus ) );
       job.currentBuildTimeProperty().set( 0 );
       job.expectedBuildTimeProperty().set( expected );
       
@@ -49,7 +49,7 @@ public class JobBuildSimulator {
          job.currentBuildTimeProperty().set( currentTime );
       }
       Thread.sleep( 1000 );
-      job.lastBuildProperty().set( new Pair<>( number, resultingStatus ) );
+      job.buildProperty().set( new Pair<>( number, resultingStatus ) );
       job.buildStateProperty().set( BuildState.Building );
    }//End Method
    

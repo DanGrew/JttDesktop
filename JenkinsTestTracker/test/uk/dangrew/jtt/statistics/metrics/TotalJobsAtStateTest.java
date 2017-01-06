@@ -89,27 +89,27 @@ public class TotalJobsAtStateTest {
       if ( status == JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) {
          verify( statistic ).setStatisticValue( "5/5" );
       } else {
-         job2.setLastBuildStatus( status );
+         job2.setBuildStatus( status );
          verify( statistic ).setStatisticValue( "1/5" );
-         job3.setLastBuildStatus( status );
+         job3.setBuildStatus( status );
          verify( statistic ).setStatisticValue( "2/5" );
-         job5.setLastBuildStatus( status );
+         job5.setBuildStatus( status );
          verify( statistic ).setStatisticValue( "3/5" );
       }
    }//End Method
    
    @Test public void shouldUpdateValueAccountingForChangeInAlreadyCountedJobs() {
-      job2.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildStatus( BuildResultStatus.SUCCESS );
       verify( statistic ).setStatisticValue( "1/5" );
-      job2.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job2.setBuildStatus( BuildResultStatus.FAILURE );
       verify( statistic, times( 2 ) ).setStatisticValue( "0/5" );
-      job2.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildStatus( BuildResultStatus.SUCCESS );
       verify( statistic, times( 2 ) ).setStatisticValue( "1/5" );
    }//End Method
    
    @Test public void shouldUpdateValueWhenJobAddedWithMatchingStatus() {
       JenkinsJob job = new JenkinsJobImpl( "New Job" );
-      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
       
       database.store( job );
       verify( statistic ).setStatisticValue( "1/6" );
@@ -117,14 +117,14 @@ public class TotalJobsAtStateTest {
    
    @Test public void shouldNotUpdateValueWhenJobAddedWithNotMatchingStatus() {
       JenkinsJob job = new JenkinsJobImpl( "New Job" );
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       
       database.store( job );
       verify( statistic ).setStatisticValue( "0/5" );
    }//End Method
    
    @Test public void shouldUpdateValueWhenJobRemovedWithMatchingStatus() {
-      job1.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job1.setBuildStatus( BuildResultStatus.SUCCESS );
       verify( statistic ).setStatisticValue( "1/5" );
       
       database.removeJenkinsJob( job1 );
@@ -132,9 +132,9 @@ public class TotalJobsAtStateTest {
    }//End Method
    
    @Test public void shouldUpdateValueWhenJobRemovedWithNotMatchingStatus() {
-      job1.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job1.setBuildStatus( BuildResultStatus.FAILURE );
       verify( statistic ).setStatisticValue( "0/5" );
-      job2.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildStatus( BuildResultStatus.SUCCESS );
       verify( statistic ).setStatisticValue( "1/5" );
       
       database.removeJenkinsJob( job1 );
@@ -143,7 +143,7 @@ public class TotalJobsAtStateTest {
    
    @Test public void shouldNotIncludeExcludedJobs(){
       verify( statistic ).setStatisticValue( "0/5" );
-      job2.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job2.setBuildStatus( BuildResultStatus.SUCCESS );
       verify( statistic ).setStatisticValue( "1/5" );
       configuration.excludedJobs().add( job2 );
       verify( statistic ).setStatisticValue( "0/4" );

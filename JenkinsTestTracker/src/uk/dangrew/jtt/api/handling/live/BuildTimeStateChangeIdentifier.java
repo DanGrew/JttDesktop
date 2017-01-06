@@ -38,7 +38,7 @@ public class BuildTimeStateChangeIdentifier implements StateChangeIdentifier {
     */
    @Override public void recordState( JenkinsJob job ) {
       this.job = job;
-      this.result = job.getLastBuildStatus();
+      this.result = job.getBuildStatus();
       this.buildTime = job.totalBuildTimeProperty().get();
    }//End Method
 
@@ -62,7 +62,7 @@ public class BuildTimeStateChangeIdentifier implements StateChangeIdentifier {
     * Method to notify the {@link JobBuiltResult}.
     */
    private void notifyJobBuilt(){
-      builtEvents.notify( new Event< JobBuiltResult >( new JobBuiltResult( job, result, job.getLastBuildStatus() ) ) );
+      builtEvents.notify( new Event< JobBuiltResult >( new JobBuiltResult( job, result, job.getBuildStatus() ) ) );
    }//End Method
 
 }//End Class

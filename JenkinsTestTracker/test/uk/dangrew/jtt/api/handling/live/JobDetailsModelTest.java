@@ -81,15 +81,15 @@ public class JobDetailsModelTest {
       systemUnderTest.finishJob( ANYTHING );
       
       assertThat( job.buildStateProperty().get(), is( BuildState.Built ) );
-      assertThat( job.getLastBuildNumber(), is( not( 101 ) ) );
-      assertThat( job.lastBuiltOnProperty().get(), is( nullValue() ) );
+      assertThat( job.getBuildNumber(), is( not( 101 ) ) );
+      assertThat( job.builtOnProperty().get(), is( nullValue() ) );
       assertThat( job.totalBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_TOTAL_BUILD_TIME ) );
       assertThat( job.expectedBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME ) );
       assertThat( job.testFailureCount().get(), is( JenkinsJob.DEFAULT_FAILURE_COUNT ) );
       assertThat( job.testSkipCount().get(), is( JenkinsJob.DEFAULT_SKIP_COUNT ) );
       assertThat( job.testTotalCount().get(), is( JenkinsJob.DEFAULT_TOTAL_TEST_COUNT ) );
-      assertThat( job.getLastBuildStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
-      assertThat( job.currentBuildTimestampProperty().get(), is( JenkinsJob.DEFAULT_BUILD_TIMESTAMP ) );
+      assertThat( job.getBuildStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+      assertThat( job.buildTimestampProperty().get(), is( JenkinsJob.DEFAULT_BUILD_TIMESTAMP ) );
       assertThat( job.culprits(), is( empty() ) );
    }//End Method
    
@@ -119,7 +119,7 @@ public class JobDetailsModelTest {
       systemUnderTest.finishJob( ANYTHING );
       
       assertThat( database.hasJenkinsNode( node ), is( true ) );
-      assertThat( job.lastBuiltOnProperty().get(), is( database.getJenkinsNode( node ) ) );
+      assertThat( job.builtOnProperty().get(), is( database.getJenkinsNode( node ) ) );
    }//End Method
    
    @Test public void shouldUseNodeIfItDoesExist() {
@@ -129,7 +129,7 @@ public class JobDetailsModelTest {
       systemUnderTest.setBuiltOn( ANYTHING, node.nameProperty().get() );
       systemUnderTest.finishJob( ANYTHING );
       
-      assertThat( job.lastBuiltOnProperty().get(), is( node ) );
+      assertThat( job.builtOnProperty().get(), is( node ) );
    }//End Method
    
    @Test public void shoulduUseMasterNodeIfNameIsNotFullString(){
@@ -140,7 +140,7 @@ public class JobDetailsModelTest {
       systemUnderTest.setBuiltOn( ANYTHING, JobDetailsModel.MASTER_ID );
       systemUnderTest.finishJob( ANYTHING );
       
-      assertThat( job.lastBuiltOnProperty().get(), is( node ) );
+      assertThat( job.builtOnProperty().get(), is( node ) );
    }//End Method
    
    @Test public void shouldCreateMasterNodeIfNameIsNotFullString(){
@@ -150,7 +150,7 @@ public class JobDetailsModelTest {
       systemUnderTest.finishJob( ANYTHING );
       
       JenkinsNode master = database.getJenkinsNode( JobDetailsModel.MASTER_NAME );
-      assertThat( job.lastBuiltOnProperty().get(), is( master ) );
+      assertThat( job.builtOnProperty().get(), is( master ) );
    }//End Method
    
    @Test public void shouldCreateUserIfItDoesntExist() {
@@ -245,7 +245,7 @@ public class JobDetailsModelTest {
       systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
       systemUnderTest.setBuildNumber( ANYTHING, 456 );
       systemUnderTest.finishJob( ANYTHING );
-      assertThat( job.getLastBuildNumber(), is( 456 ) );
+      assertThat( job.getBuildNumber(), is( 456 ) );
    }//End Method
    
    @Test public void shouldHoldResultingStateAndUseWhenPopulating() {
@@ -253,7 +253,7 @@ public class JobDetailsModelTest {
       systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
       systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
       systemUnderTest.finishJob( ANYTHING );
-      assertThat( job.getLastBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
+      assertThat( job.getBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
    }//End Method
    
    @Test public void shouldHoldSkipCountAndUseWhenPopulating() {
@@ -269,7 +269,7 @@ public class JobDetailsModelTest {
       systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
       systemUnderTest.setTimestamp( ANYTHING, 12345L );
       systemUnderTest.finishJob( ANYTHING );
-      assertThat( job.currentBuildTimestampProperty().get(), is( 12345L ) );
+      assertThat( job.buildTimestampProperty().get(), is( 12345L ) );
    }//End Method
    
    @Test public void shouldHoldTotalTestCountAndUseWhenPopulating() {
@@ -284,30 +284,30 @@ public class JobDetailsModelTest {
       database.store( job );
       
       job.buildStateProperty().set( BuildState.Building );
-      job.setLastBuildNumber( 101 );
-      job.lastBuiltOnProperty().set( node );
+      job.setBuildNumber( 101 );
+      job.builtOnProperty().set( node );
       job.totalBuildTimeProperty().set( 12345L );
       job.expectedBuildTimeProperty().set( 12345L );
       job.testFailureCount().set( 456 );
       job.testSkipCount().set( 456 );
       job.testTotalCount().set( 456 );
-      job.setLastBuildStatus( BuildResultStatus.UNSTABLE );
-      job.currentBuildTimestampProperty().set( 12345L );
+      job.setBuildStatus( BuildResultStatus.UNSTABLE );
+      job.buildTimestampProperty().set( 12345L );
       job.culprits().add( user );
       
       systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
       systemUnderTest.finishJob( ANYTHING );
       
       assertThat( job.buildStateProperty().get(), is( BuildState.Building ) );
-      assertThat( job.getLastBuildNumber(), is( 101 ) );
-      assertThat( job.lastBuiltOnProperty().get(), is( node ) );
+      assertThat( job.getBuildNumber(), is( 101 ) );
+      assertThat( job.builtOnProperty().get(), is( node ) );
       assertThat( job.totalBuildTimeProperty().get(), is( 12345L ) );
       assertThat( job.expectedBuildTimeProperty().get(), is( 12345L ) );
       assertThat( job.testFailureCount().get(), is( 456 ) );
       assertThat( job.testSkipCount().get(), is( 456 ) );
       assertThat( job.testTotalCount().get(), is( 456 ) );
-      assertThat( job.getLastBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
-      assertThat( job.currentBuildTimestampProperty().get(), is( 12345L ) );
+      assertThat( job.getBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
+      assertThat( job.buildTimestampProperty().get(), is( 12345L ) );
       assertThat( job.culprits(), is( empty() ) );
    }//End Method
    
@@ -338,30 +338,30 @@ public class JobDetailsModelTest {
       
       doAnswer( i -> {
          assertThat( job.buildStateProperty().get(), is( BuildState.Built ) );
-         assertThat( job.getLastBuildNumber(), is( not( 101 ) ) );
-         assertThat( job.lastBuiltOnProperty().get(), is( nullValue() ) );
+         assertThat( job.getBuildNumber(), is( not( 101 ) ) );
+         assertThat( job.builtOnProperty().get(), is( nullValue() ) );
          assertThat( job.totalBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_TOTAL_BUILD_TIME ) );
          assertThat( job.expectedBuildTimeProperty().get(), is( JenkinsJob.DEFAULT_EXPECTED_BUILD_TIME ) );
          assertThat( job.testFailureCount().get(), is( JenkinsJob.DEFAULT_FAILURE_COUNT ) );
          assertThat( job.testSkipCount().get(), is( JenkinsJob.DEFAULT_SKIP_COUNT ) );
          assertThat( job.testTotalCount().get(), is( JenkinsJob.DEFAULT_TOTAL_TEST_COUNT ) );
-         assertThat( job.getLastBuildStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
-         assertThat( job.currentBuildTimestampProperty().get(), is( JenkinsJob.DEFAULT_BUILD_TIMESTAMP ) );
+         assertThat( job.getBuildStatus(), is( JenkinsJob.DEFAULT_LAST_BUILD_STATUS ) );
+         assertThat( job.buildTimestampProperty().get(), is( JenkinsJob.DEFAULT_BUILD_TIMESTAMP ) );
          assertThat( job.culprits(), is( empty() ) );
          return null;
       } ).when( statusChanges ).recordState( job );
       
       doAnswer( i -> {
          assertThat( job.buildStateProperty().get(), is( BuildState.Building ) );
-         assertThat( job.getLastBuildNumber(), is( 101 ) );
-         assertThat( job.lastBuiltOnProperty().get(), is( notNullValue() ) );
+         assertThat( job.getBuildNumber(), is( 101 ) );
+         assertThat( job.builtOnProperty().get(), is( notNullValue() ) );
          assertThat( job.totalBuildTimeProperty().get(), is( 123456L ) );
          assertThat( job.expectedBuildTimeProperty().get(), is( 234567L ) );
          assertThat( job.testFailureCount().get(), is( 98 ) );
          assertThat( job.testSkipCount().get(), is( 87 ) );
          assertThat( job.testTotalCount().get(), is( 9876 ) );
-         assertThat( job.getLastBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
-         assertThat( job.currentBuildTimestampProperty().get(), is( 345678L ) );
+         assertThat( job.getBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
+         assertThat( job.buildTimestampProperty().get(), is( 345678L ) );
          assertThat( job.culprits(), is( not( empty() ) ) );
          return null;
       } ).when( statusChanges ).identifyStateChanges();

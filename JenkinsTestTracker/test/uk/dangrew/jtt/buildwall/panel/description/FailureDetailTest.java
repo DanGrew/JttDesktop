@@ -69,7 +69,7 @@ public class FailureDetailTest {
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       
       jenkinsJob = new JenkinsJobImpl( "Some Job" );
-      jenkinsJob.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      jenkinsJob.setBuildStatus( BuildResultStatus.UNSTABLE );
       
       rick = new JenkinsUserImpl( "Rick" );
       daryl = new JenkinsUserImpl( "Daryl" );
@@ -182,19 +182,19 @@ public class FailureDetailTest {
    
    @Test public void shouldShowAbortedDescriptionWhenAborted(){
       jenkinsJob.failingTestCases().clear();
-      jenkinsJob.setLastBuildStatus( BuildResultStatus.ABORTED );
+      jenkinsJob.setBuildStatus( BuildResultStatus.ABORTED );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.ABORTED_DESCRIPTION ) );
    }//End Method
    
    @Test public void shouldShowFailureDescriptionWhenFailed(){
       jenkinsJob.failingTestCases().clear();
-      jenkinsJob.setLastBuildStatus( BuildResultStatus.FAILURE );
+      jenkinsJob.setBuildStatus( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.FAILURE_DESCRIPTION ) );
    }//End Method
    
    @Test public void shouldShowLastBuiltOnWhenInitiallyPresent(){
       JenkinsNode node = new JenkinsNodeImpl( "This is a node." );
-      jenkinsJob.lastBuiltOnProperty().set( node );
+      jenkinsJob.builtOnProperty().set( node );
       
       systemUnderTest = new FailureDetail( jenkinsJob, configuration );
       assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + node.nameProperty().get() ) );
@@ -227,7 +227,7 @@ public class FailureDetailTest {
    
    @Test public void shouldUpdateLastBuiltWhenStateChanges(){
       JenkinsNode node = new JenkinsNodeImpl( "This is a node." );
-      jenkinsJob.lastBuiltOnProperty().set( node );
+      jenkinsJob.builtOnProperty().set( node );
       assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + node.nameProperty().get() ) );
    }//End Method
    
@@ -387,7 +387,7 @@ public class FailureDetailTest {
       systemUnderTest.detachFromSystem();
       assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + FailureDetail.UNKNOWN_NODE ) );
       
-      jenkinsJob.lastBuiltOnProperty().set( new JenkinsNodeImpl( "anything" ) );
+      jenkinsJob.builtOnProperty().set( new JenkinsNodeImpl( "anything" ) );
       assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + FailureDetail.UNKNOWN_NODE ) );
    }//End Method
    
@@ -453,11 +453,11 @@ public class FailureDetailTest {
    @Test public void shouldUseDecoupledPlatformToSetBuiltOnText(){
       DecoupledPlatformImpl.setInstance( runnable -> {} );
     
-      jenkinsJob.lastBuiltOnProperty().set( new JenkinsNodeImpl( "anything" ) );
+      jenkinsJob.builtOnProperty().set( new JenkinsNodeImpl( "anything" ) );
       assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + FailureDetail.UNKNOWN_NODE ) );
       
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
-      jenkinsJob.lastBuiltOnProperty().set( new JenkinsNodeImpl( "something" ) );
+      jenkinsJob.builtOnProperty().set( new JenkinsNodeImpl( "something" ) );
       assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + "something" ) );
    }//End Method
    
@@ -551,13 +551,13 @@ public class FailureDetailTest {
       jenkinsJob.failingTestCases().clear();
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.NO_FAILING_TESTS ) );
       
-      jenkinsJob.setLastBuildStatus( BuildResultStatus.ABORTED );
+      jenkinsJob.setBuildStatus( BuildResultStatus.ABORTED );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.ABORTED_DESCRIPTION ) );
 
-      jenkinsJob.setLastBuildStatus( BuildResultStatus.FAILURE );
+      jenkinsJob.setBuildStatus( BuildResultStatus.FAILURE );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.FAILURE_DESCRIPTION ) );
       
-      jenkinsJob.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      jenkinsJob.setBuildStatus( BuildResultStatus.SUCCESS );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.NO_FAILING_TESTS ) );
    }//End Method
    
@@ -566,7 +566,7 @@ public class FailureDetailTest {
       
       systemUnderTest.detachFromSystem();
       
-      jenkinsJob.setLastBuildStatus( BuildResultStatus.ABORTED );
+      jenkinsJob.setBuildStatus( BuildResultStatus.ABORTED );
       assertThat( systemUnderTest.failuresLabel().getText(), is( FailureDetail.NO_FAILING_TESTS ) );
    }//End Method
    

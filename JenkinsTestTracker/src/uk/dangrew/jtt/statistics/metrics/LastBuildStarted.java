@@ -78,7 +78,7 @@ public class LastBuildStarted extends StatisticCalculatorBase {
       Long recalculatedTimestamp = null;
       
       for ( JenkinsJob j : relevantJobs ) {
-         Long timestamp = j.currentBuildTimestampProperty().get();
+         Long timestamp = j.buildTimestampProperty().get();
          if ( timestamp == null ) {
             continue;
          }
@@ -87,7 +87,7 @@ public class LastBuildStarted extends StatisticCalculatorBase {
             continue;
          }
          if ( recalculatedTimestamp < timestamp ) {
-            recalculatedTimestamp = j.currentBuildTimestampProperty().get();
+            recalculatedTimestamp = j.buildTimestampProperty().get();
          }
       }
       

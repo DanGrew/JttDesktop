@@ -96,8 +96,8 @@ class DisjointBuilderWall extends GridPane {
     */
    private JobPanelImpl createAndAddJobPanel( String jobName, BuildResultStatus status ) {
       JenkinsJob job = new JenkinsJobImpl( jobName );
-      job.setLastBuildStatus( status );
-      job.currentBuildTimestampProperty().set( JOB_TIMESTAMP );
+      job.setBuildStatus( status );
+      job.buildTimestampProperty().set( JOB_TIMESTAMP );
       job.currentBuildTimeProperty().set( JOB_PROGRESS );
       job.expectedBuildTimeProperty().set( JOB_EXPECTED_BUILD_TIME );
       return new JobPanelImpl( configuration, theme, job );

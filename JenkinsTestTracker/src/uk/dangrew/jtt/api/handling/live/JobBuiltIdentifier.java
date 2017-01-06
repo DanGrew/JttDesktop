@@ -57,8 +57,8 @@ public class JobBuiltIdentifier implements StateChangeIdentifier {
     */
    private void updateJobState( JenkinsJob job ) {
       buildStateMap.put( job, job.buildStateProperty().get() );
-      buildResultStatusMap.put( job, job.getLastBuildStatus() );
-      buildNumberMap.put( job, job.getLastBuildNumber() );
+      buildResultStatusMap.put( job, job.getBuildStatus() );
+      buildNumberMap.put( job, job.getBuildNumber() );
    }//End Method
 
    /**
@@ -71,7 +71,7 @@ public class JobBuiltIdentifier implements StateChangeIdentifier {
          
          if ( previous == current ) {
             Integer previousNumber = buildNumberMap.get( entry.getKey() );
-            Integer currentNumber = entry.getKey().getLastBuildNumber();
+            Integer currentNumber = entry.getKey().getBuildNumber();
             
             if ( !previousNumber.equals( currentNumber ) ) {
                notifyJobBuilt( entry.getKey() );
@@ -92,7 +92,7 @@ public class JobBuiltIdentifier implements StateChangeIdentifier {
       builtEvents.notify( new Event< JobBuiltResult >( new JobBuiltResult( 
                job, 
                buildResultStatusMap.get( job ), 
-               job.getLastBuildStatus() ) 
+               job.getBuildStatus() ) 
       ) );
    }//End Method
    

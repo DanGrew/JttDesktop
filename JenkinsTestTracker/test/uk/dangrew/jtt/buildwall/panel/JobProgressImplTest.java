@@ -52,7 +52,7 @@ public class JobProgressImplTest {
       job = new JenkinsJobImpl( "MyTestJob" );
       job.currentBuildTimeProperty().set( 1000 );
       job.expectedBuildTimeProperty().set( 3000 );
-      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
       systemUnderTest = new JobProgressImpl( dynamicProperties, job, theme );
    }//End Method
    
@@ -108,22 +108,22 @@ public class JobProgressImplTest {
    @Test public void shouldUpdateStyleWhenJobStateUpdates() {
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarSuccess,systemUnderTest.progressBar() );
       
-      job.setLastBuildStatus( BuildResultStatus.ABORTED );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarAborted, systemUnderTest.progressBar() );
       
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarFailed, systemUnderTest.progressBar() );
       
-      job.setLastBuildStatus( BuildResultStatus.NOT_BUILT );
+      job.setBuildStatus( BuildResultStatus.NOT_BUILT );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarNotBuilt, systemUnderTest.progressBar() );
       
-      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
       verify( dynamicProperties, Mockito.times( 2 ) ).applyStandardColourFor( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
       
-      job.setLastBuildStatus( BuildResultStatus.UNKNOWN );
+      job.setBuildStatus( BuildResultStatus.UNKNOWN );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarUnknown, systemUnderTest.progressBar() );
 
-      job.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      job.setBuildStatus( BuildResultStatus.UNSTABLE );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarUnstable, systemUnderTest.progressBar() );
    }//End Method
    
@@ -164,7 +164,7 @@ public class JobProgressImplTest {
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );
       systemUnderTest.detachFromSystem();
       
-      job.setLastBuildStatus( BuildResultStatus.ABORTED );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
       verifyNoMoreInteractions( dynamicProperties );
    }//End Method
    
@@ -180,35 +180,35 @@ public class JobProgressImplTest {
    }//End Method
    
    @Test public void shouldUseBarAndTrackColoursWhenProvidedByTheme(){
-      job.setLastBuildStatus( BuildResultStatus.ABORTED );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarAborted, systemUnderTest.progressBar() );
       
       theme.barColoursMap().put( BuildResultStatus.FAILURE, Color.AQUA );
       theme.trackColoursMap().put( BuildResultStatus.FAILURE, Color.AQUAMARINE );
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       verify( dynamicProperties ).applyCustomColours( Color.AQUA, Color.AQUAMARINE, systemUnderTest.progressBar() );
    }//End Method
    
    @Test public void shouldNotUseTrackColourWhenBarNotProvidedByTheme(){
-      job.setLastBuildStatus( BuildResultStatus.ABORTED );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarAborted, systemUnderTest.progressBar() );
       
       theme.trackColoursMap().put( BuildResultStatus.FAILURE, Color.AQUAMARINE );
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       verify( dynamicProperties, times( 2 ) ).applyStandardColourFor( BuildWallStyles.ProgressBarAborted, systemUnderTest.progressBar() );
    }//End Method
    
    @Test public void shouldNotUseBarColourWhenTrackNotProvidedByTheme(){
-      job.setLastBuildStatus( BuildResultStatus.ABORTED );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarAborted, systemUnderTest.progressBar() );
       
       theme.barColoursMap().put( BuildResultStatus.FAILURE, Color.AQUAMARINE );
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       verify( dynamicProperties, times( 2 ) ).applyStandardColourFor( BuildWallStyles.ProgressBarAborted, systemUnderTest.progressBar() );
    }//End Method
    
    @Test public void shouldUpdateTrackColourWhenThemeChanges(){
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       
       theme.barColoursMap().put( BuildResultStatus.FAILURE, Color.BROWN );
       verify( dynamicProperties, times( 2 ) ).applyStandardColourFor( BuildWallStyles.ProgressBarFailed, systemUnderTest.progressBar() );
@@ -218,7 +218,7 @@ public class JobProgressImplTest {
    }//End Method
    
    @Test public void shouldUpdateBarColourWhenThemeChanges(){
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       
       theme.trackColoursMap().put( BuildResultStatus.FAILURE, Color.BROWN );
       verify( dynamicProperties, times( 2 ) ).applyStandardColourFor( BuildWallStyles.ProgressBarFailed, systemUnderTest.progressBar() );
@@ -229,7 +229,7 @@ public class JobProgressImplTest {
    
    @Test public void shouldNotRespondToThemeChangesWhenDetached(){
       systemUnderTest.detachFromSystem();
-      job.setLastBuildStatus( BuildResultStatus.FAILURE );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
       
       theme.trackColoursMap().put( BuildResultStatus.FAILURE, Color.BROWN );
       verify( dynamicProperties ).applyStandardColourFor( BuildWallStyles.ProgressBarSuccess, systemUnderTest.progressBar() );

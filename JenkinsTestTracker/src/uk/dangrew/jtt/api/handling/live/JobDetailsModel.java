@@ -108,10 +108,10 @@ class JobDetailsModel {
          }
       }
       if ( buildNumber != null ) {
-         job.setLastBuildNumber( buildNumber );
+         job.setBuildNumber( buildNumber );
       }
       if ( result != null ) {
-         job.setLastBuildStatus( result );
+         job.setBuildStatus( result );
       }
       updateJobTimings( job );
       updateBuiltOn( job );
@@ -127,7 +127,7 @@ class JobDetailsModel {
     */
    private void updateJobTimings( JenkinsJob job ) {
       if ( timestamp != null ) {
-         job.currentBuildTimestampProperty().set( timestamp );
+         job.buildTimestampProperty().set( timestamp );
       }
       if ( duration != null ) {
          job.totalBuildTimeProperty().set( duration );
@@ -148,7 +148,7 @@ class JobDetailsModel {
             node = new JenkinsNodeImpl( builtOn );
             database.store( node );
          }
-         job.lastBuiltOnProperty().set( node );
+         job.builtOnProperty().set( node );
       }
    }//End Method
 

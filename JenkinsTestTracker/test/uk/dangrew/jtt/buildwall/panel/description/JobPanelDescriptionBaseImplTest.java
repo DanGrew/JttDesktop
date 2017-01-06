@@ -53,7 +53,7 @@ public abstract class JobPanelDescriptionBaseImplTest {
       job = new JenkinsJobImpl( "anything" );
       job.currentBuildTimeProperty().set( 1000 );
       job.expectedBuildTimeProperty().set( 10000 );
-      job.setLastBuildNumber( 345 );
+      job.setBuildNumber( 345 );
       configuration = new BuildWallConfigurationImpl();
       theme = new BuildWallThemeImpl( "Anything" );
       JavaFxInitializer.startPlatform();
@@ -68,21 +68,21 @@ public abstract class JobPanelDescriptionBaseImplTest {
    
    @Test public void shouldUseJobNameColourFromThemeInitially(){
       systemUnderTest.detachFromSystem();
-      theme.jobNameColoursMap().put( job.getLastBuildStatus(), Color.AZURE );
+      theme.jobNameColoursMap().put( job.getBuildStatus(), Color.AZURE );
       systemUnderTest = constructSut();
       assertThat( systemUnderTest.jobName().getTextFill(), is( Color.AZURE ) );
    }//End Method
    
    @Test public void shouldUseBuildNumberColourFromThemeInitially(){
       systemUnderTest.detachFromSystem();
-      theme.buildNumberColoursMap().put( job.getLastBuildStatus(), Color.AZURE );
+      theme.buildNumberColoursMap().put( job.getBuildStatus(), Color.AZURE );
       systemUnderTest = constructSut();
       assertThat( systemUnderTest.buildNumber().getTextFill(), is( Color.AZURE ) );
    }//End Method
    
    @Test public void shouldUseCompletionEstimateColourFromThemeInitially(){
       systemUnderTest.detachFromSystem();
-      theme.completionEstimateColoursMap().put( job.getLastBuildStatus(), Color.AZURE );
+      theme.completionEstimateColoursMap().put( job.getBuildStatus(), Color.AZURE );
       systemUnderTest = constructSut();
       assertThat( systemUnderTest.completionEstimate().getTextFill(), is( Color.AZURE ) );
    }//End Method
@@ -199,29 +199,29 @@ public abstract class JobPanelDescriptionBaseImplTest {
    
    @Test public void shouldUseJobNumberAndKeepUpdated(){
       Assert.assertEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getLastBuildNumber(), job.currentBuildTimestampProperty().get() ), 
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getBuildNumber(), job.buildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       
       final Integer value = 799;
-      job.setLastBuildNumber( value );
+      job.setBuildNumber( value );
       Assert.assertEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getLastBuildNumber(), job.currentBuildTimestampProperty().get() ), 
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getBuildNumber(), job.buildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( value, job.currentBuildTimestampProperty().get() ),
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( value, job.buildTimestampProperty().get() ),
                systemUnderTest.buildNumber().getText() 
       );
       
       final long timestamp = 3756298;
-      job.currentBuildTimestampProperty().set( timestamp );
+      job.buildTimestampProperty().set( timestamp );
       Assert.assertEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getLastBuildNumber(), job.currentBuildTimestampProperty().get() ), 
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getBuildNumber(), job.buildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getLastBuildNumber(), timestamp ),
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getBuildNumber(), timestamp ),
                systemUnderTest.buildNumber().getText() 
       );
    }//End Method
@@ -350,7 +350,7 @@ public abstract class JobPanelDescriptionBaseImplTest {
       configuration.buildNumberColour().set( Color.AQUA );
       assertThat( systemUnderTest.buildNumber().textFillProperty().get(), not( Color.AQUA ) );
       
-      theme.buildNumberColoursMap().put( job.getLastBuildStatus(), Color.AQUA );
+      theme.buildNumberColoursMap().put( job.getBuildStatus(), Color.AQUA );
       assertThat( systemUnderTest.buildNumber().textFillProperty().get(), not( Color.AQUA ) );
       
       final Font testFont = new Font( 100 );
@@ -364,7 +364,7 @@ public abstract class JobPanelDescriptionBaseImplTest {
       configuration.completionEstimateColour().set( Color.AQUA );
       assertThat( systemUnderTest.completionEstimate().textFillProperty().get(), not( Color.AQUA ) );
       
-      theme.completionEstimateColoursMap().put( job.getLastBuildStatus(), Color.AQUA );
+      theme.completionEstimateColoursMap().put( job.getBuildStatus(), Color.AQUA );
       assertThat( systemUnderTest.completionEstimate().textFillProperty().get(), not( Color.AQUA ) );
       
       final Font testFont = new Font( 100 );
@@ -378,7 +378,7 @@ public abstract class JobPanelDescriptionBaseImplTest {
       configuration.jobNameColour().set( Color.ANTIQUEWHITE );
       assertThat( systemUnderTest.jobName().textFillProperty().get(), not( Color.ANTIQUEWHITE ) );
       
-      theme.jobNameColoursMap().put( job.getLastBuildStatus(), Color.AQUA );
+      theme.jobNameColoursMap().put( job.getBuildStatus(), Color.AQUA );
       assertThat( systemUnderTest.jobName().textFillProperty().get(), not( Color.AQUA ) );
       
       final Font testFont = new Font( 100 );
@@ -399,31 +399,31 @@ public abstract class JobPanelDescriptionBaseImplTest {
    
    @Test public void detachmentShouldNotUseJobNumberAndKeepUpdated(){
       Assert.assertEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getLastBuildNumber(), job.currentBuildTimestampProperty().get() ), 
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getBuildNumber(), job.buildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       
       systemUnderTest.detachFromSystem();
       
       final Integer value = 799;
-      job.setLastBuildNumber( value );
+      job.setBuildNumber( value );
       Assert.assertNotEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getLastBuildNumber(), job.currentBuildTimestampProperty().get() ), 
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getBuildNumber(), job.buildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertNotEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( value, job.currentBuildTimestampProperty().get() ),
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( value, job.buildTimestampProperty().get() ),
                systemUnderTest.buildNumber().getText() 
       );
       
       final Long timestamp = 394608347l;
-      job.currentBuildTimestampProperty().set( timestamp );
+      job.buildTimestampProperty().set( timestamp );
       Assert.assertNotEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getLastBuildNumber(), job.currentBuildTimestampProperty().get() ), 
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getBuildNumber(), job.buildTimestampProperty().get() ), 
                systemUnderTest.buildNumber().getText() 
       );
       Assert.assertNotEquals( 
-               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getLastBuildNumber(), timestamp ),
+               JobPanelDescriptionBaseImpl.formatBuildNumberAndTimestamp( job.getBuildNumber(), timestamp ),
                systemUnderTest.buildNumber().getText() 
       );
    }//End Method

@@ -42,9 +42,9 @@ public class LastBuildStartedTest {
       database.store( job2 = new JenkinsJobImpl( "Job2" ) );
       database.store( job3 = new JenkinsJobImpl( "Job3" ) );
       
-      job1.currentBuildTimestampProperty().set( null );
-      job2.currentBuildTimestampProperty().set( null );
-      job3.currentBuildTimestampProperty().set( null );
+      job1.buildTimestampProperty().set( null );
+      job2.buildTimestampProperty().set( null );
+      job3.buildTimestampProperty().set( null );
       
       statistic = new StatisticViewImpl();
       configuration = new StatisticsConfiguration();
@@ -68,31 +68,31 @@ public class LastBuildStartedTest {
    }//End Method
 
    @Test public void shouldUpdateValueTimestampChanges() {
-      job2.currentBuildTimestampProperty().set( 1000L );
+      job2.buildTimestampProperty().set( 1000L );
       assertThat( statistic.getStatisticValue(), is( "01/01/70-01:00:01" ) );
-      job2.currentBuildTimestampProperty().set( null );
+      job2.buildTimestampProperty().set( null );
       assertThat( statistic.getStatisticValue(), is( LastBuildStarted.UNKNOWN ) );
-      job2.currentBuildTimestampProperty().set( 2000L );
+      job2.buildTimestampProperty().set( 2000L );
       assertThat( statistic.getStatisticValue(), is( "01/01/70-01:00:02" ) );
    }//End Method
    
    @Test public void shouldPickTheLatestTimestamp() {
-      job1.currentBuildTimestampProperty().set( 36894576L );
-      job2.currentBuildTimestampProperty().set( 48567304L );
-      job3.currentBuildTimestampProperty().set( 98739456L );
+      job1.buildTimestampProperty().set( 36894576L );
+      job2.buildTimestampProperty().set( 48567304L );
+      job3.buildTimestampProperty().set( 98739456L );
       assertThat( statistic.getStatisticValue(), is( "02/01/70-04:25:39" ) );
-      job3.currentBuildTimestampProperty().set( 10000002L );
-      job2.currentBuildTimestampProperty().set( 10000001L );
-      job1.currentBuildTimestampProperty().set( 10000000L );
+      job3.buildTimestampProperty().set( 10000002L );
+      job2.buildTimestampProperty().set( 10000001L );
+      job1.buildTimestampProperty().set( 10000000L );
       assertThat( statistic.getStatisticValue(), is( "01/01/70-03:46:40" ) );
-      job3.currentBuildTimestampProperty().set( 10000002L );
-      job2.currentBuildTimestampProperty().set( 10000001L );
-      job1.currentBuildTimestampProperty().set( 10000002L );
+      job3.buildTimestampProperty().set( 10000002L );
+      job2.buildTimestampProperty().set( 10000001L );
+      job1.buildTimestampProperty().set( 10000002L );
       assertThat( statistic.getStatisticValue(), is( "01/01/70-03:46:40" ) );
    }//End Method
    
    @Test public void shouldNotIncludeExcludedJobs(){
-      job2.currentBuildTimestampProperty().set( 36894576L );
+      job2.buildTimestampProperty().set( 36894576L );
       assertThat( statistic.getStatisticValue(), is( "01/01/70-11:14:54" ) );
       
       configuration.excludedJobs().add( job2 );

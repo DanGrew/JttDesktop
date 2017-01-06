@@ -78,19 +78,19 @@ public class NodesInUseTest {
    }//End Method
 
    @Test public void shouldUpdateValueWhenBuiltOnChanges() {
-      job2.lastBuiltOnProperty().set( node1 );
+      job2.builtOnProperty().set( node1 );
       job2.buildStateProperty().set( BuildState.Building );
       assertThat( statistic.getStatisticValue(), is( "1" ) );
-      job2.lastBuiltOnProperty().set( null );
+      job2.builtOnProperty().set( null );
       assertThat( statistic.getStatisticValue(), is( "0" ) );
-      job2.lastBuiltOnProperty().set( node2 );
+      job2.builtOnProperty().set( node2 );
       assertThat( statistic.getStatisticValue(), is( "1" ) );
    }//End Method
    
    @Test public void shouldUpdateValueWhenMultipleJobsChange() {
-      job1.lastBuiltOnProperty().set( node1 );
+      job1.builtOnProperty().set( node1 );
       job1.buildStateProperty().set( BuildState.Building );
-      job2.lastBuiltOnProperty().set( node2 );
+      job2.builtOnProperty().set( node2 );
       job2.buildStateProperty().set( BuildState.Building );
       assertThat( statistic.getStatisticValue(), is( "2" ) );
       job2.buildStateProperty().set( BuildState.Built );
@@ -100,9 +100,9 @@ public class NodesInUseTest {
    }//End Method
    
    @Test public void shouldUpdateNotCountSameNodeMultipleTimes() {
-      job1.lastBuiltOnProperty().set( node1 );
+      job1.builtOnProperty().set( node1 );
       job1.buildStateProperty().set( BuildState.Building );
-      job2.lastBuiltOnProperty().set( node1 );
+      job2.builtOnProperty().set( node1 );
       job2.buildStateProperty().set( BuildState.Building );
       assertThat( statistic.getStatisticValue(), is( "1" ) );
       job2.buildStateProperty().set( BuildState.Built );
@@ -112,7 +112,7 @@ public class NodesInUseTest {
    }//End Method
    
    @Test public void shouldUpdateValueWhenBuildStateChanges() {
-      job2.lastBuiltOnProperty().set( node1 );
+      job2.builtOnProperty().set( node1 );
       job2.buildStateProperty().set( BuildState.Building );
       assertThat( statistic.getStatisticValue(), is( "1" ) );
       job2.buildStateProperty().set( BuildState.Built );
@@ -120,7 +120,7 @@ public class NodesInUseTest {
    }//End Method
    
    @Test public void shouldNotIncludeExcludedJobs(){
-      job2.lastBuiltOnProperty().set( node1 );
+      job2.builtOnProperty().set( node1 );
       job2.buildStateProperty().set( BuildState.Building );
       assertThat( statistic.getStatisticValue(), is( "1" ) );
       

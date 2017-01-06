@@ -60,7 +60,7 @@ public class TotalSuccessStatisticTest extends StatisticPanelTest {
    
    @Test public void shouldPopulatePanelWhenStatChanges(){
       JenkinsJob job = new JenkinsJobImpl( "Anything" );
-      job.setLastBuildStatus( BuildResultStatus.SUCCESS );
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
       database.store( job );
       
       assertThat( systemUnderTest.getStatisticValue(), is( "1/1" ) );

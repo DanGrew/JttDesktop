@@ -82,8 +82,8 @@ public class DisjointBuilderWallTest {
    @Parameters( source = BuildResultStatus.class )
    @Test public void shouldSetStatusAndBuildTimesOnJobs( BuildResultStatus status ) {
       JobPanelImpl panel = systemUnderTest.panelFor( status );
-      assertThat( panel.getJenkinsJob().getLastBuildStatus(), is( status ) );
-      assertThat( panel.getJenkinsJob().currentBuildTimestampProperty().get(), is( DisjointBuilderWall.JOB_TIMESTAMP ) );
+      assertThat( panel.getJenkinsJob().getBuildStatus(), is( status ) );
+      assertThat( panel.getJenkinsJob().buildTimestampProperty().get(), is( DisjointBuilderWall.JOB_TIMESTAMP ) );
       assertThat( panel.getJenkinsJob().currentBuildTimeProperty().get(), is( DisjointBuilderWall.JOB_PROGRESS ) );
       assertThat( panel.getJenkinsJob().expectedBuildTimeProperty().get(), is( DisjointBuilderWall.JOB_EXPECTED_BUILD_TIME ) );
    }//End Method

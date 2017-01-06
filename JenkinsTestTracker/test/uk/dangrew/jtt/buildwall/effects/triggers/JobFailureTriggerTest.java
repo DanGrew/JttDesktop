@@ -43,7 +43,7 @@ public class JobFailureTriggerTest {
       database.store( firstJob );
       database.store( secondJob );
       database.store( thirdJob );
-      database.jenkinsJobs().forEach( job -> job.setLastBuildStatus( BuildResultStatus.SUCCESS ) );
+      database.jenkinsJobs().forEach( job -> job.setBuildStatus( BuildResultStatus.SUCCESS ) );
       
       imageFlasherControls = new ImageFlasherControlsImpl();
       systemUnderTest = new JobFailureTrigger( database, imageFlasherControls );
@@ -51,25 +51,25 @@ public class JobFailureTriggerTest {
    
    @Test public void whenAnyJobFailsSwitchShouldBeFlipped() {
       assertThat( imageFlasherControls.flashingSwitch().get(), is( false ) );
-      firstJob.setLastBuildStatus( BuildResultStatus.FAILURE );
+      firstJob.setBuildStatus( BuildResultStatus.FAILURE );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( true ) );
       
       imageFlasherControls.flashingSwitch().set( false );
-      secondJob.setLastBuildStatus( BuildResultStatus.ABORTED );
+      secondJob.setBuildStatus( BuildResultStatus.ABORTED );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( true ) );
       
       imageFlasherControls.flashingSwitch().set( false );
-      thirdJob.setLastBuildStatus( BuildResultStatus.UNSTABLE );
+      thirdJob.setBuildStatus( BuildResultStatus.UNSTABLE );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( true ) );
    }//End Method
    
    @Test public void whenAnyJobFailsAgainSwitchShouldNotBeFlipped() {
       assertThat( imageFlasherControls.flashingSwitch().get(), is( false ) );
-      firstJob.setLastBuildStatus( BuildResultStatus.FAILURE );
+      firstJob.setBuildStatus( BuildResultStatus.FAILURE );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( true ) );
       
       imageFlasherControls.flashingSwitch().set( false );
-      firstJob.setLastBuildStatus( BuildResultStatus.FAILURE );
+      firstJob.setBuildStatus( BuildResultStatus.FAILURE );
       assertThat( imageFlasherControls.flashingSwitch().get(), is( false ) );
    }//End Method
 

@@ -141,7 +141,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    private StringBuilder constructFailingTestCasesList() {
       StringBuilder failingTests = new StringBuilder();
       
-      BuildResultStatus status = jenkinsJob.lastBuildProperty().get().getValue();
+      BuildResultStatus status = jenkinsJob.buildProperty().get().getValue();
       if ( status == BuildResultStatus.ABORTED ) {
          return failingTests.append( ABORTED_DESCRIPTION );
       } else if ( status == BuildResultStatus.FAILURE ) {
@@ -227,12 +227,12 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       ) );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               jenkinsJob.lastBuiltOnProperty(), 
+               jenkinsJob.builtOnProperty(), 
                ( source, old, updated ) -> updateLastBuiltOnText() 
       ) );
       
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               jenkinsJob.lastBuildProperty(), 
+               jenkinsJob.buildProperty(), 
                ( source, old, updated ) -> updateFailuresText() 
       ) );
    }//End Method
@@ -283,7 +283,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
     * Method to update the node text displayed in the {@link Label}.
     */
    private void updateLastBuiltOnText(){
-      JenkinsNode builtOn = jenkinsJob.lastBuiltOnProperty().get();
+      JenkinsNode builtOn = jenkinsJob.builtOnProperty().get();
       String builtOnText = BUILT_ON_PREFIX + ( builtOn == null ? UNKNOWN_NODE : builtOn.nameProperty().get() );
       DecoupledPlatformImpl.runLater( () -> {
          lastBuiltOnLabel.setText( builtOnText );

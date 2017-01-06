@@ -62,7 +62,7 @@ public class JobMonitorImpl implements ListChangeListener< JenkinsJob > {
          fetcher.updateTestResults( job );
       };
       lastBuildNumberListeners.put( job, lastBuildNumberListener );
-      job.lastBuildProperty().addListener( lastBuildNumberListener );
+      job.buildProperty().addListener( lastBuildNumberListener );
       fetcher.updateTestResults( job );
    }//End Method
    
@@ -72,7 +72,7 @@ public class JobMonitorImpl implements ListChangeListener< JenkinsJob > {
     */
    private void handleRemovedJob( JenkinsJob job ) {
       ChangeListener< Pair< Integer, BuildResultStatus > > listener = lastBuildNumberListeners.get( job );
-      job.lastBuildProperty().removeListener( listener );
+      job.buildProperty().removeListener( listener );
    }//End Method
    
 }//End Class

@@ -8,7 +8,6 @@
  */
 package uk.dangrew.jtt.model.jobs;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -44,34 +43,34 @@ public interface JenkinsJob {
    public StringProperty nameProperty();
 
    /**
-    * Provides the last build status of the {@link JenkinsJob}.
-    * @return the {@link ObjectProperty} for the {@link BuildResultStatus}.
+    * Provides the build number and build status of the {@link JenkinsJob}.
+    * @return the {@link ObjectProperty} for the build number and {@link BuildResultStatus}.
     */
-   public ObjectProperty< Pair< Integer, BuildResultStatus > > lastBuildProperty();
+   public ObjectProperty< Pair< Integer, BuildResultStatus > > buildProperty();
    
    /**
-    * Method to get the last build number on the {@link #lastBuildProperty()}.
+    * Method to get the build number on the {@link #buildProperty()}.
     * @return the {@link Integer} build number.
     */
-   public Integer getLastBuildNumber();
+   public Integer getBuildNumber();
    
    /**
-    * Method to set the last build number on the {@link #lastBuildProperty()}.
+    * Method to set the build number on the {@link #buildProperty()}.
     * @param number the {@link Integer} build number.
     */
-   public void setLastBuildNumber( Integer number );
+   public void setBuildNumber( Integer number );
 
    /**
-    * Method to get the last {@link BuildResultStatus} on the {@link #lastBuildProperty()}.
+    * Method to get the {@link BuildResultStatus} on the {@link #buildProperty()}.
     * @return the {@link BuildResultStatus}.
     */
-   public BuildResultStatus getLastBuildStatus();
+   public BuildResultStatus getBuildStatus();
    
    /**
-    * Method to set the last {@link BuildResultStatus} on the {@link #lastBuildProperty()}.
+    * Method to set the {@link BuildResultStatus} on the {@link #buildProperty()}.
     * @param status the {@link BuildResultStatus}.
     */
-   public void setLastBuildStatus( BuildResultStatus status );
+   public void setBuildStatus( BuildResultStatus status );
 
    /**
     * Provides the current build state of the {@link JenkinsJob}.
@@ -96,7 +95,7 @@ public interface JenkinsJob {
     * the build was started.
     * @return the {@link ObjectProperty}.
     */
-   public ObjectProperty< Long > currentBuildTimestampProperty();
+   public ObjectProperty< Long > buildTimestampProperty();
    
    /**
     * Access to the time taken to complete the last build.
@@ -108,7 +107,7 @@ public interface JenkinsJob {
     * Provides the {@link JenkinsNode} the job was last built on.
     * @return the {@link ObjectProperty}. Note that the node can be null.
     */
-   public ObjectProperty< JenkinsNode > lastBuiltOnProperty();
+   public ObjectProperty< JenkinsNode > builtOnProperty();
    
    /**
     * Provides an {@link ObservableList} of {@link JenkinsUser} culprits for the failure of the

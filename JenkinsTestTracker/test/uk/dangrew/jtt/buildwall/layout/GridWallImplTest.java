@@ -340,12 +340,12 @@ public class GridWallImplTest {
    @Test public void shouldReconstructLayoutWhenJobBuildChanges(){
       configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.OnlyShowFailures ) );
       assertIndexConstraints( 2, 3 );
-      database.jenkinsJobs().get( 0 ).setLastBuildStatus( BuildResultStatus.SUCCESS );
-      database.jenkinsJobs().get( 1 ).setLastBuildStatus( BuildResultStatus.SUCCESS );
+      database.jenkinsJobs().get( 0 ).setBuildStatus( BuildResultStatus.SUCCESS );
+      database.jenkinsJobs().get( 1 ).setBuildStatus( BuildResultStatus.SUCCESS );
       assertIndexConstraints( 2, 2 );
       
-      database.jenkinsJobs().get( 2 ).setLastBuildStatus( BuildResultStatus.SUCCESS );
-      database.jenkinsJobs().get( 3 ).setLastBuildStatus( BuildResultStatus.SUCCESS );
+      database.jenkinsJobs().get( 2 ).setBuildStatus( BuildResultStatus.SUCCESS );
+      database.jenkinsJobs().get( 3 ).setBuildStatus( BuildResultStatus.SUCCESS );
       assertIndexConstraints( 1, 1 );
    }//End Method
    
