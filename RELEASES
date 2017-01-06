@@ -1,3 +1,13 @@
+Release, "1.5.200"
+Date, "(Dec 16, 2016 10:11:44 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.200/JenkinsTestTracker-1.5.200-runnable.jar"
+Description, "The build wall now provides some basic statistics at the top of the wall (number of jobs passing, number of tests passing, nodes in use, time since last build). There is currently no configuration for these statistics, but that will be coming soon. There was issue found with the optimised job details importing causing failures not to be notified correctly - the mechanism has been rewritten to address the problem."
+
+Release, "1.5.198"
+Date, "(Dec 16, 2016 10:11:44 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.198/JenkinsTestTracker-1.5.198-runnable.jar"
+Description, "Failure text on each job now displays the number of failures out of the total number of tests run."
+
 Release, "1.5.197"
 Date, "(Dec 16, 2016 8:57:54 AM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.197/JenkinsTestTracker-1.5.197-runnable.jar"
