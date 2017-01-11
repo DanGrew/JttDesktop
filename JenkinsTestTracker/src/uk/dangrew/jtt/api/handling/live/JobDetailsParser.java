@@ -26,6 +26,9 @@ public class JobDetailsParser extends JsonParser {
    private static final String ARRAY_JOBS = "jobs";
    private static final String KEY_NAME = "name";
    
+   private static final String ARRAY_LAST_BUILD = "lastBuild";
+   private static final String ARRAY_LAST_COMPLETED_BUILD = "lastCompletedBuild";
+   
    private static final String KEY_FAIL_COUNT = "failCount";
    private static final String KEY_SKIP_COUNT = "skipCount";
    private static final String KEY_TOTAL_COUNT = "totalCount";
@@ -47,6 +50,13 @@ public class JobDetailsParser extends JsonParser {
    public JobDetailsParser( JobDetailsModel model ) {
       when( ARRAY_JOBS, new StringParseHandle( new JsonArrayWithObjectParseHandler<>( 
                model::startJob, model::finishJob, null, null 
+      ) ) );
+      
+      when( ARRAY_LAST_BUILD, new StringParseHandle( new JsonArrayWithObjectParseHandler<>( 
+               model::startLastBuild, null, null, null 
+      ) ) );
+      when( ARRAY_LAST_COMPLETED_BUILD, new StringParseHandle( new JsonArrayWithObjectParseHandler<>( 
+               model::startLastCompletedBuild, null, null, null 
       ) ) );
       
       when( KEY_NAME, new StringParseHandle( model::setJobName ) );

@@ -70,11 +70,15 @@ public class JobDetailsModelTest {
       systemUnderTest.setDuration( ANYTHING, 123456L );
       systemUnderTest.setEstimatedDuration( ANYTHING, 234567L );
       systemUnderTest.setFailCount( ANYTHING, 98 );
-      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
       systemUnderTest.setSkipCount( ANYTHING, 87 );
       systemUnderTest.setTimestamp( ANYTHING, 345678L );
       systemUnderTest.setTotalTestCount( ANYTHING, 9876 );
       systemUnderTest.addCulprit( ANYTHING, "Dan" );
+      
+      systemUnderTest.startLastBuild( ANYTHING );
+      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
+      systemUnderTest.startLastCompletedBuild( ANYTHING );
+      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.FAILURE );
       
       systemUnderTest.startJob( ANYTHING );
       systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
@@ -248,12 +252,44 @@ public class JobDetailsModelTest {
       assertThat( job.getBuildNumber(), is( 456 ) );
    }//End Method
    
-   @Test public void shouldHoldResultingStateAndUseWhenPopulating() {
+   @Test public void shouldHoldCurrentResultAndUseWhenPopulating() {
       database.store( job );
       systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.startLastBuild( ANYTHING );
       systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
       systemUnderTest.finishJob( ANYTHING );
       assertThat( job.getBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
+   }//End Method
+   
+   @Test public void shouldHoldPreviousResultAndUseWhenPopulating() {
+      database.store( job );
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.startLastCompletedBuild( ANYTHING );
+      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
+      systemUnderTest.finishJob( ANYTHING );
+      assertThat( job.getBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
+   }//End Method
+   
+   @Test public void shouldCurrentResultAndPreviousAndUseCurrentWhenPresent() {
+      database.store( job );
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.startLastBuild( ANYTHING );
+      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
+      systemUnderTest.startLastCompletedBuild( ANYTHING );
+      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.FAILURE );
+      systemUnderTest.finishJob( ANYTHING );
+      assertThat( job.getBuildStatus(), is( BuildResultStatus.UNSTABLE ) );
+   }//End Method
+   
+   @Test public void shouldCurrentResultAndPreviousAndUsePreviousWhenCurrentNotPresent() {
+      database.store( job );
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.startLastBuild( ANYTHING );
+      systemUnderTest.setResultingState( ANYTHING, null );
+      systemUnderTest.startLastCompletedBuild( ANYTHING );
+      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.FAILURE );
+      systemUnderTest.finishJob( ANYTHING );
+      assertThat( job.getBuildStatus(), is( BuildResultStatus.FAILURE ) );
    }//End Method
    
    @Test public void shouldHoldSkipCountAndUseWhenPopulating() {
@@ -373,11 +409,13 @@ public class JobDetailsModelTest {
       systemUnderTest.setDuration( ANYTHING, 123456L );
       systemUnderTest.setEstimatedDuration( ANYTHING, 234567L );
       systemUnderTest.setFailCount( ANYTHING, 98 );
-      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
       systemUnderTest.setSkipCount( ANYTHING, 87 );
       systemUnderTest.setTimestamp( ANYTHING, 345678L );
       systemUnderTest.setTotalTestCount( ANYTHING, 9876 );
       systemUnderTest.addCulprit( ANYTHING, "Dan" );
+      
+      systemUnderTest.startLastBuild( ANYTHING );
+      systemUnderTest.setResultingState( ANYTHING, BuildResultStatus.UNSTABLE );
       
       systemUnderTest.finishJob( ANYTHING );
       verify( statusChanges ).recordState( job );

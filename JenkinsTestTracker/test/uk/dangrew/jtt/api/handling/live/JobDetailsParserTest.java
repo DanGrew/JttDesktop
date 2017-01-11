@@ -34,7 +34,7 @@ public class JobDetailsParserTest {
       new JobDetailsParser( new JobDetailsModel( database ) ).parse( object );
       
       assertThat( database.getJenkinsNode( "Dans Machine" ), is( notNullValue() ) );
-      assertThat( database.getJenkinsNode( "Lizs Machine" ), is( notNullValue() ) );
+      assertThat( database.getJenkinsNode( "Noones Machine" ), is( notNullValue() ) );
       assertThat( database.getJenkinsUser( "Dan Grew" ), is( notNullValue() ) );
       
       JenkinsJob dansProject = database.getJenkinsJob( "Dans Project" );
@@ -46,13 +46,13 @@ public class JobDetailsParserTest {
       assertThat( dansProject.failingTestCases(), is( empty() ) );
       assertThat( dansProject.getBuildNumber(), is( 15 ) );
       assertThat( dansProject.getBuildStatus(), is( BuildResultStatus.SUCCESS ) );
-      assertThat( dansProject.builtOnProperty().get(), is( database.getJenkinsNode( "Lizs Machine" ) ) );
+      assertThat( dansProject.builtOnProperty().get(), is( database.getJenkinsNode( "Noones Machine" ) ) );
       assertThat( dansProject.testFailureCount().get(), is( 0 ) );
       assertThat( dansProject.testSkipCount().get(), is( 0 ) );
       assertThat( dansProject.testTotalCount().get(), is( 0 ) );
       assertThat( dansProject.totalBuildTimeProperty().get(), is( 12975L ) );
       
-      JenkinsJob lizsProject = database.getJenkinsJob( "Lizs Project" );
+      JenkinsJob lizsProject = database.getJenkinsJob( "Jeffs Project" );
       assertThat( lizsProject.buildStateProperty().get(), is( BuildState.Built ) );
       assertThat( lizsProject.culprits().get( 0 ), is( database.getJenkinsUser( "Dan Grew" ) ) );
       assertThat( lizsProject.currentBuildTimeProperty().get(), is( 0L ) );

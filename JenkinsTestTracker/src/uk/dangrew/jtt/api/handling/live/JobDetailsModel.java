@@ -35,7 +35,8 @@ class JobDetailsModel {
    private String jobName;
    private Integer buildNumber;
    private BuildState buildState;
-   private BuildResultStatus result;
+   private BuildResultStatus currentResult;
+   private BuildResultStatus lastCompletedResult;
    private Long timestamp; 
    private Long duration;
    private Long estimatedDuration;
@@ -44,6 +45,9 @@ class JobDetailsModel {
    private Integer skipCount;
    private Integer totalTestCount;
    private List< String > culprits;
+   
+   private boolean parsingCurrent;
+   private boolean parsingLastCompleted;
    
    /**
     * Constructs a new {@link JobDetailsModel}.
@@ -74,7 +78,8 @@ class JobDetailsModel {
    void startJob( String key ) {
       this.jobName = null;
       this.buildNumber = null;
-      this.result = null;
+      this.currentResult = null;
+      this.lastCompletedResult = null;
       this.buildState = null;
       this.timestamp = null;
       this.duration = null;
@@ -101,6 +106,7 @@ class JobDetailsModel {
       }
       
       stateChanges.recordState( job );
+      
       if ( buildState != null ) {
          job.buildStateProperty().set( buildState );
          if ( buildState == BuildState.Built ) {
@@ -110,8 +116,10 @@ class JobDetailsModel {
       if ( buildNumber != null ) {
          job.setBuildNumber( buildNumber );
       }
-      if ( result != null ) {
-         job.setBuildStatus( result );
+      if ( currentResult != null ) {
+         job.setBuildStatus( currentResult );
+      } else if ( lastCompletedResult != null ) {
+         job.setBuildStatus( lastCompletedResult );
       }
       updateJobTimings( job );
       updateBuiltOn( job );
@@ -187,6 +195,24 @@ class JobDetailsModel {
          job.culprits().clear();
          job.culprits().addAll( cupritsIdentified );
       }
+   }//End Method
+   
+   /**
+    * Method to indicate that the following properties will be for the last build.
+    * @param key the key parsed.
+    */
+   void startLastBuild( String key ) {
+      parsingCurrent = true;
+      parsingLastCompleted = false;
+   }//End Method
+   
+   /**
+    * Method to indicate that the following properties will be for the last completed build.
+    * @param key the key parsed.
+    */
+   void startLastCompletedBuild( String key ) {
+      parsingLastCompleted = true;
+      parsingCurrent = false;
    }//End Method
    
    /**
@@ -273,7 +299,11 @@ class JobDetailsModel {
     * @param value the parsed value.
     */
    void setResultingState( String key, BuildResultStatus value ) {
-      this.result = value;
+      if ( parsingCurrent ) {
+         this.currentResult = value;
+      } else if ( parsingLastCompleted ) {
+         this.lastCompletedResult = value;
+      }
    }//End Method
    
    /**

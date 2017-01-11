@@ -26,7 +26,7 @@ class JenkinsApiRequests {
    
    static final String BUILD_DETAILS = "[actions[failCount,skipCount,totalCount],building,duration,estimatedDuration,"
             + "result,number,timestamp,builtOn,culprits[fullName]]]";
-   static final String CURRENT_JOB_DETAILS       = "/api/json?tree=jobs[name,lastBuild" + BUILD_DETAILS;
+   static final String CURRENT_JOB_DETAILS       = "/api/json?tree=jobs[name,lastCompletedBuild[result],lastBuild" + BUILD_DETAILS;
    static final String LAST_COMPLETE_JOB_DETAILS = "/api/json?tree=jobs[name,lastCompletedBuild" + BUILD_DETAILS;
    
    static final String TEST_CASES_PROPERTIES = "duration,name,className,failedSince,skipped,status,age";
