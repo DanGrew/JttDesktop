@@ -252,6 +252,16 @@ public class JobDetailsModelTest {
       assertThat( job.getBuildNumber(), is( 456 ) );
    }//End Method
    
+   @Test public void shouldResetCurrentProgressWhenBuildNumberChanges() {
+      job.currentBuildTimeProperty().set( 100 );
+      database.store( job );
+      systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );
+      systemUnderTest.setBuildNumber( ANYTHING, 456 );
+      systemUnderTest.finishJob( ANYTHING );
+      assertThat( job.getBuildNumber(), is( 456 ) );
+      assertThat( job.currentBuildTimeProperty().get(), is( 0L ) );
+   }//End Method
+   
    @Test public void shouldHoldCurrentResultAndUseWhenPopulating() {
       database.store( job );
       systemUnderTest.setJobName( ANYTHING, job.nameProperty().get() );

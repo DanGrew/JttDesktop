@@ -113,7 +113,8 @@ class JobDetailsModel {
             job.currentBuildTimeProperty().set( 0 );
          }
       }
-      if ( buildNumber != null ) {
+      if ( buildNumber != null && job.getBuildNumber().intValue() != buildNumber.intValue() ) {
+         job.currentBuildTimeProperty().set( 0 );
          job.setBuildNumber( buildNumber );
       }
       if ( currentResult != null ) {
