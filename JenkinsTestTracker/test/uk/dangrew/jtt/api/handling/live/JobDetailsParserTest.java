@@ -52,35 +52,38 @@ public class JobDetailsParserTest {
       assertThat( dansProject.testTotalCount().get(), is( 0 ) );
       assertThat( dansProject.totalBuildTimeProperty().get(), is( 12975L ) );
       
-      JenkinsJob lizsProject = database.getJenkinsJob( "Jeffs Project" );
-      assertThat( lizsProject.buildStateProperty().get(), is( BuildState.Built ) );
-      assertThat( lizsProject.culprits().get( 0 ), is( database.getJenkinsUser( "Dan Grew" ) ) );
-      assertThat( lizsProject.currentBuildTimeProperty().get(), is( 0L ) );
-      assertThat( lizsProject.buildTimestampProperty().get(), is( 1481218487257L ) );
-      assertThat( lizsProject.expectedBuildTimeProperty().get(), is( 124821L ) );
-      assertThat( lizsProject.failingTestCases(), is( empty() ) );
-      assertThat( lizsProject.getBuildNumber(), is( 560 ) );
-      assertThat( lizsProject.getBuildStatus(), is( BuildResultStatus.SUCCESS ) );
-      assertThat( lizsProject.builtOnProperty().get(), is( database.getJenkinsNode( "Dans Machine" ) ) );
-      assertThat( lizsProject.testFailureCount().get(), is( 12 ) );
-      assertThat( lizsProject.testSkipCount().get(), is( 1 ) );
-      assertThat( lizsProject.testTotalCount().get(), is( 15 ) );
-      assertThat( lizsProject.totalBuildTimeProperty().get(), is( 77521L ) );
-      
-      JenkinsJob jeffsProject = database.getJenkinsJob( "Jeffs Stuff" );
-      assertThat( jeffsProject.buildStateProperty().get(), is( BuildState.Building ) );
-      assertThat( jeffsProject.culprits(), is( empty() ) );
+      JenkinsJob jeffsProject = database.getJenkinsJob( "Jeffs Project" );
+      assertThat( jeffsProject.buildStateProperty().get(), is( BuildState.Built ) );
+      assertThat( jeffsProject.culprits().get( 0 ), is( database.getJenkinsUser( "Dan Grew" ) ) );
       assertThat( jeffsProject.currentBuildTimeProperty().get(), is( 0L ) );
-      assertThat( jeffsProject.buildTimestampProperty().get(), is( 0L ) );
-      assertThat( jeffsProject.expectedBuildTimeProperty().get(), is( 0L ) );
+      assertThat( jeffsProject.buildTimestampProperty().get(), is( 1481218487257L ) );
+      assertThat( jeffsProject.expectedBuildTimeProperty().get(), is( 124821L ) );
       assertThat( jeffsProject.failingTestCases(), is( empty() ) );
-      assertThat( jeffsProject.getBuildNumber(), is( 0 ) );
-      assertThat( jeffsProject.getBuildStatus(), is( BuildResultStatus.NOT_BUILT ) );
-      assertThat( jeffsProject.builtOnProperty().get(), is( nullValue() ) );
-      assertThat( jeffsProject.testFailureCount().get(), is( 0 ) );
-      assertThat( jeffsProject.testSkipCount().get(), is( 0 ) );
-      assertThat( jeffsProject.testTotalCount().get(), is( 0 ) );
-      assertThat( jeffsProject.totalBuildTimeProperty().get(), is( 0L ) );
+      assertThat( jeffsProject.getBuildNumber(), is( 560 ) );
+      assertThat( jeffsProject.getBuildStatus(), is( BuildResultStatus.SUCCESS ) );
+      assertThat( jeffsProject.builtOnProperty().get(), is( database.getJenkinsNode( "Dans Machine" ) ) );
+      assertThat( jeffsProject.testFailureCount().get(), is( 12 ) );
+      assertThat( jeffsProject.testSkipCount().get(), is( 1 ) );
+      assertThat( jeffsProject.testTotalCount().get(), is( 15 ) );
+      assertThat( jeffsProject.totalBuildTimeProperty().get(), is( 77521L ) );
+      
+      JenkinsJob jeffsStuff = database.getJenkinsJob( "Jeffs Stuff" );
+      assertThat( jeffsStuff.buildStateProperty().get(), is( BuildState.Building ) );
+      assertThat( jeffsStuff.culprits(), is( empty() ) );
+      assertThat( jeffsStuff.currentBuildTimeProperty().get(), is( 0L ) );
+      assertThat( jeffsStuff.buildTimestampProperty().get(), is( 0L ) );
+      assertThat( jeffsStuff.expectedBuildTimeProperty().get(), is( 0L ) );
+      assertThat( jeffsStuff.failingTestCases(), is( empty() ) );
+      assertThat( jeffsStuff.getBuildNumber(), is( 0 ) );
+      assertThat( jeffsStuff.getBuildStatus(), is( BuildResultStatus.NOT_BUILT ) );
+      assertThat( jeffsStuff.builtOnProperty().get(), is( nullValue() ) );
+      assertThat( jeffsStuff.testFailureCount().get(), is( 0 ) );
+      assertThat( jeffsStuff.testSkipCount().get(), is( 0 ) );
+      assertThat( jeffsStuff.testTotalCount().get(), is( 0 ) );
+      assertThat( jeffsStuff.totalBuildTimeProperty().get(), is( 0L ) );
+      
+      JenkinsJob newJob = database.getJenkinsJob( "Brand new job" );
+      assertThat( newJob, is( notNullValue() ) );
    }//End Method
 
 }//End Class
