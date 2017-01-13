@@ -1,3 +1,8 @@
+Release, "1.5.202"
+Date, "(Jan 11, 2017 10:31:24 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.202/JenkinsTestTracker-1.5.202-runnable.jar"
+Description, "Resolved Build result not updating if constantly building - issue #206. The build result from the last completed build will be used to fill in the missing state update. As a result the job will remain at the building state however its state will be changed correctly. Fixed minor issue with build progress not being reset when constantly building."
+
 Release, "1.5.200"
 Date, "(Dec 16, 2016 10:11:44 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.200/JenkinsTestTracker-1.5.200-runnable.jar"
