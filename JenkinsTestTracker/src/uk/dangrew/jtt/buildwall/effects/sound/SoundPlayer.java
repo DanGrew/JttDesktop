@@ -8,6 +8,9 @@
  */
 package uk.dangrew.jtt.buildwall.effects.sound;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.friendly.javafx.FriendlyMediaPlayer;
 
@@ -16,6 +19,7 @@ import uk.dangrew.jtt.friendly.javafx.FriendlyMediaPlayer;
  */
 public class SoundPlayer {
    
+   private final Set< FriendlyMediaPlayer > playersPlaying;
    private final SoundConfiguration configuration;
    private final StringMediaConverter converter;
    
@@ -38,6 +42,7 @@ public class SoundPlayer {
       }
       this.converter = converter;
       this.configuration = configuration;
+      this.playersPlaying = new HashSet<>();
       
       new SoundTriggerEvent().register( this::playSoundFromConfiguration );
    }//End Constructor
@@ -50,6 +55,8 @@ public class SoundPlayer {
    private void playSoundFromConfiguration( Event< BuildResultStatusChange > event ){
       FriendlyMediaPlayer player = converter.convert( configuration.statusChangeSounds().get( event.getValue() ) );
       if ( player != null ) {
+         playersPlaying.add( player );
+         player.friendly_setOnEndOfMedia( () -> playersPlaying.remove( player ) );
          player.friendly_play();
       }
    }//End Method
@@ -61,6 +68,16 @@ public class SoundPlayer {
     */
    public boolean isAssociatedWith( SoundConfiguration configuration ) {
       return this.configuration == configuration;
+   }//End Method
+   
+   /**
+    * Method to determine whether the {@link SoundPlayer} is waiting for the given {@link FriendlyMediaPlayer}
+    * to finish.
+    * @param player the {@link FriendlyMediaPlayer} in quesiton.
+    * @return true if still waiting to finish.
+    */
+   boolean isWaitingFor( FriendlyMediaPlayer player ) {
+      return playersPlaying.contains( player );
    }//End Method
 
 }//End Class

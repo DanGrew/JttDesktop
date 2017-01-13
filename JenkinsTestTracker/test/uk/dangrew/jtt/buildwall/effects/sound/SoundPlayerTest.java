@@ -10,6 +10,7 @@ package uk.dangrew.jtt.buildwall.effects.sound;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -82,6 +84,71 @@ public class SoundPlayerTest {
    @Test public void shouldBeAssociatedWith(){
       assertThat( systemUnderTest.isAssociatedWith( configuration ), is( true ) );
       assertThat( systemUnderTest.isAssociatedWith( new SoundConfiguration() ), is( false ) );
+   }//End Method
+   
+   @Test public void shouldNotGarbageCollectSinglePlayerUntilTheyAreComplete(){
+      BuildResultStatusChange change = new BuildResultStatusChange( BuildResultStatus.ABORTED, BuildResultStatus.FAILURE );
+      String fileName = "anything";
+      when( converter.convert( Mockito.anyString() ) ).thenReturn( null );
+      when( converter.convert( fileName ) ).thenReturn( player );
+      
+      configuration.statusChangeSounds().put( change, fileName );
+      events.fire( new Event<>( change ) );
+      
+      ArgumentCaptor< Runnable > runnableCaptor = ArgumentCaptor.forClass( Runnable.class );
+      verify( player ).friendly_setOnEndOfMedia( runnableCaptor.capture() );
+      
+      assertThat( systemUnderTest.isWaitingFor( player ), is( true ) );
+      runnableCaptor.getValue().run();
+      assertThat( systemUnderTest.isWaitingFor( player ), is( false ) );
+   }//End Method
+   
+   @Test public void shouldNotGarbageCollectAnyPlayersUntilTheyAreComplete(){
+      FriendlyMediaPlayer player2 = mock( FriendlyMediaPlayer.class );
+      FriendlyMediaPlayer player3 = mock( FriendlyMediaPlayer.class );
+      FriendlyMediaPlayer player4 = mock( FriendlyMediaPlayer.class );
+      
+      BuildResultStatusChange change = new BuildResultStatusChange( BuildResultStatus.ABORTED, BuildResultStatus.FAILURE );
+      String fileName = "anything";
+      when( converter.convert( Mockito.anyString() ) ).thenReturn( null );
+      when( converter.convert( fileName ) ).thenReturn( player ).thenReturn( player2 ).thenReturn( player3 ).thenReturn( player4 );
+      
+      configuration.statusChangeSounds().put( change, fileName );
+      events.fire( new Event<>( change ) );
+      events.fire( new Event<>( change ) );
+      events.fire( new Event<>( change ) );
+      events.fire( new Event<>( change ) );
+      
+      ArgumentCaptor< Runnable > runnableCaptor = ArgumentCaptor.forClass( Runnable.class );
+      verify( player ).friendly_setOnEndOfMedia( runnableCaptor.capture() );
+      verify( player2 ).friendly_setOnEndOfMedia( runnableCaptor.capture() );
+      verify( player3 ).friendly_setOnEndOfMedia( runnableCaptor.capture() );
+      verify( player4 ).friendly_setOnEndOfMedia( runnableCaptor.capture() );
+      
+      assertThat( systemUnderTest.isWaitingFor( player ), is( true ) );
+      assertThat( systemUnderTest.isWaitingFor( player2 ), is( true ) );
+      assertThat( systemUnderTest.isWaitingFor( player3 ), is( true ) );
+      assertThat( systemUnderTest.isWaitingFor( player4 ), is( true ) );
+      runnableCaptor.getAllValues().get( 0 ).run();
+      assertThat( systemUnderTest.isWaitingFor( player ), is( false ) );
+      assertThat( systemUnderTest.isWaitingFor( player2 ), is( true ) );
+      assertThat( systemUnderTest.isWaitingFor( player3 ), is( true ) );
+      assertThat( systemUnderTest.isWaitingFor( player4 ), is( true ) );
+      runnableCaptor.getAllValues().get( 2 ).run();
+      assertThat( systemUnderTest.isWaitingFor( player ), is( false ) );
+      assertThat( systemUnderTest.isWaitingFor( player2 ), is( true ) );
+      assertThat( systemUnderTest.isWaitingFor( player3 ), is( false ) );
+      assertThat( systemUnderTest.isWaitingFor( player4 ), is( true ) );
+      runnableCaptor.getAllValues().get( 3 ).run();
+      assertThat( systemUnderTest.isWaitingFor( player ), is( false ) );
+      assertThat( systemUnderTest.isWaitingFor( player2 ), is( true ) );
+      assertThat( systemUnderTest.isWaitingFor( player3 ), is( false ) );
+      assertThat( systemUnderTest.isWaitingFor( player4 ), is( false ) );
+      runnableCaptor.getAllValues().get( 1 ).run();
+      assertThat( systemUnderTest.isWaitingFor( player ), is( false ) );
+      assertThat( systemUnderTest.isWaitingFor( player2 ), is( false ) );
+      assertThat( systemUnderTest.isWaitingFor( player3 ), is( false ) );
+      assertThat( systemUnderTest.isWaitingFor( player4 ), is( false ) );
    }//End Method
    
 }//End Class

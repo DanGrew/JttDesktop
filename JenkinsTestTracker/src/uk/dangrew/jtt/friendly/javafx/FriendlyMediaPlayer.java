@@ -32,5 +32,12 @@ public class FriendlyMediaPlayer {
    public void friendly_play(){
       mediaPlayer.play();
    }//End Method
+   
+   /**
+    * {@link MediaPlayer#setOnEndOfMedia(Runnable)}
+    */
+   public void friendly_setOnEndOfMedia( Runnable runnable ) {
+      mediaPlayer.setOnEndOfMedia( runnable );
+   }//End Method
 
 }//End Class
