@@ -80,6 +80,11 @@
         ],
         "building" : true
       }
+    },
+    {
+      "name" : "Brand new job",
+      "lastBuild" : null,
+      "lastCompletedBuild" : null
     }
   ]
 }
