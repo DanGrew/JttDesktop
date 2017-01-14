@@ -140,6 +140,7 @@ public class JobPolicyPanel extends GridPane {
       List< JenkinsJob > orderedJobs = new ArrayList<>( configuration.jobPolicies().keySet() );
       orderedJobs.sort( Comparators.stringExtractionComparater( job -> job.nameProperty().get() ) );
       
+      //think there is a memory leak in the below, when they are cleared the lambdas are not removed
       for ( JenkinsJob job : orderedJobs ) {
          Label label = styling.createBoldLabel( job.nameProperty().get() );
          add( label, 0, rowIndex );
