@@ -8,11 +8,11 @@
  */
 package uk.dangrew.jtt.statistics.configuration.tree;
 
-import uk.dangrew.jtt.configuration.content.StatisticsExclusionsPanel;
 import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
+import uk.dangrew.jtt.statistics.configuration.components.StatisticsExclusionsPanel;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**

@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.configuration.content;
+package uk.dangrew.jtt.statistics.configuration.components;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -30,6 +30,7 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
+import uk.dangrew.jtt.statistics.configuration.components.StatisticsExclusionsPanel;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 

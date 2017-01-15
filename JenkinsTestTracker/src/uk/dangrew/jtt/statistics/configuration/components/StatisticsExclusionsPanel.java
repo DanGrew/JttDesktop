@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.configuration.content;
+package uk.dangrew.jtt.statistics.configuration.components;
 
 import java.util.ArrayList;
 import java.util.HashMap;

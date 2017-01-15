@@ -22,13 +22,13 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import uk.dangrew.jtt.configuration.content.StatisticsExclusionsPanel;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
+import uk.dangrew.jtt.statistics.configuration.components.StatisticsExclusionsPanel;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
