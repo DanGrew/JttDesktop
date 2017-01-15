@@ -26,6 +26,8 @@ import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 /**
  * {@link ConfigurationTreePane} test.
@@ -42,8 +44,9 @@ public class ConfigurationTreePaneTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       content = new ConfigurationTreeContent();
-      SystemConfiguration configuration = new SystemConfiguration(); 
-      tree = new ConfigurationTree( new PreferenceController( configuration ), configuration );
+      SystemConfiguration configuration = new SystemConfiguration();
+      JenkinsDatabase database = new JenkinsDatabaseImpl();
+      tree = new ConfigurationTree( new PreferenceController( configuration, database ), database, configuration );
       systemUnderTest = new ConfigurationTreePane( tree, content );
    }//End Method
    

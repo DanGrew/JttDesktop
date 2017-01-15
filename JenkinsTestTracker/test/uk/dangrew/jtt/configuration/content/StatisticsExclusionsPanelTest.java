@@ -14,6 +14,9 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,6 +24,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -147,6 +151,32 @@ public class StatisticsExclusionsPanelTest {
       CheckBox selectAll = systemUnderTest.selectAll();
       database.removeJenkinsJob( database.jenkinsJobs().get( 0 ) );
       assertThat( systemUnderTest.selectAll(), is( selectAll ) );
+   }//End Method
+   
+   @Test public void shouldSortJobsAlphabetically(){
+      List< JenkinsJob > existing = new ArrayList<>();
+      existing.addAll( database.jenkinsJobs() );
+      existing.forEach( j -> database.removeJenkinsJob( j ) );
+      
+      JenkinsJob jobA = new JenkinsJobImpl( "aaaa" );
+      JenkinsJob jobB = new JenkinsJobImpl( "bbbb" );
+      JenkinsJob jobC = new JenkinsJobImpl( "dddd" );
+      JenkinsJob jobD = new JenkinsJobImpl( "xxxx" );
+      JenkinsJob jobE = new JenkinsJobImpl( "zzzz" );
+      JenkinsJob jobF = new JenkinsJobImpl( "bcde" );
+      database.store( jobF );
+      database.store( jobB );
+      database.store( jobA );
+      database.store( jobD );
+      database.store( jobE );
+      database.store( jobC );
+      
+      assertThat( GridPane.getRowIndex( systemUnderTest.checkBoxFor( jobA ) ), is( 1 ) );
+      assertThat( GridPane.getRowIndex( systemUnderTest.checkBoxFor( jobB ) ), is( 2 ) );
+      assertThat( GridPane.getRowIndex( systemUnderTest.checkBoxFor( jobC ) ), is( 4 ) );
+      assertThat( GridPane.getRowIndex( systemUnderTest.checkBoxFor( jobD ) ), is( 5 ) );
+      assertThat( GridPane.getRowIndex( systemUnderTest.checkBoxFor( jobE ) ), is( 6 ) );
+      assertThat( GridPane.getRowIndex( systemUnderTest.checkBoxFor( jobF ) ), is( 3 ) );
    }//End Method
    
 }//End Class

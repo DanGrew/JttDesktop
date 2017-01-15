@@ -56,8 +56,8 @@ public class LaunchOptionsTest {
    
    /** Extended {@link EnvironmentWindow} to exposed width and height.*/
    private static class EnvironmentWindowWithExposedWidth extends EnvironmentWindow {
-      public EnvironmentWindowWithExposedWidth( SystemConfiguration configuration ) {
-         super( configuration );
+      public EnvironmentWindowWithExposedWidth( SystemConfiguration configuration, JenkinsDatabase database ) {
+         super( configuration, database );
       }//End Constructor
 
       @Override protected void setWidth( double value ) {
@@ -76,7 +76,7 @@ public class LaunchOptionsTest {
       MockitoAnnotations.initMocks( this );
       configuration = new SystemConfiguration();
       database = new JenkinsDatabaseImpl();
-      window = spy( new EnvironmentWindowWithExposedWidth( configuration ) );
+      window = spy( new EnvironmentWindowWithExposedWidth( configuration, database ) );
       systemUnderTest = new LaunchOptions( window, configuration, database, digest );
    }//End Method
 

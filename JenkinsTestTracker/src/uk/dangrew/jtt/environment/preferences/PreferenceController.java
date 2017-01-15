@@ -14,6 +14,7 @@ import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTree;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
 import uk.dangrew.jtt.event.structure.Event;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link PreferenceOpener} provides a mechanism for listening to events to open
@@ -22,6 +23,7 @@ import uk.dangrew.jtt.event.structure.Event;
 public class PreferenceController {
 
    private final SystemConfiguration configuration;
+   private final JenkinsDatabase database;
    private final PreferenceWindowController controller;
    private final ConfigurationTreeContent contentHolder;
    private final ConfigurationTree tree;
@@ -29,9 +31,10 @@ public class PreferenceController {
    /**
     * Constructs a new {@link PreferenceOpener}.
     * @param configuration the {@link SystemConfiguration}.
+    * @param database the {@link JenkinsDatabase}.
     */
-   public PreferenceController( SystemConfiguration configuration ) {
-      this( new PreferenceWindowController(), configuration, new ConfigurationTreeContent() );
+   public PreferenceController( SystemConfiguration configuration, JenkinsDatabase database ) {
+      this( new PreferenceWindowController(), configuration, new ConfigurationTreeContent(), database );
    }//End Constructor
    
    /**
@@ -39,12 +42,19 @@ public class PreferenceController {
     * @param controller the {@link PreferenceWindowController} for controlling the window.
     * @param configuration the {@link SystemConfiguration} associated.
     * @param contentHolder the {@link ConfigurationTreeContent}.
+    * @param database the {@link JenkinsDatabase}.
     */
-   PreferenceController( PreferenceWindowController controller, SystemConfiguration configuration, ConfigurationTreeContent contentHolder ) {
+   PreferenceController( 
+            PreferenceWindowController controller, 
+            SystemConfiguration configuration, 
+            ConfigurationTreeContent contentHolder, 
+            JenkinsDatabase database 
+   ) {
       this.configuration = configuration;
       this.contentHolder = contentHolder;
+      this.database = database;
       
-      this.tree = new ConfigurationTree( this, configuration );
+      this.tree = new ConfigurationTree( this, database, configuration );
       ConfigurationTreePane configurationWindow = new ConfigurationTreePane( 
                tree, contentHolder
       );
@@ -95,6 +105,15 @@ public class PreferenceController {
     */
    public boolean usesConfiguration( SystemConfiguration configuration ) {
       return this.configuration == configuration;
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is used by this {@link PreferenceController}.
+    * @param database the {@link JenkinsDatabase} in question.
+    * @return true if same as given.
+    */
+   public boolean usesDatabase( JenkinsDatabase database ) {
+      return this.database == database;
    }//End Method
    
    ConfigurationTree tree(){

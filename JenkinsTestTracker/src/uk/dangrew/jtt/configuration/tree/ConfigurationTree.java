@@ -37,13 +37,19 @@ import uk.dangrew.jtt.mc.configuration.tree.item.JobProgressRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.ManagementConsoleRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.NotificationsRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.UserAssignmentsRootItem;
+import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
+import uk.dangrew.jtt.statistics.configuration.tree.StatisticsExclusionsItem;
+import uk.dangrew.jtt.statistics.configuration.tree.StatisticsRootItem;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link ConfigurationTree} provides a {@link TreeView} for {@link ConfigurationItem}s.
  */
 public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
+   private final JenkinsDatabase database;
    private final PreferenceController controller;
+   
    private final TreeItem< ConfigurationItem > root;
    private final TreeItem< ConfigurationItem > systemVersion;
    
@@ -54,6 +60,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    private final TreeItem< ConfigurationItem > leftWallRoot;
    private final TreeItem< ConfigurationItem > rightWallRoot;
    
+   private final TreeItem< ConfigurationItem > statisticsRoot;
    private final TreeItem< ConfigurationItem > mcRoot;
    private final TreeItem< ConfigurationItem > notificationsRoot;
    private final TreeItem< ConfigurationItem > userAssignmentsRoot;
@@ -65,13 +72,16 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
     * Constructs a new {@link ConfigurationTree}.
     * @param controller the {@link PreferenceController} use to control the
     * overall {@link ConfigurationTreePane}.
+    * @param database the {@link JenkinsDatabase}.
     * @param systemConfiguration the {@link SystemConfiguration}.
     */
    public ConfigurationTree( 
             PreferenceController controller, 
+            JenkinsDatabase database,
             SystemConfiguration systemConfiguration 
    ) {
       this.controller = controller;
+      this.database = database;
       this.itemMapping = new EnumMap<>( ConfigurationTreeItems.class );
       
       this.root = new TreeItem<>( new ConfigurationRootItem() );
@@ -89,6 +99,8 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       this.sounds = insertSounds( dualWallRoot, systemConfiguration.getSoundConfiguration() );
       this.leftWallRoot = insertBuildWallConfiguration( dualWallRoot, "Left", systemConfiguration.getLeftConfiguration() );
       this.rightWallRoot = insertBuildWallConfiguration( dualWallRoot, "Right", systemConfiguration.getRightConfiguration() );
+      
+      this.statisticsRoot = insertStatisticsProperties( root, systemConfiguration.getStatisticsConfiguration() );
       
       this.mcRoot = insertManageConsoleConfiguration( root );
       this.notificationsRoot = insertNotificationsConfiguration( mcRoot );
@@ -188,6 +200,25 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    }//End Method
    
    /**
+    * Method to insert the {@link StatisticsRootItem} items into the given root.
+    * @param root the {@link TreeItem} root to insert in to.
+    * @param configuration the {@link StatisticsConfiguration} to configure.
+    */
+   private TreeItem<ConfigurationItem> insertStatisticsProperties( TreeItem< ConfigurationItem > root, StatisticsConfiguration configuration ){
+      TreeItem< ConfigurationItem > statistics = new TreeItem<>( new StatisticsRootItem( controller ) );
+      statistics.setExpanded( true );
+      root.getChildren().add( statistics );
+      
+      TreeItem<ConfigurationItem> exclusions = new TreeItem<>(  
+               new StatisticsExclusionsItem( controller, database, configuration ) 
+      );
+      exclusions.setExpanded( true );  
+      statistics.getChildren().add( exclusions );
+      
+      return statistics;
+   }//End Method
+   
+   /**
     * Method to insert the management console items.
     * @param root the root of the items.
     * @return the constructed root.
@@ -258,6 +289,9 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       itemMapping.put( ConfigurationTreeItems.RightFonts, rightWallRoot.getChildren().get( 2 ) );
       itemMapping.put( ConfigurationTreeItems.RightColours, rightWallRoot.getChildren().get( 3 ) );
       
+      itemMapping.put( ConfigurationTreeItems.Statistics, statisticsRoot );
+      itemMapping.put( ConfigurationTreeItems.StatisticsExclusions, statisticsRoot.getChildren().get( 0 ) );
+      
       itemMapping.put( ConfigurationTreeItems.ManagementConsole, mcRoot );
       itemMapping.put( ConfigurationTreeItems.Notifications, notificationsRoot );
       itemMapping.put( ConfigurationTreeItems.UserAssignments, userAssignmentsRoot );
@@ -318,6 +352,10 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    TreeItem< ConfigurationItem > rightWallRoot(){
       return rightWallRoot;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > statisticsRoot(){
+      return statisticsRoot;
    }//End Method
    
    TreeItem< ConfigurationItem > mcRoot() {

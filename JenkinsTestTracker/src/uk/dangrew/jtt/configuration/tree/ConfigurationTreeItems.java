@@ -28,6 +28,8 @@ public enum ConfigurationTreeItems {
    RightJobPolicies,
    RightFonts,
    RightColours,
+   Statistics,
+   StatisticsExclusions,
    ManagementConsole,
    Notifications,
    UserAssignments,

@@ -20,8 +20,8 @@ public class StatisticsDescriptionPanel extends SimpleDescriptionPanel {
             "This area of the configuration allows you to customise how the "
                      + "statistics appear and are calculated. ";
    static final String SECOND_PARAGRAPH = 
-            "Statistics are provided for various information in the system "
-                     + "providing metrics to measure the systme by, and current state "
+            "Statistics are provided for various information in the system and are "
+                     + "presented in the form of metrics to measure the system by, and current state "
                      + "information for maintenance and usability.";
 
    /**

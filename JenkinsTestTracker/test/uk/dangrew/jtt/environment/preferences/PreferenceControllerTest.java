@@ -31,12 +31,15 @@ import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 /**
  * {@link PreferenceController} test.
  */
 public class PreferenceControllerTest {
 
+   private JenkinsDatabase database;
    private SystemConfiguration configuration;
    @Mock private PreferenceWindowController controller;
    @Mock private ConfigurationTreeContent content;
@@ -46,8 +49,9 @@ public class PreferenceControllerTest {
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
+      database = new JenkinsDatabaseImpl();
       configuration = new SystemConfiguration();
-      systemUnderTest = new PreferenceController( controller, configuration, content );
+      systemUnderTest = new PreferenceController( controller, configuration, content, database );
    }//End Method
 
    @Test public void shouldHaveConfigurationGiven(){
@@ -112,5 +116,10 @@ public class PreferenceControllerTest {
       
       new PreferencesOpenEvent().fire( new Event<>( new PreferenceBehaviour( WindowPolicy.Open, null ) ) );
       assertThat( systemUnderTest.tree().isSelected( ConfigurationTreeItems.LeftWallRoot ), is( true ) );
+   }//End Method
+   
+   @Test public void shouldUseDatabase(){
+      assertThat( systemUnderTest.usesDatabase( database ), is( true ) );
+      assertThat( systemUnderTest.usesDatabase( new JenkinsDatabaseImpl() ), is( false ) );
    }//End Method
 }//End Class

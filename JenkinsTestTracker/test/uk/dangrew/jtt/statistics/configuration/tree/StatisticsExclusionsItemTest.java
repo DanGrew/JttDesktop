@@ -10,7 +10,6 @@ package uk.dangrew.jtt.statistics.configuration.tree;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -23,23 +22,33 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import uk.dangrew.jtt.configuration.content.StatisticsExclusionsPanel;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
+import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.statistics.configuration.components.StatisticsDescriptionPanel;
+import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
+import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
-public class StatisticsRootItemTest {
+public class StatisticsExclusionsItemTest {
 
+   private JenkinsDatabase database;
+   private StatisticsConfiguration configuration;
    @Mock private PreferenceController controller;
    @Captor private ArgumentCaptor< Node > contentTitleCaptor;
    @Captor private ArgumentCaptor< Node > contentCaptor;
    
-   private StatisticsRootItem systemUnderTest;
+   private StatisticsExclusionsItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
+      DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new StatisticsRootItem( controller );
+      database = new JenkinsDatabaseImpl();
+      configuration = new StatisticsConfiguration();
+      systemUnderTest = new StatisticsExclusionsItem( controller, database, configuration );
    }//End Method
    
    @Test public void shouldHandleClickByInstructingController() {
@@ -48,16 +57,24 @@ public class StatisticsRootItemTest {
       
       assertThat( contentTitleCaptor.getValue(), is( instanceOf( SimpleConfigurationTitle.class ) ) );
       SimpleConfigurationTitle title = ( SimpleConfigurationTitle ) contentTitleCaptor.getValue();
-      assertThat( title.getTitle(), is( StatisticsRootItem.TITLE ) );
-      assertThat( title.getDescription(), is( nullValue() ) );
+      assertThat( title.getTitle(), is( StatisticsExclusionsItem.TITLE ) );
+      assertThat( title.getDescription(), is( StatisticsExclusionsItem.DESCRIPTION ) );
       
       assertThat( contentCaptor.getValue(), is( instanceOf( ScrollPane.class ) ) );
       ScrollPane scroller = ( ScrollPane ) contentCaptor.getValue();
-      assertThat( scroller.getContent(), is( instanceOf( StatisticsDescriptionPanel.class ) ) );
+      assertThat( scroller.getContent(), is( instanceOf( StatisticsExclusionsPanel.class ) ) );
+      
+      StatisticsExclusionsPanel panel = ( StatisticsExclusionsPanel ) scroller.getContent();
+      assertThat( panel.isAssociatedWith( configuration ), is( true ) );
    }//End Method
    
    @Test public void shouldProvideToStringUsingName(){
-      assertThat( systemUnderTest.toString(), is( StatisticsRootItem.NAME ) );
+      assertThat( systemUnderTest.toString(), is( StatisticsExclusionsItem.NAME ) );
+   }//End Method
+   
+   @Test public void shouldBeAssociatedWithConfiguration(){
+      assertThat( systemUnderTest.isAssociatedWith( configuration ), is( true ) );
+      assertThat( systemUnderTest.isAssociatedWith( new Object() ), is( false ) );
    }//End Method
 
 }//End Class

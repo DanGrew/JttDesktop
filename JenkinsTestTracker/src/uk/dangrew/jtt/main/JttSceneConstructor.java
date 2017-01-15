@@ -82,7 +82,7 @@ public class JttSceneConstructor {
       dualWallSessions = new DualWallConfigurationSessions( configuration.getDualConfiguration() );
       soundSessions = new SoundConfigurationSessions( configuration.getSoundConfiguration(), database );
       
-      EnvironmentWindow window = new EnvironmentWindow( configuration );
+      EnvironmentWindow window = new EnvironmentWindow( configuration, database );
       
       initializer = new JttInitializer( api, database, window, configuration, digestController.getDigestViewer() );
       return new Scene( window );

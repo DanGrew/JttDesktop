@@ -46,6 +46,10 @@ import uk.dangrew.jtt.mc.configuration.tree.item.JobProgressRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.ManagementConsoleRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.NotificationsRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.UserAssignmentsRootItem;
+import uk.dangrew.jtt.statistics.configuration.tree.StatisticsExclusionsItem;
+import uk.dangrew.jtt.statistics.configuration.tree.StatisticsRootItem;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 /**
  * {@link ConfigurationTree} test.
@@ -55,6 +59,7 @@ public class ConfigurationTreeTest {
    private static final int LEFT_ROOT_INDEX = 3;
    private static final int RIGHT_ROOT_INDEX = 4;
    
+   private JenkinsDatabase database;
    @Mock private PreferenceController controller;
    private SystemConfiguration systemConfiguration;
    private ConfigurationTree systemUnderTest;
@@ -64,8 +69,9 @@ public class ConfigurationTreeTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       MockitoAnnotations.initMocks( this );
+      database = new JenkinsDatabaseImpl();
       systemConfiguration = new SystemConfiguration();
-      systemUnderTest = new ConfigurationTree( controller, systemConfiguration );
+      systemUnderTest = new ConfigurationTree( controller, database, systemConfiguration );
    }//End Method
 
    @Test public void shouldOnlyAllowSingleItemSelections(){
@@ -91,7 +97,7 @@ public class ConfigurationTreeTest {
    
    @Test public void buildWallRootShouldBePresentAndExpanded(){
       TreeItem< ConfigurationItem > root = systemUnderTest.getRoot();
-      assertThat( root.getChildren(), hasSize( 3 ) );
+      assertThat( root.getChildren(), hasSize( 4 ) );
       
       assertThat( getItem( root, 0 ), is( systemUnderTest.systemVersion().getValue() ) );
       assertThat( systemUnderTest.systemVersion().isExpanded(), is( true ) );
@@ -101,7 +107,11 @@ public class ConfigurationTreeTest {
       assertThat( systemUnderTest.dualWallRoot().isExpanded(), is( true ) );
       assertThat( systemUnderTest.dualWallRoot().getValue(), is( instanceOf( DualBuildWallRootItem.class ) ) );
       
-      assertThat( getItem( root, 2 ), is( systemUnderTest.mcRoot().getValue() ) );
+      assertThat( getItem( root, 2 ), is( systemUnderTest.statisticsRoot().getValue() ) );
+      assertThat( systemUnderTest.statisticsRoot().isExpanded(), is( true ) );
+      assertThat( systemUnderTest.statisticsRoot().getValue(), is( instanceOf( StatisticsRootItem.class ) ) );
+      
+      assertThat( getItem( root, 3 ), is( systemUnderTest.mcRoot().getValue() ) );
       assertThat( systemUnderTest.mcRoot().isExpanded(), is( true ) );
       assertThat( systemUnderTest.mcRoot().getValue(), is( instanceOf( ManagementConsoleRootItem.class ) ) );
    }//End Method
@@ -158,6 +168,25 @@ public class ConfigurationTreeTest {
       assertThat( sounds, is( systemUnderTest.sounds() ) );
       
       sounds.getValue().handleBeingSelected();
+      verify( controller ).displayContent( Mockito.any(), Mockito.any() );
+   }//End Method
+   
+   @Test public void statisticsRootShouldBePresentAndAssociated(){
+      TreeItem< ConfigurationItem > stats = systemUnderTest.getRoot().getChildren().get( 2 );
+      assertThat( stats.getValue(), is( instanceOf( StatisticsRootItem.class ) ) );
+      assertThat( stats, is( systemUnderTest.statisticsRoot() ) );
+      
+      stats.getValue().handleBeingSelected();
+      verify( controller ).displayContent( Mockito.any(), Mockito.any() );
+   }//End Method
+   
+   @Test public void statisticsExclusionsShouldBePresentAndAssociated(){
+      ConfigurationItem exclusions = systemUnderTest.statisticsRoot().getChildren().get( 0 ).getValue();
+      assertThat( exclusions, is( instanceOf( StatisticsExclusionsItem.class ) ) );
+      assertThat( exclusions.isAssociatedWith( systemConfiguration.getStatisticsConfiguration() ), is( true ) );
+      assertThat( exclusions.isAssociatedWith( database ), is( true ) );
+      
+      exclusions.handleBeingSelected();
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
    }//End Method
    
@@ -275,7 +304,21 @@ public class ConfigurationTreeTest {
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.sounds() ) );
       assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.Sounds ), is( true ) );
       assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( false ) );
-   }//End Method   
+   }//End Method
+   
+   @Test public void shouldSelectStatistics(){
+      systemUnderTest.select( ConfigurationTreeItems.Statistics );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.statisticsRoot() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.Statistics ), is( true ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( false ) );
+   }//End Method  
+   
+   @Test public void shouldSelectStatisticExclusions(){
+      systemUnderTest.select( ConfigurationTreeItems.StatisticsExclusions );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.statisticsRoot().getChildren().get( 0 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.StatisticsExclusions ), is( true ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( false ) );
+   }//End Method  
    
    @Test public void shouldSelectWallRoots(){
       systemUnderTest.select( ConfigurationTreeItems.LeftWallRoot );

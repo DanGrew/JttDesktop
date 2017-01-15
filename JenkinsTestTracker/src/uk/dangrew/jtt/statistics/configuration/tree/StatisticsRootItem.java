@@ -24,10 +24,9 @@ public class StatisticsRootItem extends ScrollableConfigurationItem {
 
    /**
     * Constructs a new {@link StatisticsRootItem}.
-    * @param identifier the identifier for this set of configuration.
     * @param controller the {@link PreferenceController} for controlling the configuration.
     */
-   public StatisticsRootItem( String identifier, PreferenceController controller ) {
+   public StatisticsRootItem( PreferenceController controller ) {
       super( 
                NAME, 
                new SimpleConfigurationTitle( TITLE, null ), 

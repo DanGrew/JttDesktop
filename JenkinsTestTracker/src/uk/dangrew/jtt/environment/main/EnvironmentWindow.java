@@ -14,6 +14,7 @@ import javafx.scene.layout.Region;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.layout.CenterScreenWrapper;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link EnvironmentWindow} is responsible for providing an overall frame to the 
@@ -30,18 +31,20 @@ public class EnvironmentWindow extends BorderPane {
    /**
     * Constructs a new {@link EnvironmentWindow}.
     * @param configuration the {@link SystemConfiguration}.
+    * @param database the {@link JenkinsDatabase}.
     */
-   public EnvironmentWindow( SystemConfiguration configuration ) {
-      this( new CenterScreenWrapper(), configuration );
+   public EnvironmentWindow( SystemConfiguration configuration, JenkinsDatabase database ) {
+      this( new CenterScreenWrapper(), configuration, database );
    }//End Constructor
    
    /**
     * Constructs a new {@link EnvironmentWindow}.
     * @param wrapper the {@link CenterScreenWrapper}.
     * @param configuration the {@link SystemConfiguration}.
+    * @param database the {@link JenkinsDatabase}.
     */
-   EnvironmentWindow( CenterScreenWrapper wrapper, SystemConfiguration configuration ) {
-      this.preferenceOpener = new PreferenceController( configuration );
+   EnvironmentWindow( CenterScreenWrapper wrapper, SystemConfiguration configuration, JenkinsDatabase database ) {
+      this.preferenceOpener = new PreferenceController( configuration, database );
       
       this.menuBar = new EnvironmentMenuBar();
       this.setTop( menuBar );

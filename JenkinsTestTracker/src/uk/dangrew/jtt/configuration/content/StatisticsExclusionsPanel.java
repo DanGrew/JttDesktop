@@ -20,6 +20,7 @@ import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.utility.comparator.Comparators;
 import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
 
 /**
@@ -86,6 +87,7 @@ public class StatisticsExclusionsPanel extends GridPane {
       add( selectAll, 0, 0 );
       
       List< JenkinsJob > jobs = new ArrayList<>( database.jenkinsJobs() );
+      jobs.sort( Comparators.stringExtractionComparater( j -> j.nameProperty().get() ) );
       for ( int i = 0; i < jobs.size(); i++ ) {
          addJobCheckBox( jobs.get( i ), i + 1 );
       }
@@ -108,6 +110,15 @@ public class StatisticsExclusionsPanel extends GridPane {
       } );
       add( box, 0, row );
       boxes.put( job, box );
+   }//End Method
+   
+   /**
+    * Method to determine whether the given is associated with this.
+    * @param configuration the {@link StatisticsConfiguration} in question.
+    * @return true if identical.
+    */
+   public boolean isAssociatedWith( StatisticsConfiguration configuration ) {
+      return this.configuration == configuration;
    }//End Method
 
    CheckBox selectAll(){

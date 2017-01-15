@@ -29,12 +29,15 @@ import uk.dangrew.jtt.environment.layout.CenterScreenWrapper;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
+import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
 /**
  * {@link EnvironmentWindow} test.
  */
 public class EnvironmentWindowTest {
 
+   private JenkinsDatabase database;
    @Spy private CenterScreenWrapper wrapper;
    private SystemConfiguration configuration;
    private EnvironmentWindow systemUnderTest;
@@ -43,13 +46,14 @@ public class EnvironmentWindowTest {
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
+      database = new JenkinsDatabaseImpl();
       configuration = new SystemConfiguration();
-      systemUnderTest = new EnvironmentWindow( wrapper, configuration );
+      systemUnderTest = new EnvironmentWindow( wrapper, configuration, database );
    }//End Method
    
    @Ignore
    @Test public void maunal() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest = new EnvironmentWindow( configuration ) );
+      JavaFxInitializer.launchInWindow( () -> systemUnderTest = new EnvironmentWindow( configuration, database ) );
       Thread.sleep( 1000000 );
    }//End Method
    
@@ -66,6 +70,7 @@ public class EnvironmentWindowTest {
    @Test public void shouldHavePreferenceOpener(){
       assertThat( systemUnderTest.preferenceOpener(), is( notNullValue() ) );
       assertThat( systemUnderTest.preferenceOpener().usesConfiguration( configuration ), is( true ) );
+      assertThat( systemUnderTest.preferenceOpener().usesDatabase( database ), is( true ) );
    }//End Method
    
    @Test public void shouldSetCenterUsingWrapper(){
