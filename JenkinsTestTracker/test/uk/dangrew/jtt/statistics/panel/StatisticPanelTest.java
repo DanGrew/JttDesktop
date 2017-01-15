@@ -23,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
@@ -93,32 +94,52 @@ public class StatisticPanelTest {
    @Test public void shouldUseBackgroundConfigurationColour(){
       assertThat( 
                systemUnderTest.button().getBackground().getFills().get( 0 ).getFill(), 
-               is( configuration.statisticBackgroundProperty().get() ) 
+               is( configuration.statisticBackgroundColourProperty().get() ) 
       );
-      configuration.statisticBackgroundProperty().set( Color.RED );
+      configuration.statisticBackgroundColourProperty().set( Color.RED );
       assertThat( 
                systemUnderTest.button().getBackground().getFills().get( 0 ).getFill(), 
-               is( configuration.statisticBackgroundProperty().get() ) 
+               is( configuration.statisticBackgroundColourProperty().get() ) 
       );
    }//End Method
    
    @Test public void shouldUseTextConfigurationColour(){
       assertThat( 
                systemUnderTest.statValue().getTextFill(), 
-               is( configuration.statisticTextProperty().get() ) 
+               is( configuration.statisticTextColourProperty().get() ) 
       );
       assertThat( 
                systemUnderTest.statDescription().getTextFill(), 
-               is( configuration.statisticTextProperty().get() ) 
+               is( configuration.statisticTextColourProperty().get() ) 
       );
-      configuration.statisticTextProperty().set( Color.RED );
+      configuration.statisticTextColourProperty().set( Color.RED );
       assertThat( 
                systemUnderTest.statValue().getTextFill(), 
-               is( configuration.statisticTextProperty().get() ) 
+               is( configuration.statisticTextColourProperty().get() ) 
       );
       assertThat( 
                systemUnderTest.statDescription().getTextFill(), 
-               is( configuration.statisticTextProperty().get() ) 
+               is( configuration.statisticTextColourProperty().get() ) 
+      );
+   }//End Method
+   
+   @Test public void shouldUseTextConfigurationFont(){
+      assertThat( 
+               systemUnderTest.statValue().getFont(), 
+               is( configuration.statisticTextFontProperty().get() ) 
+      );
+      assertThat( 
+               systemUnderTest.statDescription().getFont(), 
+               is( configuration.statisticTextFontProperty().get() ) 
+      );
+      configuration.statisticTextFontProperty().set( new Font( 40 ) );
+      assertThat( 
+               systemUnderTest.statValue().getFont(), 
+               is( configuration.statisticTextFontProperty().get() ) 
+      );
+      assertThat( 
+               systemUnderTest.statDescription().getFont(), 
+               is( configuration.statisticTextFontProperty().get() ) 
       );
    }//End Method
    

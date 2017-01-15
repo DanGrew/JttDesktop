@@ -12,6 +12,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
 
@@ -21,19 +22,22 @@ import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
  */
 public class StatisticsConfiguration {
 
-   static final Color DEFAULT_STATISTIC_TEXT = Color.WHITE;
-   static final Color DEFAULT_STATISTIC_BACKGROUND = Color.CORNFLOWERBLUE;
+   static final Color DEFAULT_STATISTIC_TEXT_COLOUR = Color.WHITE;
+   static final Color DEFAULT_STATISTIC_BACKGROUND_COLOUR = Color.CORNFLOWERBLUE;
+   static final Font DEFAULT_STATISTIC_TEXT_FONT = new Font( 13 );
    
-   private final ObjectProperty< Color > background;
-   private final ObjectProperty< Color > text;
+   private final ObjectProperty< Color > backgroundColour;
+   private final ObjectProperty< Color > textColour;
+   private final ObjectProperty< Font > textFont;
    private final ObservableList< JenkinsJob > excludedJobs;
    
    /**
     * Constructs a new {@link StatisticsConfiguration}.
     */
    public StatisticsConfiguration() {
-      this.background = new SimpleObjectProperty<>( DEFAULT_STATISTIC_BACKGROUND );
-      this.text = new SimpleObjectProperty<>( DEFAULT_STATISTIC_TEXT );
+      this.backgroundColour = new SimpleObjectProperty<>( DEFAULT_STATISTIC_BACKGROUND_COLOUR );
+      this.textColour = new SimpleObjectProperty<>( DEFAULT_STATISTIC_TEXT_COLOUR );
+      this.textFont = new SimpleObjectProperty<>( DEFAULT_STATISTIC_TEXT_FONT );
       this.excludedJobs = new SynchronizedObservableList<>();
    }//End Constructor
    
@@ -41,16 +45,24 @@ public class StatisticsConfiguration {
     * Access to the {@link Color} of the background, of the statistic.
     * @return the {@link ObjectProperty}.
     */
-   public ObjectProperty< Color > statisticBackgroundProperty() {
-      return background;
+   public ObjectProperty< Color > statisticBackgroundColourProperty() {
+      return backgroundColour;
    }//End Method
 
    /**
     * Access to the {@link Color} of the text, of the statistic.
     * @return the {@link ObjectProperty}.
     */
-   public ObjectProperty< Color > statisticTextProperty() {
-      return text;
+   public ObjectProperty< Color > statisticTextColourProperty() {
+      return textColour;
+   }//End Method
+   
+   /**
+    * Access to the {@link Font} of the text, of the statistic.
+    * @return the {@link ObjectProperty}.
+    */
+   public ObjectProperty< Font > statisticTextFontProperty() {
+      return textFont;
    }//End Method
 
    /**

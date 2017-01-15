@@ -87,6 +87,7 @@ public class StatisticPanel extends BorderPane implements StatisticView {
       this.statDescription = new Label( description );
       this.statDescription.setTextFill( Color.WHITE );
       this.updateText();
+      this.updateFont();
       
       this.statWrapper.setCenter( statValue );
       this.statWrapper.setBottom( statDescription );
@@ -97,10 +98,13 @@ public class StatisticPanel extends BorderPane implements StatisticView {
       
       RegistrationManager registrations = new RegistrationManager();
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               configuration.statisticBackgroundProperty(), ( s, o, n ) -> updateBackground() ) 
+               configuration.statisticBackgroundColourProperty(), ( s, o, n ) -> updateBackground() ) 
       );
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               configuration.statisticTextProperty(), ( s, o, n ) -> updateText() ) 
+               configuration.statisticTextColourProperty(), ( s, o, n ) -> updateText() ) 
+      );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               configuration.statisticTextFontProperty(), ( s, o, n ) -> updateFont() ) 
       );
    }//End Constructor
    
@@ -109,7 +113,7 @@ public class StatisticPanel extends BorderPane implements StatisticView {
     */
    private void updateBackground(){
       this.button.setBackground( new Background( new BackgroundFill( 
-               configuration.statisticBackgroundProperty().get(), null, null 
+               configuration.statisticBackgroundColourProperty().get(), null, null 
       ) ) );
    }//End Method
    
@@ -117,8 +121,16 @@ public class StatisticPanel extends BorderPane implements StatisticView {
     * Method to update the text elements of the {@link StatisticPanel}.
     */
    private void updateText(){
-      statValue.setTextFill( configuration.statisticTextProperty().get() );
-      statDescription.setTextFill( configuration.statisticTextProperty().get() );
+      statValue.setTextFill( configuration.statisticTextColourProperty().get() );
+      statDescription.setTextFill( configuration.statisticTextColourProperty().get() );
+   }//End Method
+   
+   /**
+    * Method to update the {@link javafx.scene.text.Font} of the elements in the {@link StatisticPanel}.
+    */
+   private void updateFont(){
+      statValue.setFont( configuration.statisticTextFontProperty().get() );
+      statDescription.setFont( configuration.statisticTextFontProperty().get() );
    }//End Method
    
    /**

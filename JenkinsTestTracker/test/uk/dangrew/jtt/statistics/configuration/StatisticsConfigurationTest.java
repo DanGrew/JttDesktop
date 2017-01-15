@@ -28,11 +28,15 @@ public class StatisticsConfigurationTest {
    }//End Method
 
    @Test public void shouldProvideStatisticBackgroundColour() {
-      assertThat( systemUnderTest.statisticBackgroundProperty(), is( not( nullValue() ) ) );
+      assertThat( systemUnderTest.statisticBackgroundColourProperty(), is( not( nullValue() ) ) );
    }//End Method
    
    @Test public void shouldProvideStatisticTextColour() {
-      assertThat( systemUnderTest.statisticTextProperty(), is( not( nullValue() ) ) );
+      assertThat( systemUnderTest.statisticTextColourProperty(), is( not( nullValue() ) ) );
+   }//End Method
+   
+   @Test public void shouldProvideStatisticTextFont() {
+      assertThat( systemUnderTest.statisticTextFontProperty(), is( not( nullValue() ) ) );
    }//End Method
    
    @Test public void shouldProvideExcludedJobs(){
