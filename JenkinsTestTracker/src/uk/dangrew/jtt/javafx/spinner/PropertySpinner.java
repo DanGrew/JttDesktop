@@ -40,7 +40,9 @@ public class PropertySpinner< SpinnerTypeT, PropertyTypeT > extends Spinner< Spi
             Function< SpinnerTypeT, PropertyTypeT > boxToPropertyFunction,
             Function< PropertyTypeT, SpinnerTypeT > propertyToBoxFunction
    ) {
-      if ( binder != null ) throw new IllegalStateException( ILLEGAL_BINDING );
+      if ( binder != null ) {
+         throw new IllegalStateException( ILLEGAL_BINDING );
+      }
       binder = new NodeBinder<>( 
                getValueFactory().valueProperty(),
                item -> { if ( item != null ) getValueFactory().setValue( item ); },

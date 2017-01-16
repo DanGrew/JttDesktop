@@ -48,6 +48,7 @@ import uk.dangrew.jtt.mc.configuration.tree.item.NotificationsRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.UserAssignmentsRootItem;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsExclusionsItem;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsRootItem;
+import uk.dangrew.jtt.statistics.configuration.tree.StatisticsStyleItem;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 
@@ -190,6 +191,15 @@ public class ConfigurationTreeTest {
       verify( controller ).displayContent( Mockito.any(), Mockito.any() );
    }//End Method
    
+   @Test public void statisticsStyleShouldBePresentAndAssociated(){
+      ConfigurationItem exclusions = systemUnderTest.statisticsRoot().getChildren().get( 1 ).getValue();
+      assertThat( exclusions, is( instanceOf( StatisticsStyleItem.class ) ) );
+      assertThat( exclusions.isAssociatedWith( systemConfiguration.getStatisticsConfiguration() ), is( true ) );
+      
+      exclusions.handleBeingSelected();
+      verify( controller ).displayContent( Mockito.any(), Mockito.any() );
+   }//End Method
+   
    @Test public void policyItemsShouldBePresentAndAssociated(){
       TreeItem< ConfigurationItem > leftBuildWallRoot = systemUnderTest.dualWallRoot().getChildren().get( LEFT_ROOT_INDEX );
       assertThat( getItem( leftBuildWallRoot, 1 ), is( instanceOf( JobPolicyTreeItem.class ) ) );
@@ -317,6 +327,13 @@ public class ConfigurationTreeTest {
       systemUnderTest.select( ConfigurationTreeItems.StatisticsExclusions );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.statisticsRoot().getChildren().get( 0 ) ) );
       assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.StatisticsExclusions ), is( true ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( false ) );
+   }//End Method  
+   
+   @Test public void shouldSelectStatisticStyle(){
+      systemUnderTest.select( ConfigurationTreeItems.StatisticsStyle );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.statisticsRoot().getChildren().get( 1 ) ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.StatisticsStyle ), is( true ) );
       assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.DualWallRoot ), is( false ) );
    }//End Method  
    

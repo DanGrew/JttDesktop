@@ -30,6 +30,7 @@ public enum ConfigurationTreeItems {
    RightColours,
    Statistics,
    StatisticsExclusions,
+   StatisticsStyle,
    ManagementConsole,
    Notifications,
    UserAssignments,

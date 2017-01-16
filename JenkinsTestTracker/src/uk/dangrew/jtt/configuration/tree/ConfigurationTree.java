@@ -40,6 +40,7 @@ import uk.dangrew.jtt.mc.configuration.tree.item.UserAssignmentsRootItem;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsExclusionsItem;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsRootItem;
+import uk.dangrew.jtt.statistics.configuration.tree.StatisticsStyleItem;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
@@ -215,6 +216,12 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       exclusions.setExpanded( true );  
       statistics.getChildren().add( exclusions );
       
+      TreeItem<ConfigurationItem> style = new TreeItem<>(  
+               new StatisticsStyleItem( controller, configuration ) 
+      );
+      style.setExpanded( true );  
+      statistics.getChildren().add( style );
+      
       return statistics;
    }//End Method
    
@@ -291,6 +298,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       
       itemMapping.put( ConfigurationTreeItems.Statistics, statisticsRoot );
       itemMapping.put( ConfigurationTreeItems.StatisticsExclusions, statisticsRoot.getChildren().get( 0 ) );
+      itemMapping.put( ConfigurationTreeItems.StatisticsStyle, statisticsRoot.getChildren().get( 1 ) );
       
       itemMapping.put( ConfigurationTreeItems.ManagementConsole, mcRoot );
       itemMapping.put( ConfigurationTreeItems.Notifications, notificationsRoot );

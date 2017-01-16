@@ -87,7 +87,8 @@ public class StatisticPanel extends BorderPane implements StatisticView {
       this.statDescription = new Label( description );
       this.statDescription.setTextFill( Color.WHITE );
       this.updateText();
-      this.updateFont();
+      this.updateValueFont();
+      this.updateDescriptionFont();
       
       this.statWrapper.setCenter( statValue );
       this.statWrapper.setBottom( statDescription );
@@ -104,7 +105,10 @@ public class StatisticPanel extends BorderPane implements StatisticView {
                configuration.statisticTextColourProperty(), ( s, o, n ) -> updateText() ) 
       );
       registrations.apply( new ChangeListenerRegistrationImpl<>( 
-               configuration.statisticTextFontProperty(), ( s, o, n ) -> updateFont() ) 
+               configuration.statisticValueTextFontProperty(), ( s, o, n ) -> updateValueFont() ) 
+      );
+      registrations.apply( new ChangeListenerRegistrationImpl<>( 
+               configuration.statisticDescriptionTextFontProperty(), ( s, o, n ) -> updateDescriptionFont() ) 
       );
    }//End Constructor
    
@@ -126,11 +130,17 @@ public class StatisticPanel extends BorderPane implements StatisticView {
    }//End Method
    
    /**
-    * Method to update the {@link javafx.scene.text.Font} of the elements in the {@link StatisticPanel}.
+    * Method to update the {@link javafx.scene.text.Font} of the value element in the {@link StatisticPanel}.
     */
-   private void updateFont(){
-      statValue.setFont( configuration.statisticTextFontProperty().get() );
-      statDescription.setFont( configuration.statisticTextFontProperty().get() );
+   private void updateValueFont(){
+      statValue.setFont( configuration.statisticValueTextFontProperty().get() );
+   }//End Method
+   
+   /**
+    * Method to update the {@link javafx.scene.text.Font} of the description element in the {@link StatisticPanel}.
+    */
+   private void updateDescriptionFont(){
+      statDescription.setFont( configuration.statisticDescriptionTextFontProperty().get() );
    }//End Method
    
    /**

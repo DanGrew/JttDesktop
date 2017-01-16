@@ -90,5 +90,14 @@ public class NodeBinder< NodeItemTypeT, PropertyTypeT > {
       NodeItemTypeT boxItem = this.propertyToBoxFunction.apply( this.property.get() );
       nodeItemPropertySetter.accept( boxItem );
    }//End Method
+   
+   /**
+    * Method to determine whether this is bound to the given.
+    * @param property the {@link ObjectProperty} in quesiton.
+    * @return true if identical.
+    */
+   public boolean isBoundTo( ObjectProperty< PropertyTypeT > property ) {
+      return this.property == property;
+   }//End Method
 
 }//End Class

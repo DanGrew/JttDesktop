@@ -106,4 +106,9 @@ public class NodeBinderTest {
       assertThat( property.get(), is( TestItem.Second.name() ) );
    }//End Method
 
+   @Test public void shouldBeBoundTo(){
+      assertThat( systemUnderTest.isBoundTo( property ), is( true ) );
+      assertThat( systemUnderTest.isBoundTo( new SimpleObjectProperty<>() ), is( false ) );
+   }//End Method
+   
 }//End Class

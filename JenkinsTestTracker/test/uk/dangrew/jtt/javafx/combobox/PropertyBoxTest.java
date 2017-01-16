@@ -125,4 +125,15 @@ public class PropertyBoxTest {
       systemUnderTest.bindProperty( property, boxToPropertyFunction, propertyToBoxFunction );
    }//End Method
 
+   @Test public void shouldBeBoundTo(){
+      assertThat( systemUnderTest.isBoundTo( property ), is( false ) );
+      systemUnderTest.bindProperty( 
+               property, 
+               boxToPropertyFunction, 
+               propertyToBoxFunction
+      );
+      assertThat( systemUnderTest.isBoundTo( property ), is( true ) );
+      assertThat( systemUnderTest.isBoundTo( new SimpleObjectProperty<>() ), is( false ) );
+   }//End Method
+   
 }//End Class

@@ -36,12 +36,15 @@ import uk.dangrew.jtt.javafx.spinner.DefensiveDoubleSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DoublePropertySpinner;
 import uk.dangrew.jtt.javafx.spinner.IntegerPropertySpinner;
+import uk.dangrew.jtt.javafx.spinner.PropertySpinner;
 
 /**
  * The {@link JavaFxStyle} provides the common styling options for JavaFx elements.
  */
 public class JavaFxStyle {
 
+   static final int MAXIMUM_FONT_SIZE = 500;
+   static final int MINIMUM_FONT_SIZE = 1;
    static final double FULL_WIDTH_COLUMN = 100.0;
    static final double HALF_WIDTH_COLUMN = 50.0;
    static final int TITLE_FONT_SIZE = 30;
@@ -263,6 +266,25 @@ public class JavaFxStyle {
    public void configureFileChooser( FriendlyFileChooser fileChooser, String title ) {
       fileChooser.setTitle( title );
       fileChooser.setInitialDirectory( USER_HOME_FILE );
+   }//End Method
+   
+   /**
+    * Method to configure a {@link Font} {@link PropertySpinner}.
+    * @param spinner the {@link PropertySpinner} to configure.
+    * @param property the {@link ObjectProperty} to bind to.
+    */
+   public void configureFontSizeSpinner( 
+            PropertySpinner< Integer, Font> spinner, 
+            ObjectProperty< Font > property
+   ){
+      spinner.setValueFactory( new DefensiveIntegerSpinnerValueFactory( MINIMUM_FONT_SIZE, MAXIMUM_FONT_SIZE ) );
+      spinner.bindProperty( 
+               property,
+               size -> Font.font( property.get().getFamily(), size ),
+               font -> ( int )font.getSize()
+      );
+      spinner.setMaxWidth( Double.MAX_VALUE );
+      spinner.setEditable( true );
    }//End Method
    
    /**

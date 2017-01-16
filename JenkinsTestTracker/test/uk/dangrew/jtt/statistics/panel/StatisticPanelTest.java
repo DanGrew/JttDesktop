@@ -10,6 +10,7 @@ package uk.dangrew.jtt.statistics.panel;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -123,23 +124,47 @@ public class StatisticPanelTest {
       );
    }//End Method
    
-   @Test public void shouldUseTextConfigurationFont(){
+   @Test public void shouldUseValueTextConfigurationFont(){
       assertThat( 
                systemUnderTest.statValue().getFont(), 
-               is( configuration.statisticTextFontProperty().get() ) 
+               is( configuration.statisticValueTextFontProperty().get() ) 
       );
       assertThat( 
                systemUnderTest.statDescription().getFont(), 
-               is( configuration.statisticTextFontProperty().get() ) 
+               is( configuration.statisticDescriptionTextFontProperty().get() ) 
       );
-      configuration.statisticTextFontProperty().set( new Font( 40 ) );
+      
+      Font value = new Font( 40 );
+      configuration.statisticValueTextFontProperty().set( value );
       assertThat( 
                systemUnderTest.statValue().getFont(), 
-               is( configuration.statisticTextFontProperty().get() ) 
+               is( value ) 
       );
       assertThat( 
                systemUnderTest.statDescription().getFont(), 
-               is( configuration.statisticTextFontProperty().get() ) 
+               is( not( value ) ) 
+      );
+   }//End Method
+   
+   @Test public void shouldUseDescriptionTextConfigurationFont(){
+      assertThat( 
+               systemUnderTest.statValue().getFont(), 
+               is( configuration.statisticValueTextFontProperty().get() ) 
+      );
+      assertThat( 
+               systemUnderTest.statDescription().getFont(), 
+               is( configuration.statisticDescriptionTextFontProperty().get() ) 
+      );
+      
+      Font value = new Font( 40 );
+      configuration.statisticDescriptionTextFontProperty().set( value );
+      assertThat( 
+               systemUnderTest.statValue().getFont(), 
+               is( not( value ) ) 
+      );
+      assertThat( 
+               systemUnderTest.statDescription().getFont(), 
+               is( value ) 
       );
    }//End Method
    

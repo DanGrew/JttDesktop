@@ -11,6 +11,7 @@ package uk.dangrew.jtt.buildwall.configuration.components;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,7 +19,6 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
@@ -153,9 +153,7 @@ public class FontsPanelTest {
    }//End Method
    
    @Test public void jobNameFontSizeSpinnerShouldBeBound(){
-      IntegerSpinnerValueFactory factory = ( IntegerSpinnerValueFactory )systemUnderTest.jobNameFontSizeSpinner().getValueFactory();
-      assertThat( factory.getMin(), is( FontsPanel.MINIMUM_FONT_SIZE ) );
-      assertThat( factory.getMax(), is( FontsPanel.MAXIMUM_FONT_SIZE ) );
+      verify( styling ).configureFontSizeSpinner( systemUnderTest.jobNameFontSizeSpinner(), configuration.jobNameFont() );
    }//End Method
    
    @Test public void shouldUpdateBuildNumberFontFromConfiguration(){
@@ -199,9 +197,7 @@ public class FontsPanelTest {
    }//End Method
    
    @Test public void buildNumberFontSizeSpinnerShouldBeBound(){
-      IntegerSpinnerValueFactory factory = ( IntegerSpinnerValueFactory )systemUnderTest.buildNumberFontSizeSpinner().getValueFactory();
-      assertThat( factory.getMin(), is( FontsPanel.MINIMUM_FONT_SIZE ) );
-      assertThat( factory.getMax(), is( FontsPanel.MAXIMUM_FONT_SIZE ) );
+      verify( styling ).configureFontSizeSpinner( systemUnderTest.buildNumberFontSizeSpinner(), configuration.buildNumberFont() );
    }//End Method
    
    @Test public void shouldUpdateCompletionEstimateFontFromConfiguration(){
@@ -236,9 +232,7 @@ public class FontsPanelTest {
    }//End Method
    
    @Test public void completionEstimateFontSizeSpinnerShouldBeBound(){
-      IntegerSpinnerValueFactory factory = ( IntegerSpinnerValueFactory )systemUnderTest.completionEstimateFontSizeSpinner().getValueFactory();
-      assertThat( factory.getMin(), is( FontsPanel.MINIMUM_FONT_SIZE ) );
-      assertThat( factory.getMax(), is( FontsPanel.MAXIMUM_FONT_SIZE ) );
+      verify( styling ).configureFontSizeSpinner( systemUnderTest.completionEstimateFontSizeSpinner(), configuration.completionEstimateFont() );
    }//End Method
    
    @Test public void shouldUpdateDetailFontFromConfiguration(){
@@ -273,9 +267,7 @@ public class FontsPanelTest {
    }//End Method
    
    @Test public void detailFontSizeSpinnerShouldBeBound(){
-      IntegerSpinnerValueFactory factory = ( IntegerSpinnerValueFactory )systemUnderTest.detailFontSizeSpinner().getValueFactory();
-      assertThat( factory.getMin(), is( FontsPanel.MINIMUM_FONT_SIZE ) );
-      assertThat( factory.getMax(), is( FontsPanel.MAXIMUM_FONT_SIZE ) );
+      verify( styling ).configureFontSizeSpinner( systemUnderTest.detailFontSizeSpinner(), configuration.detailFont() );
    }//End Method
    
    @Test public void eachSpinnerShouldBeEditable(){

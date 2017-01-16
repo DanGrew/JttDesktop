@@ -26,9 +26,6 @@ import uk.dangrew.jtt.javafx.spinner.PropertySpinner;
  */
 public class FontsPanel extends GridPane {
    
-   static final int MAXIMUM_FONT_SIZE = 500;
-   static final int MINIMUM_FONT_SIZE = 1;
-   
    private final BuildWallConfiguration configuration;
    
    private final Label jobNameFontLabel;
@@ -76,7 +73,7 @@ public class FontsPanel extends GridPane {
       jobNameFontSizeLabel = styling.createBoldLabel( "Job Name Size" );
       add( jobNameFontSizeLabel, 0, 2 );
       jobNameFontSizeSpinner = new PropertySpinner<>();  
-      configureFontSizeSpinner( jobNameFontSizeSpinner, configuration.jobNameFont() );
+      styling.configureFontSizeSpinner( jobNameFontSizeSpinner, configuration.jobNameFont() );
       add( jobNameFontSizeSpinner, 1, 2 );
 
       buildNumberFontLabel = styling.createBoldLabel( "Build Number Font" );
@@ -88,7 +85,7 @@ public class FontsPanel extends GridPane {
       buildNumberFontSizeLabel = styling.createBoldLabel( "Build Number Size" );
       add( buildNumberFontSizeLabel, 0, 6 );
       buildNumberFontSizeSpinner = new PropertySpinner<>();  
-      configureFontSizeSpinner( buildNumberFontSizeSpinner, configuration.buildNumberFont() );
+      styling.configureFontSizeSpinner( buildNumberFontSizeSpinner, configuration.buildNumberFont() );
       add( buildNumberFontSizeSpinner, 1, 6 );
 
       completionEstimateFontLabel = styling.createBoldLabel( "Build Time Font" );
@@ -100,7 +97,7 @@ public class FontsPanel extends GridPane {
       completionEstimateFontSizeLabel = styling.createBoldLabel( "Build Time Size" );
       add( completionEstimateFontSizeLabel, 0, 10 );
       completionEstimateFontSizeSpinner = new PropertySpinner<>();  
-      configureFontSizeSpinner( completionEstimateFontSizeSpinner, configuration.completionEstimateFont() );
+      styling.configureFontSizeSpinner( completionEstimateFontSizeSpinner, configuration.completionEstimateFont() );
       add( completionEstimateFontSizeSpinner, 1, 10 );
       
       detailFontLabel = styling.createBoldLabel( "Detail Font" );
@@ -112,27 +109,11 @@ public class FontsPanel extends GridPane {
       detailFontSizeLabel = styling.createBoldLabel( "Detail Size" );
       add( detailFontSizeLabel, 0, 14 );
       detailFontSizeSpinner = new PropertySpinner<>();  
-      configureFontSizeSpinner( detailFontSizeSpinner, configuration.detailFont() );
+      styling.configureFontSizeSpinner( detailFontSizeSpinner, configuration.detailFont() );
       add( detailFontSizeSpinner, 1, 14 );
       
       styling.configureColumnConstraints( this );
    }//End Constructor
-   
-   /**
-    * Method to configure a {@link Font} {@link PropertySpinner}.
-    * @param spinner the {@link PropertySpinner} to configure.
-    * @param property the {@link ObjectProperty} to bind to.
-    */
-   private void configureFontSizeSpinner( PropertySpinner< Integer, Font> spinner, ObjectProperty< Font > property ){
-      spinner.setValueFactory( new DefensiveIntegerSpinnerValueFactory( MINIMUM_FONT_SIZE, MAXIMUM_FONT_SIZE ) );
-      spinner.bindProperty( 
-               property,
-               size -> Font.font( property.get().getFamily(), size ),
-               font -> ( int )font.getSize()
-      );
-      spinner.setMaxWidth( Double.MAX_VALUE );
-      spinner.setEditable( true );
-   }//End Method
    
    /**
     * Method to determine whether the given {@link BuildWallConfiguration} is associated.

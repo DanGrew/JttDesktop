@@ -24,11 +24,13 @@ public class StatisticsConfiguration {
 
    static final Color DEFAULT_STATISTIC_TEXT_COLOUR = Color.WHITE;
    static final Color DEFAULT_STATISTIC_BACKGROUND_COLOUR = Color.CORNFLOWERBLUE;
-   static final Font DEFAULT_STATISTIC_TEXT_FONT = new Font( 13 );
+   static final Font DEFAULT_STATISTIC_VALUE_TEXT_FONT = new Font( 30 );
+   static final Font DEFAULT_STATISTIC_DESCRIPTION_TEXT_FONT = new Font( 13 );
    
    private final ObjectProperty< Color > backgroundColour;
    private final ObjectProperty< Color > textColour;
-   private final ObjectProperty< Font > textFont;
+   private final ObjectProperty< Font > valueTextFont;
+   private final ObjectProperty< Font > descriptionTextFont;
    private final ObservableList< JenkinsJob > excludedJobs;
    
    /**
@@ -37,7 +39,8 @@ public class StatisticsConfiguration {
    public StatisticsConfiguration() {
       this.backgroundColour = new SimpleObjectProperty<>( DEFAULT_STATISTIC_BACKGROUND_COLOUR );
       this.textColour = new SimpleObjectProperty<>( DEFAULT_STATISTIC_TEXT_COLOUR );
-      this.textFont = new SimpleObjectProperty<>( DEFAULT_STATISTIC_TEXT_FONT );
+      this.valueTextFont = new SimpleObjectProperty<>( DEFAULT_STATISTIC_VALUE_TEXT_FONT );
+      this.descriptionTextFont = new SimpleObjectProperty<>( DEFAULT_STATISTIC_DESCRIPTION_TEXT_FONT );
       this.excludedJobs = new SynchronizedObservableList<>();
    }//End Constructor
    
@@ -58,11 +61,19 @@ public class StatisticsConfiguration {
    }//End Method
    
    /**
-    * Access to the {@link Font} of the text, of the statistic.
+    * Access to the {@link Font} of the value text, of the statistic.
     * @return the {@link ObjectProperty}.
     */
-   public ObjectProperty< Font > statisticTextFontProperty() {
-      return textFont;
+   public ObjectProperty< Font > statisticValueTextFontProperty() {
+      return valueTextFont;
+   }//End Method
+   
+   /**
+    * Access to the {@link Font} of the description text, of the statistic.
+    * @return the {@link ObjectProperty}.
+    */
+   public ObjectProperty< Font > statisticDescriptionTextFontProperty() {
+      return descriptionTextFont;
    }//End Method
 
    /**

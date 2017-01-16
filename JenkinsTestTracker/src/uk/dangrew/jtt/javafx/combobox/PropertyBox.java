@@ -40,8 +40,11 @@ public class PropertyBox< BoxItemTypeT, PropertyTypeT > extends ComboBox< BoxIte
             Function< BoxItemTypeT, PropertyTypeT > boxToPropertyFunction,
             Function< PropertyTypeT, BoxItemTypeT > propertyToBoxFunction
    ) {
-      if ( binder != null ) throw new IllegalStateException( ILLEGAL_BINDING );
-      binder = new NodeBinder<>( 
+      if ( binder != null ) {
+         throw new IllegalStateException( ILLEGAL_BINDING );
+      }
+      
+      this.binder = new NodeBinder<>( 
                getSelectionModel().selectedItemProperty(),
                item -> getSelectionModel().select( item ),
                property,
@@ -49,5 +52,17 @@ public class PropertyBox< BoxItemTypeT, PropertyTypeT > extends ComboBox< BoxIte
                propertyToBoxFunction 
       );
    }//End Method
-
+   
+   /**
+    * Method to determine whether this is bound to the given.
+    * @param property the {@link ObjectProperty} in question.
+    * @return true if identical.
+    */
+   public boolean isBoundTo( ObjectProperty< PropertyTypeT > property ) {
+      if ( this.binder == null ) {
+         return false;
+      }
+      return this.binder.isBoundTo( property );
+   }//End Method
+   
 }//End Class

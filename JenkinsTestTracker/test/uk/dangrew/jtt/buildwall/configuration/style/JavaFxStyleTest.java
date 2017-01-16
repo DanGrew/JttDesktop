@@ -40,6 +40,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -47,6 +48,7 @@ import uk.dangrew.jtt.javafx.spinner.DefensiveDoubleSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DoublePropertySpinner;
 import uk.dangrew.jtt.javafx.spinner.IntegerPropertySpinner;
+import uk.dangrew.jtt.javafx.spinner.PropertySpinner;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
@@ -284,6 +286,31 @@ public class JavaFxStyleTest {
       systemUnderTest.configureFileChooser( chooser, "anything" );
       verify( chooser ).setTitle( "anything" );
       verify( chooser ).setInitialDirectory( JavaFxStyle.USER_HOME_FILE );
+   }//End Method
+   
+   @Test public void shouldConfigureFontSpinner(){
+      Font initial = new Font( "SansSerif", 13 );
+      
+      PropertySpinner< Integer, Font > spinner = new PropertySpinner<>();
+      ObjectProperty< Font > property = new SimpleObjectProperty<>( initial );
+      
+      systemUnderTest.configureFontSizeSpinner( spinner, property );
+      assertThat( spinner.getMaxWidth(), is( Double.MAX_VALUE ) );
+      assertThat( spinner.isEditable(), is( true ) );
+      
+      property.set( new Font( 45 ) );
+      assertThat( spinner.getValue(), is( 45 ) );
+      property.set( new Font( 34.5 ) );
+      assertThat( spinner.getValue(), is( 34 ) );
+      
+      spinner.getValueFactory().setValue( 45 );
+      assertThat( property.get().getFamily(), is( initial.getFamily() ) );
+      assertThat( property.get().getSize(), is( 45.0 ) );
+      
+      assertThat( spinner.getValueFactory(), is( instanceOf( DefensiveIntegerSpinnerValueFactory.class ) ) );
+      DefensiveIntegerSpinnerValueFactory factory = ( DefensiveIntegerSpinnerValueFactory ) spinner.getValueFactory();
+      assertThat( factory.getMax(), is( JavaFxStyle.MAXIMUM_FONT_SIZE ) );
+      assertThat( factory.getMin(), is( JavaFxStyle.MINIMUM_FONT_SIZE ) );
    }//End Method
 
 }//End Class
