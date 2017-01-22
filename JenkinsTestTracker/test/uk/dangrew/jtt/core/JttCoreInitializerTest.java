@@ -8,13 +8,10 @@
  */
 package uk.dangrew.jtt.core;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,60 +24,36 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.api.handling.live.LiveStateFetcher;
-import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.environment.launch.LaunchOptions;
-import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
-import uk.dangrew.sd.viewer.basic.DigestViewer;
 
-public class JttInitializerTest {
+public class JttCoreInitializerTest {
 
-   @Spy private JavaFxStyle styling;
    @Mock private LiveStateFetcher fetcher;
    private JenkinsDatabase database;
-   @Mock private EnvironmentWindow window;
-   @Mock private SystemConfiguration configuration;
-   @Mock private DigestViewer digestViewer;
+   @Mock private JttSystemInitialization systemInitialization;
    
    @Mock private Thread thread;
    @Mock private Function< Runnable, Thread > threadSupplier;
-   @Captor private ArgumentCaptor< Node > contentCaptor;
    @Captor private ArgumentCaptor< Runnable > threadRunnableCaptor;
    
-   private JttInitializer systemUnderTest;
+   private JttCoreInitializer systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
       database = new JenkinsDatabaseImpl();
       when( threadSupplier.apply( Mockito.any() ) ).thenReturn( thread );
-      systemUnderTest = new JttInitializer( styling, threadSupplier, fetcher, database, window, configuration, digestViewer );
-   }//End Method
-
-   @Test public void shouldSetProgressAsWindowContent() {
-      verify( window ).setContent( contentCaptor.capture() );
-      
-      Node captured = contentCaptor.getValue();
-      assertThat( captured, is( instanceOf( BorderPane.class ) ) );
-      BorderPane pane = ( BorderPane ) captured;
-      ProgressIndicator progress = ( ProgressIndicator ) pane.getCenter();
-      assertThat( progress.getProgress(), is( -1.0 ) );
-      
-      Label label = ( Label ) pane.getBottom();
-      assertThat( label.getText(), is( JttInitializer.LOADING_JENKINS_JOBS ) );
-      verify( styling ).createBoldLabel( JttInitializer.LOADING_JENKINS_JOBS );
+      systemUnderTest = new JttCoreInitializer( threadSupplier, fetcher, database, systemInitialization );
    }//End Method
    
+   @Test public void shouldStartSystemInitialization(){
+      verify( systemInitialization ).beginInitializing();
+   }//End Method
+
    @Test public void shouldConstructThreadStartAndInformSystemReady(){
       verify( thread ).start();
       
@@ -100,23 +73,15 @@ public class JttInitializerTest {
       assertThat( systemUnderTest.buildProgressor(), is( notNullValue() ) );
       
       assertThat( systemUnderTest.jobUpdater().isAssociatedWith( fetcher ), is( true ) );
-      assertThat( systemUnderTest.jobUpdater().getInterval(), is( JttInitializer.UPDATE_DELAY ) );
+      assertThat( systemUnderTest.jobUpdater().getInterval(), is( JttCoreInitializer.UPDATE_DELAY ) );
       
       assertThat( systemUnderTest.buildProgressor().isAssociatedWith( database ), is( true ) );
-      assertThat( systemUnderTest.buildProgressor().getInterval(), is( JttInitializer.PROGRESS_DELAY ) );
+      assertThat( systemUnderTest.buildProgressor().getInterval(), is( JttCoreInitializer.PROGRESS_DELAY ) );
    }//End Method
    
-   @Test public void shouldSetLaunchOptionsOnWindowWhenReady(){
+   @Test public void shouldReadySystemInitializer(){
       systemUnderTest.systemReady();
-      verify( window, times( 2 ) ).setContent( contentCaptor.capture() );
-      
-      assertThat( contentCaptor.getAllValues(), hasSize( 2 ) );
-      assertThat( contentCaptor.getAllValues().get( 1 ), is( instanceOf( LaunchOptions.class ) )  );
-      LaunchOptions launchOptions = ( LaunchOptions ) contentCaptor.getValue();
-      assertThat( launchOptions.isAssociatedWith( digestViewer ), is( true ) );
-      assertThat( launchOptions.isAssociatedWith( database ), is( true ) );
-      assertThat( launchOptions.isAssociatedWith( configuration ), is( true ) );
-      assertThat( launchOptions.isAssociatedWith( window ), is( true ) );
+      verify( systemInitialization ).systemReady();
    }//End Method
    
 }//End Class

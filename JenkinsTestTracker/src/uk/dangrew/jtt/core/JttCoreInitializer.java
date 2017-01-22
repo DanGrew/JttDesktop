@@ -30,20 +30,16 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
  * The {@link JttInitializer} is responsible for initializing the Jtt, pre-processing to avoid
  * unnecessary notifications and redrawing.
  */
-public class JttInitializer {
+public class JttCoreInitializer {
    
-   static final String LOADING_JENKINS_JOBS = "Loading Jenkins Jobs...";
    static final long PROGRESS_DELAY = 1000L;
    static final long UPDATE_DELAY = 5000L;
    static final double BAR_WIDTH = 500;
    
-   private final JavaFxStyle styling;
    private final Function< Runnable, Thread > threadSupplier;
    private final JenkinsDatabase database;
    private final LiveStateFetcher fetcher;
-   private final EnvironmentWindow window;
-   private final SystemConfiguration configuration;
-   private final DigestViewer digest;
+   private final JttSystemInitialization systemInitializer;
    
    private JobUpdater jobUpdater;
    private BuildProgressor buildProgressor;
@@ -52,22 +48,18 @@ public class JttInitializer {
     * Constructs a new {@link JttInitializer}.
     * @param api the {@link ExternalApi}.
     * @param database the {@link JenkinsDatabase}.
-    * @param window the {@link EnvironmentWindow}.
-    * @param configuration the {@link SystemConfiguration}.
-    * @param viewer the {@link DigestViewer}.
+    * @param systemInitializer the {@link JttSystemInitialization}.
     */
-   public JttInitializer( 
+   public JttCoreInitializer( 
             ExternalApi api, 
             JenkinsDatabase database, 
-            EnvironmentWindow window, 
-            SystemConfiguration configuration, 
-            DigestViewer viewer 
+            JttSystemInitialization systemInitializer
    ) {
       this( 
-               new JavaFxStyle(),
                r -> new Thread( r ), 
                new LiveStateFetcher( database, api ),
-               database, window, configuration, viewer 
+               database,
+               systemInitializer
       );
    }//End Constructor
    
@@ -77,26 +69,18 @@ public class JttInitializer {
     * @param threadSupplier the {@link Function} for supplying the {@link Thread}.
     * @param fetcher the {@link LiveStateFetcher}.
     * @param database the {@link JenkinsDatabase}.
-    * @param window the {@link EnvironmentWindow}.
-    * @param configuration the {@link SystemConfiguration}.
-    * @param viewer the {@link DigestViewer}.
+    * @param systemInitializer the {@link JttSystemInitialization}.
     */
-   JttInitializer( 
-            JavaFxStyle styling,
+   JttCoreInitializer( 
             Function< Runnable, Thread > threadSupplier,
             LiveStateFetcher fetcher,
-            JenkinsDatabase database, 
-            EnvironmentWindow window, 
-            SystemConfiguration configuration, 
-            DigestViewer viewer
+            JenkinsDatabase database,
+            JttSystemInitialization systemInitializer
    ) {
-      this.styling = styling;
       this.threadSupplier = threadSupplier;
       this.fetcher = fetcher;
-      this.window = window;
       this.database = database;
-      this.configuration = configuration;
-      this.digest = viewer;
+      this.systemInitializer = systemInitializer;
       
       initialise();
    }//End Constructor
@@ -105,10 +89,7 @@ public class JttInitializer {
     * Method to perform the initialisation.
     */
    private void initialise() {
-      BorderPane content = new BorderPane( new ProgressIndicator() );
-      content.setBottom( styling.createBoldLabel( LOADING_JENKINS_JOBS ) );
-      
-      window.setContent( content );
+      systemInitializer.beginInitializing();
       
       Thread thread = threadSupplier.apply( () -> {
          fetcher.loadLastCompletedBuild();
@@ -123,7 +104,7 @@ public class JttInitializer {
     */
    void systemReady(){
       startPolling();
-      provideOptions();
+      systemInitializer.systemReady();
    }//End Method
    
    /**
@@ -134,15 +115,6 @@ public class JttInitializer {
       buildProgressor = new BuildProgressor( database, new Timer(), PROGRESS_DELAY );
    }//End Method
    
-   /**
-    * Method to provide the options for choosing which tool to run.
-    */
-   private void provideOptions(){
-      PlatformImpl.runAndWait( () -> window.setContent( 
-               new LaunchOptions( window, configuration, database, digest ) 
-      ) );
-   }//End Method
-
    JobUpdater jobUpdater(){
       return jobUpdater;
    }//End Method

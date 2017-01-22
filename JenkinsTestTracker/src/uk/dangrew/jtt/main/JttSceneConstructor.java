@@ -16,7 +16,8 @@ import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallCon
 import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.persistence.sound.SoundConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.core.JttInitializer;
+import uk.dangrew.jtt.core.JttCoreInitializer;
+import uk.dangrew.jtt.core.JttUiInitializer;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
@@ -32,7 +33,7 @@ public class JttSceneConstructor {
    private final JttApplicationController controller;
    private final SystemDigestController digestController;
    
-   private JttInitializer initializer;
+   private JttCoreInitializer initializer;
    private JenkinsDatabase database;
    private SystemConfiguration configuration;
    private BuildWallConfigurationSessions buildWallSessions;
@@ -84,11 +85,20 @@ public class JttSceneConstructor {
       
       EnvironmentWindow window = new EnvironmentWindow( configuration, database );
       
-      initializer = new JttInitializer( api, database, window, configuration, digestController.getDigestViewer() );
+      initializer = new JttCoreInitializer( 
+               api, 
+               database, 
+               new JttUiInitializer( 
+                        database, 
+                        window, 
+                        digestController.getDigestViewer(), 
+                        configuration 
+               ) 
+      );
       return new Scene( window );
    }//End Method
 
-   JttInitializer initializer(){
+   JttCoreInitializer initializer(){
       return initializer;
    }//End Method
    
