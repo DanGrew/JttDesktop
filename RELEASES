@@ -1,3 +1,8 @@
+Release, "1.5.206"
+Date, "(Jan 16, 2017 9:00:14 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.206/JenkinsTestTracker-1.5.206-runnable.jar"
+Description, "Users can now configure the jobs to include in statistics using the exclusions item in the preferences tree. The style of the statistics panel can also be configured, specifically the background and text colours and the text fonts and sizes. No persistence for this configuration yet."
+
 Release, "1.5.205"
 Date, "(Jan 13, 2017 10:29:26 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.205/JenkinsTestTracker-1.5.205-runnable.jar"
