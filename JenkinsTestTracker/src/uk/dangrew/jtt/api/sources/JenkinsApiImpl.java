@@ -36,10 +36,9 @@ public class JenkinsApiImpl implements ExternalApi {
    
    /**
     * Constructs a new {@link JenkinsApiImpl}.
-    * @param clientHandler the {@link ClientHandler} used to handle interactions with jenkins.
     */
-   public JenkinsApiImpl( ClientHandler clientHandler ) {
-      this( clientHandler, new JenkinsApiDigest(), new JenkinsApiRequests() );
+   public JenkinsApiImpl() {
+      this( new ClientHandler(), new JenkinsApiDigest(), new JenkinsApiRequests() );
    }//End Constructor
 
    /**

@@ -24,6 +24,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Scene;
+import uk.dangrew.jtt.api.sources.ExternalApi;
+import uk.dangrew.jtt.core.JenkinsApiConnector;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
@@ -35,7 +37,8 @@ import uk.dangrew.jtt.main.digest.SystemDigestController;
  */
 public class JttSceneConstructorTest {
 
-   @Mock JttApplicationController controller;
+   @Mock private ExternalApi api;
+   @Mock private JenkinsApiConnector connector;
    @Mock SystemDigestController digestController;
    private JttSceneConstructor systemUnderTest;
    
@@ -43,34 +46,31 @@ public class JttSceneConstructorTest {
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new JttSceneConstructor( controller, digestController );
+      systemUnderTest = new JttSceneConstructor( digestController, connector );
    }//End Method
    
    @Test public void shouldReturnIfCantLogin() {
-      when( controller.login( Mockito.any() ) ).thenReturn( false );
+      when( connector.connect( digestController ) ).thenReturn( null );
       assertThat( systemUnderTest.makeScene(), is( nullValue() ) );
-      verify( controller, times( 1 ) ).login( Mockito.any() );
    }// End Method
 
    @Test public void shouldProvideEnvironmentWindow() {
-      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      when( connector.connect( digestController ) ).thenReturn( api );
       
       Scene scene = systemUnderTest.makeScene();
-      verify( controller, times( 1 ) ).login( Mockito.any() );
-
       assertThat( scene.getRoot(), instanceOf( EnvironmentWindow.class ) );
       assertThat( scene.getAccelerators().isEmpty(), is( true ) );
       assertThat( systemUnderTest.initializer(), is( notNullValue() ) );
    }// End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowRecallOfConstruction(){
-      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      when( connector.connect( digestController ) ).thenReturn( api );
       systemUnderTest.makeScene();
       systemUnderTest.makeScene();
    }//End Method
    
    @Test public void shouldConstructBuildWallSessions(){
-      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      when( connector.connect( digestController ) ).thenReturn( api );
       systemUnderTest.makeScene();
       assertThat( systemUnderTest.buildWallSessions(), is( notNullValue() ) );
       assertThat( systemUnderTest.buildWallSessions().uses( 
@@ -81,7 +81,7 @@ public class JttSceneConstructorTest {
    }//End Method
    
    @Test public void shouldConstructSoundSessions(){
-      when( controller.login( Mockito.any() ) ).thenReturn( true );
+      when( connector.connect( digestController ) ).thenReturn( api );
       systemUnderTest.makeScene();
       assertThat( systemUnderTest.soundSessions(), is( notNullValue() ) );
       assertThat( systemUnderTest.soundSessions().uses( systemUnderTest.configuration().getSoundConfiguration() ), is( true ) );

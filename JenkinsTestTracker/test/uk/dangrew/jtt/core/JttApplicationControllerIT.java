@@ -6,7 +6,7 @@
  *                 2016
  * ----------------------------------------
  */
-package uk.dangrew.jtt.main;
+package uk.dangrew.jtt.core;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;

@@ -9,16 +9,14 @@
 package uk.dangrew.jtt.main;
 
 import javafx.scene.Scene;
-import uk.dangrew.jtt.api.sources.ClientHandler;
 import uk.dangrew.jtt.api.sources.ExternalApi;
-import uk.dangrew.jtt.api.sources.JenkinsApiImpl;
 import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.buildwall.configuration.persistence.sound.SoundConfigurationSessions;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
+import uk.dangrew.jtt.core.JenkinsApiConnector;
 import uk.dangrew.jtt.core.JttCoreInitializer;
 import uk.dangrew.jtt.core.JttUiInitializer;
-import uk.dangrew.jtt.credentials.login.JenkinsLogin;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
@@ -30,7 +28,7 @@ import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
  */
 public class JttSceneConstructor {
    
-   private final JttApplicationController controller;
+   private final JenkinsApiConnector apiConnector;
    private final SystemDigestController digestController;
    
    private JttCoreInitializer initializer;
@@ -44,17 +42,17 @@ public class JttSceneConstructor {
     * Constructs a new {@link JttSceneConstructor}.
     */
    public JttSceneConstructor() {
-      this( new JttApplicationController(), new SystemDigestController() );
+      this( new SystemDigestController(), new JenkinsApiConnector() );
    }//End Constructor
    
    /**
     * Constructs a new {@link JttSceneConstructor}.
-    * @param controller the {@link JttApplicationController} to support construction.
     * @param digestController the {@link SystemDigestController} for managing the digest.
+    * @param apiConnector the {@link JenkinsApiConnector}.
     */
-   JttSceneConstructor( JttApplicationController controller, SystemDigestController digestController ){
-      this.controller = controller;
+   JttSceneConstructor( SystemDigestController digestController, JenkinsApiConnector apiConnector ){
       this.digestController = digestController;
+      this.apiConnector = apiConnector;
    }//End Constructor
 
    /**
@@ -66,9 +64,8 @@ public class JttSceneConstructor {
          throw new IllegalStateException( "Can only call once." );
       }
       
-      ExternalApi api = new JenkinsApiImpl( new ClientHandler() );
-      
-      if ( !controller.login( new JenkinsLogin( api, digestController.getDigestViewer() ) ) ) {
+      ExternalApi api = apiConnector.connect( digestController );
+      if ( api == null ) {
          return null;
       }
       

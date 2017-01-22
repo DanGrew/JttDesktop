@@ -122,7 +122,7 @@ public class JenkinsLoginTest {
    @Test public void manualConnectionTest() {
       runOnFxThreadAndWait( () -> {
          FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );
-         systemUnderTest = new JenkinsLogin( new JenkinsApiImpl( new ClientHandler() ), new DigestViewer( 600, 200 ) );
+         systemUnderTest = new JenkinsLogin( new JenkinsApiImpl(), new DigestViewer( 600, 200 ) );
          systemUnderTest.configureAlert( alert );
          alert.showAndWait();
       } );
