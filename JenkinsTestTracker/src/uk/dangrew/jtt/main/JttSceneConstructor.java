@@ -64,7 +64,7 @@ public class JttSceneConstructor {
          throw new IllegalStateException( "Can only call once." );
       }
       
-      ExternalApi api = apiConnector.connect( digestController );
+      ExternalApi api = apiConnector.connect( digestController.getDigestViewer() );
       if ( api == null ) {
          return null;
       }

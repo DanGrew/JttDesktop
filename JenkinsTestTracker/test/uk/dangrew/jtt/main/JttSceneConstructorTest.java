@@ -13,14 +13,11 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Scene;
@@ -31,6 +28,7 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * {@link JttSceneConstructor} test.
@@ -39,23 +37,25 @@ public class JttSceneConstructorTest {
 
    @Mock private ExternalApi api;
    @Mock private JenkinsApiConnector connector;
-   @Mock SystemDigestController digestController;
+   @Mock private SystemDigestController digestController;
+   @Mock private DigestViewer digest;
    private JttSceneConstructor systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
+      when( digestController.getDigestViewer() ).thenReturn( digest );
       systemUnderTest = new JttSceneConstructor( digestController, connector );
    }//End Method
    
    @Test public void shouldReturnIfCantLogin() {
-      when( connector.connect( digestController ) ).thenReturn( null );
+      when( connector.connect( digest ) ).thenReturn( null );
       assertThat( systemUnderTest.makeScene(), is( nullValue() ) );
    }// End Method
 
    @Test public void shouldProvideEnvironmentWindow() {
-      when( connector.connect( digestController ) ).thenReturn( api );
+      when( connector.connect( digest ) ).thenReturn( api );
       
       Scene scene = systemUnderTest.makeScene();
       assertThat( scene.getRoot(), instanceOf( EnvironmentWindow.class ) );
@@ -64,13 +64,13 @@ public class JttSceneConstructorTest {
    }// End Method
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAllowRecallOfConstruction(){
-      when( connector.connect( digestController ) ).thenReturn( api );
+      when( connector.connect( digest ) ).thenReturn( api );
       systemUnderTest.makeScene();
       systemUnderTest.makeScene();
    }//End Method
    
    @Test public void shouldConstructBuildWallSessions(){
-      when( connector.connect( digestController ) ).thenReturn( api );
+      when( connector.connect( digest ) ).thenReturn( api );
       systemUnderTest.makeScene();
       assertThat( systemUnderTest.buildWallSessions(), is( notNullValue() ) );
       assertThat( systemUnderTest.buildWallSessions().uses( 
@@ -81,7 +81,7 @@ public class JttSceneConstructorTest {
    }//End Method
    
    @Test public void shouldConstructSoundSessions(){
-      when( connector.connect( digestController ) ).thenReturn( api );
+      when( connector.connect( digest ) ).thenReturn( api );
       systemUnderTest.makeScene();
       assertThat( systemUnderTest.soundSessions(), is( notNullValue() ) );
       assertThat( systemUnderTest.soundSessions().uses( systemUnderTest.configuration().getSoundConfiguration() ), is( true ) );

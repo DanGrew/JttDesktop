@@ -24,11 +24,12 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 public class JenkinsApiConnectorTest {
 
    @Mock private JttApplicationController applicationController;
-   @Mock private SystemDigestController digestController;
+   @Mock private DigestViewer digestViewer;
    private JenkinsApiConnector systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
@@ -39,17 +40,17 @@ public class JenkinsApiConnectorTest {
    }//End Method
 
    @Test public void shouldReturnIfCantLogin() {
-      systemUnderTest.connect( digestController );
+      systemUnderTest.connect( digestViewer );
       
       when( applicationController.login( Mockito.any() ) ).thenReturn( false );
-      assertThat( systemUnderTest.connect( digestController ), is( nullValue() ) );
+      assertThat( systemUnderTest.connect( digestViewer ), is( nullValue() ) );
    }// End Method
    
    @Test public void shouldReturnApiIfLoggedIn() {
-      systemUnderTest.connect( digestController );
+      systemUnderTest.connect( digestViewer );
       
       when( applicationController.login( Mockito.any() ) ).thenReturn( true );
-      assertThat( systemUnderTest.connect( digestController ), is( notNullValue() ) );
+      assertThat( systemUnderTest.connect( digestViewer ), is( notNullValue() ) );
    }// End Method
    
 }//End Class

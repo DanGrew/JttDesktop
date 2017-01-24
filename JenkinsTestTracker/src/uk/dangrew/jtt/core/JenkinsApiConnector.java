@@ -12,6 +12,7 @@ import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.api.sources.JenkinsApiImpl;
 import uk.dangrew.jtt.credentials.login.JenkinsLogin;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * The {@link JenkinsApiConnector} is responsible for connecting to the {@link JenkinsApiImpl}. This is 
@@ -38,13 +39,13 @@ public class JenkinsApiConnector {
    
    /**
     * Method to connect to the {@link JenkinsApiImpl}.
-    * @param digestController the {@link SystemDigestController} for presenting login information.
+    * @param digest the {@link DigestViewer} for presenting login information.
     * @return the {@link ExternalApi} is successful, null otherwise.
     */
-   public ExternalApi connect( SystemDigestController digestController ) {
+   public ExternalApi connect( DigestViewer digest ) {
       ExternalApi api = new JenkinsApiImpl();
       
-      if ( !applicationController.login( new JenkinsLogin( api, digestController.getDigestViewer() ) ) ) {
+      if ( !applicationController.login( new JenkinsLogin( api, digest ) ) ) {
          return null;
       }
       
