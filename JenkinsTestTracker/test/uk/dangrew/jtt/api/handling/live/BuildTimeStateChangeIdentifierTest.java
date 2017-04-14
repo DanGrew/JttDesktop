@@ -10,6 +10,7 @@ package uk.dangrew.jtt.api.handling.live;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
@@ -23,6 +24,7 @@ import org.mockito.MockitoAnnotations;
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.event.structure.EventSubscription;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 
@@ -55,9 +57,20 @@ public class BuildTimeStateChangeIdentifierTest {
       
       assertThatJobBuiltResultProvidesStatus( BuildResultStatus.ABORTED, BuildResultStatus.SUCCESS );
    }//End Method
+   
+   @Test public void shouldNotifyJobBuiltEventWhenLastBuildTimeChangesAndResultIsIdentical() {
+      job.totalBuildTimeProperty().set( 100L );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
+      systemUnderTest.recordState( job );
+      job.totalBuildTimeProperty().set( 101L );
+      job.setBuildStatus( BuildResultStatus.ABORTED );
+      systemUnderTest.identifyStateChanges();
+      
+      assertThatJobBuiltResultProvidesStatus( BuildResultStatus.ABORTED, BuildResultStatus.ABORTED );
+   }//End Method
       
    private void assertThatJobBuiltResultProvidesStatus( BuildResultStatus previous, BuildResultStatus current ) {
-      verify( subscription ).notify( eventCaptor.capture() );
+      verify( subscription, times( 1 ) ).notify( eventCaptor.capture() );
       Event< JobBuiltResult > resultEvent = eventCaptor.getValue();
       JobBuiltResult result = resultEvent.getValue();
       assertThat( result.getJenkinsJob(), is( job ) );
@@ -85,6 +98,32 @@ public class BuildTimeStateChangeIdentifierTest {
    
    @Test( expected = IllegalStateException.class ) public void shouldNotAcceptUpdateWhenNothingRecorded(){
       systemUnderTest.identifyStateChanges();
+   }//End Method
+   
+   @Test public void shouldHandleResultUpdatingBeforeJobCompleting(){
+      job.buildStateProperty().set( BuildState.Building );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
+      systemUnderTest.recordState( job );
+      
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
+      systemUnderTest.identifyStateChanges();
+      assertThatJobBuiltResultProvidesStatus( BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS );
+      
+      systemUnderTest.recordState( job );
+      job.totalBuildTimeProperty().set( 100L );
+      systemUnderTest.identifyStateChanges();
+      assertThatJobBuiltResultProvidesStatus( BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS );
+   }//End Method
+   
+   @Test public void shouldNotifyOnlyOnceWhenResultAndTimeChangedInSameUpdate(){
+      job.buildStateProperty().set( BuildState.Building );
+      job.setBuildStatus( BuildResultStatus.FAILURE );
+      systemUnderTest.recordState( job );
+      
+      job.setBuildStatus( BuildResultStatus.SUCCESS );
+      job.totalBuildTimeProperty().set( 100L );
+      systemUnderTest.identifyStateChanges();
+      assertThatJobBuiltResultProvidesStatus( BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS );
    }//End Method
 
 }//End Class
