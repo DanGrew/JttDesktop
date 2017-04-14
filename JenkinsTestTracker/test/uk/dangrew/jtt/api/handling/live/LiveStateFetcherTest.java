@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import junitparams.JUnitParamsRunner;
@@ -52,6 +53,9 @@ public class LiveStateFetcherTest {
 
    @Before public void initialiseSystemUnderTest() {
       MockitoAnnotations.initMocks( this );
+      //assume all valid parse requests
+      when( converter.convert( Mockito.anyString() ) ).thenReturn( new JSONObject() );
+      
       database = new JenkinsDatabaseImpl();
       job1 = new JenkinsJobImpl( "Job1" );
       job2 = new JenkinsJobImpl( "Job2" );
@@ -221,6 +225,16 @@ public class LiveStateFetcherTest {
       
       verify( fetcher, times( 2 ) ).updateTestResults( job1 );
       verifyNoMoreInteractions( fetcher );
+   }//End Method
+   
+   @Test public void shouldNotBreakUpdatingLoopIfConnectionToJenkinsLost(){
+      when( converter.convert( Mockito.anyString() ) ).thenReturn( null );
+      systemUnderTest.updateBuildState();
+      verify( parser, times( 0 ) ).parse( Mockito.any() );
+      
+      when( converter.convert( Mockito.anyString() ) ).thenReturn( new JSONObject() );
+      systemUnderTest.updateBuildState();
+      verify( parser, times( 1 ) ).parse( Mockito.any() );
    }//End Method
 
 }//End Class

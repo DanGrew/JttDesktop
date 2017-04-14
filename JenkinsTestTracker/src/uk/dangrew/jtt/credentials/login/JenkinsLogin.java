@@ -227,7 +227,9 @@ public class JenkinsLogin {
     * @return true if logging in result.
     */
    public boolean isLoginResult( ButtonType loginButtonType ) {
-      if ( loginButtonType == null ) return false;
+      if ( loginButtonType == null ) {
+         return false;
+      }
       return loginButtonType.equals( this.login );
    }//End Method
    

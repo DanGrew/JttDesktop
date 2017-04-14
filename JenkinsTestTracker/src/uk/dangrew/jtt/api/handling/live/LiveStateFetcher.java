@@ -99,6 +99,9 @@ public class LiveStateFetcher {
       String response = externalApi.executeRequest( request );
       
       JSONObject converted = converter.convert( response );
+      if ( converted == null ) {
+         return;
+      }
       parser.parse( converted );
       
       database.jenkinsJobs().forEach( this::detectAndRequestTestResultUpdates );
