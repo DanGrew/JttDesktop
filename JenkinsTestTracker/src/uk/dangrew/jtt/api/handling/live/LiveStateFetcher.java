@@ -22,6 +22,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
 
 /**
  * {@link LiveStateFetcher} provides a method of updating the live information of {@link JenkinsJob}s. */
@@ -37,15 +38,15 @@ public class LiveStateFetcher {
    
    /**
     * Constructs a new {@link LiveStateFetcher}.
-    * @param database the {@link JenkinsDatabase} to populate and update.
     * @param externalApi the {@link ExternalApi} to retrieve updates from.
     */
-   public LiveStateFetcher( JenkinsDatabase database, ExternalApi externalApi ) {
+   public LiveStateFetcher( ExternalApi externalApi ) {
       this( 
-               database, externalApi, 
+               new SystemWideJenkinsDatabaseImpl().get(), 
+               externalApi, 
                new ApiResponseToJsonConverter(), 
-               new JobDetailsParser( new JobDetailsModel( database ) ),
-               new JenkinsFetcherImpl( database, externalApi )
+               new JobDetailsParser( new JobDetailsModel() ),
+               new JenkinsFetcherImpl( externalApi )
       );
    }//End Constructor
 

@@ -16,6 +16,7 @@ import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporter;
 import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporterImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
 
 /**
  * {@link JenkinsFetcherImpl} provides an implementation of the {@link JenkinsFetcher} interface
@@ -29,11 +30,10 @@ public class JenkinsFetcherImpl implements JenkinsFetcher {
    
    /**
     * Constructs a new {@link JenkinsFetcherImpl}.
-    * @param database the {@link JenkinsDatabase} to populate and update.
     * @param externalApi the {@link ExternalApi} to retrieve updates from.
     */
-   public JenkinsFetcherImpl( JenkinsDatabase database, ExternalApi externalApi ) {
-      this( database, externalApi, new JenkinsFetcherDigest() );
+   public JenkinsFetcherImpl( ExternalApi externalApi ) {
+      this( new SystemWideJenkinsDatabaseImpl().get(), externalApi, new JenkinsFetcherDigest() );
    }//End Constructor
 
    /**

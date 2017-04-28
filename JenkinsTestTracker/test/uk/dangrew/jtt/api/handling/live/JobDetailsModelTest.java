@@ -34,7 +34,7 @@ import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 public class JobDetailsModelTest {
 
@@ -52,14 +52,10 @@ public class JobDetailsModelTest {
       job = new JenkinsJobImpl( "Job" );
       node = new JenkinsNodeImpl( "Node" );
       user = new JenkinsUserImpl( "User" );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new JobDetailsModel( database, statusChanges );
    }//End Method
 
-   @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullDatabase() {
-      new JobDetailsModel( null );
-   }//End Method
-   
    @Test public void shouldClearPreviousJobDetailsWhenStartingNewJob() {
       database.store( job );
       

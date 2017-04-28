@@ -25,7 +25,7 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link NotificationTreeLayoutManager} test.
@@ -46,7 +46,7 @@ public class NotificationTreeLayoutManagerTest {
       MockitoAnnotations.initMocks( this );
       treeItems = Arrays.asList( item1, item2, item3, item4 );
       
-      tree = new NotificationTree( new JenkinsDatabaseImpl() );
+      tree = new NotificationTree( new TestJenkinsDatabaseImpl() );
       systemUnderTest = new NotificationTreeLayoutManager( tree );
    }//End Method
    

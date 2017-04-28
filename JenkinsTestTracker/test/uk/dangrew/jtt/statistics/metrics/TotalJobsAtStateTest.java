@@ -28,7 +28,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticView;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 @RunWith( JUnitParamsRunner.class )
 public class TotalJobsAtStateTest {
@@ -47,7 +47,7 @@ public class TotalJobsAtStateTest {
    @Before public void initialiseSystemUnderTest() {
       MockitoAnnotations.initMocks( this );
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( job1 = new JenkinsJobImpl( "Job1" ) );
       database.store( job2 = new JenkinsJobImpl( "Job2" ) );
       database.store( job3 = new JenkinsJobImpl( "Job3" ) );
@@ -158,7 +158,7 @@ public class TotalJobsAtStateTest {
    
    @Test public void shouldUseDatabase(){
       assertThat( systemUnderTest.uses( database ), is( true ) );
-      assertThat( systemUnderTest.uses( new JenkinsDatabaseImpl() ), is( false ) );
+      assertThat( systemUnderTest.uses( new TestJenkinsDatabaseImpl() ), is( false ) );
    }//End Method
    
    @Test public void shouldBeMonitoring(){

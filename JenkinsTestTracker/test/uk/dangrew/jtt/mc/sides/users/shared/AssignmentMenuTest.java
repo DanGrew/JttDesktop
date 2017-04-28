@@ -25,7 +25,7 @@ import org.mockito.MockitoAnnotations;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link AssignmentMenu} test.
@@ -38,7 +38,7 @@ public class AssignmentMenuTest {
 
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsUserImpl( "lizzybuff" ) );
       database.store( new JenkinsUserImpl( "jeffrey" ) );
       database.store( new JenkinsUserImpl( "Dan" ) );

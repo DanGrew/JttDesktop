@@ -41,7 +41,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.time.InstantProvider;
 
 /**
@@ -81,7 +81,7 @@ public class NotificationTreeContextMenuTest {
       assignments.clearAllSubscriptions();
       assignments.register( subscription );
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( user1 = new JenkinsUserImpl( "Dan" ) );
       database.store( user2 = new JenkinsUserImpl( "Liz" ) );
       
@@ -122,7 +122,7 @@ public class NotificationTreeContextMenuTest {
    
    @Test public void shouldBeConnectedToDatabase(){
       assertThat( systemUnderTest.isConnectedTo( database ), is( true ) );
-      assertThat( systemUnderTest.isConnectedTo( new JenkinsDatabaseImpl() ), is( false ) );
+      assertThat( systemUnderTest.isConnectedTo( new TestJenkinsDatabaseImpl() ), is( false ) );
    }//End Method
    
    @Test public void shouldRaiseSingleEventForSingleSelection(){

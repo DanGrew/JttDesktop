@@ -32,7 +32,7 @@ import uk.dangrew.jtt.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 public class JttUiInitializerTest {
@@ -50,7 +50,7 @@ public class JttUiInitializerTest {
    @Before public void initialiseSystemUnderTest() {
       MockitoAnnotations.initMocks( this );
       JavaFxInitializer.startPlatform();
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new JttUiInitializer( styling, database, window, digestViewer, configuration );;
    }//End Method
 

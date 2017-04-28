@@ -23,6 +23,7 @@ import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticsRow;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
 
 /**
  * The {@link DualBuildWallDisplayImpl} provides a display for two {@link GridWallImpl}s
@@ -42,13 +43,24 @@ public class DualBuildWallDisplayImpl extends StackPane {
    private GridWallImpl rightGridWall;
    private ImageFlasherImpl imageFlasher;
    private DualBuildWallConfigurer buildWallConfigurer;
-   
+
    /**
     * Constructs a new {@link BuildWallDisplayImpl}.
     * @param database the {@link JenkinsDatabase} associated.
     * @param systemConfiguration the {@link SystemConfiguration}.
     */
    public DualBuildWallDisplayImpl( 
+            SystemConfiguration systemConfiguration 
+   ) {
+      this( new SystemWideJenkinsDatabaseImpl().get(), systemConfiguration );
+   }//End Constructor
+   
+   /**
+    * Constructs a new {@link BuildWallDisplayImpl}.
+    * @param database the {@link JenkinsDatabase} associated.
+    * @param systemConfiguration the {@link SystemConfiguration}.
+    */
+   DualBuildWallDisplayImpl( 
             JenkinsDatabase database, 
             SystemConfiguration systemConfiguration 
    ) {

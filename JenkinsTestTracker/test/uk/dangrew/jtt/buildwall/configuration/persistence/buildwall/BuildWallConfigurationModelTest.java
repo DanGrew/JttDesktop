@@ -36,7 +36,7 @@ import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.conversion.ColorConverter;
 import uk.dangrew.sd.utility.TestCommon;
 
@@ -62,7 +62,7 @@ public class BuildWallConfigurationModelTest {
       thirdJenkinsJob = new JenkinsJobImpl( "thirdJob" );
       
       configuration = new BuildWallConfigurationImpl();
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new BuildWallConfigurationModel( configuration, database );
    }//End Method
    

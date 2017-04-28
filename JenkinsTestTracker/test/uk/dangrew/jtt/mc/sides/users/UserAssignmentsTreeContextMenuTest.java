@@ -23,7 +23,7 @@ import uk.dangrew.jtt.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link UserAssignmentsTreeContextMenu} test.
@@ -51,7 +51,7 @@ public class UserAssignmentsTreeContextMenuTest {
       assignments = new UserAssignmentEvent();
       assignments.clearAllSubscriptions();
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( user1 = new JenkinsUserImpl( "Dan" ) );
       
       tree = new UserAssignmentsTree( database );

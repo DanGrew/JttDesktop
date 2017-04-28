@@ -28,7 +28,7 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link DualBuildWallSplitter} test.
@@ -46,7 +46,7 @@ public class DualBuildWallSplitterTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      JenkinsDatabase database = new JenkinsDatabaseImpl();
+      JenkinsDatabase database = new TestJenkinsDatabaseImpl();
       configuration = new DualWallConfigurationImpl();
       right = new GridWallImpl( new BuildWallConfigurationImpl(), database );
       left = new GridWallImpl( new BuildWallConfigurationImpl(), database );

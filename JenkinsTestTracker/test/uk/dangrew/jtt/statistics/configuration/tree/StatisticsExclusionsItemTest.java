@@ -30,7 +30,7 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.configuration.components.StatisticsExclusionsPanel;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 public class StatisticsExclusionsItemTest {
 
@@ -46,7 +46,7 @@ public class StatisticsExclusionsItemTest {
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       configuration = new StatisticsConfiguration();
       systemUnderTest = new StatisticsExclusionsItem( controller, database, configuration );
    }//End Method

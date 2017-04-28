@@ -11,20 +11,12 @@ package uk.dangrew.jtt.core;
 import java.util.Timer;
 import java.util.function.Function;
 
-import com.sun.javafx.application.PlatformImpl;
-
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.api.sources.ExternalApi;
-import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.environment.launch.LaunchOptions;
-import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
 import uk.dangrew.jtt.synchronisation.time.BuildProgressor;
 import uk.dangrew.jtt.synchronisation.time.JobUpdater;
-import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * The {@link JttInitializer} is responsible for initializing the Jtt, pre-processing to avoid
@@ -52,13 +44,12 @@ public class JttCoreInitializer {
     */
    public JttCoreInitializer( 
             ExternalApi api, 
-            JenkinsDatabase database, 
             JttSystemInitialization systemInitializer
    ) {
       this( 
                r -> new Thread( r ), 
-               new LiveStateFetcher( database, api ),
-               database,
+               new LiveStateFetcher( api ),
+               new SystemWideJenkinsDatabaseImpl().get(),
                systemInitializer
       );
    }//End Constructor

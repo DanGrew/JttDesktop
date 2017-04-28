@@ -20,6 +20,7 @@ import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
 
 /**
  * The {@link JobDetailsModel} is the model for the {@link JobDetailsParser}, {@link uk.dangrew.jupa.json.parse.JsonParser}.
@@ -51,10 +52,9 @@ class JobDetailsModel {
    
    /**
     * Constructs a new {@link JobDetailsModel}.
-    * @param database the {@link JenkinsDatabase}.
     */
-   public JobDetailsModel( JenkinsDatabase database ) {
-      this( database, new JobBuiltIdentifier() );
+   public JobDetailsModel() {
+      this( new SystemWideJenkinsDatabaseImpl().get(), new JobBuiltIdentifier() );
    }//End Constructor
    
    /**

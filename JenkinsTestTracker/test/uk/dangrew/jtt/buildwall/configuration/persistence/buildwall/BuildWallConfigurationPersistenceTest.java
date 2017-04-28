@@ -47,12 +47,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationModel;
-import uk.dangrew.jtt.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
@@ -210,7 +208,7 @@ public class BuildWallConfigurationPersistenceTest {
    }//End Method
    
    @Test public void regularConstructorShouldCreateModelFromParameters(){
-      systemUnderTest = new BuildWallConfigurationPersistence( new BuildWallConfigurationImpl(), new JenkinsDatabaseImpl() );
+      systemUnderTest = new BuildWallConfigurationPersistence( new BuildWallConfigurationImpl(), new TestJenkinsDatabaseImpl() );
       assertThat( systemUnderTest.structure(), is( not( nullValue() ) ) );
       assertThat( systemUnderTest.readHandles(), is( not( nullValue() ) ) );
       assertThat( systemUnderTest.writeHandles(), is( not( nullValue() ) ) );

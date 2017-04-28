@@ -21,8 +21,7 @@ import uk.dangrew.jtt.api.handling.JenkinsFetcher;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
-import uk.dangrew.jtt.synchronisation.testresults.JobMonitorImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link JobMonitorImpl} test.
@@ -35,7 +34,7 @@ public class JobMonitorImplTest {
    
    @Before public void initialiseSystemUnderTest(){
       fetcher = Mockito.mock( JenkinsFetcher.class );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new JobMonitorImpl( database, fetcher );
    }//End Method
    

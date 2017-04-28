@@ -21,7 +21,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
 
 public class JobDetailsParserTest {
@@ -30,8 +30,8 @@ public class JobDetailsParserTest {
       String parsed = TestCommon.readFileIntoString( getClass(), "job-details-sample.txt" );
       JSONObject object = new JSONObject( parsed );
       
-      JenkinsDatabase database = new JenkinsDatabaseImpl();
-      new JobDetailsParser( new JobDetailsModel( database ) ).parse( object );
+      JenkinsDatabase database = new SystemWideJenkinsDatabaseImpl().get();
+      new JobDetailsParser( new JobDetailsModel() ).parse( object );
       
       assertThat( database.getJenkinsNode( "Dans Machine" ), is( notNullValue() ) );
       assertThat( database.getJenkinsNode( "Noones Machine" ), is( notNullValue() ) );

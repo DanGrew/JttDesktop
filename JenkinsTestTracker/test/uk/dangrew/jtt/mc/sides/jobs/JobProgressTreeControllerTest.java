@@ -19,7 +19,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link JobProgressTreeController} test.
@@ -33,7 +33,7 @@ public class JobProgressTreeControllerTest {
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "One Job" ) );
       database.store( new JenkinsJobImpl( "Another Job" ) );
       database.store( new JenkinsJobImpl( "Extra Job" ) );

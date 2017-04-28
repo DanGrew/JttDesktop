@@ -33,7 +33,7 @@ public class JenkinsDatabaseImpl implements JenkinsDatabase {
    /**
     * Constructs a new {@link JenkinsDatabaseImpl}.
     */
-   public JenkinsDatabaseImpl() {
+   JenkinsDatabaseImpl() {
       testClasses = new MappedObservableStoreManagerImpl<>();
       jenkinsJobs = new MappedObservableStoreManagerImpl<>();
       jenkinsUsers = new MappedObservableStoreManagerImpl<>();

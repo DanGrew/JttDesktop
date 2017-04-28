@@ -21,7 +21,7 @@ import javafx.util.Pair;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link JenkinsUserPropertyListener} test.
@@ -38,7 +38,7 @@ public class JenkinsUserPropertyListenerImplTest {
    private JttChangeListener< JenkinsUser, String > nameListener;
    
    @Before public void initialiseSystemUnderTest(){
-      databse = new JenkinsDatabaseImpl();
+      databse = new TestJenkinsDatabaseImpl();
       user1 = new JenkinsUserImpl( "first  user" );
       user2 = new JenkinsUserImpl( "second user" );
       user3 = new JenkinsUserImpl( "third  user" );

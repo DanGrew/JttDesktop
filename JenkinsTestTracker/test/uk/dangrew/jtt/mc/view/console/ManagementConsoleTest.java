@@ -23,7 +23,7 @@ import uk.dangrew.jtt.mc.sides.users.UserAssignmentsTree;
 import uk.dangrew.jtt.mc.sides.users.detail.AssignmentDetailArea;
 import uk.dangrew.jtt.mc.view.tree.NotificationTree;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link ManagementConsole} test.
@@ -35,7 +35,7 @@ public class ManagementConsoleTest {
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new ManagementConsole( database );
    }//End Method
    

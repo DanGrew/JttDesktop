@@ -38,7 +38,7 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.mc.view.console.ManagementConsole;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
@@ -75,7 +75,7 @@ public class LaunchOptionsTest {
       SystemStyling.initialise();
       MockitoAnnotations.initMocks( this );
       configuration = new SystemConfiguration();
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       window = spy( new EnvironmentWindowWithExposedWidth( configuration, database ) );
       systemUnderTest = new LaunchOptions( window, configuration, database, digest );
    }//End Method
@@ -167,7 +167,7 @@ public class LaunchOptionsTest {
       
       assertThat( systemUnderTest.isAssociatedWith( mock( DigestViewer.class ) ), is( false ) );
       assertThat( systemUnderTest.isAssociatedWith( mock( EnvironmentWindow.class ) ), is( false ) );
-      assertThat( systemUnderTest.isAssociatedWith( new JenkinsDatabaseImpl() ), is( false ) );
+      assertThat( systemUnderTest.isAssociatedWith( new TestJenkinsDatabaseImpl() ), is( false ) );
       assertThat( systemUnderTest.isAssociatedWith( new SystemConfiguration() ), is( false ) );
    }//End Method
    

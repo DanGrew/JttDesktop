@@ -21,15 +21,13 @@ import org.junit.Test;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.buildwall.configuration.components.BuildWallConfigurationPanelImpl;
-import uk.dangrew.jtt.buildwall.layout.BuildWallDisplayImpl;
-import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
 
 /**
@@ -49,7 +47,7 @@ public class BuildWallDisplayImplTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "Project Build" ) );
       database.store( new JenkinsJobImpl( "Subset A" ) );
       database.store( new JenkinsJobImpl( "Subset B" ) );

@@ -20,7 +20,7 @@ import uk.dangrew.jtt.buildwall.effects.sound.BuildResultStatusChange;
 import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
 import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 import uk.dangrew.jupa.json.marshall.ModelMarshaller;
@@ -36,7 +36,7 @@ public class SoundConfigurationPersistenceE2ETest {
    
    @Before public void initialiseSystemUnderTest(){
       configuration = new SoundConfiguration();
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new SoundConfigurationPersistence( configuration, database );
    }//End Method
    

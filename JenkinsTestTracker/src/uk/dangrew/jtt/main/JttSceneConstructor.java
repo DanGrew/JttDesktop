@@ -21,6 +21,7 @@ import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
 
 /**
  * The {@link JttSceneConstructor} is responsible for constructing the {@link Scene}
@@ -70,7 +71,7 @@ public class JttSceneConstructor {
       }
       
       configuration = new SystemConfiguration();
-      database = new JenkinsDatabaseImpl();
+      database = new SystemWideJenkinsDatabaseImpl().get();
       
       buildWallSessions = new BuildWallConfigurationSessions( 
                database, 
@@ -84,7 +85,6 @@ public class JttSceneConstructor {
       
       initializer = new JttCoreInitializer( 
                api, 
-               database, 
                new JttUiInitializer( 
                         database, 
                         window, 

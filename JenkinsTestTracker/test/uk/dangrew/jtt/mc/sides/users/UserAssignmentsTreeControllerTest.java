@@ -20,7 +20,7 @@ import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link UserAssignmentsTreeController} test.
@@ -38,7 +38,7 @@ public class UserAssignmentsTreeControllerTest {
       events = new UserAssignmentEvent();
       events.clearAllSubscriptions();
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsUserImpl( "First User" ) );
       systemUnderTest = new UserAssignmentsTreeController( layout, database );
    }//End Method

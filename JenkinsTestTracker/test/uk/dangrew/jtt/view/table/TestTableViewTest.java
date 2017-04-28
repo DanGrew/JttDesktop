@@ -31,7 +31,7 @@ import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
 import uk.dangrew.jtt.model.tests.TestResultStatus;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
@@ -49,7 +49,7 @@ public class TestTableViewTest {
    
    @Before public void initialiseSystemUnderTest(){
       String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "anything" ) );
       JsonTestResultsImporter importer = new JsonTestResultsImporterImpl( database );
       importer.updateTestResults( database.jenkinsJobs().get( 0 ), input );

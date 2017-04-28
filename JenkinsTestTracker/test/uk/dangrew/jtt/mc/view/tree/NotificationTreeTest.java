@@ -30,7 +30,7 @@ import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link NotificationTree} test.
@@ -43,7 +43,7 @@ public class NotificationTreeTest {
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new NotificationTree( database );
    }//End Method
 

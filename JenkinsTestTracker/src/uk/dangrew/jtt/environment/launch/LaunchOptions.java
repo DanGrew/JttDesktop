@@ -72,7 +72,7 @@ public class LaunchOptions extends VBox {
     * Method to launch the {@link DualBuildWallDisplayImpl} and place it in the {@link EnvironmentWindow}.
     */
    private void launchBuildWall(){
-      DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( database, configuration );
+      DualBuildWallDisplayImpl dualWall = new DualBuildWallDisplayImpl( configuration );
       BorderPane digestWrapper = new BorderPane( dualWall );
       
       digestWrapper.setTop( new TitledPane( "System Digest", digest ) );

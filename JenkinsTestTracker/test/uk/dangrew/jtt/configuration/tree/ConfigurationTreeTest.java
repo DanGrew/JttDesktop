@@ -50,7 +50,7 @@ import uk.dangrew.jtt.statistics.configuration.tree.StatisticsExclusionsItem;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsRootItem;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsStyleItem;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link ConfigurationTree} test.
@@ -70,7 +70,7 @@ public class ConfigurationTreeTest {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       MockitoAnnotations.initMocks( this );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       systemConfiguration = new SystemConfiguration();
       systemUnderTest = new ConfigurationTree( controller, database, systemConfiguration );
    }//End Method

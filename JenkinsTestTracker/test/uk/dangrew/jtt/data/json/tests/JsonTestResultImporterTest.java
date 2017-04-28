@@ -20,15 +20,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporterImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.tests.TestResultStatus;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.storage.database.TestClassKeyImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
 
 /**
@@ -59,7 +58,7 @@ public class JsonTestResultImporterTest {
     * Method to initialise the {@link JsonTestResultsImporterImpl} being tested.
     */
    @Before public void initialiseSystemUnderTest(){
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       jenkinsJob = new JenkinsJobImpl( "AnyJob" );
       systemUnderTest = new JsonTestResultsImporterImpl( database );
    }//End Method

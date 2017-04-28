@@ -32,7 +32,7 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link PreferenceController} test.
@@ -49,7 +49,7 @@ public class PreferenceControllerTest {
       JavaFxInitializer.startPlatform();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       configuration = new SystemConfiguration();
       systemUnderTest = new PreferenceController( controller, configuration, content, database );
    }//End Method
@@ -120,6 +120,6 @@ public class PreferenceControllerTest {
    
    @Test public void shouldUseDatabase(){
       assertThat( systemUnderTest.usesDatabase( database ), is( true ) );
-      assertThat( systemUnderTest.usesDatabase( new JenkinsDatabaseImpl() ), is( false ) );
+      assertThat( systemUnderTest.usesDatabase( new TestJenkinsDatabaseImpl() ), is( false ) );
    }//End Method
 }//End Class

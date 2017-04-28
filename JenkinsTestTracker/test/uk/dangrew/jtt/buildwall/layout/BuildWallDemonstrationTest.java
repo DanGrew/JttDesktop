@@ -28,7 +28,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.jtt.synchronisation.time.JobUpdater;
 
@@ -38,7 +38,6 @@ import uk.dangrew.jtt.synchronisation.time.JobUpdater;
  */
 public class BuildWallDemonstrationTest {
    
-   private JenkinsDatabase database;
    private JenkinsJob coreProject;
    private JenkinsJob graphicalProject;
    private JenkinsJob extensionProject;
@@ -49,9 +48,9 @@ public class BuildWallDemonstrationTest {
    private JenkinsJob invisibleEventSystem;
 
    @Before public void initialiseSystemUnderTest(){
-      database = new JenkinsDatabaseImpl();
+      JenkinsDatabase database = new SystemWideJenkinsDatabaseImpl().get();
       new JobUpdater( new LiveStateFetcher( 
-               database, mock( ExternalApi.class ) 
+               mock( ExternalApi.class ) 
       ), new Timer(), 5000L );
       
       coreProject = new JenkinsJobImpl( "Core Project" );

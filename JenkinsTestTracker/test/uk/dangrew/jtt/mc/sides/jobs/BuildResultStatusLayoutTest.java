@@ -27,7 +27,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
 
 /**
@@ -50,7 +50,7 @@ public class BuildResultStatusLayoutTest {
       JavaFxInitializer.startPlatform();
       SystemStyling.initialise();
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       jobA = new JenkinsJobImpl( "JobA" );
       jobB = new JenkinsJobImpl( "JobB" );
       jobC = new JenkinsJobImpl( "JobC" );

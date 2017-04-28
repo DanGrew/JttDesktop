@@ -30,9 +30,8 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.statistics.configuration.components.StatisticsExclusionsPanel;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 public class StatisticsExclusionsPanelTest {
 
@@ -45,7 +44,7 @@ public class StatisticsExclusionsPanelTest {
       MockitoAnnotations.initMocks( this );
       JavaFxInitializer.startPlatform();
       configuration = new StatisticsConfiguration();
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       for ( int i = 0; i < 10; i++ ) {
          database.store( new JenkinsJobImpl( "Job " + i ) );
       }

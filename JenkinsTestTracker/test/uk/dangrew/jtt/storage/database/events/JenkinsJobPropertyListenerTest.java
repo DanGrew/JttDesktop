@@ -26,7 +26,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.nodes.JenkinsNodeImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link JenkinsJobPropertyListener} test.
@@ -56,7 +56,7 @@ public class JenkinsJobPropertyListenerTest {
    private JttChangeListener< JenkinsJob, Long > timestampListener;
    
    @Before public void initialiseSystemUnderTest(){
-      databse = new JenkinsDatabaseImpl();
+      databse = new TestJenkinsDatabaseImpl();
       job1 = new JenkinsJobImpl( "first job" );
       job2 = new JenkinsJobImpl( "second job" );
       job3 = new JenkinsJobImpl( "third job" );

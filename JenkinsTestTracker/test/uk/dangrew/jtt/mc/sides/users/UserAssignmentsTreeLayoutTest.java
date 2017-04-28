@@ -31,7 +31,7 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link UserAssignmentsTreeLayout} test.
@@ -78,7 +78,7 @@ public class UserAssignmentsTreeLayoutTest {
       when( user2Assignment2.constructTreeItem() ).thenReturn( user2Assignment2Item );
       when( user3Assignment1.constructTreeItem() ).thenReturn( user3Assignment1Item );
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       tree = new UserAssignmentsTree( database );
       systemUnderTest = new UserAssignmentsTreeLayout( tree );
    }//End Method

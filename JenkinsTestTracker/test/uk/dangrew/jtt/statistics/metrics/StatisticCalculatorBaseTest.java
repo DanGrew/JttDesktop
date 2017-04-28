@@ -29,7 +29,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticView;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 public class StatisticCalculatorBaseTest {
 
@@ -69,7 +69,7 @@ public class StatisticCalculatorBaseTest {
    @Before public void initialiseSystemUnderTest() {
       MockitoAnnotations.initMocks( this );
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( job1 = new JenkinsJobImpl( "Job1" ) );
       database.store( job2 = new JenkinsJobImpl( "Job2" ) );
       
@@ -102,7 +102,7 @@ public class StatisticCalculatorBaseTest {
    
    @Test public void shouldUseDatabase(){
       assertThat( systemUnderTest.uses( database ), is( true ) );
-      assertThat( systemUnderTest.uses( new JenkinsDatabaseImpl() ), is( false ) );
+      assertThat( systemUnderTest.uses( new TestJenkinsDatabaseImpl() ), is( false ) );
    }//End Method
    
    @Test public void shouldPassRepresentationThroughToView(){

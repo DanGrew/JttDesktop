@@ -21,7 +21,7 @@ import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link JobPolicyUpdater} test.
@@ -32,7 +32,7 @@ public class JobPolicyUpdaterTest {
    private BuildWallConfiguration configuration;
    
    @Before public void initialiseSystemUnderTest(){
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "already-stored" ) );
       
       configuration = new BuildWallConfigurationImpl();

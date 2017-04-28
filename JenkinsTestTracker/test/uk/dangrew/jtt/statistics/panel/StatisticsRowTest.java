@@ -25,7 +25,7 @@ import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 public class StatisticsRowTest {
    
@@ -37,7 +37,7 @@ public class StatisticsRowTest {
    @Before public void initialiseSystemUnderTest() {
       JavaFxInitializer.startPlatform();
       MockitoAnnotations.initMocks( this );
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       configuration = new StatisticsConfiguration();
       systemUnderTest = new StatisticsRow( styling, database, configuration );
    }//End Method
@@ -92,6 +92,6 @@ public class StatisticsRowTest {
    
    @Test public void shouldBeAssociatedWithDatabase(){
       assertThat( systemUnderTest.isAssociatedWith( database ), is( true ) );
-      assertThat( systemUnderTest.isAssociatedWith( new JenkinsDatabaseImpl() ), is( false ) );
+      assertThat( systemUnderTest.isAssociatedWith( new TestJenkinsDatabaseImpl() ), is( false ) );
    }//End Method
 }//End Class

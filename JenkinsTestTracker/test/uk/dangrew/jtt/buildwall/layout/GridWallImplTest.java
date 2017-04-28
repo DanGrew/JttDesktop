@@ -46,7 +46,7 @@ import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.jtt.utility.TestCommon;
 
@@ -68,7 +68,7 @@ public class GridWallImplTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "Some Job" ) );
       database.store( new JenkinsJobImpl( "A Nice Complicated Title" ) );
       database.store( new JenkinsJobImpl( "Another Job" ) );
@@ -129,7 +129,7 @@ public class GridWallImplTest {
    }//End Method
    
    @Test public void shouldConstructSafelyWithNoJobs(){
-      systemUnderTest = new GridWallImpl( configuration, new JenkinsDatabaseImpl() );
+      systemUnderTest = new GridWallImpl( configuration, new TestJenkinsDatabaseImpl() );
    }//End Method
    
    @Test public void shouldUpdateWithConfiguration() {

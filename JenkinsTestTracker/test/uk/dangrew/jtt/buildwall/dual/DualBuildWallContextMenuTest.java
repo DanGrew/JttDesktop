@@ -41,7 +41,7 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
@@ -93,7 +93,7 @@ public class DualBuildWallContextMenuTest {
    private void fullLaunch(){
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       JavaFxInitializer.launchInWindow( () -> {
-         display = new DualBuildWallDisplayImpl( new JenkinsDatabaseImpl(), new SystemConfiguration() );
+         display = new DualBuildWallDisplayImpl( new TestJenkinsDatabaseImpl(), new SystemConfiguration() );
          opener = new DualBuildWallContextMenuOpener( display, systemUnderTest );
          display.setOnContextMenuRequested( opener );
          return display; 
@@ -209,7 +209,7 @@ public class DualBuildWallContextMenuTest {
       SystemConfiguration systemConfiguration = new SystemConfiguration();
       
       display = new DualBuildWallDisplayImpl( 
-               new JenkinsDatabaseImpl(),
+               new TestJenkinsDatabaseImpl(),
                systemConfiguration
       );
       

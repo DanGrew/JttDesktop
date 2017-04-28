@@ -47,7 +47,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.statistics.panel.StatisticsRow;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.jtt.utility.TestCommon;
 
@@ -72,7 +72,7 @@ public class DualBuildWallDisplayImplTest {
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "Project Build" ) );
       database.store( new JenkinsJobImpl( "Subset A" ) );
       database.store( new JenkinsJobImpl( "Subset B" ) );

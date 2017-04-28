@@ -21,7 +21,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 public class SoundConfigurationParseModelTest {
 
@@ -33,7 +33,7 @@ public class SoundConfigurationParseModelTest {
    private SoundConfigurationParseModel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       configuration = new SoundConfiguration();
       systemUnderTest = new SoundConfigurationParseModel( configuration, database );
    }//End Method

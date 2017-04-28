@@ -28,7 +28,7 @@ import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link UserAssignmentsTree} test.
@@ -40,7 +40,7 @@ public class UserAssignmentsTreeTest {
    
    @Before public void initialiseSystemUnderTest(){
       JavaFxInitializer.startPlatform();
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsUserImpl( "Me" ) );
       database.store( new JenkinsUserImpl( "You" ) );
       database.store( new JenkinsUserImpl( "Irene" ) );

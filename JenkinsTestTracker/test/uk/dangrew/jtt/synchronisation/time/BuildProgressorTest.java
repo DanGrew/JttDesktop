@@ -25,9 +25,7 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.collections.FXCollections;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
-import uk.dangrew.jtt.synchronisation.time.BuildProgressor;
-import uk.dangrew.jtt.synchronisation.time.JobUpdater;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link BuildProgressor} test.
@@ -80,7 +78,7 @@ public class BuildProgressorTest {
    
    @Test public void shouldBeAssociatedWith(){
       assertThat( systemUnderTest.isAssociatedWith( database ), is( true ) );
-      assertThat( systemUnderTest.isAssociatedWith( new JenkinsDatabaseImpl() ), is( false ) );
+      assertThat( systemUnderTest.isAssociatedWith( new TestJenkinsDatabaseImpl() ), is( false ) );
    }//End Method
    
 }//End Class

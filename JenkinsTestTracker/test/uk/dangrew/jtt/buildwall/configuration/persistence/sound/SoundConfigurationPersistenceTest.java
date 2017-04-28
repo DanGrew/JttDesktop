@@ -34,7 +34,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.utility.TestCommon;
 
 public class SoundConfigurationPersistenceTest {
@@ -118,7 +118,7 @@ public class SoundConfigurationPersistenceTest {
    }//End Method
    
    @Test public void regularConstructorShouldCreateModelFromParameters(){
-      systemUnderTest = new SoundConfigurationPersistence( new SoundConfiguration(), new JenkinsDatabaseImpl() );
+      systemUnderTest = new SoundConfigurationPersistence( new SoundConfiguration(), new TestJenkinsDatabaseImpl() );
       assertThat( systemUnderTest.structure(), is( not( nullValue() ) ) );
       assertThat( systemUnderTest.readHandles(), is( not( nullValue() ) ) );
       assertThat( systemUnderTest.writeHandles(), is( not( nullValue() ) ) );

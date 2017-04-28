@@ -33,7 +33,7 @@ import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 @RunWith( JUnitParamsRunner.class )
 public class LiveStateFetcherTest {
@@ -56,7 +56,7 @@ public class LiveStateFetcherTest {
       //assume all valid parse requests
       when( converter.convert( Mockito.anyString() ) ).thenReturn( new JSONObject() );
       
-      database = new JenkinsDatabaseImpl();
+      database = new TestJenkinsDatabaseImpl();
       job1 = new JenkinsJobImpl( "Job1" );
       job2 = new JenkinsJobImpl( "Job2" );
       job3 = new JenkinsJobImpl( "Job3" );
@@ -67,12 +67,8 @@ public class LiveStateFetcherTest {
       systemUnderTest = new LiveStateFetcher( database, api, converter, parser, fetcher );
    }//End Method
    
-   @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullDatabase(){
-      new LiveStateFetcher( null, api );
-   }//End Method
-   
    @Test( expected = IllegalArgumentException.class ) public void shouldNotAcceptNullApi(){
-      new LiveStateFetcher( database, null );
+      new LiveStateFetcher( null );
    }//End Method
 
    @Test public void shouldExecuteLastCompletedJobRequestAndParseIntoDatabase() {

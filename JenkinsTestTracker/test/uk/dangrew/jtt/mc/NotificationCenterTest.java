@@ -20,7 +20,7 @@ import org.junit.Test;
 import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.view.tree.NotificationEvent;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link NotificationCenter} test.
@@ -30,7 +30,7 @@ public class NotificationCenterTest {
    private NotificationCenter systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      systemUnderTest = new NotificationCenter( new JenkinsDatabaseImpl() );
+      systemUnderTest = new NotificationCenter( new TestJenkinsDatabaseImpl() );
    }//End Method
 
    @Test public void shouldHaveNotifier() {
