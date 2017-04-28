@@ -1,3 +1,13 @@
+Release, "1.5.211"
+Date, "(Apr 14, 2017 6:45:31 PM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.211/JenkinsTestTracker-1.5.211-runnable.jar"
+Description, "BUILD RESULT EARLY UPDATE ISSUE: An issue was present where jenkins would appear to notify the status change before the build was complete - or certain properties were populated - this caused builds that had changed to show no change in some circumstances (since the status had updated just prior to the identification of the completion, so at the time of completion there was no change). This has hopefully been resolved by immediately notifying whenever the status changes and then only notifying if not already."
+
+Release, "1.5.210"
+Date, "(Apr 14, 2017 10:38:10 AM)"
+Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.210/JenkinsTestTracker-1.5.210-runnable.jar"
+Description, "ISSUE#119 WIFI DISCONNECTING: When testing locally an issue occurs when the api cannot get a response, therefore null is the response, which is then parsed causing the issue. This has been handled to ignore a null response and try again next poll interval. The result is that the poll fails but then continues to try rather than stopping altogether."
+
 Release, "1.5.206"
 Date, "(Jan 16, 2017 9:00:14 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.206/JenkinsTestTracker-1.5.206-runnable.jar"
