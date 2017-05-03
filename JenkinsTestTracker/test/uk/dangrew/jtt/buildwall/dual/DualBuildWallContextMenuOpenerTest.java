@@ -24,9 +24,6 @@ import org.mockito.MockitoAnnotations;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.input.ContextMenuEvent;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallContextMenu;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallContextMenuOpener;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
 
 /**
  * {@link DualBuildWallContextMenuOpener} test.

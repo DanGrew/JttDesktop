@@ -18,8 +18,6 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallAutoHider;
-import uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl;
 
 /**
  * {@link DualBuildWallAutoHider} test.

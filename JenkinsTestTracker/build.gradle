@@ -19,8 +19,8 @@ allprojects {
 /*
  * VERSIONING: describe build and calculate build number
  */
-description = """JenkinsTestTracker"""
-group = 'JenkinsTestTracker'
+description = """JenkinsTestTracker-Desktop"""
+group = 'jtt'
 
 def buildNumberFromEnvironment = System.getenv()[ 'VERSION_NUMBER' ]
 def buildNumberForThisEnvironment = ( buildNumberFromEnvironment != null ? buildNumberFromEnvironment : 'WORKSPACE' ) 
@@ -146,21 +146,6 @@ configurations.archives.with {
 }
 
 /*
- * LOCAL ARCHIVING: define where and how the artifacts should be published
- */
-uploadArchives {
-	repositories.mavenDeployer {
-		repository( url: 'http://192.168.0.15:14445/repository/jenkins-test-tracker/' ) {
-			authentication ( userName: repoUser, password: repoPass )
-		}
-		
-		pom.version = version
-		pom.artifactId = 'JenkinsTestTracker'
-		pom.groupId = 'JenkinsTestTracker'
-	}
-}	
-
-/*
  * REMOTE ARCHIVING: publish release candidates to bintray
  */
 bintray {
@@ -172,11 +157,11 @@ bintray {
     publish = true //auto publish everything
     
     pkg {
-        repo = 'JenkinsTestTracker'
-        name = 'JenkinsTestTracker'
+        repo = 'JttDesktop'
+        name = 'JttDesktop'
         userOrg = bintrayUser
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/DanGrew/JenkinsTestTracker.git'
+        vcsUrl = 'https://github.com/DanGrew/JttDesktop.git'
         
         version {
             name = buildNumberForThisEnvironment
@@ -194,8 +179,8 @@ publishing {
             from components.java
             
         	//configure description
-            groupId 'JenkinsTestTracker'
-            artifactId 'JenkinsTestTracker'
+            groupId group
+            artifactId 'jtt-desktop'
             version version
         }
         
@@ -205,8 +190,8 @@ publishing {
       		artifact ( shadowJar ) { classifier = 'runnable' }
         
         	//configure description of publication
-            groupId 'JenkinsTestTracker'
-            artifactId 'JenkinsTestTracker'
+            groupId group
+            artifactId 'jtt-desktop'
             version version
     	}
     }
