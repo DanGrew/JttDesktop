@@ -1,0 +1,29 @@
+env.VERSION_NUMBER = "1.6.${BUILD_NUMBER}"
+
+node {
+    stage 'Checkout'
+        git url: 'https://github.com/DanGrew/JttDesktop.git'
+
+    dir( 'JttDesktop' ) {
+        stage 'Clean'
+            sh "./gradlew clean"
+            
+        stage 'Compile Java'
+            sh "./gradlew compileJava"
+            
+        stage 'Compile Tests'
+            sh "./gradlew compileTestJava"
+            
+        stage 'Unit Tests'
+            sh "./gradlew test"
+            junit 'build/test-results/*.xml'
+            
+        stage 'Integration Tests'
+        	sh "./gradlew integrationTests"
+            junit 'build/test-results/*.xml'
+            
+        stage 'Publish'
+            sh "./gradlew bintrayUpload"
+    
+    }
+}
