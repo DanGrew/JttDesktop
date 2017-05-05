@@ -2,3 +2,5 @@
 /target/
 /.gradle/
 /build/
+/bwcp.json
+/dwcp.json
