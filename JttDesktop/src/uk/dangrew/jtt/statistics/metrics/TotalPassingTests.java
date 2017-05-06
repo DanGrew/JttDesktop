@@ -10,9 +10,9 @@ package uk.dangrew.jtt.statistics.metrics;
 
 import javafx.collections.transformation.FilteredList;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticView;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * {@link TotalPassingTests} provides an object responsible for calculating the total number

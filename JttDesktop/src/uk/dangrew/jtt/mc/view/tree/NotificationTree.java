@@ -14,7 +14,7 @@ import javafx.scene.control.SelectionMode;
 import uk.dangrew.jtt.friendly.javafx.FriendlyMenuOpener;
 import uk.dangrew.jtt.javafx.tree.structure.Tree;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
 /**
  * The {@link NotificationTree} provides a {@link Tree} for {@link NotificationTreeItem}s.

@@ -40,7 +40,7 @@ import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.utility.TestableFonts;
 import uk.dangrew.jtt.utility.conversion.ColorConverter;
 import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;

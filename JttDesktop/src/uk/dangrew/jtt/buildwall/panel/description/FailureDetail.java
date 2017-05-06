@@ -24,7 +24,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.tests.TestClass;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
+import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * {@link FailureDetail} provides a sub component for showing more detail about

@@ -34,7 +34,7 @@ import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 
 public class SoundConfigurationSessionsTest {

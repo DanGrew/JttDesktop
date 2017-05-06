@@ -29,8 +29,8 @@ import uk.dangrew.jtt.environment.layout.CenterScreenWrapper;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link EnvironmentWindow} test.

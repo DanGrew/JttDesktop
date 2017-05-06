@@ -29,7 +29,7 @@ import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.javafx.combobox.SimplePropertyBox;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.utility.comparator.Comparators;
+import uk.dangrew.jtt.model.utility.comparator.Comparators;
 
 /**
  * The {@link JobPolicyPanel} provides a {@link GridPane} for the {@link JenkinsJob}s currently

@@ -27,8 +27,8 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.SystemWideJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
 import uk.dangrew.jtt.synchronisation.time.JobUpdater;
 

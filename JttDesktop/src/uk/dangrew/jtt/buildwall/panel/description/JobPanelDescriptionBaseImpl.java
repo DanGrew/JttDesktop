@@ -31,7 +31,7 @@ import uk.dangrew.jtt.javafx.registrations.RegisteredComponent;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.utility.observable.FunctionMapChangeListenerImpl;
+import uk.dangrew.jtt.model.utility.observable.FunctionMapChangeListenerImpl;
 
 /**
  * The {@link JobPanelDescriptionBaseImpl} is responsible for defining the structure and common

@@ -19,9 +19,9 @@ import uk.dangrew.jtt.core.JttCoreInitializer;
 import uk.dangrew.jtt.core.JttUiInitializer;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.main.digest.SystemDigestController;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.JenkinsDatabaseImpl;
-import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.SystemWideJenkinsDatabaseImpl;
 
 /**
  * The {@link JttSceneConstructor} is responsible for constructing the {@link Scene}

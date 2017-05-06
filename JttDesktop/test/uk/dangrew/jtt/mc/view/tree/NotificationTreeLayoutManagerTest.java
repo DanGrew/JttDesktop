@@ -25,7 +25,7 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link NotificationTreeLayoutManager} test.

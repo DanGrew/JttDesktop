@@ -17,7 +17,7 @@ import javafx.util.Pair;
 import uk.dangrew.jtt.api.handling.JenkinsFetcher;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
 /**
  * The {@link JobMonitorImpl} monitors the state of the {@link JenkinsJob#lastBuildProperty()} in order

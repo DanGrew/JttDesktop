@@ -23,7 +23,7 @@ import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.buildwall.effects.sound.BuildResultStatusChange;
 import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.utility.observable.FunctionMapChangeListenerImpl;
+import uk.dangrew.jtt.model.utility.observable.FunctionMapChangeListenerImpl;
 
 /**
  * The {@link SoundConfigurationPanel} provides a configuration panel for the {@link SoundConfiguration}

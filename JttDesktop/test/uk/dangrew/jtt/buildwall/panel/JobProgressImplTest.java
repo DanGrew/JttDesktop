@@ -30,9 +30,9 @@ import uk.dangrew.jtt.javafx.css.DynamicCssOnlyProperties;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.utility.TestCommon;
 import uk.dangrew.jtt.styling.BuildWallStyles;
 import uk.dangrew.jtt.styling.SystemStyling;
-import uk.dangrew.jtt.utility.TestCommon;
 
 /**
  * {@link JobProgressImpl} test.

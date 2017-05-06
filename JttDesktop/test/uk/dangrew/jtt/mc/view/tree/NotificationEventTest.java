@@ -8,9 +8,9 @@
  */
 package uk.dangrew.jtt.mc.view.tree;
 
-import uk.dangrew.jtt.event.structure.AbstractEventManagerTest;
-import uk.dangrew.jtt.event.structure.EventManager;
 import uk.dangrew.jtt.mc.model.Notification;
+import uk.dangrew.jtt.model.event.structure.AbstractEventManagerTest;
+import uk.dangrew.jtt.model.event.structure.EventManager;
 
 /**
  * {@link NotificationEvent} test.

@@ -12,7 +12,7 @@ import java.time.Clock;
 
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
 /**
  * The {@link BuildProgressCalculator} is responsible for updating the build progress

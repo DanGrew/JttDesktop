@@ -23,8 +23,8 @@ import uk.dangrew.jtt.configuration.tree.ConfigurationTreeItems;
 import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
-import uk.dangrew.jtt.event.structure.EventAssertions;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.model.event.structure.EventAssertions;
 import uk.dangrew.jtt.utility.system.OperatingSystem;
 
 /**

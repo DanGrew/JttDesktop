@@ -15,8 +15,8 @@ import uk.dangrew.jtt.api.sources.ExternalApi;
 import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporter;
 import uk.dangrew.jtt.data.json.tests.JsonTestResultsImporterImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.SystemWideJenkinsDatabaseImpl;
 
 /**
  * {@link JenkinsFetcherImpl} provides an implementation of the {@link JenkinsFetcher} interface

@@ -36,8 +36,8 @@ import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.utility.TestCommon;
 import uk.dangrew.jtt.styling.FontFamilies;
-import uk.dangrew.jtt.utility.TestCommon;
 
 /**
  * {@link BuildWallConfigurationPanelImpl} test.

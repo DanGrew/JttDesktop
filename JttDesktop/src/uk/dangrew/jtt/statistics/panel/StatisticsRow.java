@@ -14,12 +14,12 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.views.LastBuildStartedStatistic;
 import uk.dangrew.jtt.statistics.panel.views.NodesInUseStatistic;
 import uk.dangrew.jtt.statistics.panel.views.TotalPassingTestsStatistic;
 import uk.dangrew.jtt.statistics.panel.views.TotalSuccessStatistic;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link StatisticsRow} is a collecting panel for the {@link StatisticPanel}s to display on the 

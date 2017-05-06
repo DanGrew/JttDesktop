@@ -13,9 +13,9 @@ import java.time.format.DateTimeFormatterBuilder;
 
 import javafx.collections.transformation.FilteredList;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticView;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.utility.time.TimestampFormatter;
 
 /**

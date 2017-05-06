@@ -27,12 +27,12 @@ import uk.dangrew.jtt.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreeItems;
 import uk.dangrew.jtt.configuration.tree.ConfigurationTreePane;
-import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.event.structure.Event;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link PreferenceController} test.

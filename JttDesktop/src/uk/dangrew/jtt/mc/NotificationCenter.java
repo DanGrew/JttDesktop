@@ -10,7 +10,7 @@ package uk.dangrew.jtt.mc;
 
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotifier;
 import uk.dangrew.jtt.mc.view.tree.NotificationEvent;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
 /**
  * The {@link NotificationCenter} is responsible for initialising the notifications for 

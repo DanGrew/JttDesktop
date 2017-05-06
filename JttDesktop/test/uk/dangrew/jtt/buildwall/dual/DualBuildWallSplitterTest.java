@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static uk.dangrew.jtt.utility.TestCommon.precision;
+import static uk.dangrew.jtt.model.utility.TestCommon.precision;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -27,8 +27,8 @@ import uk.dangrew.jtt.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link DualBuildWallSplitter} test.

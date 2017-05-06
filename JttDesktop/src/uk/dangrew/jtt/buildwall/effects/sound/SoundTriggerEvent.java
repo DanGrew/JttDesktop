@@ -12,8 +12,8 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.concurrent.locks.ReentrantLock;
 
-import uk.dangrew.jtt.event.structure.EventManager;
-import uk.dangrew.jtt.event.structure.EventSubscription;
+import uk.dangrew.jtt.model.event.structure.EventManager;
+import uk.dangrew.jtt.model.event.structure.EventSubscription;
 
 /**
  * {@link SoundTriggerEvent} provides the manager for {@link BuildResultStatusChange}s to be fired and

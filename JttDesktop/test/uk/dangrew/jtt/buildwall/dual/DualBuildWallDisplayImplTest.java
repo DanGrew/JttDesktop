@@ -44,12 +44,12 @@ import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.jtt.model.utility.TestCommon;
 import uk.dangrew.jtt.statistics.panel.StatisticsRow;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.styling.SystemStyling;
-import uk.dangrew.jtt.utility.TestCommon;
 
 /**
  * {@link DualBuildWallDisplayImpl} test.

@@ -23,9 +23,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.friendly.javafx.FriendlyMediaPlayer;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
+import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 
 public class SoundPlayerTest {

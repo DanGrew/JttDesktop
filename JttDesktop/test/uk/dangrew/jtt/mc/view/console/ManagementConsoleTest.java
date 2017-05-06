@@ -22,8 +22,8 @@ import uk.dangrew.jtt.mc.sides.jobs.JobProgressTree;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentsTree;
 import uk.dangrew.jtt.mc.sides.users.detail.AssignmentDetailArea;
 import uk.dangrew.jtt.mc.view.tree.NotificationTree;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link ManagementConsole} test.

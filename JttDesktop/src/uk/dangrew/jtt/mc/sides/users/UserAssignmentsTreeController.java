@@ -9,9 +9,9 @@
 package uk.dangrew.jtt.mc.sides.users;
 
 import uk.dangrew.jtt.javafx.tree.structure.TreeController;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.users.JenkinsUser;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
+import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * The {@link UserAssignmentsTreeController} is responsible for controlling actions performed on

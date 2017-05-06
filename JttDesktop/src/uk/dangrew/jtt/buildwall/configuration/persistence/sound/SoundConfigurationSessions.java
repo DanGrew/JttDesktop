@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.configuration.persistence.sound;
 
 import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 import uk.dangrew.jupa.json.marshall.ModelMarshaller;
 import uk.dangrew.jupa.json.session.SessionManager;

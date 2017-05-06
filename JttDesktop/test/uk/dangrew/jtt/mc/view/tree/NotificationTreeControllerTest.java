@@ -18,11 +18,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.mc.view.item.NotificationTreeItem;
+import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 

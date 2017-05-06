@@ -50,8 +50,8 @@ import org.mockito.MockitoAnnotations;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.utility.TestCommon;
 
 /**
  * {@link BuildWallConfigurationPersistence} test.

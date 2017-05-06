@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
-import static uk.dangrew.jtt.utility.TestCommon.precision;
+import static uk.dangrew.jtt.model.utility.TestCommon.precision;
 
 import org.junit.Assert;
 import org.junit.Before;

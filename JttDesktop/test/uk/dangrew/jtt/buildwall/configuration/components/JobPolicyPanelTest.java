@@ -47,8 +47,8 @@ import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.javafx.combobox.SimplePropertyBox;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.jtt.utility.TestCommon;
-import uk.dangrew.jtt.utility.comparator.Comparators;
+import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.jtt.model.utility.comparator.Comparators;
 
 /**
  * {@link JobPolicyPanel} test.

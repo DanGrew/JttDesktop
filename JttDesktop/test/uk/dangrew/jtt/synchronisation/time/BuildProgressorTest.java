@@ -24,8 +24,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javafx.collections.FXCollections;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link BuildProgressor} test.

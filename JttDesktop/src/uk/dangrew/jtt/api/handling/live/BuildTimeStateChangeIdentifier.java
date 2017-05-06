@@ -11,7 +11,7 @@ package uk.dangrew.jtt.api.handling.live;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.dangrew.jtt.event.structure.Event;
+import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 

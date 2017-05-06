@@ -12,7 +12,7 @@ import javafx.scene.control.SelectionMode;
 import uk.dangrew.jtt.friendly.javafx.FriendlyMenuOpener;
 import uk.dangrew.jtt.javafx.tree.structure.Tree;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
 /**
  * The {@link JobProgressTree} provides a {@link TreeView} for {@link JobProgressTreeItem}s.

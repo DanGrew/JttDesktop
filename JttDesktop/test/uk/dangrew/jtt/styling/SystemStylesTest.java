@@ -15,7 +15,7 @@ import org.mockito.Mockito;
 
 import javafx.scene.Parent;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.utility.TestCommon;
 import uk.dangrew.jtt.utility.javafx.TestableParent;
 
 /**

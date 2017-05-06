@@ -12,8 +12,8 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.concurrent.locks.ReentrantLock;
 
-import uk.dangrew.jtt.event.structure.EventManager;
-import uk.dangrew.jtt.event.structure.EventSubscription;
+import uk.dangrew.jtt.model.event.structure.EventManager;
+import uk.dangrew.jtt.model.event.structure.EventSubscription;
 
 /**
  * The {@link UserAssignmentEvent} is responsible for managing events raised to put

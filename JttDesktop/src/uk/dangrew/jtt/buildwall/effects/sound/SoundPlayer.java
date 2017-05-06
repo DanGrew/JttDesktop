@@ -11,8 +11,8 @@ package uk.dangrew.jtt.buildwall.effects.sound;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.friendly.javafx.FriendlyMediaPlayer;
+import uk.dangrew.jtt.model.event.structure.Event;
 
 /**
  * The {@link SoundPlayer} is responsible for playing sounds in response to {@link SoundTriggerEvent}s.

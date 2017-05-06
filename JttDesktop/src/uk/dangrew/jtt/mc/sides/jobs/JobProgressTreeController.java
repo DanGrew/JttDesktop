@@ -10,8 +10,8 @@ package uk.dangrew.jtt.mc.sides.jobs;
 
 import uk.dangrew.jtt.javafx.tree.structure.TreeController;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * The {@link JobProgressTreeController} is responsible for controlling the information in the 

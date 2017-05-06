@@ -10,10 +10,10 @@ package uk.dangrew.jtt.statistics.panel.views;
 
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.metrics.TotalJobsAtState;
 import uk.dangrew.jtt.statistics.panel.StatisticPanel;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link TotalSuccessStatistic} is a graphical {@link StatisticPanel} for the

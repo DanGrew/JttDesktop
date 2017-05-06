@@ -34,8 +34,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.utility.TestCommon;
 
 public class SoundConfigurationPersistenceTest {
 

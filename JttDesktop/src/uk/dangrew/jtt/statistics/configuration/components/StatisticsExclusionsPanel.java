@@ -18,10 +18,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.utility.comparator.Comparators;
+import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.utility.comparator.Comparators;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * The {@link StatisticsExclusionsPanel} provides a configuration panel for excluding jobs from the 

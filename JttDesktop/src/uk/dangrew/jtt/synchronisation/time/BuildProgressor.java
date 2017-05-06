@@ -11,7 +11,7 @@ package uk.dangrew.jtt.synchronisation.time;
 import java.time.Clock;
 import java.util.Timer;
 
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.synchronisation.model.TimeKeeper;
 
 public class BuildProgressor extends TimeKeeper {

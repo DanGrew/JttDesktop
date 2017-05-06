@@ -15,7 +15,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
-import uk.dangrew.jtt.event.structure.Event;
+import uk.dangrew.jtt.model.event.structure.Event;
 
 /**
  * The {@link DualBuildWallContextMenu} provides a {@link ContextMenu} that allows

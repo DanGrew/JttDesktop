@@ -18,7 +18,7 @@ import org.junit.Test;
 import javafx.geometry.Orientation;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfigurationImpl;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.utility.TestCommon;
 import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 import uk.dangrew.jupa.json.marshall.ModelMarshaller;
 

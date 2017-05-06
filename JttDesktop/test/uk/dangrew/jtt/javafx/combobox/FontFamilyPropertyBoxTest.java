@@ -11,7 +11,7 @@ package uk.dangrew.jtt.javafx.combobox;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static uk.dangrew.jtt.utility.TestCommon.assertThatFontIsBold;
+import static uk.dangrew.jtt.model.utility.TestCommon.assertThatFontIsBold;
 
 import java.util.List;
 

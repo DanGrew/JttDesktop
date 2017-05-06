@@ -21,8 +21,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.event.structure.Event;
-import uk.dangrew.jtt.event.structure.EventSubscription;
+import uk.dangrew.jtt.model.event.structure.Event;
+import uk.dangrew.jtt.model.event.structure.EventSubscription;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;

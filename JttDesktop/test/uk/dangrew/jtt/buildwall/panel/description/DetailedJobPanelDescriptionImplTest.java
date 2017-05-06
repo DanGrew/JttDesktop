@@ -26,7 +26,7 @@ import javafx.scene.paint.Color;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.utility.TestCommon;
 
 /**
  * {@link DetailedJobPanelDescriptionImpl} test.

@@ -11,14 +11,14 @@ package uk.dangrew.jtt.mc.sides.jobs;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TreeItem;
-import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.mc.sides.users.UserAssignmentEvent;
 import uk.dangrew.jtt.mc.sides.users.shared.AssignmentMenu;
+import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.users.JenkinsUser;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.utility.time.DefaultInstantProvider;
 import uk.dangrew.jtt.utility.time.InstantProvider;
 

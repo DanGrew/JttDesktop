@@ -11,7 +11,7 @@ package uk.dangrew.jtt.buildwall.configuration.persistence.buildwall;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.buildwall.panel.type.JobPanelDescriptionProviders;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jupa.json.parse.JsonParser;
 import uk.dangrew.jupa.json.parse.handle.key.JsonArrayWithObjectParseHandler;
 import uk.dangrew.jupa.json.parse.handle.type.DoubleParseHandle;

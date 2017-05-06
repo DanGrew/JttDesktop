@@ -13,14 +13,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestClassKey;
+import uk.dangrew.jtt.model.storage.database.TestClassKeyImpl;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestCaseImpl;
 import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
 import uk.dangrew.jtt.model.tests.TestResultStatus;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestClassKey;
-import uk.dangrew.jtt.storage.database.TestClassKeyImpl;
 
 /**
  * The {@link JsonTestResultsImporterImpl} defines a {@link JsonTestResultsImporter} specifically for JSON data.

@@ -25,7 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.utility.TestCommon;
 
 /**
  * {@link SimpleConfigurationTitle} test.

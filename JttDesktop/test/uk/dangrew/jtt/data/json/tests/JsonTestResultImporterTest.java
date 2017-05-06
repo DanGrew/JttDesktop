@@ -22,13 +22,13 @@ import org.junit.Test;
 
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestClassKeyImpl;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.tests.TestResultStatus;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestClassKeyImpl;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.utility.TestCommon;
 
 /**
  * {@link JsonTestResultsImporterImpl} test.

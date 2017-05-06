@@ -12,8 +12,8 @@ import uk.dangrew.jtt.api.handling.live.JobBuiltEvent;
 import uk.dangrew.jtt.api.handling.live.JobBuiltResult;
 import uk.dangrew.jtt.buildwall.effects.sound.BuildResultStatusChange;
 import uk.dangrew.jtt.buildwall.effects.sound.SoundTriggerEvent;
-import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.mc.view.tree.NotificationEvent;
+import uk.dangrew.jtt.model.event.structure.Event;
 
 /**
  * The {@link BuildResultStatusNotifier} is responsible for notifying events on receipt of

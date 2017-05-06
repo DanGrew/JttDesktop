@@ -10,7 +10,7 @@ package uk.dangrew.jtt.buildwall.configuration.persistence.sound;
 
 import uk.dangrew.jtt.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jupa.json.parse.JsonParser;
 import uk.dangrew.jupa.json.parse.handle.key.JsonArrayWithObjectParseHandler;
 import uk.dangrew.jupa.json.parse.handle.type.EnumParseHandle;

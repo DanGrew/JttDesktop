@@ -18,10 +18,10 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestClass;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
+import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * The {@link TestTableView} provides a collapsable tree view of {@link TestClass}es 

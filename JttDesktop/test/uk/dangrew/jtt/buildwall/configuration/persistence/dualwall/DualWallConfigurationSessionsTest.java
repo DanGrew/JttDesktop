@@ -35,7 +35,7 @@ import javafx.geometry.Orientation;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.buildwall.configuration.properties.DualWallConfigurationImpl;
 import uk.dangrew.jtt.main.JenkinsTestTracker;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 
 /**

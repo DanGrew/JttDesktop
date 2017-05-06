@@ -17,10 +17,10 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.mc.model.Notification;
 import uk.dangrew.jtt.mc.view.tree.NotificationEvent;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.event.structure.Event;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link NotificationCenter} test.

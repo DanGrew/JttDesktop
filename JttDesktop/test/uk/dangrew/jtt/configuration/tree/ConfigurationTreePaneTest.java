@@ -22,12 +22,12 @@ import uk.dangrew.jtt.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.environment.preferences.WindowPolicy;
-import uk.dangrew.jtt.event.structure.Event;
 import uk.dangrew.jtt.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.event.structure.Event;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link ConfigurationTreePane} test.

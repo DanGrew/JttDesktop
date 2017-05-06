@@ -31,8 +31,8 @@ import uk.dangrew.jtt.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.jtt.model.utility.TestCommon;
 import uk.dangrew.jtt.system.properties.DateAndTimes;
-import uk.dangrew.jtt.utility.TestCommon;
 
 /**
  * {@link JobPanelDescriptionBaseImpl} test.

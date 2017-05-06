@@ -14,10 +14,10 @@ import java.util.function.Consumer;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.users.JenkinsUser;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.utility.comparator.Comparators;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
+import uk.dangrew.jtt.model.utility.comparator.Comparators;
+import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * The {@link AssignmentMenu} provides a common {@link Menu} for selecting a {@link JenkinsUser}

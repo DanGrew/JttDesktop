@@ -10,10 +10,10 @@ package uk.dangrew.jtt.statistics.metrics;
 
 import javafx.collections.transformation.FilteredList;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.panel.StatisticView;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * {@link StatisticCalculatorBase} provides the base for an object responsible for calculating a 

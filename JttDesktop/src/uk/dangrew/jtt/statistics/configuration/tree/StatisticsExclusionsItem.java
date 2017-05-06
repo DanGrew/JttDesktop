@@ -11,9 +11,9 @@ package uk.dangrew.jtt.statistics.configuration.tree;
 import uk.dangrew.jtt.configuration.item.ScrollableConfigurationItem;
 import uk.dangrew.jtt.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.configuration.components.StatisticsExclusionsPanel;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link StatisticsExclusionsItem} provides the root of a set of configuration items

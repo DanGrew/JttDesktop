@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 import javafx.scene.image.ImageView;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.utility.TestCommon;
 
 /**
  * {@link BuildResultStatusHighLevelChange} test.

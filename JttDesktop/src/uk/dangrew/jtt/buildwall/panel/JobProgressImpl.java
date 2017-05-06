@@ -18,8 +18,8 @@ import uk.dangrew.jtt.javafx.registrations.MapChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.jtt.model.utility.observable.FunctionMapChangeListenerImpl;
 import uk.dangrew.jtt.styling.BuildWallStyles;
-import uk.dangrew.jtt.utility.observable.FunctionMapChangeListenerImpl;
 
 /**
  * The {@link JobProgressImpl} provides a {@link BorderPane} with a specially formatted

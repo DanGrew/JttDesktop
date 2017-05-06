@@ -16,7 +16,7 @@ import uk.dangrew.jtt.mc.sides.users.UserAssignmentsTree;
 import uk.dangrew.jtt.mc.sides.users.detail.AssignmentDetailArea;
 import uk.dangrew.jtt.mc.sides.users.detail.AssignmentDetailController;
 import uk.dangrew.jtt.mc.view.tree.NotificationTree;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
 /**
  * The {@link ManagementConsole} provides an area of notifications and information for managing 

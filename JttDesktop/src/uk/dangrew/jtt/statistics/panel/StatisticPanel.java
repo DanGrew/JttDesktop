@@ -22,8 +22,8 @@ import javafx.scene.shape.Rectangle;
 import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.javafx.registrations.RegistrationManager;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link StatisticPanel} provides a {@link StatisticView} for a general value with

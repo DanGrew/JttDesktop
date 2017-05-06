@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>JttDesktop</name>
-	<comment>JenkinsTestTracker</comment>
+	<name>jtt-desktop</name>
+	<comment>JenkinsTestTracker-Desktop</comment>
 	<projects>
 	</projects>
 	<buildSpec>

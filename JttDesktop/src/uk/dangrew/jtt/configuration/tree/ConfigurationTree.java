@@ -37,11 +37,11 @@ import uk.dangrew.jtt.mc.configuration.tree.item.JobProgressRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.ManagementConsoleRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.NotificationsRootItem;
 import uk.dangrew.jtt.mc.configuration.tree.item.UserAssignmentsRootItem;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsExclusionsItem;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsRootItem;
 import uk.dangrew.jtt.statistics.configuration.tree.StatisticsStyleItem;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
 
 /**
  * The {@link ConfigurationTree} provides a {@link TreeView} for {@link ConfigurationItem}s.

@@ -8,8 +8,8 @@
  */
 package uk.dangrew.jtt.api.handling.live;
 
-import uk.dangrew.jtt.event.structure.AbstractEventManagerTest;
-import uk.dangrew.jtt.event.structure.EventManager;
+import uk.dangrew.jtt.model.event.structure.AbstractEventManagerTest;
+import uk.dangrew.jtt.model.event.structure.EventManager;
 
 public class JobBuiltEventTest extends AbstractEventManagerTest< JobBuiltResult > {
 

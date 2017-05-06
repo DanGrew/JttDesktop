@@ -49,7 +49,7 @@ import uk.dangrew.jtt.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import uk.dangrew.jtt.javafx.spinner.DoublePropertySpinner;
 import uk.dangrew.jtt.javafx.spinner.IntegerPropertySpinner;
 import uk.dangrew.jtt.javafx.spinner.PropertySpinner;
-import uk.dangrew.jtt.utility.TestCommon;
+import uk.dangrew.jtt.model.utility.TestCommon;
 
 /**
  * {@link JavaFxStyle} test.

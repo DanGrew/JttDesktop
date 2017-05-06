@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.utility.friendly.FriendlyClass;
+import uk.dangrew.jtt.model.utility.friendly.FriendlyClass;
 
 /**
  * {@link Versioning} test.

@@ -12,7 +12,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.utility.observable.FunctionMapChangeListenerImpl;
+import uk.dangrew.jtt.model.utility.observable.FunctionMapChangeListenerImpl;
 
 /**
  * Specific implementation of {@link FunctionMapChangeListenerImpl} for filtering notifications

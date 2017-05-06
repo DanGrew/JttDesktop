@@ -22,7 +22,7 @@ import org.junit.Test;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import uk.dangrew.jtt.javafx.registrations.ListChangeListenerRegistrationImpl;
-import uk.dangrew.jtt.utility.observable.FunctionListChangeListenerImpl;
+import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 
 /**
  * {@link ListChangeListenerRegistrationImpl} test.

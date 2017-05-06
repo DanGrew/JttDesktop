@@ -16,7 +16,7 @@ import uk.dangrew.jtt.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.environment.main.EnvironmentWindow;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**

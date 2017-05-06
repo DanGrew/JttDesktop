@@ -12,7 +12,7 @@ import javafx.util.Pair;
 import uk.dangrew.jtt.buildwall.effects.flasher.control.ImageFlasherControls;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
 /**
  * The {@link JobFailureTrigger} is responsible for identifying new failing builds and triggering

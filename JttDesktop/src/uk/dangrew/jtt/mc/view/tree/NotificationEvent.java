@@ -12,9 +12,9 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.concurrent.locks.ReentrantLock;
 
-import uk.dangrew.jtt.event.structure.EventManager;
-import uk.dangrew.jtt.event.structure.EventSubscription;
 import uk.dangrew.jtt.mc.model.Notification;
+import uk.dangrew.jtt.model.event.structure.EventManager;
+import uk.dangrew.jtt.model.event.structure.EventSubscription;
 
 /**
  * {@link NotificationEvent} provides the manager for {@link Notification}s to be fired and

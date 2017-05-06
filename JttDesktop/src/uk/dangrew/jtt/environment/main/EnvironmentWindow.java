@@ -14,7 +14,7 @@ import javafx.scene.layout.Region;
 import uk.dangrew.jtt.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.environment.layout.CenterScreenWrapper;
 import uk.dangrew.jtt.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
 /**
  * The {@link EnvironmentWindow} is responsible for providing an overall frame to the 

@@ -13,8 +13,8 @@ import java.util.function.Function;
 
 import uk.dangrew.jtt.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.api.sources.ExternalApi;
-import uk.dangrew.jtt.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.storage.database.SystemWideJenkinsDatabaseImpl;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.SystemWideJenkinsDatabaseImpl;
 import uk.dangrew.jtt.synchronisation.time.BuildProgressor;
 import uk.dangrew.jtt.synchronisation.time.JobUpdater;
 

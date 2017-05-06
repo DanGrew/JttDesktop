@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import uk.dangrew.jtt.utility.friendly.FriendlyClass;
+import uk.dangrew.jtt.model.utility.friendly.FriendlyClass;
 
 /**
  * {@link Versioning} is responsible for providing the correct version number of the software.
