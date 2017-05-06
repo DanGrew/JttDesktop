@@ -121,7 +121,7 @@ artifacts.archives packageTests
 
 //task to write the version number to the version file
 task versioning << {
-   File file = new File( "${projectDir}/src/uk/dangrew/jtt/versioning/VERSION" )
+   File file = new File( "${projectDir}/src/uk/dangrew/jtt/desktop/versioning/VERSION" )
    if ( file.exists() ) {
 	   print( file.absolutePath )
 	   file.write( version )
@@ -136,7 +136,7 @@ processResources.dependsOn versioning
 shadowJar.archiveName = jar.archiveName.replace( '.jar', '-runnable.jar' )
 shadowJar.outputs.upToDateWhen { false }
 //link to main class in jar
-mainClassName = "uk.dangrew.jtt.main.JenkinsTestTracker"
+mainClassName = "uk.dangrew.jtt.desktop.main.JenkinsTestTracker"
 //bind with jar so that whenever jar is run, shadow is run
 jar.dependsOn shadowJar
 //automatic distribution options pulled in from application plugin - not interested
