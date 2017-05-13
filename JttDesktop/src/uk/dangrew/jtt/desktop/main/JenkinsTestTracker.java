@@ -27,7 +27,7 @@ public class JenkinsTestTracker extends Application {
     * @param controller the {@link JttSceneConstructor} to support the launching
     * of the {@link JenkinsTestTracker}.
     */
-   public JenkinsTestTracker( JttSceneConstructor constructor ) {
+   JenkinsTestTracker( JttSceneConstructor constructor ) {
       this.sceneConstructor = constructor;
    }//End Constructor
    
@@ -37,6 +37,8 @@ public class JenkinsTestTracker extends Application {
    @Override public void start(Stage stage) throws Exception {
       Scene scene = sceneConstructor.makeScene();
       if ( scene == null ) {
+         //not tested, requires jupa change
+         PlatformLifecycle.shutdown();
          return;
       }
       
