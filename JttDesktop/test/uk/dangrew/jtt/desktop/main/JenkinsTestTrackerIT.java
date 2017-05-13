@@ -11,11 +11,11 @@ package uk.dangrew.jtt.desktop.main;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,13 +28,12 @@ import javafx.stage.WindowEvent;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.desktop.main.JenkinsTestTracker;
-import uk.dangrew.jtt.desktop.main.JttSceneConstructor;
 import uk.dangrew.jtt.desktop.styling.BuildWallStyles;
 import uk.dangrew.jtt.desktop.styling.BuildWallThemes;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jupa.javafx.platform.PlatformLifecycle;
 import uk.dangrew.jupa.javafx.platform.PlatformLifecycleImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JenkinsTestTracker} test.
@@ -42,14 +41,21 @@ import uk.dangrew.jupa.javafx.platform.PlatformLifecycleImpl;
 public class JenkinsTestTrackerIT {
    
    @Mock private JttSceneConstructor constructor;
+   @Mock private PlatformLifecycleImpl lifecycle;
    private Scene scene;
    private Stage stage;
    
    @Before public void initialseApplication() throws Exception {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
+      
       SystemStyling.initialise();
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
+      PlatformLifecycle.setInstance( lifecycle );
+   }//End Method
+   
+   @After public void teardown(){
+      PlatformLifecycle.setInstance( new PlatformLifecycleImpl() );
    }//End Method
    
    /**
@@ -86,9 +92,6 @@ public class JenkinsTestTrackerIT {
    }//End Method
    
    @Test public void shouldApplyShutdownHandler(){
-      PlatformLifecycleImpl lifecycle = mock( PlatformLifecycleImpl.class );
-      PlatformLifecycle.setInstance( lifecycle );
-      
       constructorWillProvideScene();
       launchApplication();
       
@@ -99,6 +102,7 @@ public class JenkinsTestTrackerIT {
    @Test public void shouldReturnIfControllerProvidesNoScene(){
       launchApplication();
       assertThat( stage.isShowing(), is( false ) );
+      verify( lifecycle ).shutdownPlatform();
    }//End Method
    
    @Test public void shouldHaveInitialisedSystemStylings() {

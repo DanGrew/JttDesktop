@@ -37,7 +37,6 @@ public class JenkinsTestTracker extends Application {
    @Override public void start(Stage stage) throws Exception {
       Scene scene = sceneConstructor.makeScene();
       if ( scene == null ) {
-         //not tested, requires jupa change
          PlatformLifecycle.shutdown();
          return;
       }
