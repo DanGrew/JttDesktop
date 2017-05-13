@@ -29,7 +29,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
-import uk.dangrew.jtt.desktop.api.sources.ExternalApi;
+import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyAlert;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.sd.core.message.Messages;

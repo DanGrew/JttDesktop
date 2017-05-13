@@ -47,11 +47,8 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
-import uk.dangrew.jtt.desktop.api.sources.ClientHandler;
-import uk.dangrew.jtt.desktop.api.sources.ExternalApi;
-import uk.dangrew.jtt.desktop.api.sources.JenkinsApiImpl;
-import uk.dangrew.jtt.desktop.credentials.login.JenkinsLogin;
-import uk.dangrew.jtt.desktop.credentials.login.JenkinsLoginDigest;
+import uk.dangrew.jtt.connection.api.sources.ExternalApi;
+import uk.dangrew.jtt.connection.api.sources.JenkinsApiImpl;
 import uk.dangrew.jtt.desktop.credentials.login.JenkinsLogin.InputValidator;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyAlert;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
@@ -111,7 +108,7 @@ public class JenkinsLoginTest {
       } );
    }//End Method
    
-   @Ignore
+//   @Ignore
    @Test public void manualInspection() {
       runOnFxThreadAndWait( () -> {
          FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );

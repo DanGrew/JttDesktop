@@ -94,6 +94,7 @@ public class JavaFxInitializer extends Application {
     * this {@link Scene} will be present for the entirety of the testing. This is expected to be used for 
     * running with popups or dialog type items.
     */
+   @Deprecated
    public static void startPlatform(){
       //Should be safe to call if already launched.
       PlatformImpl.startup( () -> {} );

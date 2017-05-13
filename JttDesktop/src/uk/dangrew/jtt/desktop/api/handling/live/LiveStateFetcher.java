@@ -13,10 +13,10 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
+import uk.dangrew.jtt.connection.api.sources.ExternalApi;
+import uk.dangrew.jtt.connection.api.sources.JenkinsBaseRequest;
 import uk.dangrew.jtt.desktop.api.handling.JenkinsFetcher;
 import uk.dangrew.jtt.desktop.api.handling.JenkinsFetcherImpl;
-import uk.dangrew.jtt.desktop.api.sources.ExternalApi;
-import uk.dangrew.jtt.desktop.api.sources.JenkinsBaseRequest;
 import uk.dangrew.jtt.desktop.data.json.conversion.ApiResponseToJsonConverter;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;

@@ -8,10 +8,9 @@
  */
 package uk.dangrew.jtt.desktop.core;
 
-import uk.dangrew.jtt.desktop.api.sources.ExternalApi;
-import uk.dangrew.jtt.desktop.api.sources.JenkinsApiImpl;
+import uk.dangrew.jtt.connection.api.sources.ExternalApi;
+import uk.dangrew.jtt.connection.api.sources.JenkinsApiImpl;
 import uk.dangrew.jtt.desktop.credentials.login.JenkinsLogin;
-import uk.dangrew.jtt.desktop.main.digest.SystemDigestController;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**

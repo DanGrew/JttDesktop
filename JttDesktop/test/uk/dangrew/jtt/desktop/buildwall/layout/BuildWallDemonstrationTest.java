@@ -16,8 +16,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
-import uk.dangrew.jtt.desktop.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.desktop.buildwall.layout.BuildWallDisplayImpl;

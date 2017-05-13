@@ -9,7 +9,7 @@
 package uk.dangrew.jtt.desktop.main;
 
 import javafx.scene.Scene;
-import uk.dangrew.jtt.desktop.api.sources.ExternalApi;
+import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.sound.SoundConfigurationSessions;

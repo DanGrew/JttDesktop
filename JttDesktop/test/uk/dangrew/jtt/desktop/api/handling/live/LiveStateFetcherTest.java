@@ -24,11 +24,11 @@ import org.mockito.MockitoAnnotations;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import uk.dangrew.jtt.connection.api.sources.ExternalApi;
+import uk.dangrew.jtt.connection.api.sources.JenkinsBaseRequest;
 import uk.dangrew.jtt.desktop.api.handling.JenkinsFetcher;
 import uk.dangrew.jtt.desktop.api.handling.live.JobDetailsParser;
 import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
-import uk.dangrew.jtt.desktop.api.sources.ExternalApi;
-import uk.dangrew.jtt.desktop.api.sources.JenkinsBaseRequest;
 import uk.dangrew.jtt.desktop.data.json.conversion.ApiResponseToJsonConverter;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;
