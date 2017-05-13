@@ -108,7 +108,7 @@ public class JenkinsLoginTest {
       } );
    }//End Method
    
-//   @Ignore
+   @Ignore
    @Test public void manualInspection() {
       runOnFxThreadAndWait( () -> {
          FriendlyAlert alert = new FriendlyAlert( AlertType.INFORMATION );
