@@ -19,7 +19,7 @@ import uk.dangrew.jupa.update.model.ReleaseAvailabilityObserver;
  */
 public class JttReleasesAvailableTask extends ReleaseAvailableTask {
 
-   static final String RELEASES_LOCATION = "https://raw.githubusercontent.com/DanGrew/JenkinsTestTracker/master/RELEASES";
+   static final String RELEASES_LOCATION = "https://raw.githubusercontent.com/DanGrew/JttDesktop/master/RELEASES";
    
    public JttReleasesAvailableTask( ReleaseAvailabilityObserver observer ) {
       super( new Versioning().getVersionNumber(), new ReleasesDownloader( RELEASES_LOCATION ), observer );
