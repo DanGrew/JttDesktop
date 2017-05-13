@@ -25,10 +25,9 @@ import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.core.JenkinsApiConnector;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.desktop.main.JttSceneConstructor;
 import uk.dangrew.jtt.desktop.main.digest.SystemDigestController;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -43,7 +42,7 @@ public class JttSceneConstructorTest {
    private JttSceneConstructor systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
       when( digestController.getDigestViewer() ).thenReturn( digest );

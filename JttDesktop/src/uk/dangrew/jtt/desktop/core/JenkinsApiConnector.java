@@ -8,9 +8,12 @@
  */
 package uk.dangrew.jtt.desktop.core;
 
+import java.util.Optional;
+import java.util.function.BiFunction;
+
 import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.connection.api.sources.JenkinsApiImpl;
-import uk.dangrew.jtt.desktop.credentials.login.JenkinsLogin;
+import uk.dangrew.jtt.connection.login.JenkinsLoginPrompt;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -19,21 +22,30 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
  */
 public class JenkinsApiConnector {
 
-   private final JttApplicationController applicationController;
+   private final ExternalApi api;
+   private final BiFunction< ExternalApi, DigestViewer, JenkinsLoginPrompt > promptSupplier;
    
    /**
     * Constructs a new {@link JenkinsApiConnector}.
     */
    public JenkinsApiConnector() {
-      this( new JttApplicationController() );
+      this( 
+               ( api, view ) -> new JenkinsLoginPrompt( api, view ),
+               new JenkinsApiImpl()
+      );
    }//End Constructor
    
    /**
     * Constructs a new {@link JenkinsApiConnector}.
-    * @param applicationController the {@link JttApplicationController}.
+    * @param promptSupplier the supplier of the {@link JenkinsLoginPrompt}.
+    * @param api the {@link ExternalApi} to connect to.
     */
-   JenkinsApiConnector( JttApplicationController applicationController ){
-      this.applicationController = applicationController;
+   JenkinsApiConnector( 
+            BiFunction< ExternalApi, DigestViewer, JenkinsLoginPrompt > promptSupplier,
+            ExternalApi api
+   ){
+      this.promptSupplier = promptSupplier;
+      this.api = api;
    }//End Constructor
    
    /**
@@ -42,13 +54,13 @@ public class JenkinsApiConnector {
     * @return the {@link ExternalApi} is successful, null otherwise.
     */
    public ExternalApi connect( DigestViewer digest ) {
-      ExternalApi api = new JenkinsApiImpl();
-      
-      if ( !applicationController.login( new JenkinsLogin( api, digest ) ) ) {
+      JenkinsLoginPrompt prompt = promptSupplier.apply( api, digest );
+      Optional< Boolean > result = prompt.friendly_showAndWait();
+      if ( result.get() ) {
+         return api;
+      } else {
          return null;
       }
-      
-      return api;
    }//End Method
 
 }//End Class
