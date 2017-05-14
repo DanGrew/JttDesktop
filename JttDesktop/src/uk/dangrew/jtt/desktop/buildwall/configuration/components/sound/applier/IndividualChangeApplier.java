@@ -10,7 +10,7 @@ package uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier;
 
 import java.util.Arrays;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
+import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 

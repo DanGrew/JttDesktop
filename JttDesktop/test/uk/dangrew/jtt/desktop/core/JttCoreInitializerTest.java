@@ -25,7 +25,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
+import uk.dangrew.jtt.connection.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.sd.graphics.launch.TestApplication;

@@ -18,7 +18,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
+import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 
 public class BrsChangeListApplierTest {

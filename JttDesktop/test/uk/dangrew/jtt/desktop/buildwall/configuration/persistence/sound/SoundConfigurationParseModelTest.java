@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
+import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;

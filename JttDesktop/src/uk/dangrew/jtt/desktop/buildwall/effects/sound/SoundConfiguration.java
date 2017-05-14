@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
 import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;

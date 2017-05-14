@@ -10,7 +10,7 @@ package uk.dangrew.jtt.desktop.synchronisation.time;
 
 import java.util.Timer;
 
-import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
+import uk.dangrew.jtt.connection.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.desktop.synchronisation.model.TimeKeeper;
 
 /**

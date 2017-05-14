@@ -10,7 +10,7 @@ package uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier;
 
 import java.util.List;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
+import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 
 public class FailPassApplierTest extends BrsChangeListApplierTest {

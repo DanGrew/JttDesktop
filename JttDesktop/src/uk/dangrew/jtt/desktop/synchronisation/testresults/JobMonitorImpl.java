@@ -14,7 +14,7 @@ import java.util.Map;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.util.Pair;
-import uk.dangrew.jtt.desktop.api.handling.JenkinsFetcher;
+import uk.dangrew.jtt.connection.api.handling.JenkinsFetcher;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;

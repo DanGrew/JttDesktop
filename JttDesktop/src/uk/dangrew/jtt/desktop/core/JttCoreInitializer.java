@@ -11,8 +11,8 @@ package uk.dangrew.jtt.desktop.core;
 import java.util.Timer;
 import java.util.function.Function;
 
+import uk.dangrew.jtt.connection.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.connection.api.sources.ExternalApi;
-import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.desktop.synchronisation.time.BuildProgressor;
 import uk.dangrew.jtt.desktop.synchronisation.time.JobUpdater;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;

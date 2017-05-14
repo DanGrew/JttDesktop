@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.concurrent.locks.ReentrantLock;
 
+import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
 import uk.dangrew.jtt.model.event.structure.EventManager;
 import uk.dangrew.jtt.model.event.structure.EventSubscription;
 

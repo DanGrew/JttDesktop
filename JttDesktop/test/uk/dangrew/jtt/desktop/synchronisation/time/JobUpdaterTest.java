@@ -24,7 +24,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
+import uk.dangrew.jtt.connection.api.handling.live.LiveStateFetcher;
 
 /**
  * {@link JobUpdater} test.

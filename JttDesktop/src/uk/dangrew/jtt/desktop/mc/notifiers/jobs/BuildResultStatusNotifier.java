@@ -8,9 +8,9 @@
  */
 package uk.dangrew.jtt.desktop.mc.notifiers.jobs;
 
-import uk.dangrew.jtt.desktop.api.handling.live.JobBuiltEvent;
-import uk.dangrew.jtt.desktop.api.handling.live.JobBuiltResult;
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
+import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
+import uk.dangrew.jtt.connection.api.handling.live.JobBuiltEvent;
+import uk.dangrew.jtt.connection.api.handling.live.JobBuiltResult;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundTriggerEvent;
 import uk.dangrew.jtt.desktop.mc.view.tree.NotificationEvent;
 import uk.dangrew.jtt.model.event.structure.Event;
