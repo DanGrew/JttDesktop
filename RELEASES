@@ -1,3 +1,8 @@
+Release, "1.6.15"
+Date, "(May 13, 2017 5:50:04 PM)"
+Download, "https://dl.bintray.com/dangrew/JttDesktop/jtt/jtt-desktop/1.6.15/jtt-desktop-1.6.15-runnable.jar"
+Description, "The tool has been renamed to Jtt Desktop providing a desktop version of the overall Jenkins Test Tracking system. As a library, this will provide many breaking changes including project rename, base package rename, model and connection extraction. Feature wise, the login prompt has been upgraded and the cancel button now ends the process solving issue#200."
+
 Release, "1.5.211"
 Date, "(Apr 14, 2017 6:45:31 PM)"
 Download, "https://dl.bintray.com/dangrew/JenkinsTestTracker/JenkinsTestTracker/JenkinsTestTracker/1.5.211/JenkinsTestTracker-1.5.211-runnable.jar"
