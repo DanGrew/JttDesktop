@@ -47,8 +47,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.buildwall.BuildWallConfigurationModel;
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.buildwall.BuildWallConfigurationPersistence;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.desktop.buildwall.panel.type.JobPanelDescriptionProviders;

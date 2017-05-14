@@ -21,10 +21,8 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.panel.description.JobPanelDescriptionBaseImpl;
-import uk.dangrew.jtt.desktop.buildwall.panel.description.SimpleJobPanelDescriptionImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link SimpleJobPanelDescriptionImpl} test.
@@ -37,7 +35,7 @@ public class SimpleJobPanelDescriptionImplTest extends JobPanelDescriptionBaseIm
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> { 
+      TestApplication.launch( () -> { 
          configuration.buildNumberColour().set( Color.BLACK );
          configuration.jobNameColour().set( Color.BLACK );
          configuration.completionEstimateColour().set( Color.BLACK );

@@ -15,12 +15,9 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.sides.users.AssignedTreeItem;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeItem;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link UserAssignment} test.
@@ -35,7 +32,7 @@ public class UserAssignmentTest {
    private UserAssignment systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       user = new JenkinsUserImpl( "Dan" );
       systemUnderTest = new UserAssignment( user, TIMESTAMP, DESCRIPTION, DETAIL );
    }//End Method

@@ -19,10 +19,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeBuilderShortcutProperties;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeBuilderShortcutsPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class ThemeBuilderShortcutsPaneTest {
 
@@ -31,7 +29,7 @@ public class ThemeBuilderShortcutsPaneTest {
    private ThemeBuilderShortcutsPane systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       shortcuts = new ThemeBuilderShortcutProperties();
       systemUnderTest = new ThemeBuilderShortcutsPane( styling, shortcuts );

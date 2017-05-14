@@ -15,7 +15,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 import javafx.scene.image.ImageView;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusHighLevelChange;
 import uk.dangrew.jtt.model.utility.TestCommon;
 
 /**

@@ -25,10 +25,9 @@ import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.DualPropertiesPanel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
-import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.DualPropertiesTreeItem;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link DualPropertiesTreeItem} test.
@@ -43,7 +42,7 @@ public class DualPropertiesTreeItemTest {
    private DualPropertiesTreeItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       configuration = new DualWallConfigurationImpl();
       systemUnderTest = new DualPropertiesTreeItem( controller, configuration );

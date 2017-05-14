@@ -24,12 +24,11 @@ import uk.dangrew.jtt.desktop.buildwall.panel.description.DefaultJobPanelDescrip
 import uk.dangrew.jtt.desktop.buildwall.panel.description.DetailedJobPanelDescriptionImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.description.SimpleJobPanelDescriptionImpl;
-import uk.dangrew.jtt.desktop.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobPanelDescriptionProviders}
@@ -42,7 +41,7 @@ public class JobPanelDescriptionProvidersTest {
    
    @BeforeClass public static void initialisePlatform(){
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
    }//End Method
    
    @Before public void initialiseEnvironment(){

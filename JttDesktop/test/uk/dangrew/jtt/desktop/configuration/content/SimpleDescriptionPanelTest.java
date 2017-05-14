@@ -19,8 +19,7 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import uk.dangrew.jtt.desktop.configuration.content.SimpleDescriptionPanel;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link SimpleDescriptionPanel} test, built for extending.
@@ -32,7 +31,7 @@ public abstract class SimpleDescriptionPanelTest {
    private SimpleDescriptionPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       Pair< String, String > params = getSentences();

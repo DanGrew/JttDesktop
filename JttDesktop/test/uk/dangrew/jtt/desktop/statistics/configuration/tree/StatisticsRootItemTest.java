@@ -25,9 +25,8 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.statistics.configuration.components.StatisticsDescriptionPanel;
-import uk.dangrew.jtt.desktop.statistics.configuration.tree.StatisticsRootItem;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class StatisticsRootItemTest {
 
@@ -38,7 +37,7 @@ public class StatisticsRootItemTest {
    private StatisticsRootItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new StatisticsRootItem( controller );
    }//End Method

@@ -16,8 +16,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.data.json.conversion.ApiResponseToJsonConverter;
-import uk.dangrew.jtt.desktop.data.json.conversion.ApiResponseToJsonConverterDigest;
 import uk.dangrew.sd.core.category.Categories;
 import uk.dangrew.sd.core.lockdown.DigestMessageReceiver;
 import uk.dangrew.sd.core.lockdown.DigestMessageReceiverImpl;

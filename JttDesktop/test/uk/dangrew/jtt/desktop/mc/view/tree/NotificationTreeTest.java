@@ -23,16 +23,14 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMenuOpener;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotificationTreeItem;
 import uk.dangrew.jtt.desktop.mc.view.item.NotificationTreeItem;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTree;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeContextMenu;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link NotificationTree} test.
@@ -43,7 +41,7 @@ public class NotificationTreeTest {
    private NotificationTree systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new NotificationTree( database );
@@ -51,7 +49,7 @@ public class NotificationTreeTest {
 
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       systemUnderTest.getController().add( new BuildResultStatusNotificationTreeItem( new BuildResultStatusNotification( 
                new JenkinsJobImpl( "JenkinsJob" ), BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS 

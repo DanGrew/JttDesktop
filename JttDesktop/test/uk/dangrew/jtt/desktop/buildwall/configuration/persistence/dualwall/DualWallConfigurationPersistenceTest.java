@@ -27,8 +27,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.geometry.Orientation;
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.dualwall.DualWallConfigurationModel;
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.dualwall.DualWallConfigurationPersistence;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
 

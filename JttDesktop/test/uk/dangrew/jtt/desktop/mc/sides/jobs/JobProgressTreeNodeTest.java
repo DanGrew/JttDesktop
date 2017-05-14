@@ -20,11 +20,10 @@ import org.mockito.Spy;
 
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.panel.JobProgressImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeNode;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobProgressTreeNode} test.
@@ -36,7 +35,7 @@ public class JobProgressTreeNodeTest {
    private JobProgressTreeNode systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       SystemStyling.initialise();
       MockitoAnnotations.initMocks( this );
       job = new JenkinsJobImpl( "my job" );

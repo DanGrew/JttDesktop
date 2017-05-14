@@ -17,8 +17,6 @@ import static org.junit.Assert.assertThat;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.api.handling.live.JobDetailsModel;
-import uk.dangrew.jtt.desktop.api.handling.live.JobDetailsParser;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;

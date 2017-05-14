@@ -24,10 +24,9 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.BuildWallDescriptionPanel;
-import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.BuildWallRootItem;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link BuildWallRootItem} test.
@@ -42,7 +41,7 @@ public class BuildWallRootItemTest {
    private BuildWallRootItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new BuildWallRootItem( PREFIX, controller );
    }//End Method

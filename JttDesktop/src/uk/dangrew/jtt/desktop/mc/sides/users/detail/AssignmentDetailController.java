@@ -8,8 +8,8 @@
  */
 package uk.dangrew.jtt.desktop.mc.sides.users.detail;
 
-import javafx.collections.ObservableList;
 import javafx.collections.ListChangeListener.Change;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeItem;

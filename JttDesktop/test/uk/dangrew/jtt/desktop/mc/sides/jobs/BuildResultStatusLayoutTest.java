@@ -22,17 +22,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.scene.control.TreeItem;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.BuildResultStatusLayout;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTree;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeItem;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeItemBranch;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link BuildResultStatusLayout} test.
@@ -51,7 +47,7 @@ public class BuildResultStatusLayoutTest {
    private BuildResultStatusLayout systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       SystemStyling.initialise();
       
       database = new TestJenkinsDatabaseImpl();

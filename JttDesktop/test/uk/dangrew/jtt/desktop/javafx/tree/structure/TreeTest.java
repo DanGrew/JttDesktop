@@ -33,10 +33,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.javafx.tree.structure.Tree;
-import uk.dangrew.jtt.desktop.javafx.tree.structure.TreeController;
-import uk.dangrew.jtt.desktop.javafx.tree.structure.TreeLayout;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link Tree} test.
@@ -93,7 +90,7 @@ public class TreeTest {
    }//End Class
 
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new TestTree();
    }//End Method

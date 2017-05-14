@@ -20,9 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.SplitPane.Divider;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.javafx.splitpane.DividerPositionsChangedCallBack;
-import uk.dangrew.jtt.desktop.javafx.splitpane.SplitPaneDividerPositionListener;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link SplitPaneDividerPositionListener} test.
@@ -37,7 +35,7 @@ public class SplitPaneDividerPositionListenerTest {
    private SplitPaneDividerPositionListener systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       
       MockitoAnnotations.initMocks( this );
       firstNode = new Label();

@@ -25,8 +25,6 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
-import uk.dangrew.jtt.desktop.buildwall.panel.JobProgressImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.javafx.css.DynamicCssOnlyProperties;
 import uk.dangrew.jtt.desktop.styling.BuildWallStyles;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
@@ -34,6 +32,7 @@ import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobProgressImpl} test.
@@ -46,7 +45,7 @@ public class JobProgressImplTest {
    private JobProgressImpl systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       theme = new BuildWallThemeImpl( "Anything" );
@@ -61,7 +60,7 @@ public class JobProgressImplTest {
    @Test public void manualInspection() throws InterruptedException {
       SystemStyling.initialise();
       systemUnderTest = new JobProgressImpl( job, theme );
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       systemUnderTest.updateStyle( job );
       
       Thread.sleep( 2000 );

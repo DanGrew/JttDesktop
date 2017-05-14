@@ -22,8 +22,7 @@ import com.sun.javafx.application.PlatformImpl;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
-import uk.dangrew.jtt.desktop.environment.layout.CenterScreenWrapper;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link CenterScreenWrapper} test.
@@ -35,7 +34,7 @@ public class CenterScreenWrapperTest {
    private CenterScreenWrapper systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       initialCenter = new Rectangle( 10, 10 );
       center = new Rectangle( 10, 10 );
       PlatformImpl.runAndWait( () -> {
@@ -46,7 +45,7 @@ public class CenterScreenWrapperTest {
    
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> new CenterScreenWrapper( new Rectangle( 100, 100 ) ) );
+      TestApplication.launch( () -> new CenterScreenWrapper( new Rectangle( 100, 100 ) ) );
       
       Thread.sleep( 100000 );
    }//End Method

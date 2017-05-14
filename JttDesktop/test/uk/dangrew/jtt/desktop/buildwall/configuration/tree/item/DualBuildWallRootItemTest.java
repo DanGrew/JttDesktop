@@ -24,10 +24,9 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.DualBuildWallDescriptionPanel;
-import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.DualBuildWallRootItem;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link DualBuildWallRootItem} test.
@@ -41,7 +40,7 @@ public class DualBuildWallRootItemTest {
    private DualBuildWallRootItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new DualBuildWallRootItem( controller );
    }//End Method

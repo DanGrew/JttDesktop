@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.mc.sides.users;
 
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentEvent;
 import uk.dangrew.jtt.model.event.structure.AbstractEventManagerTest;
 import uk.dangrew.jtt.model.event.structure.EventManager;
 

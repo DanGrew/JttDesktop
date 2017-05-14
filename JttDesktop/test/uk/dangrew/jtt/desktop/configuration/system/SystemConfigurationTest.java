@@ -15,8 +15,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
-
 /**
  * {@link SystemConfiguration} test.
  */

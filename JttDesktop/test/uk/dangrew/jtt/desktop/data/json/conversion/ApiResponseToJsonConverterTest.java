@@ -29,9 +29,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.data.json.conversion.ApiResponseToJsonConverter;
-import uk.dangrew.jtt.desktop.data.json.conversion.ApiResponseToJsonConverterDigest;
-
 /**
  * {@link ApiResponseToJsonConverter} test.
  */

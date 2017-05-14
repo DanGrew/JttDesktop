@@ -33,9 +33,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.sound.SoundConfigurationParseModel;
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.sound.SoundConfigurationPersistence;
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.sound.SoundConfigurationWriteModel;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;

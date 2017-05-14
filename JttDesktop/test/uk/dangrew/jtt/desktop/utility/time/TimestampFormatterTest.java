@@ -17,8 +17,6 @@ import java.time.format.DateTimeFormatterBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.utility.time.TimestampFormatter;
-
 public class TimestampFormatterTest {
 
    private DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()

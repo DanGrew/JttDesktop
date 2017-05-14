@@ -22,11 +22,9 @@ import org.mockito.Spy;
 
 import javafx.scene.control.Label;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserTreeItem;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link UserTreeItem} test.
@@ -38,7 +36,7 @@ public class UserTreeItemTest {
    private UserTreeItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       user = new JenkinsUserImpl( "User" );
       systemUnderTest = new UserTreeItem( user, styling );

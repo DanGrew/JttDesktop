@@ -23,8 +23,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.credentials.login.JenkinsLogin;
-import uk.dangrew.jtt.desktop.credentials.login.JenkinsLoginDigest;
 import uk.dangrew.sd.core.category.Categories;
 import uk.dangrew.sd.core.category.Category;
 import uk.dangrew.sd.core.lockdown.DigestManager;

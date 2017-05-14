@@ -18,8 +18,7 @@ import org.junit.Test;
 
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.desktop.buildwall.dual.WrappedSystemDigest;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -34,7 +33,7 @@ public class WrappedSystemDigestTest {
    private WrappedSystemDigest systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){

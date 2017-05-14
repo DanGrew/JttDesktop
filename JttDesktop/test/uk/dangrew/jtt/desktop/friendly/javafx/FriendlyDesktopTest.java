@@ -17,8 +17,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyDesktop;
-
 /**
  * {@link FriendlyDesktop} test.
  */

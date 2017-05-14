@@ -22,12 +22,11 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeBuilderPanel;
-import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.ThemesTreeItem;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class ThemesTreeItemTest {
 
@@ -38,7 +37,7 @@ public class ThemesTreeItemTest {
    private ThemesTreeItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       systemUnderTest = new ThemesTreeItem( controller );

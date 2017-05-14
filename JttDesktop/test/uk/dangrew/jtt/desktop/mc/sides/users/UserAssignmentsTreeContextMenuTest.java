@@ -17,17 +17,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.javafx.contextmenu.ContextMenuWithCancel;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentEvent;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTree;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeContextMenu;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link UserAssignmentsTreeContextMenu} test.
@@ -49,7 +45,7 @@ public class UserAssignmentsTreeContextMenuTest {
    private UserAssignmentsTreeContextMenu systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       assignments = new UserAssignmentEvent();

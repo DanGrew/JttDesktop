@@ -19,10 +19,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.javafx.combobox.PropertyBox;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link PropertyBox} test.
@@ -40,7 +41,8 @@ public class PropertyBoxTest {
    @Rule public final ExpectedException exception = ExpectedException.none();
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.runAndWait( () -> {
+      TestApplication.startPlatform();
+      PlatformImpl.runAndWait( () -> {
          systemUnderTest = new PropertyBox<>();
       } );
       systemUnderTest.getItems().addAll( TestItem.values() );

@@ -23,13 +23,12 @@ import javafx.scene.control.SplitPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
-import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallSplitter;
 import uk.dangrew.jtt.desktop.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link DualBuildWallSplitter} test.
@@ -42,7 +41,7 @@ public class DualBuildWallSplitterTest {
    private DualBuildWallSplitter systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
    }//End Method
    

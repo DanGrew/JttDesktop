@@ -25,19 +25,17 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfig
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
-import uk.dangrew.jtt.desktop.buildwall.panel.JobPanelImpl;
-import uk.dangrew.jtt.desktop.buildwall.panel.JobProgressImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.description.SimpleJobPanelDescriptionImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobPanelImpl} test.
@@ -60,7 +58,7 @@ public class JobPanelImplTest {
    @Before public void initialiseSystemUnderTest(){
       job = new JenkinsJobImpl( "JenkinsTestTracker" );
       theme = new BuildWallThemeImpl( "Test" );
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       configuration = new BuildWallConfigurationImpl();
       systemUnderTest = new JobPanelImpl( configuration, theme, job );
    }//End Method
@@ -68,7 +66,7 @@ public class JobPanelImplTest {
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       job.expectedBuildTimeProperty().set( 1000000 );
-      JavaFxInitializer.launchInWindow( () -> { return new JobPanelImpl( new BuildWallConfigurationImpl(), new BuildWallThemeImpl( "Test" ), job ); } );
+      TestApplication.launch( () -> { return new JobPanelImpl( new BuildWallConfigurationImpl(), new BuildWallThemeImpl( "Test" ), job ); } );
       
       JobBuildSimulator.simulateBuilding( job, BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS, 1001, 300000, 100 );
       JobBuildSimulator.simulateBuilding( job, BuildResultStatus.SUCCESS, BuildResultStatus.SUCCESS, 1002, 600000, 100 );

@@ -19,16 +19,13 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeBuilderPanel;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeBuilderShortcutProperties;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeBuilderShortcutsPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class ThemeBuilderPanelTest {
 
@@ -38,7 +35,7 @@ public class ThemeBuilderPanelTest {
    private ThemeBuilderPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       SystemStyling.initialise();
       MockitoAnnotations.initMocks( this );
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
@@ -50,7 +47,7 @@ public class ThemeBuilderPanelTest {
    
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       Thread.sleep( 1000000 );
    }//End Method

@@ -9,7 +9,6 @@
 package uk.dangrew.jtt.desktop.mc.view.tree;
 
 import uk.dangrew.jtt.desktop.mc.model.Notification;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationEvent;
 import uk.dangrew.jtt.model.event.structure.AbstractEventManagerTest;
 import uk.dangrew.jtt.model.event.structure.EventManager;
 

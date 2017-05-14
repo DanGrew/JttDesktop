@@ -18,8 +18,7 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.BuildWallDescriptionPanel;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link BuildWallDescriptionPanel} test.
@@ -29,7 +28,7 @@ public class BuildWallDescriptionPanelTest {
    private BuildWallDescriptionPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new BuildWallDescriptionPanel();
    }//End Method

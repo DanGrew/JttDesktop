@@ -28,9 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.desktop.buildwall.panel.description.FailureDetail;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
@@ -42,6 +40,7 @@ import uk.dangrew.jtt.model.tests.TestCaseImpl;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link FailureDetail} test.
@@ -63,7 +62,7 @@ public class FailureDetailTest {
    private FailureDetail systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
@@ -90,7 +89,7 @@ public class FailureDetailTest {
 
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> {
+      TestApplication.launch( () -> {
          FailureDetail detail = new FailureDetail( jenkinsJob, new BuildWallConfigurationImpl() );
          detail.setBackground( new Background( new BackgroundFill( Color.BLACK, null, null ) ) );
          return detail;

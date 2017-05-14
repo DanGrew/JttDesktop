@@ -15,8 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreeItems;
-import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
-import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
 
 /**
  * {@link PreferenceBehaviour} test.

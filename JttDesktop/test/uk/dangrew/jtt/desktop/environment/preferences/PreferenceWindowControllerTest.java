@@ -19,11 +19,10 @@ import org.junit.Test;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.Parent;
-import uk.dangrew.jtt.desktop.environment.preferences.PreferenceWindowController;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.utility.javafx.TestableParent;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link PreferenceWindowController} test.
@@ -38,7 +37,7 @@ public class PreferenceWindowControllerTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       pane = new TestableParent();
       systemUnderTest = new PreferenceWindowController();
       systemUnderTest.associateWithConfiguration( pane );

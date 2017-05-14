@@ -20,13 +20,12 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.event.ActionEvent;
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreeItems;
-import uk.dangrew.jtt.desktop.environment.main.EnvironmentMenuBar;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.utility.system.OperatingSystem;
 import uk.dangrew.jtt.model.event.structure.EventAssertions;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link EnvironmentMenuBar} test.
@@ -37,7 +36,7 @@ public class EnvironmentMenuBarTest {
    private EnvironmentMenuBar systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       when( os.isMac() ).thenReturn( true );

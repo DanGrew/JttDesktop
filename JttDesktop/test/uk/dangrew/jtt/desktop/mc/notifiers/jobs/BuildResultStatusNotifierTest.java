@@ -24,8 +24,6 @@ import uk.dangrew.jtt.desktop.api.handling.live.JobBuiltResult;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundTriggerEvent;
 import uk.dangrew.jtt.desktop.mc.model.Notification;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotification;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotifier;
 import uk.dangrew.jtt.desktop.mc.view.tree.NotificationEvent;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.event.structure.EventSubscription;

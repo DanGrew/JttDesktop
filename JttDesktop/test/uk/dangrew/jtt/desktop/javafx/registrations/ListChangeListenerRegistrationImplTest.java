@@ -21,7 +21,6 @@ import org.junit.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import uk.dangrew.jtt.desktop.javafx.registrations.ListChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 
 /**

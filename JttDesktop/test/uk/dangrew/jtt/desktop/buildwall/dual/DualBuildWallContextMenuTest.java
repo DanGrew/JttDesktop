@@ -32,20 +32,17 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallContextMenu;
-import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallContextMenuOpener;
-import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.event.structure.EventAssertions;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -93,9 +90,9 @@ public class DualBuildWallContextMenuTest {
     * Method to fully launch the {@link DualBuildWallDisplayImpl} and to use the 
     * {@link DualBuildWallContextMenuOpener}.
     */
-   private void fullLaunch(){
+   private void fullLaunch() throws InterruptedException{
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
-      JavaFxInitializer.launchInWindow( () -> {
+      TestApplication.launch( () -> {
          display = new DualBuildWallDisplayImpl( new TestJenkinsDatabaseImpl(), new SystemConfiguration() );
          opener = new DualBuildWallContextMenuOpener( display, systemUnderTest );
          display.setOnContextMenuRequested( opener );
@@ -185,7 +182,7 @@ public class DualBuildWallContextMenuTest {
       assertThat( systemUnderTest.isAutoHide(), is( true ) );
    }//End Method
    
-   @Test public void cancelShouldHideWhenUsingHeavySetup(){
+   @Test public void cancelShouldHideWhenUsingHeavySetup() throws InterruptedException{
       fullLaunch();
       PlatformImpl.runAndWait( () -> {
          opener.handle( new ContextMenuEvent( null, 0, 0, 0, 0, false, null ) );

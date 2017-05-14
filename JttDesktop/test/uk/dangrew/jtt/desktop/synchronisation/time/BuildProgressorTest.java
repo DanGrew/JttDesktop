@@ -24,8 +24,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javafx.collections.FXCollections;
-import uk.dangrew.jtt.desktop.synchronisation.time.BuildProgressor;
-import uk.dangrew.jtt.desktop.synchronisation.time.JobUpdater;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 

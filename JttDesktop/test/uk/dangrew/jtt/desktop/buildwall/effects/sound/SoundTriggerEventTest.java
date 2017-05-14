@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.effects.sound;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundTriggerEvent;
 import uk.dangrew.jtt.model.event.structure.AbstractEventManagerTest;
 import uk.dangrew.jtt.model.event.structure.EventManager;
 

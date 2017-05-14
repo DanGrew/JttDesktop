@@ -25,8 +25,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.collections.ListChangeListener;
-import uk.dangrew.jtt.desktop.api.handling.live.JobDetailsModel;
-import uk.dangrew.jtt.desktop.api.handling.live.StateChangeIdentifier;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;

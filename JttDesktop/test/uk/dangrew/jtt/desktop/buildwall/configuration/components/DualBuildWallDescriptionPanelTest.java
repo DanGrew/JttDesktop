@@ -9,7 +9,6 @@
 package uk.dangrew.jtt.desktop.buildwall.configuration.components;
 
 import javafx.util.Pair;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.DualBuildWallDescriptionPanel;
 import uk.dangrew.jtt.desktop.configuration.content.SimpleDescriptionPanel;
 import uk.dangrew.jtt.desktop.configuration.content.SimpleDescriptionPanelTest;
 

@@ -24,9 +24,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link SimpleConfigurationTitle} test.
@@ -42,7 +41,7 @@ public class SimpleConfigurationTitleTest {
    private SimpleConfigurationTitle systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       boldLabel = new Label();

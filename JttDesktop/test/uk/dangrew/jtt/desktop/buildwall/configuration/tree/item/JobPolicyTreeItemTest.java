@@ -25,12 +25,11 @@ import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.JobPolicyPanel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
-import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.JobPolicyTreeItem;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobPolicyTreeItem} test.
@@ -45,7 +44,7 @@ public class JobPolicyTreeItemTest {
    private JobPolicyTreeItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
       configuration = new BuildWallConfigurationImpl();

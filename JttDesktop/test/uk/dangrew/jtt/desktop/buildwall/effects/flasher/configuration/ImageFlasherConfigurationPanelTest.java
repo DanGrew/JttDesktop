@@ -45,7 +45,6 @@ import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
 import uk.dangrew.sd.graphics.launch.TestApplication;
@@ -82,7 +81,7 @@ public class ImageFlasherConfigurationPanelTest {
    @Test public void manualInspection() throws InterruptedException{
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
-      JavaFxInitializer.launchInWindow( () -> {
+      TestApplication.launch( () -> {
          systemUnderTest = new ImageFlasherConfigurationPanel( TEST_FLASHER_TITLE, properties );
          return systemUnderTest;
       } );

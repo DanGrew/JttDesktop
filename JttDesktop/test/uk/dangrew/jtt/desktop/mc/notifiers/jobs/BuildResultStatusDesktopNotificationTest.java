@@ -22,12 +22,9 @@ import org.mockito.Spy;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusDesktopNotification;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusHighLevelChange;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link BuildResultStatusDesktopNotification} test.
@@ -42,7 +39,7 @@ public class BuildResultStatusDesktopNotificationTest {
    private BuildResultStatusDesktopNotification systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       notification = new BuildResultStatusNotification( 
                new JenkinsJobImpl( EXPECTED_JOB ), BuildResultStatus.ABORTED, BuildResultStatus.FAILURE 

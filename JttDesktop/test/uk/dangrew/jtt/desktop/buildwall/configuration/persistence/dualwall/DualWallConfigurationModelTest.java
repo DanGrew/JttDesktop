@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.geometry.Orientation;
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.dualwall.DualWallConfigurationModel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
 

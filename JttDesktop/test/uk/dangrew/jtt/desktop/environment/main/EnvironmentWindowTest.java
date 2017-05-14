@@ -26,13 +26,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.environment.layout.CenterScreenWrapper;
-import uk.dangrew.jtt.desktop.environment.main.EnvironmentMenuBar;
-import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link EnvironmentWindow} test.
@@ -45,7 +43,7 @@ public class EnvironmentWindowTest {
    private EnvironmentWindow systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
       database = new TestJenkinsDatabaseImpl();
@@ -55,7 +53,7 @@ public class EnvironmentWindowTest {
    
    @Ignore
    @Test public void maunal() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest = new EnvironmentWindow( configuration, database ) );
+      TestApplication.launch( () -> systemUnderTest = new EnvironmentWindow( configuration, database ) );
       Thread.sleep( 1000000 );
    }//End Method
    
@@ -81,13 +79,13 @@ public class EnvironmentWindowTest {
       verify( wrapper ).setCenter( content );
    }//End Method
    
-   @Test public void shouldAccountForMenuBarInDimensionBinding(){
+   @Test public void shouldAccountForMenuBarInDimensionBinding() throws InterruptedException{
       EnvironmentMenuBar menuBar = ( EnvironmentMenuBar ) systemUnderTest.getTop();
       menuBar.setUseSystemMenuBar( false );
       menuBar.setMaxHeight( 27 );
       menuBar.setMinHeight( 27 );
       systemUnderTest.setTop( menuBar );
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       assertThat( menuBar.getHeight(), is( 27.0 ) );
       

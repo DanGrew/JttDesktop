@@ -24,15 +24,11 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMenuOpener;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTree;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeContextMenu;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeItem;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link UserAssignmentsTree} test.
@@ -43,7 +39,7 @@ public class UserAssignmentsTreeTest {
    private UserAssignmentsTree systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsUserImpl( "Me" ) );
       database.store( new JenkinsUserImpl( "You" ) );
@@ -53,7 +49,7 @@ public class UserAssignmentsTreeTest {
    
    @Ignore
    @Test public void manual() throws InterruptedException{
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       JenkinsUser dan = new JenkinsUserImpl( "Dan" );
       systemUnderTest.getController().add( dan );

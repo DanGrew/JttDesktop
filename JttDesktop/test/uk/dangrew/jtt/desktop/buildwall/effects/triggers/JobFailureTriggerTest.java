@@ -16,7 +16,6 @@ import org.junit.Test;
 
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.control.ImageFlasherControls;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.control.ImageFlasherControlsImpl;
-import uk.dangrew.jtt.desktop.buildwall.effects.triggers.JobFailureTrigger;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;

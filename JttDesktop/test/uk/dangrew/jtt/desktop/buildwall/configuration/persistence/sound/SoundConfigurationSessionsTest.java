@@ -29,7 +29,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.sound.SoundConfigurationSessions;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.desktop.main.JenkinsTestTracker;

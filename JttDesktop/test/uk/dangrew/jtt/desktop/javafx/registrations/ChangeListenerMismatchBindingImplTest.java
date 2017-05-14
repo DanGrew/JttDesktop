@@ -19,7 +19,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import uk.dangrew.jtt.desktop.javafx.registrations.ChangeListenerMismatchBindingImpl;
 
 /**
  * {@link ChangeListenerMismatchBindingImpl} test.

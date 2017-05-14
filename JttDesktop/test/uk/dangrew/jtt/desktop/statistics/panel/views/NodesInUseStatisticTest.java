@@ -17,7 +17,6 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticPanel;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticPanelTest;
-import uk.dangrew.jtt.desktop.statistics.panel.views.NodesInUseStatistic;
 import uk.dangrew.jtt.model.jobs.BuildState;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;

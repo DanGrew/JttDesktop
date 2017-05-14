@@ -18,19 +18,16 @@ import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.desktop.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTree;
-import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreeItems;
-import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreePane;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ConfigurationTreePane} test.
@@ -42,7 +39,7 @@ public class ConfigurationTreePaneTest {
    private ConfigurationTreePane systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       

@@ -21,8 +21,7 @@ import org.mockito.Spy;
 
 import javafx.scene.control.Label;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeItemBranch;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobProgressTreeItemBranch} test.
@@ -35,7 +34,7 @@ public class JobProgressTreeItemBranchTest {
    private JobProgressTreeItemBranch systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new JobProgressTreeItemBranch( BRANCH_NAME, styling );
    }//End Method

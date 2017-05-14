@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,11 +29,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.mc.resources.ManagementConsoleImages;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
-import uk.dangrew.jtt.desktop.mc.sides.users.detail.AssignmentDetailArea;
 import uk.dangrew.jtt.desktop.mc.view.ManagementConsoleStyle;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link AssignmentDetailArea} test.
@@ -52,7 +51,7 @@ public class AssignmentDetailAreaTest {
    private AssignmentDetailArea systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       when( images.constuctLockImage() ).thenReturn( IMAGE );
@@ -66,7 +65,7 @@ public class AssignmentDetailAreaTest {
    
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> new AssignmentDetailArea( 
+      TestApplication.launch( () -> new AssignmentDetailArea( 
                new ManagementConsoleStyle(), new ManagementConsoleImages() ) 
       );
       

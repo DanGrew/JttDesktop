@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.api.handling.live;
 
-import uk.dangrew.jtt.desktop.api.handling.live.JobBuiltEvent;
-import uk.dangrew.jtt.desktop.api.handling.live.JobBuiltResult;
 import uk.dangrew.jtt.model.event.structure.AbstractEventManagerTest;
 import uk.dangrew.jtt.model.event.structure.EventManager;
 

@@ -52,10 +52,10 @@ import uk.dangrew.jtt.connection.api.sources.JenkinsApiImpl;
 import uk.dangrew.jtt.desktop.credentials.login.JenkinsLogin.InputValidator;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyAlert;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.sd.core.message.Message;
 import uk.dangrew.sd.core.progress.Progress;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -85,7 +85,7 @@ public class JenkinsLoginTest {
    @SuppressWarnings("unchecked") //Simply mocking genericized objects. 
    @Before public void initialiseSystemUnderTest() {
       MockitoAnnotations.initMocks( this );
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       
       buttonTypes = FXCollections.observableArrayList();
       Mockito.when( alert.friendly_getButtonTypes() ).thenReturn( buttonTypes );

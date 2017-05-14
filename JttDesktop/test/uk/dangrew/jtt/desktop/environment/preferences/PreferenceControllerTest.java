@@ -27,17 +27,12 @@ import uk.dangrew.jtt.desktop.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreeItems;
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreePane;
-import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
-import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.desktop.environment.preferences.PreferenceWindowController;
-import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
-import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link PreferenceController} test.
@@ -51,7 +46,7 @@ public class PreferenceControllerTest {
    private PreferenceController systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
       database = new TestJenkinsDatabaseImpl();

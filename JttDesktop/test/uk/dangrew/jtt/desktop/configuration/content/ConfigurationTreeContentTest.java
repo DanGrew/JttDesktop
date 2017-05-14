@@ -16,8 +16,7 @@ import org.junit.Test;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import uk.dangrew.jtt.desktop.configuration.content.ConfigurationTreeContent;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ConfigurationTreeContent} test.
@@ -27,7 +26,7 @@ public class ConfigurationTreeContentTest {
    private ConfigurationTreeContent systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       systemUnderTest = new ConfigurationTreeContent();
    }//End Method
    

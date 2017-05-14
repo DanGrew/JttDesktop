@@ -21,8 +21,7 @@ import org.mockito.MockitoAnnotations;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.javafx.contextmenu.ContextMenuWithCancel;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ContextMenuWithCancel} test.
@@ -61,7 +60,7 @@ public class ContextMenuWithCancelTest {
    }//End Class
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       callLog = new ArrayList<>();
       systemUnderTest = new TestableContextMenu();
@@ -76,9 +75,9 @@ public class ContextMenuWithCancelTest {
       assertThat( systemUnderTest.getItems().get( systemUnderTest.getItems().size() - 1 ).getText(), is( ContextMenuWithCancel.CANCEL_TEXT ) );
    }//End Method
    
-   @Test public void shouldHideWhenCancelled() {
+   @Test public void shouldHideWhenCancelled() throws InterruptedException {
       BorderPane pane = new BorderPane();
-      JavaFxInitializer.launchInWindow( () -> pane );
+      TestApplication.launch( () -> pane );
 
       PlatformImpl.runAndWait( () -> systemUnderTest.show( pane, 0, 0 ) );
       assertThat( systemUnderTest.isShowing(), is( true ) );

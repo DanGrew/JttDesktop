@@ -25,9 +25,8 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.mc.configuration.components.ManagementConsoleDescriptionPanel;
-import uk.dangrew.jtt.desktop.mc.configuration.tree.item.ManagementConsoleRootItem;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ManagementConsoleRootItem} test.
@@ -41,7 +40,7 @@ public class ManagementConsoleRootItemTest {
    private ManagementConsoleRootItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new ManagementConsoleRootItem( controller );
    }//End Method

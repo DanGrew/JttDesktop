@@ -27,15 +27,11 @@ import com.sun.javafx.application.PlatformImpl;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTree;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeItem;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeLayout;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link UserAssignmentsTreeLayout} test.
@@ -63,7 +59,7 @@ public class UserAssignmentsTreeLayoutTest {
    private UserAssignmentsTreeLayout systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       user1 = new JenkinsUserImpl( "User1" );

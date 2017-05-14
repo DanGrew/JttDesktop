@@ -23,7 +23,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
-import uk.dangrew.jtt.desktop.shortcuts.keyboard.KeyBoardShortcuts;
 
 /**
  * {@link KeyBoardShortcuts} test.

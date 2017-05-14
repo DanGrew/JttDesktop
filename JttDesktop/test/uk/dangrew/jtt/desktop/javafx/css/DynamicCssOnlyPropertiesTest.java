@@ -25,13 +25,11 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.javafx.css.CssOnlyProperties;
-import uk.dangrew.jtt.desktop.javafx.css.DynamicCssOnlyProperties;
 import uk.dangrew.jtt.desktop.styling.BuildWallStyles;
 import uk.dangrew.jtt.desktop.styling.BuildWallThemes;
 import uk.dangrew.jtt.desktop.styling.SystemStyles;
 import uk.dangrew.jtt.desktop.utility.conversion.ColorConverter;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class DynamicCssOnlyPropertiesTest {
    
@@ -48,7 +46,7 @@ public class DynamicCssOnlyPropertiesTest {
    private DynamicCssOnlyProperties systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       trackLookup = new BorderPane();
@@ -62,7 +60,7 @@ public class DynamicCssOnlyPropertiesTest {
    @Ignore
    @Test public void manual() throws InterruptedException{
       progressBar = new ProgressBar( 0.4 );
-      JavaFxInitializer.launchInWindow( () -> new BorderPane( progressBar ) );
+      TestApplication.launch( () -> new BorderPane( progressBar ) );
       systemUnderTest = new DynamicCssOnlyProperties();
       
       Thread.sleep( 2000 );

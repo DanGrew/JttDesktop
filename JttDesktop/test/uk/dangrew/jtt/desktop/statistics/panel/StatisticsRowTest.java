@@ -22,11 +22,10 @@ import javafx.geometry.HPos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.desktop.statistics.panel.StatisticsRow;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class StatisticsRowTest {
    
@@ -36,7 +35,7 @@ public class StatisticsRowTest {
    private StatisticsRow systemUnderTest;
    
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       database = new TestJenkinsDatabaseImpl();
       configuration = new StatisticsConfiguration();
@@ -45,7 +44,7 @@ public class StatisticsRowTest {
 
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> new StatisticsRow( database, configuration ) );
+      TestApplication.launch( () -> new StatisticsRow( database, configuration ) );
       
       Thread.sleep( 1000000 );
    }//End Method

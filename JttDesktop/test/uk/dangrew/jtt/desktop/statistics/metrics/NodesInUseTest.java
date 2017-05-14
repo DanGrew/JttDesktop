@@ -17,7 +17,6 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.desktop.statistics.metrics.NodesInUse;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticView;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticViewImpl;
 import uk.dangrew.jtt.model.jobs.BuildState;

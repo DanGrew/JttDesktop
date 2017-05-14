@@ -16,8 +16,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfiguration;
-import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
 
 /**

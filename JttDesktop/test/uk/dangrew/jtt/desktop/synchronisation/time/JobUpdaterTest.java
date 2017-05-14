@@ -25,7 +25,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
-import uk.dangrew.jtt.desktop.synchronisation.time.JobUpdater;
 
 /**
  * {@link JobUpdater} test.

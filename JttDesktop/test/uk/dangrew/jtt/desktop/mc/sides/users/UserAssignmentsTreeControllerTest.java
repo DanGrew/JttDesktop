@@ -16,10 +16,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentEvent;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeController;
-import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeLayout;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;

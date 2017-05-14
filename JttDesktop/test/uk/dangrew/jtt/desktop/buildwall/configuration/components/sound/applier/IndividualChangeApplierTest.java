@@ -17,7 +17,6 @@ import org.junit.runner.RunWith;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.IndividualChangeApplier;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;

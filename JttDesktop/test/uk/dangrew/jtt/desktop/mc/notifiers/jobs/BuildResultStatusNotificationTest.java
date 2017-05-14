@@ -28,17 +28,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusDesktopNotification;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusHighLevelChange;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotification;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotificationTreeItem;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.ChangeIdentifier;
 import uk.dangrew.jtt.desktop.mc.view.item.NotificationTreeItem;
 import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeController;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link BuildResultStatusNotification} test.
@@ -51,7 +46,7 @@ public class BuildResultStatusNotificationTest {
    private BuildResultStatusNotification systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       job = new JenkinsJobImpl( "JenkinsJob" );
       systemUnderTest = new BuildResultStatusNotification( changeIdentifier, desktopNotification, job, BuildResultStatus.FAILURE, BuildResultStatus.SUCCESS );

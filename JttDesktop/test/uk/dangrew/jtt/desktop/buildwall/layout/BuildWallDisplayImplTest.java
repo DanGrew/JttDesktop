@@ -21,16 +21,14 @@ import org.junit.Test;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.BuildWallConfigurationPanelImpl;
-import uk.dangrew.jtt.desktop.buildwall.layout.BuildWallDisplayImpl;
-import uk.dangrew.jtt.desktop.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link BuildWallDisplayImpl} test.
@@ -66,7 +64,7 @@ public class BuildWallDisplayImplTest {
       database.store( new JenkinsJobImpl( "Configurable Build6" ) );
       database.store( new JenkinsJobImpl( "Configurable Build7" ) );
       
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       systemUnderTest = new BuildWallDisplayImpl( database );
    }//End Method
    
@@ -76,7 +74,7 @@ public class BuildWallDisplayImplTest {
          database.store( new JenkinsJobImpl( "" + i ) );
       }
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
-      JavaFxInitializer.launchInWindow( () -> {
+      TestApplication.launch( () -> {
          systemUnderTest.toggleConfiguration();
          return systemUnderTest; 
       } );

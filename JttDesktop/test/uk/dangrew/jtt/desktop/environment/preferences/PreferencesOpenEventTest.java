@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.environment.preferences;
 
-import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
-import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.model.event.structure.AbstractEventManagerTest;
 import uk.dangrew.jtt.model.event.structure.EventManager;
 

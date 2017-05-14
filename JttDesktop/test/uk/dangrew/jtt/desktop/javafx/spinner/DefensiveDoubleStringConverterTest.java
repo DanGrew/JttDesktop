@@ -16,7 +16,6 @@ import org.junit.Test;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import uk.dangrew.jtt.desktop.javafx.spinner.DefensiveDoubleStringConverter;
 
 /**
  * {@link DefensiveDoubleStringConverter} test.

@@ -35,16 +35,12 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusHighLevelChange;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotification;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotificationTreeItem;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.ChangeIdentifier;
 import uk.dangrew.jtt.desktop.mc.resources.ManagementConsoleImages;
 import uk.dangrew.jtt.desktop.mc.view.ManagementConsoleStyle;
 import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeController;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link BuildResultStatusNotificationTreeItem} test.
@@ -63,7 +59,7 @@ public class BuildResultStatusNotificationTreeItemTest {
    private BuildResultStatusNotificationTreeItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       notification = new BuildResultStatusNotification( 
                new JenkinsJobImpl( "This is my name" ), BuildResultStatus.UNKNOWN, BuildResultStatus.FAILURE 

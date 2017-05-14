@@ -23,7 +23,6 @@ import org.mockito.Spy;
 import javafx.scene.layout.GridPane;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.DisjointBuilderWall;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
@@ -31,10 +30,10 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.JobPanelImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 @RunWith( JUnitParamsRunner.class )
 public class DisjointBuilderWallTest {
@@ -45,7 +44,7 @@ public class DisjointBuilderWallTest {
    private DisjointBuilderWall systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       SystemStyling.initialise();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );

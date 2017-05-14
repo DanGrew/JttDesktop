@@ -18,9 +18,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Node;
-import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationItem;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link SimpleConfigurationItem} test.
@@ -46,7 +45,7 @@ public class SimpleConfigurationItemTest {
    private SimpleConfigurationItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new TestConfigurationItem( NAME, contentTitle, controller, content );
    }//End Method

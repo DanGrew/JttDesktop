@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.statistics.panel;
 
-import uk.dangrew.jtt.desktop.statistics.panel.StatisticView;
-
 /**
  * Implementation for testing the {@link StatisticView} mechanism.
  */

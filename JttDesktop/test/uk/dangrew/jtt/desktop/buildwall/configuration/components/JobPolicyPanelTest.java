@@ -41,7 +41,6 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfig
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecoupler;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.javafx.combobox.SimplePropertyBox;
@@ -79,7 +78,7 @@ public class JobPolicyPanelTest {
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> { return new JobPolicyPanel( configuration ); } );
+      TestApplication.launch( () -> { return new JobPolicyPanel( configuration ); } );
       Thread.sleep( 100000 );
    }//End Method
    

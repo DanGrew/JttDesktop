@@ -38,11 +38,8 @@ import uk.dangrew.jtt.desktop.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.desktop.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.configuration.system.SystemVersionItem;
-import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTree;
-import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreeItems;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.mc.configuration.tree.item.JobProgressRootItem;
 import uk.dangrew.jtt.desktop.mc.configuration.tree.item.ManagementConsoleRootItem;
@@ -53,6 +50,7 @@ import uk.dangrew.jtt.desktop.statistics.configuration.tree.StatisticsRootItem;
 import uk.dangrew.jtt.desktop.statistics.configuration.tree.StatisticsStyleItem;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ConfigurationTree} test.
@@ -68,7 +66,7 @@ public class ConfigurationTreeTest {
    private ConfigurationTree systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       
       MockitoAnnotations.initMocks( this );

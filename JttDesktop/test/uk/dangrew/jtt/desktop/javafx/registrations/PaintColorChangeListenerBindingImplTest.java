@@ -10,8 +10,6 @@ package uk.dangrew.jtt.desktop.javafx.registrations;
 
 import org.junit.Before;
 
-import uk.dangrew.jtt.desktop.javafx.registrations.PaintColorChangeListenerBindingImpl;
-
 /**
  * {@link PaintColorChangeListenerBindingImpl} test.
  */

@@ -25,11 +25,10 @@ import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.desktop.statistics.configuration.components.StatisticsStylePanel;
-import uk.dangrew.jtt.desktop.statistics.configuration.tree.StatisticsStyleItem;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class StatisticsStyleItemTest {
 
@@ -41,7 +40,7 @@ public class StatisticsStyleItemTest {
    private StatisticsStyleItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       MockitoAnnotations.initMocks( this );
       configuration = new StatisticsConfiguration();

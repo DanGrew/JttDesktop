@@ -25,15 +25,14 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfig
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
-import uk.dangrew.jtt.desktop.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.system.properties.DateAndTimes;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobPanelDescriptionBaseImpl} test.
@@ -57,7 +56,7 @@ public abstract class JobPanelDescriptionBaseImplTest {
       job.setBuildNumber( 345 );
       configuration = new BuildWallConfigurationImpl();
       theme = new BuildWallThemeImpl( "Anything" );
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       systemUnderTest = constructSut();
    }//End Method
    

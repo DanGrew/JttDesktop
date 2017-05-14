@@ -24,13 +24,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.StatusConfigurationPane;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeBuilderShortcutProperties;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class StatusConfigurationPaneTest {
 
@@ -41,7 +39,7 @@ public class StatusConfigurationPaneTest {
    private StatusConfigurationPane systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       status = BuildResultStatus.SUCCESS;

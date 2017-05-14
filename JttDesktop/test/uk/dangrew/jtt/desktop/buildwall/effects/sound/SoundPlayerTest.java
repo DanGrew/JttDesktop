@@ -23,15 +23,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundPlayer;
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundTriggerEvent;
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.StringMediaConverter;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMediaPlayer;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class SoundPlayerTest {
 
@@ -42,7 +37,7 @@ public class SoundPlayerTest {
    private SoundPlayer systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       when( converter.convert( Mockito.anyString() ) ).thenReturn( player );
       

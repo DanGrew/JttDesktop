@@ -15,7 +15,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.sound.SoundConfigurationParseModel;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;

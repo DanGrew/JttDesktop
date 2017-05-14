@@ -14,9 +14,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.control.ImageFlasherControls;
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.control.ImageFlasherControlsImpl;
-
 /**
  * {@link ImageFlasherControlsImpl} test.
  */

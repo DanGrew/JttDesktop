@@ -30,8 +30,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.SoundConfigurationApplier;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.SoundConfigurationRow;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.BrsChangeListApplier;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.PassPassApplier;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
@@ -39,7 +37,7 @@ import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.StringMediaConverter;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMediaPlayer;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class SoundConfigurationRowTest {
 
@@ -58,7 +56,7 @@ public class SoundConfigurationRowTest {
 
    @Before public void initialiseSystemUnderTest() {
       MockitoAnnotations.initMocks( this );
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       
       when( fileChooser.showOpenDialog( null ) ).thenReturn( file );
       when( file.getPath() ).thenReturn( FILE_NAME );

@@ -28,10 +28,7 @@ import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.javafx.contextmenu.ContextMenuWithCancel;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTree;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeContextMenu;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentEvent;
 import uk.dangrew.jtt.desktop.mc.sides.users.shared.AssignmentMenu;
@@ -45,6 +42,7 @@ import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobProgressTreeContextMenu} test.
@@ -69,7 +67,7 @@ public class JobProgressTreeContextMenuTest {
    private JobProgressTreeContextMenu systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       SystemStyling.initialise();
       MockitoAnnotations.initMocks( this );
       
@@ -104,9 +102,9 @@ public class JobProgressTreeContextMenuTest {
       assertThat( systemUnderTest, is( instanceOf( ContextMenuWithCancel.class ) ) );
    }//End Method
    
-   @Test public void shouldHideWhenCancelled() {
+   @Test public void shouldHideWhenCancelled() throws InterruptedException {
       BorderPane pane = new BorderPane();
-      JavaFxInitializer.launchInWindow( () -> pane );
+      TestApplication.launch( () -> pane );
 
       PlatformImpl.runAndWait( () -> systemUnderTest.show( pane, 0, 0 ) );
       assertThat( systemUnderTest.isShowing(), is( true ) );

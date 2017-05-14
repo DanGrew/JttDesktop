@@ -20,7 +20,6 @@ import uk.dangrew.jtt.desktop.core.JttUiInitializer;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.desktop.main.digest.SystemDigestController;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.model.storage.database.JenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.storage.database.SystemWideJenkinsDatabaseImpl;
 
 /**

@@ -14,8 +14,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.configuration.ImageFlasherConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.configuration.ImageFlasherConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.control.ImageFlasherControls;

@@ -35,11 +35,9 @@ import javafx.scene.text.Font;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.desktop.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.JobBuildSimulator;
 import uk.dangrew.jtt.desktop.buildwall.panel.JobPanelImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
@@ -50,6 +48,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link GridWallImpl} test.
@@ -79,14 +78,14 @@ public class GridWallImplTest {
       configuration = new BuildWallConfigurationImpl();
       database.jenkinsJobs().forEach( job -> configuration.jobPolicies().put( job, BuildWallJobPolicy.AlwaysShow ) );
       
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       systemUnderTest = new GridWallImpl( configuration, database );
    }//End Method
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
-      JavaFxInitializer.launchInWindow( () -> { return new BorderPane( systemUnderTest ); } );
+      TestApplication.launch( () -> { return new BorderPane( systemUnderTest ); } );
       
       Thread.sleep( 2000 );
       configuration.jobNameFont().set( new Font( 20 ) );

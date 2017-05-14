@@ -24,10 +24,8 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
-import uk.dangrew.jtt.desktop.configuration.system.SystemVersionItem;
-import uk.dangrew.jtt.desktop.configuration.system.SystemVersionPanel;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link SystemVersionItem} test.
@@ -41,7 +39,7 @@ public class SystemVersionItemTest {
    private SystemVersionItem systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new SystemVersionItem( controller );
    }//End Method

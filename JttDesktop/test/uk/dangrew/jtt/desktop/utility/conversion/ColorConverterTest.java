@@ -19,7 +19,6 @@ import org.junit.runner.RunWith;
 import javafx.scene.paint.Color;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import uk.dangrew.jtt.desktop.utility.conversion.ColorConverter;
 
 /**
  * {@link ColorConverter} test.

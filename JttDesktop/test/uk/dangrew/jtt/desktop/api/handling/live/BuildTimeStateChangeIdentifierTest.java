@@ -21,10 +21,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.api.handling.live.BuildTimeStateChangeIdentifier;
-import uk.dangrew.jtt.desktop.api.handling.live.JobBuiltEvent;
-import uk.dangrew.jtt.desktop.api.handling.live.JobBuiltResult;
-import uk.dangrew.jtt.desktop.api.handling.live.StateChangeIdentifier;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.event.structure.EventSubscription;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;

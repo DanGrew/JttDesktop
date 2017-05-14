@@ -23,8 +23,7 @@ import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.Pane;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.javafx.tree.utility.ColumnHeaderHider;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ColumnHeaderHider} test.
@@ -43,7 +42,7 @@ public class ColumnHeaderHiderTest {
    }//End Class
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       table = spy( new WidthSettableTable() );
       

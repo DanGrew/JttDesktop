@@ -27,13 +27,9 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasher;
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherRunnable;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ImageFlasherRunnable} test.
@@ -52,7 +48,7 @@ public class ImageFlasherRunnableTest {
    private CountDownLatch latch;
    
    @BeforeClass public static void initialisePlatform(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){

@@ -18,9 +18,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.javafx.registrations.RegistrationImpl;
-import uk.dangrew.jtt.desktop.javafx.registrations.RegistrationManager;
-
 /**
  * {@link RegistrationManager} test.
  */

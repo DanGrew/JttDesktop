@@ -22,16 +22,13 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMenuOpener;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTree;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeContextMenu;
-import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeItem;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobProgressTree} test.
@@ -42,7 +39,7 @@ public class JobProgressTreeTest {
    private JobProgressTree systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       SystemStyling.initialise();
       MockitoAnnotations.initMocks( this );
       database = new TestJenkinsDatabaseImpl();
@@ -51,7 +48,7 @@ public class JobProgressTreeTest {
    
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       JenkinsJob jobA = new JenkinsJobImpl( "NewJob" );
       database.store( jobA );

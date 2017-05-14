@@ -20,9 +20,6 @@ import static uk.dangrew.jtt.model.jobs.BuildResultStatus.UNSTABLE;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusHighLevelChange;
-import uk.dangrew.jtt.desktop.mc.notifiers.jobs.ChangeIdentifier;
-
 /**
  * {@link ChangeIdentifier} test.
  */

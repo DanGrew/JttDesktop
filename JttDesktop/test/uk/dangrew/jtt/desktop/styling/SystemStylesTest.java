@@ -14,9 +14,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import javafx.scene.Parent;
-import uk.dangrew.jtt.desktop.styling.BuildWallStyles;
-import uk.dangrew.jtt.desktop.styling.BuildWallThemes;
-import uk.dangrew.jtt.desktop.styling.SystemStyles;
 import uk.dangrew.jtt.desktop.utility.javafx.TestableParent;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.utility.TestCommon;

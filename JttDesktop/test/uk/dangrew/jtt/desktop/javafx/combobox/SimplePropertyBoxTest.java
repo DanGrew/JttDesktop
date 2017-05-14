@@ -14,10 +14,11 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.javafx.combobox.SimplePropertyBox;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link SimplePropertyBox} test.
@@ -28,7 +29,8 @@ public class SimplePropertyBoxTest {
    private SimplePropertyBox< String > systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.runAndWait( () -> {
+      TestApplication.startPlatform();
+      PlatformImpl.runAndWait( () -> {
          property = new SimpleObjectProperty<>();
          systemUnderTest = new SimplePropertyBox<>();
          systemUnderTest.bindProperty( property );

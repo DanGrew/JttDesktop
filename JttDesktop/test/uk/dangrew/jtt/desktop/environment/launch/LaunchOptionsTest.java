@@ -32,15 +32,14 @@ import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallContextMenuOpener;
 import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.desktop.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.mc.view.console.ManagementConsole;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -71,7 +70,7 @@ public class LaunchOptionsTest {
    }//End Class
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       SystemStyling.initialise();
       MockitoAnnotations.initMocks( this );
@@ -83,7 +82,7 @@ public class LaunchOptionsTest {
 
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       Thread.sleep( 100000 );
    }//End Method

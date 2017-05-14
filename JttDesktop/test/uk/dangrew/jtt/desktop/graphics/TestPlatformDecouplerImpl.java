@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.graphics;
 
-import uk.dangrew.jtt.desktop.graphics.PlatformDecoupler;
-
 /**
  * Implementation of {@link PlatformDecoupler} to simply run the {@link Runnable}
  * without the {@link PlatformImpl} thread. This is used for testing.

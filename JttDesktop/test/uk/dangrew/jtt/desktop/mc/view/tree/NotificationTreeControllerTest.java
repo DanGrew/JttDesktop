@@ -18,16 +18,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.mc.model.Notification;
 import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.desktop.mc.view.item.NotificationTreeItem;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationEvent;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeController;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeLayoutManager;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link NotificationTreeController} test.
@@ -39,7 +36,7 @@ public class NotificationTreeControllerTest {
    private NotificationTreeController systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       new NotificationEvent().clearAllSubscriptions();
       systemUnderTest = new NotificationTreeController( layoutManager );

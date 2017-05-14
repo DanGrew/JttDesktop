@@ -18,8 +18,7 @@ import org.junit.rules.Timeout;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import uk.dangrew.jtt.desktop.graphics.PlatformDecoupler;
-import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link PlatformDecouplerImpl} test.
@@ -29,7 +28,7 @@ public class PlatformDecouplerImplIT {
    @Rule public Timeout timeout = new Timeout( 50000, TimeUnit.MILLISECONDS );
 
    @Test public void shouldRunRunnableInDueCourse() throws InterruptedException {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       CountDownLatch latch = new CountDownLatch( 1 );
       BooleanProperty result = new SimpleBooleanProperty( false );
       PlatformDecoupler decoupler = new PlatformDecouplerImpl();

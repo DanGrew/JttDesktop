@@ -16,10 +16,8 @@ import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.desktop.buildwall.panel.description.DefaultJobPanelDescriptionImpl;
-import uk.dangrew.jtt.desktop.buildwall.panel.description.JobPanelDescriptionBaseImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link DefaultJobPanelDescriptionImpl} test.
@@ -32,7 +30,7 @@ public class DefaultJobPanelDescriptionImplTest extends JobPanelDescriptionBaseI
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> { return new DefaultJobPanelDescriptionImpl( configuration, theme, job ); } );
+      TestApplication.launch( () -> { return new DefaultJobPanelDescriptionImpl( configuration, theme, job ); } );
       Thread.sleep( 100000 );
    }//End Method
    

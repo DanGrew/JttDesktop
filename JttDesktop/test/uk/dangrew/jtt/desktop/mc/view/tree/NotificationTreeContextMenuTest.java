@@ -27,16 +27,12 @@ import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.desktop.mc.model.Notification;
 import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentEvent;
 import uk.dangrew.jtt.desktop.mc.sides.users.shared.AssignmentMenu;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationEvent;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTree;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeContextMenu;
 import uk.dangrew.jtt.desktop.utility.time.InstantProvider;
 import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.event.structure.EventSubscription;
@@ -46,6 +42,7 @@ import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link NotificationTreeContextMenu} test.
@@ -71,7 +68,7 @@ public class NotificationTreeContextMenuTest {
    private NotificationTreeContextMenu systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       notification1 = new BuildResultStatusNotification( new JenkinsJobImpl( "Job1" ), BuildResultStatus.ABORTED, BuildResultStatus.SUCCESS );
@@ -109,9 +106,9 @@ public class NotificationTreeContextMenuTest {
       assertThat( systemUnderTest, is( instanceOf( ContextMenuWithCancel.class ) ) );
    }//End Method
    
-   @Test public void shouldHideWhenCancelled() {
+   @Test public void shouldHideWhenCancelled() throws InterruptedException {
       BorderPane pane = new BorderPane();
-      JavaFxInitializer.launchInWindow( () -> pane );
+      TestApplication.launch( () -> pane );
 
       PlatformImpl.runAndWait( () -> systemUnderTest.show( pane, 0, 0 ) );
       assertThat( systemUnderTest.isShowing(), is( true ) );

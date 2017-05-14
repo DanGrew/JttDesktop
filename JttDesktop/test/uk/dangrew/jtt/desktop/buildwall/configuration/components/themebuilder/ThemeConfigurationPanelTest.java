@@ -23,14 +23,11 @@ import org.mockito.Spy;
 import javafx.scene.control.TitledPane;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.StatusConfigurationPane;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeBuilderShortcutProperties;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.ThemeConfigurationPanel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 @RunWith( JUnitParamsRunner.class )
 public class ThemeConfigurationPanelTest {
@@ -41,7 +38,7 @@ public class ThemeConfigurationPanelTest {
    private ThemeConfigurationPanel systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       theme = new BuildWallThemeImpl( "Test" );
       shortcuts = new ThemeBuilderShortcutProperties();

@@ -23,7 +23,6 @@ import org.mockito.MockitoAnnotations;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.desktop.statistics.metrics.TotalJobsAtState;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticView;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;

@@ -17,14 +17,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javafx.scene.control.SplitPane;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTree;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTree;
 import uk.dangrew.jtt.desktop.mc.sides.users.detail.AssignmentDetailArea;
-import uk.dangrew.jtt.desktop.mc.view.console.ManagementConsole;
 import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTree;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ManagementConsole} test.
@@ -35,14 +34,14 @@ public class ManagementConsoleTest {
    private ManagementConsole systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new ManagementConsole( database );
    }//End Method
    
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       Thread.sleep( 1000000 );
    }//End Method

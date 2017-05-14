@@ -24,10 +24,8 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.Node;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyContextMenu;
-import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMenuOpener;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeContextMenu;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link FriendlyMenuOpener} test.
@@ -39,7 +37,7 @@ public class FriendlyMenuOpenerTest {
    private FriendlyMenuOpener systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new FriendlyMenuOpener( display, menu );
    }//End Method

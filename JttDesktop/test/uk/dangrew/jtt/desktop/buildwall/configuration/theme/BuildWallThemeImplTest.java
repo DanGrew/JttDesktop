@@ -16,7 +16,6 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
 
 public class BuildWallThemeImplTest {

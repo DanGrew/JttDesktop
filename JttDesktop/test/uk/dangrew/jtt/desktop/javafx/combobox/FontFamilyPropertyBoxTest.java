@@ -18,12 +18,13 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.text.Font;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.javafx.combobox.FontFamilyPropertyBox;
 import uk.dangrew.jtt.desktop.styling.FontFamilies;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link FontFamilyPropertyBox} test.
@@ -44,7 +45,8 @@ public class FontFamilyPropertyBoxTest {
     * Method to launch the {@link FontFamilyPropertyBox} on the JavaFx {@link Thread}.
     */
    private void launchBox(){
-      JavaFxInitializer.runAndWait( () -> {
+      TestApplication.startPlatform();
+      PlatformImpl.runAndWait( () -> {
          systemUnderTest = new FontFamilyPropertyBox( property );
       } );
    }//End Method

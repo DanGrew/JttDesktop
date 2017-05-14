@@ -29,10 +29,8 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogEvent;
-import uk.dangrew.jtt.desktop.credentials.login.JenkinsLogin;
-import uk.dangrew.jtt.desktop.credentials.login.JenkinsLoginProcessor;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyAlert;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JenkinsLoginProcessor} test.
@@ -47,7 +45,7 @@ public class JenkinsLoginProcessorTest {
    private JenkinsLoginProcessor systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){

@@ -13,9 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.AllTests;
 import org.junit.runners.Suite.SuiteClasses;
 
-import junit.framework.JUnit4TestAdapter;
 import junit.framework.TestSuite;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializerIT;
 
 /**
  * The {@link SpamRunner} is responsible for running the same test repeatedly.
@@ -31,7 +29,7 @@ import uk.dangrew.jtt.desktop.graphics.JavaFxInitializerIT;
    public static TestSuite suite(){
       TestSuite suite = new TestSuite();
       for ( int i = 0; i < 1000; i++ ) {
-         suite.addTest( new JUnit4TestAdapter( JavaFxInitializerIT.class ) );
+//         suite.addTest( new JUnit4TestAdapter( JavaFxInitializerIT.class ) );
       }
       return suite;
    }//End Method

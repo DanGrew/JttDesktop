@@ -23,8 +23,6 @@ import org.mockito.Spy;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Region;
 import junitparams.JUnitParamsRunner;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.SoundConfigurationPanel;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.SoundConfigurationRow;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.FailFailApplier;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.FailPassApplier;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.IndividualChangeApplier;
@@ -33,8 +31,8 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.P
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.BuildResultStatusChange;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 @RunWith( JUnitParamsRunner.class )
 public class SoundConfigurationPanelTest {
@@ -46,7 +44,7 @@ public class SoundConfigurationPanelTest {
    private SoundConfigurationPanel systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       configuration = new SoundConfiguration();
       systemUnderTest = new SoundConfigurationPanel( stying, configuration );
@@ -54,7 +52,7 @@ public class SoundConfigurationPanelTest {
 
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       Thread.sleep( 10000000 );
    }//End Method

@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.javafx.tree.structure;
 
-import uk.dangrew.jtt.desktop.javafx.tree.structure.TreeItemValue;
-
 /**
  * Testable implementation of {@link TreeItemValue}.
  */

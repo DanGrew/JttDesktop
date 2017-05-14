@@ -19,9 +19,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.desktop.statistics.configuration.components.StatisticsStylePanel;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class StatisticsStylePanelTest {
 
@@ -30,7 +29,7 @@ public class StatisticsStylePanelTest {
    private StatisticsStylePanel systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       configuration = new StatisticsConfiguration();
       systemUnderTest = new StatisticsStylePanel( styling, configuration );
@@ -38,7 +37,7 @@ public class StatisticsStylePanelTest {
 
    @Ignore
    @Test public void manual() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> systemUnderTest );
+      TestApplication.launch( () -> systemUnderTest );
       
       Thread.sleep( 1000000 );
    }//End Method

@@ -34,14 +34,11 @@ import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallContextMenuOpener;
-import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.desktop.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticsRow;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
@@ -52,6 +49,7 @@ import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link DualBuildWallDisplayImpl} test.
@@ -100,7 +98,7 @@ public class DualBuildWallDisplayImplTest {
          }
       }
       
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       
       systemConfiguration = new SystemConfiguration();
       
@@ -114,7 +112,7 @@ public class DualBuildWallDisplayImplTest {
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
-      JavaFxInitializer.launchInWindow( () -> {
+      TestApplication.launch( () -> {
          systemUnderTest = new DualBuildWallDisplayImpl( database, systemConfiguration );
          systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
@@ -193,7 +191,7 @@ public class DualBuildWallDisplayImplTest {
    @Ignore
    @Test public void menuStressing() throws InterruptedException {
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
-      JavaFxInitializer.launchInWindow( () -> {
+      TestApplication.launch( () -> {
          systemUnderTest.setOnContextMenuRequested( new DualBuildWallContextMenuOpener( systemUnderTest ) );
          return systemUnderTest; 
       } );

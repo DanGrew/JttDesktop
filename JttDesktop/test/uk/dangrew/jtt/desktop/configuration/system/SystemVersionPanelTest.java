@@ -28,10 +28,8 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.desktop.configuration.system.CheckForUpdates;
-import uk.dangrew.jtt.desktop.configuration.system.SystemVersionPanel;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyDesktop;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link SystemVersionPanel} test.
@@ -43,7 +41,7 @@ public class SystemVersionPanelTest {
    private SystemVersionPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       systemUnderTest = new SystemVersionPanel( updates, desktop );
    }//End Method

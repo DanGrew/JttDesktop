@@ -20,7 +20,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder.StatusFilterPropertyUpdater;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 
 public class StatusFilterPropertyUpdaterTest {

@@ -20,10 +20,8 @@ import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.desktop.buildwall.layout.BuildWallDisplayImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.JobBuildSimulator;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.desktop.synchronisation.time.JobUpdater;
@@ -32,6 +30,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.SystemWideJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * Provides a demonstration of the {@link BuildWallDisplayImpl} showing various
@@ -48,7 +47,7 @@ public class BuildWallDemonstrationTest {
    private JenkinsJob invisibleValidation;
    private JenkinsJob invisibleEventSystem;
 
-   @Before public void initialiseSystemUnderTest(){
+   @Before public void initialiseSystemUnderTest() throws InterruptedException{
       JenkinsDatabase database = new SystemWideJenkinsDatabaseImpl().get();
       new JobUpdater( new LiveStateFetcher( 
                mock( ExternalApi.class ) 
@@ -74,7 +73,7 @@ public class BuildWallDemonstrationTest {
       
       DecoupledPlatformImpl.setInstance( new PlatformDecouplerImpl() );
       SystemStyling.initialise();
-      JavaFxInitializer.launchInWindow( () -> {
+      TestApplication.launch( () -> {
          BuildWallDisplayImpl display = new BuildWallDisplayImpl( database );
          BuildWallConfiguration configuration = display.configuration();
          configuration.jobPolicies().put( invisibleArchitecture, BuildWallJobPolicy.OnlyShowFailures );

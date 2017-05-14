@@ -21,12 +21,13 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.BuildWallStyles;
 import uk.dangrew.jtt.desktop.styling.BuildWallThemes;
@@ -62,7 +63,8 @@ public class JenkinsTestTrackerIT {
     * Method to launch the application once mocking is complete.
     */
    private void launchApplication(){
-      JavaFxInitializer.runAndWait( () -> {
+      TestApplication.startPlatform();
+      PlatformImpl.runAndWait( () -> {
          stage = spy( new Stage() );
          JenkinsTestTracker main = new JenkinsTestTracker( constructor );
          try {

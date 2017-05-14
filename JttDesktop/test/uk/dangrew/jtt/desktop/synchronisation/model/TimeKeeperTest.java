@@ -23,8 +23,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.synchronisation.model.TimeKeeper;
-
 /**
  * {@link TimeKeeper} test.
  */

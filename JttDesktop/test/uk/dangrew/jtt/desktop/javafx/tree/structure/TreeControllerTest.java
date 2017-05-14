@@ -17,9 +17,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.javafx.tree.structure.TreeController;
-import uk.dangrew.jtt.desktop.javafx.tree.structure.TreeLayout;
-
 /**
  * {@link TreeController} test.
  */

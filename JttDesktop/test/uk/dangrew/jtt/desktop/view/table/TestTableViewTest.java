@@ -22,10 +22,7 @@ import javafx.scene.control.TreeTableView;
 import uk.dangrew.jtt.desktop.data.json.tests.JsonTestResultsImporter;
 import uk.dangrew.jtt.desktop.data.json.tests.JsonTestResultsImporterImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.desktop.view.table.TestTableItem;
-import uk.dangrew.jtt.desktop.view.table.TestTableView;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
@@ -35,6 +32,7 @@ import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
 import uk.dangrew.jtt.model.tests.TestResultStatus;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link TestTableView} test.
@@ -55,7 +53,7 @@ public class TestTableViewTest {
       database.store( new JenkinsJobImpl( "anything" ) );
       JsonTestResultsImporter importer = new JsonTestResultsImporterImpl( database );
       importer.updateTestResults( database.jenkinsJobs().get( 0 ), input );
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       systemUnderTest = new TestTableView( database );
       
       @SuppressWarnings("unchecked") //By design, fail quickly with assertions below. 
@@ -65,7 +63,7 @@ public class TestTableViewTest {
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      JavaFxInitializer.launchInWindow( () -> { return new TestTableView( database ); } );
+      TestApplication.launch( () -> { return new TestTableView( database ); } );
       Thread.sleep( 100000 );
    }//End Method
    

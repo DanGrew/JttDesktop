@@ -16,8 +16,6 @@ import org.mockito.Mockito;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import uk.dangrew.jtt.desktop.view.table.TestCaseItemImpl;
-import uk.dangrew.jtt.desktop.view.table.TestTableItem;
 import uk.dangrew.jtt.model.tests.TestCase;
 import uk.dangrew.jtt.model.tests.TestCaseImpl;
 import uk.dangrew.jtt.model.tests.TestClass;

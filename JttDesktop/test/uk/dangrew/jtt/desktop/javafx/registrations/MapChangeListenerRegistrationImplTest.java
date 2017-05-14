@@ -26,7 +26,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
 import javafx.util.Pair;
-import uk.dangrew.jtt.desktop.javafx.registrations.MapChangeListenerRegistrationImpl;
 
 /**
  * {@link MapChangeListenerRegistrationImpl} test.

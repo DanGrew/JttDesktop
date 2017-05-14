@@ -17,10 +17,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallConfigurer;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link DualBuildWallConfigurer} test.
@@ -32,7 +31,7 @@ public class DualBuildWallConfigurerTest {
    private DualBuildWallConfigurer systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){

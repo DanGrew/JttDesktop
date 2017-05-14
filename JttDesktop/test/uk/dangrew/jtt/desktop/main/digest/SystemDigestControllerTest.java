@@ -24,9 +24,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.main.digest.SystemDigestController;
 import uk.dangrew.jtt.desktop.utility.time.TimestampProvider;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 import uk.dangrew.sd.logging.location.LoggingLocationProtocol;
 import uk.dangrew.sd.logging.logger.DigestFileLogger;
 import uk.dangrew.sd.utility.threading.ThreadedWrapper;
@@ -44,7 +43,7 @@ public class SystemDigestControllerTest {
    
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       timestampProvider = () -> LocalDateTime.MIN;
       systemUnderTest = new SystemDigestController( timestampProvider, wrapper, logger );
    }//End Method

@@ -18,7 +18,6 @@ import java.util.List;
 import org.junit.Test;
 
 import javafx.scene.text.Font;
-import uk.dangrew.jtt.desktop.styling.FontFamilies;
 
 /**
  * {@link FontFamilies} test.

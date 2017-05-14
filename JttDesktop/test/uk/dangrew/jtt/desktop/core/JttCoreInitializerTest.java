@@ -26,11 +26,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.desktop.api.handling.live.LiveStateFetcher;
-import uk.dangrew.jtt.desktop.core.JttCoreInitializer;
-import uk.dangrew.jtt.desktop.core.JttSystemInitialization;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class JttCoreInitializerTest {
 
@@ -45,7 +43,7 @@ public class JttCoreInitializerTest {
    private JttCoreInitializer systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       database = new TestJenkinsDatabaseImpl();
       when( threadSupplier.apply( Mockito.any() ) ).thenReturn( thread );

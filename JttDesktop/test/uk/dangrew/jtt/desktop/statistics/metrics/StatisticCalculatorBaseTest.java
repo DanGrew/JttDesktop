@@ -25,7 +25,6 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.collections.transformation.FilteredList;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.desktop.statistics.metrics.StatisticCalculatorBase;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticView;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;

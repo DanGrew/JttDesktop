@@ -18,13 +18,11 @@ import org.mockito.MockitoAnnotations;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.mc.sides.users.AssignedTreeItem;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeItem;
-import uk.dangrew.jtt.desktop.mc.sides.users.detail.AssignmentDetailArea;
-import uk.dangrew.jtt.desktop.mc.sides.users.detail.AssignmentDetailController;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link AssignmentDetailController} test.
@@ -42,7 +40,7 @@ public class AssignmentDetailControllerTest {
    private AssignmentDetailController systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       
       assignmentA = new UserAssignment( new JenkinsUserImpl( "A" ), 0, "", "" );

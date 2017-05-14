@@ -23,7 +23,6 @@ import org.junit.rules.ExpectedException;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import uk.dangrew.jtt.desktop.javafx.binding.NodeBinder;
 
 /**
  * {@link NodeBinder} test.

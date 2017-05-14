@@ -11,7 +11,6 @@ package uk.dangrew.jtt.desktop.mc.configuration.components;
 import javafx.util.Pair;
 import uk.dangrew.jtt.desktop.configuration.content.SimpleDescriptionPanel;
 import uk.dangrew.jtt.desktop.configuration.content.SimpleDescriptionPanelTest;
-import uk.dangrew.jtt.desktop.mc.configuration.components.UserAssignmentsDescriptionPanel;
 
 /**
  * {@link UserAssignmentsDescriptionPanel} test.

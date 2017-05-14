@@ -20,8 +20,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
-import uk.dangrew.jtt.desktop.mc.view.ManagementConsoleStyle;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ManagementConsoleStyle} test.
@@ -33,7 +32,7 @@ public class ManagementConsoleStyleTest {
    private ManagementConsoleStyle systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       systemUnderTest = new ManagementConsoleStyle();
    }//End Method
    

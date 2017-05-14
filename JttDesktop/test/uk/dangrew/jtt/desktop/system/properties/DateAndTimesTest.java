@@ -15,8 +15,6 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.system.properties.DateAndTimes;
-
 /**
  * {@link DateAndTimes} test.
  */

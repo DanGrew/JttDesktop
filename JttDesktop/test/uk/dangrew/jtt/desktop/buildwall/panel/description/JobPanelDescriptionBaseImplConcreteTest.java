@@ -10,7 +10,6 @@ package uk.dangrew.jtt.desktop.buildwall.panel.description;
 
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
-import uk.dangrew.jtt.desktop.buildwall.panel.description.JobPanelDescriptionBaseImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
 public class JobPanelDescriptionBaseImplConcreteTest extends JobPanelDescriptionBaseImplTest {

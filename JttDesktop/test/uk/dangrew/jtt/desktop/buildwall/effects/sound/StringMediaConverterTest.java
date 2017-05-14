@@ -17,16 +17,15 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.effects.sound.StringMediaConverter;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMediaPlayer;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class StringMediaConverterTest {
    
    private StringMediaConverter systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       systemUnderTest = new StringMediaConverter();
    }//End Method
 

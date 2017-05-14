@@ -18,7 +18,6 @@ import com.sun.javafx.collections.NonIterableChange.SimpleAddChange;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener.Change;
 import uk.dangrew.jtt.desktop.api.handling.JenkinsFetcher;
-import uk.dangrew.jtt.desktop.synchronisation.testresults.JobMonitorImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;

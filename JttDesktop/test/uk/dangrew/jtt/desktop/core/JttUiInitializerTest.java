@@ -28,12 +28,11 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.desktop.core.JttUiInitializer;
 import uk.dangrew.jtt.desktop.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 public class JttUiInitializerTest {
@@ -50,7 +49,7 @@ public class JttUiInitializerTest {
 
    @Before public void initialiseSystemUnderTest() {
       MockitoAnnotations.initMocks( this );
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       database = new TestJenkinsDatabaseImpl();
       systemUnderTest = new JttUiInitializer( styling, database, window, digestViewer, configuration );;
    }//End Method
