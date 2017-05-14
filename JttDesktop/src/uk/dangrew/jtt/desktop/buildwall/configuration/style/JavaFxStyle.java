@@ -48,8 +48,6 @@ public class JavaFxStyle {
    static final double FULL_WIDTH_COLUMN = 100.0;
    static final double HALF_WIDTH_COLUMN = 50.0;
    static final int TITLE_FONT_SIZE = 30;
-   static final double LABEL_PERCENTAGE_WIDTH = 40;
-   static final double CONTROLS_PERCENTAGE_WIDTH = 60;
    static final double PADDING = 10;
    
    static final File USER_HOME_FILE = new File( System.getProperty( "user.home" ) );
@@ -183,21 +181,6 @@ public class JavaFxStyle {
       titleLabel.setAlignment( Pos.CENTER );
       GridPane.setConstraints( titleLabel, 0, 0, 2, 1, HPos.CENTER, VPos.CENTER );
       return titleLabel;
-   }//End Method
-   
-   /**
-    * Method to configure the {@link ColumnConstraints} on the given {@link GridPane}.
-    * @param grid the {@link GridPane} to apply constraints to.
-    */
-   @Deprecated
-   public void configureColumnConstraints( GridPane grid ){
-      ColumnConstraints labels = new ColumnConstraints();
-      labels.setPercentWidth( LABEL_PERCENTAGE_WIDTH );
-      labels.setHgrow( Priority.ALWAYS );
-      ColumnConstraints controls = new ColumnConstraints();
-      controls.setPercentWidth( CONTROLS_PERCENTAGE_WIDTH );
-      controls.setHgrow( Priority.ALWAYS );
-      grid.getColumnConstraints().addAll( labels, controls );  
    }//End Method
    
    /**

@@ -41,15 +41,16 @@ public class DualPropertiesPanel extends GridPane {
     * @param configuration the {@link DualWallConfiguration} associated, to configure.
     */
    public DualPropertiesPanel( DualWallConfiguration configuration ) {
-      this( configuration, new JavaFxStyle() );
+      this( configuration, new JavaFxStyle(), new ConfigurationPanelDefaults() );
    }//End Constructor
    
    /**
     * Constructs a new {@link DualPropertiesPanel}.
     * @param configuration the {@link DualWallConfiguration} associated, to configure.
     * @param styling the {@link BuildWallConfigurationStyle} to apply.
+    * @param defaults the {@link ConfigurationPanelDefaults}.
     */
-   DualPropertiesPanel( DualWallConfiguration configuration, JavaFxStyle styling ) {
+   DualPropertiesPanel( DualWallConfiguration configuration, JavaFxStyle styling, ConfigurationPanelDefaults defaults ) {
       this.configuration = configuration;
       
       positionLabel = styling.createBoldLabel( "Divider Position" );
@@ -79,7 +80,7 @@ public class DualPropertiesPanel extends GridPane {
                ( source, old, updated ) -> updateOrientationButton( updated ) 
       );
 
-      styling.configureColumnConstraints( this );
+      defaults.configureColumnConstraints( this );
    }//End Constructor
    
    /**

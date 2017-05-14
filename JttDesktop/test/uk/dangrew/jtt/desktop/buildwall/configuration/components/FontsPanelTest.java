@@ -21,13 +21,12 @@ import org.mockito.Spy;
 
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.FontsPanel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.styling.FontFamilies;
 import uk.dangrew.jtt.desktop.utility.TestableFonts;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link FontsPanel} test.
@@ -39,14 +38,15 @@ public class FontsPanelTest {
    private static final String TEST_FONT_FAMILY_C = FontFamilies.getUsableFontFamilies().get( 5 );
    
    @Spy private JavaFxStyle styling;
+   @Spy private ConfigurationPanelDefaults defaults;
    private BuildWallConfiguration configuration;
    private FontsPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       configuration = new BuildWallConfigurationImpl();
-      systemUnderTest = new FontsPanel( configuration, styling );
+      systemUnderTest = new FontsPanel( configuration, styling, defaults );
    }//End Method
    
    @Test public void shouldContainAllChildElements() {

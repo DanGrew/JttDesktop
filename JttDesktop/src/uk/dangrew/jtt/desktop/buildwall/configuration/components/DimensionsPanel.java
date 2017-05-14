@@ -41,15 +41,16 @@ public class DimensionsPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} associated, to configure.
     */
    public DimensionsPanel( BuildWallConfiguration configuration ) {
-      this( configuration, new JavaFxStyle() );
+      this( configuration, new JavaFxStyle(), new ConfigurationPanelDefaults() );
    }//End Constructor
    
    /**
     * Constructs a new {@link DimensionsPanel}.
     * @param configuration the {@link BuildWallConfiguration} associated, to configure.
     * @param styling the {@link BuildWallConfigurationStyle} to apply.
+    * @param defaults the {@link ConfigurationPanelDefaults}.
     */
-   DimensionsPanel( BuildWallConfiguration configuration, JavaFxStyle styling ) {
+   DimensionsPanel( BuildWallConfiguration configuration, JavaFxStyle styling, ConfigurationPanelDefaults defaults ) {
       this.configuration = configuration;
       
       columnsLabel = styling.createBoldLabel( "Columns" );
@@ -76,7 +77,7 @@ public class DimensionsPanel extends GridPane {
                ( source, old, updated ) -> updateDescriptionTypeButton( updated ) 
       );
 
-      styling.configureColumnConstraints( this );
+      defaults.configureColumnConstraints( this );
    }//End Constructor
    
    /**

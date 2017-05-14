@@ -26,11 +26,10 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.DualPropertiesPanel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link DualPropertiesPanel} test.
@@ -38,14 +37,15 @@ import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 public class DualPropertiesPanelTest {
    
    private DualWallConfiguration configuration;
+   @Spy private ConfigurationPanelDefaults defaults;
    @Spy private JavaFxStyle styling;
    private DualPropertiesPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       configuration = new DualWallConfigurationImpl();
-      systemUnderTest = new DualPropertiesPanel( configuration, styling );
+      systemUnderTest = new DualPropertiesPanel( configuration, styling, defaults );
    }//End Method
 
    @Test public void shouldUseBoldLabels(){
@@ -167,7 +167,7 @@ public class DualPropertiesPanelTest {
    }//End Method
    
    @Test public void shouldApplyStyleForBuildWallConfiguration(){
-      verify( styling ).configureColumnConstraints( systemUnderTest );
+      verify( defaults ).configureColumnConstraints( systemUnderTest );
    }//End Method
    
    @Test public void radioButtonsShouldChangeTogether(){

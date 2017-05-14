@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser.ExtensionFilter;
+import uk.dangrew.jtt.desktop.buildwall.configuration.components.ConfigurationPanelDefaults;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
@@ -78,17 +79,24 @@ public class ImageFlasherConfigurationPanel extends GridPane {
     * @param configuration the {@link ImageFlasherProperties} to configure.
     */
    public ImageFlasherConfigurationPanel( String title, ImageFlasherProperties properties ) {
-      this( new JavaFxStyle(), title, properties, new FriendlyFileChooser() );
+      this( new JavaFxStyle(), new ConfigurationPanelDefaults(), title, properties, new FriendlyFileChooser() );
    }//End Constructor
    
    /**
     * Constructs a new {@link ImageFlasherConfigurationPanel}.
     * @param styling the {@link JavaFxStyle}.
+    * @param defaults the {@link ConfigurationPanelDefaults}.
     * @param title the title for the configuration pane.
     * @param configuration the {@link ImageFlasherProperties} to configure.
     * @param fileChooser the {@link FriendlyFileChooser} to use.
     */
-   ImageFlasherConfigurationPanel( JavaFxStyle styling, String title, ImageFlasherProperties properties, FriendlyFileChooser fileChooser ) {
+   ImageFlasherConfigurationPanel( 
+            JavaFxStyle styling, 
+            ConfigurationPanelDefaults defaults,
+            String title, 
+            ImageFlasherProperties properties, 
+            FriendlyFileChooser fileChooser 
+   ) {
       this.properties = properties;
       this.imageChooser = fileChooser;
       this.styling = styling;
@@ -101,7 +109,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
       provideTransparency();
       provideTestMechanism();
       
-      styling.configureColumnConstraints( this );
+      defaults.configureColumnConstraints( this );
       setPadding( new Insets( INSETS ) );
    }//End Constructor
    

@@ -21,11 +21,10 @@ import org.mockito.Spy;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.ColoursPanel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ColoursPanel} test.
@@ -33,14 +32,15 @@ import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 public class ColoursPanelTest {
 
    @Spy private JavaFxStyle styling;
+   @Spy private ConfigurationPanelDefaults defaults;
    private BuildWallConfiguration configuration;
    private ColoursPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       configuration = new BuildWallConfigurationImpl();
-      systemUnderTest = new ColoursPanel( configuration, styling );
+      systemUnderTest = new ColoursPanel( configuration, styling, defaults );
    }//End Method
    
    @Test public void shouldContainNecessaryElements(){
@@ -172,7 +172,7 @@ public class ColoursPanelTest {
    }//End Method
    
    @Test public void shouldApplyStylingToPanel(){
-      verify( styling ).configureColumnConstraints( systemUnderTest );
+      verify( defaults ).configureColumnConstraints( systemUnderTest );
    }//End Method
    
    @Test public void shouldDetermineWhetherItHasGivenConfiguration(){

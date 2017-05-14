@@ -24,12 +24,11 @@ import org.mockito.Spy;
 import javafx.event.ActionEvent;
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.DimensionsPanel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.panel.type.JobPanelDescriptionProviders;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link DimensionsPanel} test.
@@ -37,14 +36,15 @@ import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 public class DimensionsPanelTest {
    
    private BuildWallConfiguration configuration;
+   @Spy private ConfigurationPanelDefaults defaults;
    @Spy private JavaFxStyle styling;
    private DimensionsPanel systemUnderTest;
    
    @Before public void initialiseSystemUnderTest(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
       configuration = new BuildWallConfigurationImpl();
-      systemUnderTest = new DimensionsPanel( configuration, styling );
+      systemUnderTest = new DimensionsPanel( configuration, styling, defaults );
    }//End Method
 
    @Test public void shouldUseBoldLabels(){
@@ -170,7 +170,7 @@ public class DimensionsPanelTest {
    }//End Method
    
    @Test public void shouldApplyStyleForBuildWallConfiguration(){
-      verify( styling ).configureColumnConstraints( systemUnderTest );
+      verify( defaults ).configureColumnConstraints( systemUnderTest );
    }//End Method
    
    @Test public void radioButtonsShouldChangeTogether(){

@@ -8,7 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.components;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
@@ -17,7 +16,6 @@ import javafx.scene.text.Font;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.javafx.combobox.FontFamilyPropertyBox;
-import uk.dangrew.jtt.desktop.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import uk.dangrew.jtt.desktop.javafx.spinner.PropertySpinner;
 
 /**
@@ -53,15 +51,16 @@ public class FontsPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} associated to be configured.
     */
    public FontsPanel( BuildWallConfiguration configuration) {
-      this( configuration, new JavaFxStyle() );
+      this( configuration, new JavaFxStyle(), new ConfigurationPanelDefaults() );
    }//End Constructor
    
    /**
     * Constructs a new {@link FontsPanel}.
     * @param configuration the {@link BuildWallConfiguration} associated to be configured.
     * @param styling the {@link BuildWallConfigurationStyle} to use for style.
+    * @param defaults the {@link ConfigurationPanelDefaults}.
     */
-   FontsPanel( BuildWallConfiguration configuration, JavaFxStyle styling ) {
+   FontsPanel( BuildWallConfiguration configuration, JavaFxStyle styling, ConfigurationPanelDefaults defaults ) {
       this.configuration = configuration;
       
       jobNameFontLabel = styling.createBoldLabel( "Job Name Font" );
@@ -112,7 +111,7 @@ public class FontsPanel extends GridPane {
       styling.configureFontSizeSpinner( detailFontSizeSpinner, configuration.detailFont() );
       add( detailFontSizeSpinner, 1, 14 );
       
-      styling.configureColumnConstraints( this );
+      defaults.configureColumnConstraints( this );
    }//End Constructor
    
    /**

@@ -36,7 +36,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.JobPolicyPanel;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
@@ -50,6 +49,7 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
 import uk.dangrew.jtt.model.utility.comparator.Comparators;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JobPolicyPanel} test.
@@ -58,6 +58,7 @@ import uk.dangrew.jtt.model.utility.comparator.Comparators;
 public class JobPolicyPanelTest {
    
    @Spy private JavaFxStyle styling;
+   @Spy private ConfigurationPanelDefaults defaults;
    private BuildWallConfiguration configuration; 
    private JobPolicyPanel systemUnderTest;
    
@@ -72,8 +73,8 @@ public class JobPolicyPanelTest {
       for ( int i = 0; i < 10; i++ ) {
          configuration.jobPolicies().put( new JenkinsJobImpl( "job " + i ), BuildWallJobPolicy.values()[ i % 3 ] );
       }
-      JavaFxInitializer.startPlatform();
-      systemUnderTest = new JobPolicyPanel( configuration, styling );
+      TestApplication.startPlatform();
+      systemUnderTest = new JobPolicyPanel( configuration, styling, defaults );
    }//End Method
    
    @Ignore //For manual inspection.
@@ -241,7 +242,7 @@ public class JobPolicyPanelTest {
    }//End Method
    
    @Test public void shouldApplyStylingToPanel(){
-      verify( styling ).configureColumnConstraints( systemUnderTest );
+      verify( defaults ).configureColumnConstraints( systemUnderTest );
    }//End Method
    
    @Test public void shouldDetermineWhetherItHasGivenConfiguration(){

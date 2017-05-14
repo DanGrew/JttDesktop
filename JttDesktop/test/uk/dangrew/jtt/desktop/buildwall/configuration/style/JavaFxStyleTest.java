@@ -36,21 +36,18 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
-import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.javafx.spinner.DefensiveDoubleSpinnerValueFactory;
 import uk.dangrew.jtt.desktop.javafx.spinner.DefensiveIntegerSpinnerValueFactory;
 import uk.dangrew.jtt.desktop.javafx.spinner.DoublePropertySpinner;
 import uk.dangrew.jtt.desktop.javafx.spinner.IntegerPropertySpinner;
 import uk.dangrew.jtt.desktop.javafx.spinner.PropertySpinner;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link JavaFxStyle} test.
@@ -58,12 +55,10 @@ import uk.dangrew.jtt.model.utility.TestCommon;
 public class JavaFxStyleTest {
 
    public static final int TITLE_FONT_SIZE = JavaFxStyle.TITLE_FONT_SIZE;
-   public static final double LABEL_PERCENTAGE_WIDTH = JavaFxStyle.LABEL_PERCENTAGE_WIDTH;
-   public static final double CONTROLS_PERCENTAGE_WIDTH = JavaFxStyle.CONTROLS_PERCENTAGE_WIDTH;
    private JavaFxStyle systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
@@ -160,21 +155,6 @@ public class JavaFxStyleTest {
       assertThat( GridPane.getRowSpan( constructed ), is( 1 ) );
       assertThat( GridPane.getHalignment( constructed ), is( HPos.CENTER ) );
       assertThat( GridPane.getValignment( constructed ), is( VPos.CENTER ) );
-   }//End Method
-   
-   @Test public void shouldProvideColumnConstraintsForGrid(){
-      GridPane grid = new GridPane();
-      systemUnderTest.configureColumnConstraints( grid );
-      
-      assertThat( grid.getColumnConstraints(), hasSize( 2 ) );
-      
-      ColumnConstraints first = grid.getColumnConstraints().get( 0 );
-      assertThat( first.getPercentWidth(), is( JavaFxStyle.LABEL_PERCENTAGE_WIDTH ) );
-      assertThat( first.getHgrow(), is( Priority.ALWAYS ) );
-      
-      ColumnConstraints second = grid.getColumnConstraints().get( 1 );
-      assertThat( second.getPercentWidth(), is( JavaFxStyle.CONTROLS_PERCENTAGE_WIDTH ) );
-      assertThat( second.getHgrow(), is( Priority.ALWAYS ) );
    }//End Method
    
    @Test public void shouldProvideUniqueLabelWithWrappedText(){

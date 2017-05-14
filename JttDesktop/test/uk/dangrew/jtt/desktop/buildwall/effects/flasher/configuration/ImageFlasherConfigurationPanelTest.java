@@ -37,17 +37,18 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser.ExtensionFilter;
+import uk.dangrew.jtt.desktop.buildwall.configuration.components.ConfigurationPanelDefaults;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyleTest;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
-import uk.dangrew.jtt.desktop.buildwall.effects.flasher.configuration.ImageFlasherConfigurationPanel;
 import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.JavaFxInitializer;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link ImageFlasherConfigurationPanel} test.
@@ -58,13 +59,14 @@ public class ImageFlasherConfigurationPanelTest {
    
    private final File ALERT_IMAGE_FILE = new File( ImageFlasherImplTest.class.getResource( "alert-image.png" ).getFile() );
    @Spy private JavaFxStyle styling;
+   @Spy private ConfigurationPanelDefaults defaults;
    @Mock private FriendlyFileChooser fileChooser; 
    private ObservableList< ExtensionFilter > extensionFilters;
    private ImageFlasherProperties properties;
    private ImageFlasherConfigurationPanel systemUnderTest;
    
    @BeforeClass public static void initialisePlatform(){
-      JavaFxInitializer.startPlatform();
+      TestApplication.startPlatform();
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
@@ -73,7 +75,7 @@ public class ImageFlasherConfigurationPanelTest {
       when( fileChooser.getExtensionFilters() ).thenReturn( extensionFilters );
       
       properties = new ImageFlasherPropertiesImpl();
-      systemUnderTest = new ImageFlasherConfigurationPanel( styling, TEST_FLASHER_TITLE, properties, fileChooser );
+      systemUnderTest = new ImageFlasherConfigurationPanel( styling, defaults, TEST_FLASHER_TITLE, properties, fileChooser );
    }//End Method
 
    @Ignore

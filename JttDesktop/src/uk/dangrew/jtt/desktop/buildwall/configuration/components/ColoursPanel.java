@@ -38,15 +38,16 @@ public class ColoursPanel extends GridPane {
     * @param configuration the {@link BuildWallConfiguration} to configure.
     */
    public ColoursPanel( BuildWallConfiguration configuration ) {
-      this( configuration, new JavaFxStyle() );
+      this( configuration, new JavaFxStyle(), new ConfigurationPanelDefaults() );
    }//End Constructor
    
    /**
     * Constructs a new {@link ColoursPanel}.
     * @param configuration the {@link BuildWallConfiguration} to configure.
     * @param styling the {@link BuildWallConfigurationStyle} to apply.
+    * @param defaults the {@link ConfigurationPanelDefaults}.
     */
-   ColoursPanel( BuildWallConfiguration configuration, JavaFxStyle styling ) {
+   ColoursPanel( BuildWallConfiguration configuration, JavaFxStyle styling, ConfigurationPanelDefaults defaults ) {
       this.configuration = configuration;
       
       jobNameColourLabel = styling.createBoldLabel( "Job Name" );
@@ -77,7 +78,7 @@ public class ColoursPanel extends GridPane {
       styling.configureColorPicker( detailColourPicker, configuration.detailColour() );
       add( detailColourPicker, 1, 3 );
       
-      styling.configureColumnConstraints( this );
+      defaults.configureColumnConstraints( this );
    }//End Constructor
    
    /**

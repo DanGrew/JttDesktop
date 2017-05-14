@@ -27,7 +27,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.BuildWallConfigurationPanelImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
@@ -122,7 +121,7 @@ public class BuildWallConfigurationPaneImplTest {
     */
    private void assertColumnConstraints( GridPane grid ){
       Assert.assertEquals( 
-               JavaFxStyleTest.CONTROLS_PERCENTAGE_WIDTH, 
+               ConfigurationPanelDefaultsTest.CONTROLS_PERCENTAGE_WIDTH, 
                grid.getColumnConstraints().get( 1 ).getPercentWidth(),
                TestCommon.precision()
       );
