@@ -9,12 +9,12 @@
 package uk.dangrew.jtt.desktop.main;
 
 import javafx.scene.Scene;
+import uk.dangrew.jtt.connection.api.JenkinsApiConnector;
 import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.sound.SoundConfigurationSessions;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
-import uk.dangrew.jtt.desktop.core.JenkinsApiConnector;
 import uk.dangrew.jtt.desktop.core.JttCoreInitializer;
 import uk.dangrew.jtt.desktop.core.JttUiInitializer;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;

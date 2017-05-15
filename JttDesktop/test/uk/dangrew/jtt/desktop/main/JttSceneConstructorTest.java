@@ -21,8 +21,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Scene;
+import uk.dangrew.jtt.connection.api.JenkinsApiConnector;
 import uk.dangrew.jtt.connection.api.sources.ExternalApi;
-import uk.dangrew.jtt.desktop.core.JenkinsApiConnector;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
