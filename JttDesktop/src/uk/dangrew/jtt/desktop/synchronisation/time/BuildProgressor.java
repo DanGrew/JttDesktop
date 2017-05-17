@@ -11,6 +11,7 @@ package uk.dangrew.jtt.desktop.synchronisation.time;
 import java.time.Clock;
 import java.util.Timer;
 
+import uk.dangrew.jtt.connection.synchronisation.time.BuildProgressCalculator;
 import uk.dangrew.jtt.desktop.synchronisation.model.TimeKeeper;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 
