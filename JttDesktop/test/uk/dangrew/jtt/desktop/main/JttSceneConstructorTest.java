@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javafx.scene.Scene;
-import uk.dangrew.jtt.connection.api.JenkinsApiConnector;
+import uk.dangrew.jtt.connection.api.JenkinsApiConnectionPrompt;
 import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
@@ -36,7 +36,7 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
 public class JttSceneConstructorTest {
 
    @Mock private ExternalApi api;
-   @Mock private JenkinsApiConnector connector;
+   @Mock private JenkinsApiConnectionPrompt connector;
    @Mock private SystemDigestController digestController;
    @Mock private DigestViewer digest;
    private JttSceneConstructor systemUnderTest;

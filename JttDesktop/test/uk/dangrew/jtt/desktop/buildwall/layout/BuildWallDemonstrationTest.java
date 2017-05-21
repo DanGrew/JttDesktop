@@ -18,13 +18,13 @@ import org.junit.Test;
 
 import uk.dangrew.jtt.connection.api.handling.live.LiveStateFetcher;
 import uk.dangrew.jtt.connection.api.sources.ExternalApi;
+import uk.dangrew.jtt.connection.synchronisation.time.JobUpdater;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.desktop.buildwall.panel.JobBuildSimulator;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
-import uk.dangrew.jtt.desktop.synchronisation.time.JobUpdater;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -49,9 +49,7 @@ public class BuildWallDemonstrationTest {
 
    @Before public void initialiseSystemUnderTest() throws InterruptedException{
       JenkinsDatabase database = new SystemWideJenkinsDatabaseImpl().get();
-      new JobUpdater( new LiveStateFetcher( 
-               mock( ExternalApi.class ) 
-      ), new Timer(), 5000L );
+      new JobUpdater( mock( ExternalApi.class ) );
       
       coreProject = new JenkinsJobImpl( "Core Project" );
       graphicalProject = new JenkinsJobImpl( "Graphics" );

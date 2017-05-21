@@ -26,12 +26,14 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.connection.api.handling.live.LiveStateFetcher;
+import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class JttCoreInitializerTest {
 
+   @Mock private ExternalApi api;
    @Mock private LiveStateFetcher fetcher;
    private JenkinsDatabase database;
    @Mock private JttSystemInitialization systemInitialization;
@@ -47,7 +49,7 @@ public class JttCoreInitializerTest {
       MockitoAnnotations.initMocks( this );
       database = new TestJenkinsDatabaseImpl();
       when( threadSupplier.apply( Mockito.any() ) ).thenReturn( thread );
-      systemUnderTest = new JttCoreInitializer( threadSupplier, fetcher, database, systemInitialization );
+      systemUnderTest = new JttCoreInitializer( threadSupplier, fetcher, api, database, systemInitialization );
    }//End Method
    
    @Test public void shouldStartSystemInitialization(){
@@ -59,7 +61,7 @@ public class JttCoreInitializerTest {
       
       verify( threadSupplier ).apply( threadRunnableCaptor.capture() );
       threadRunnableCaptor.getValue().run();
-      verify( fetcher ).loadLastCompletedBuild();
+      verify( fetcher ).loadLastCompletedBuild( api );
       assertThat( systemUnderTest.jobUpdater(), is( notNullValue() ) );
       assertThat( systemUnderTest.buildProgressor(), is( notNullValue() ) );
    }//End Method
