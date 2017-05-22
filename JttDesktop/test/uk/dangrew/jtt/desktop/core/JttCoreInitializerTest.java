@@ -25,16 +25,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import uk.dangrew.jtt.connection.api.handling.live.LiveStateFetcher;
-import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class JttCoreInitializerTest {
 
-   @Mock private ExternalApi api;
-   @Mock private LiveStateFetcher fetcher;
    private JenkinsDatabase database;
    @Mock private JttSystemInitialization systemInitialization;
    
@@ -49,7 +45,7 @@ public class JttCoreInitializerTest {
       MockitoAnnotations.initMocks( this );
       database = new TestJenkinsDatabaseImpl();
       when( threadSupplier.apply( Mockito.any() ) ).thenReturn( thread );
-      systemUnderTest = new JttCoreInitializer( threadSupplier, fetcher, api, database, systemInitialization );
+      systemUnderTest = new JttCoreInitializer( threadSupplier, database, systemInitialization );
    }//End Method
    
    @Test public void shouldStartSystemInitialization(){
@@ -61,21 +57,14 @@ public class JttCoreInitializerTest {
       
       verify( threadSupplier ).apply( threadRunnableCaptor.capture() );
       threadRunnableCaptor.getValue().run();
-      verify( fetcher ).loadLastCompletedBuild( api );
-      assertThat( systemUnderTest.jobUpdater(), is( notNullValue() ) );
       assertThat( systemUnderTest.buildProgressor(), is( notNullValue() ) );
    }//End Method
    
    @Test public void shouldStartPollingWhenInitializerComplete(){
-      assertThat( systemUnderTest.jobUpdater(), is( nullValue() ) );
       assertThat( systemUnderTest.buildProgressor(), is( nullValue() ) );
       
       systemUnderTest.systemReady();
-      assertThat( systemUnderTest.jobUpdater(), is( notNullValue() ) );
       assertThat( systemUnderTest.buildProgressor(), is( notNullValue() ) );
-      
-      assertThat( systemUnderTest.jobUpdater().isAssociatedWith( fetcher ), is( true ) );
-      assertThat( systemUnderTest.jobUpdater().getInterval(), is( JttCoreInitializer.UPDATE_DELAY ) );
       
       assertThat( systemUnderTest.buildProgressor().isAssociatedWith( database ), is( true ) );
       assertThat( systemUnderTest.buildProgressor().getInterval(), is( JttCoreInitializer.PROGRESS_DELAY ) );

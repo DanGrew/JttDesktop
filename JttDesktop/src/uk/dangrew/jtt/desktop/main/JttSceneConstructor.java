@@ -8,9 +8,11 @@
  */
 package uk.dangrew.jtt.desktop.main;
 
+import java.util.function.Function;
+
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import uk.dangrew.jtt.connection.api.JenkinsApiConnectionPrompt;
-import uk.dangrew.jtt.connection.api.sources.ExternalApi;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.buildwall.BuildWallConfigurationSessions;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.dualwall.DualWallConfigurationSessions;
 import uk.dangrew.jtt.desktop.buildwall.configuration.persistence.sound.SoundConfigurationSessions;
@@ -30,6 +32,7 @@ public class JttSceneConstructor {
    
    private final JenkinsApiConnectionPrompt apiConnector;
    private final SystemDigestController digestController;
+   private final Function< Parent, Scene > sceneSupplier;
    
    private JttCoreInitializer initializer;
    private JenkinsDatabase database;
@@ -42,15 +45,17 @@ public class JttSceneConstructor {
     * Constructs a new {@link JttSceneConstructor}.
     */
    public JttSceneConstructor() {
-      this( new SystemDigestController(), new JenkinsApiConnectionPrompt() );
+      this( Scene::new, new SystemDigestController(), new JenkinsApiConnectionPrompt() );
    }//End Constructor
    
    /**
     * Constructs a new {@link JttSceneConstructor}.
+    * @param sceneSupplier the {@link Function} to supply a {@link Scene}.
     * @param digestController the {@link SystemDigestController} for managing the digest.
     * @param apiConnector the {@link JenkinsApiConnectionPrompt}.
     */
-   JttSceneConstructor( SystemDigestController digestController, JenkinsApiConnectionPrompt apiConnector ){
+   JttSceneConstructor( Function< Parent, Scene > sceneSupplier, SystemDigestController digestController, JenkinsApiConnectionPrompt apiConnector ){
+      this.sceneSupplier = sceneSupplier;
       this.digestController = digestController;
       this.apiConnector = apiConnector;
    }//End Constructor
@@ -64,8 +69,8 @@ public class JttSceneConstructor {
          throw new IllegalStateException( "Can only call once." );
       }
       
-      ExternalApi api = apiConnector.connect( digestController.getDigestViewer() );
-      if ( api == null ) {
+      boolean success = apiConnector.connect( digestController.getDigestViewer() );
+      if ( !success ) {
          return null;
       }
       
@@ -83,7 +88,6 @@ public class JttSceneConstructor {
       EnvironmentWindow window = new EnvironmentWindow( configuration, database );
       
       initializer = new JttCoreInitializer( 
-               api, 
                new JttUiInitializer( 
                         database, 
                         window, 
@@ -91,7 +95,7 @@ public class JttSceneConstructor {
                         configuration 
                ) 
       );
-      return new Scene( window );
+      return sceneSupplier.apply( window );
    }//End Method
 
    JttCoreInitializer initializer(){
