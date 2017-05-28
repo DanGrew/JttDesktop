@@ -15,6 +15,7 @@ import uk.dangrew.jtt.desktop.utility.time.DefaultTimestampProvider;
 import uk.dangrew.jtt.desktop.utility.time.TimestampProvider;
 import uk.dangrew.sd.logging.location.JarLoggingProtocol;
 import uk.dangrew.sd.logging.logger.DigestFileLogger;
+import uk.dangrew.sd.table.presentation.DigestTableRowLimit;
 import uk.dangrew.sd.utility.threading.ThreadedWrapper;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
@@ -35,7 +36,7 @@ public class SystemDigestController {
     * Constructs a new {@link SystemDigestController} for the {@link uk.dangrew.jtt.main.JenkinsTestTracker}.
     */
    public SystemDigestController() {
-      this( new DefaultTimestampProvider(), new ThreadedWrapper(), new DigestFileLogger() );
+      this( new DefaultTimestampProvider(), new ThreadedWrapper(), new DigestFileLogger(), new DigestViewer( 600, 200 ) );
    }//End Constructor
    
    /**
@@ -43,9 +44,11 @@ public class SystemDigestController {
     * @param timestampProvider the {@link TimestampProvider}.
     * @param threadWrapper the {@link ThreadedWrapper} for running the logging on another {@link Thread}.
     * @param logger the {@link DigestFileLogger} for processing the logging.
+    * @param digestViewer the {@link DigestViewer} to show.
     */
-   SystemDigestController( TimestampProvider timestampProvider, ThreadedWrapper threadWrapper, DigestFileLogger logger ) {
-      this.digestViewer = new DigestViewer( 600, 200 );
+   SystemDigestController( TimestampProvider timestampProvider, ThreadedWrapper threadWrapper, DigestFileLogger logger, DigestViewer digestViewer ) {
+      this.digestViewer = digestViewer;
+      this.digestViewer.setTableRowLimit( DigestTableRowLimit.OneThousand );
       this.protocol = new JarLoggingProtocol( FOLDER_NAME, makeFilePrefix( timestampProvider.get() ) + LOG_FILE_SUFFIX, JenkinsTestTracker.class );
       this.protocol.setFileSizeLimit( FILE_SIZE_LIMIT );
       logger.setFileLocation( protocol );

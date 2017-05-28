@@ -28,7 +28,9 @@ import uk.dangrew.jtt.desktop.utility.time.TimestampProvider;
 import uk.dangrew.sd.graphics.launch.TestApplication;
 import uk.dangrew.sd.logging.location.LoggingLocationProtocol;
 import uk.dangrew.sd.logging.logger.DigestFileLogger;
+import uk.dangrew.sd.table.presentation.DigestTableRowLimit;
 import uk.dangrew.sd.utility.threading.ThreadedWrapper;
+import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * {@link SystemDigestController} test.
@@ -38,6 +40,7 @@ public class SystemDigestControllerTest {
    @Captor private ArgumentCaptor< LoggingLocationProtocol > protocolCaptor;
    @Mock private ThreadedWrapper wrapper;
    @Mock private DigestFileLogger logger;
+   @Mock private DigestViewer digestViewer;
    private TimestampProvider timestampProvider;
    private SystemDigestController systemUnderTest;
    
@@ -45,11 +48,11 @@ public class SystemDigestControllerTest {
       MockitoAnnotations.initMocks( this );
       TestApplication.startPlatform();
       timestampProvider = () -> LocalDateTime.MIN;
-      systemUnderTest = new SystemDigestController( timestampProvider, wrapper, logger );
+      systemUnderTest = new SystemDigestController( timestampProvider, wrapper, logger, digestViewer );
    }//End Method
    
    @Test public void shouldProvideDigestViewer() {
-      systemUnderTest = new SystemDigestController( timestampProvider, wrapper, logger );
+      systemUnderTest = new SystemDigestController( timestampProvider, wrapper, logger, digestViewer );
       assertThat( systemUnderTest.getDigestViewer(), is( notNullValue() ) );
    }//End Method
    
@@ -72,6 +75,10 @@ public class SystemDigestControllerTest {
       String current = systemUnderTest.makeFilePrefix( LocalDateTime.now() );
       assertThat( current, containsString( "at" ) );
       assertThat( current, not( containsString( ":" ) ) );
+   }//End Method
+   
+   @Test public void shouldConfigureLimitOnDigestViewer(){
+      verify( digestViewer ).setTableRowLimit( DigestTableRowLimit.OneThousand );
    }//End Method
 
 }//End Class
