@@ -14,6 +14,7 @@ package uk.dangrew.jtt.desktop.configuration.tree;
 public enum ConfigurationTreeItems {
    
    SystemVersion,
+   ApiConnections,
    DualWallProperties,
    Themes,
    Sounds,
@@ -35,6 +36,7 @@ public enum ConfigurationTreeItems {
    Notifications,
    UserAssignments,
    JobProgress,
-   JobProgressFiltering;
+   JobProgressFiltering 
+   ;
 
 }//End Enum

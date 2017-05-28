@@ -34,6 +34,7 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.FontsTreeItem;
 import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.JobPolicyTreeItem;
 import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.SoundsTreeItem;
 import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.ThemesTreeItem;
+import uk.dangrew.jtt.desktop.configuration.api.ApiConfigurationItem;
 import uk.dangrew.jtt.desktop.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.desktop.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
@@ -98,21 +99,25 @@ public class ConfigurationTreeTest {
    
    @Test public void buildWallRootShouldBePresentAndExpanded(){
       TreeItem< ConfigurationItem > root = systemUnderTest.getRoot();
-      assertThat( root.getChildren(), hasSize( 4 ) );
+      assertThat( root.getChildren(), hasSize( 5 ) );
       
       assertThat( getItem( root, 0 ), is( systemUnderTest.systemVersion().getValue() ) );
       assertThat( systemUnderTest.systemVersion().isExpanded(), is( true ) );
       assertThat( systemUnderTest.systemVersion().getValue(), is( instanceOf( SystemVersionItem.class ) ) );
       
-      assertThat( getItem( root, 1 ), is( systemUnderTest.dualWallRoot().getValue() ) );
+      assertThat( getItem( root, 1 ), is( systemUnderTest.apiConnections().getValue() ) );
+      assertThat( systemUnderTest.apiConnections().isExpanded(), is( true ) );
+      assertThat( systemUnderTest.apiConnections().getValue(), is( instanceOf( ApiConfigurationItem.class ) ) );
+      
+      assertThat( getItem( root, 2 ), is( systemUnderTest.dualWallRoot().getValue() ) );
       assertThat( systemUnderTest.dualWallRoot().isExpanded(), is( true ) );
       assertThat( systemUnderTest.dualWallRoot().getValue(), is( instanceOf( DualBuildWallRootItem.class ) ) );
       
-      assertThat( getItem( root, 2 ), is( systemUnderTest.statisticsRoot().getValue() ) );
+      assertThat( getItem( root, 3 ), is( systemUnderTest.statisticsRoot().getValue() ) );
       assertThat( systemUnderTest.statisticsRoot().isExpanded(), is( true ) );
       assertThat( systemUnderTest.statisticsRoot().getValue(), is( instanceOf( StatisticsRootItem.class ) ) );
       
-      assertThat( getItem( root, 3 ), is( systemUnderTest.mcRoot().getValue() ) );
+      assertThat( getItem( root, 4 ), is( systemUnderTest.mcRoot().getValue() ) );
       assertThat( systemUnderTest.mcRoot().isExpanded(), is( true ) );
       assertThat( systemUnderTest.mcRoot().getValue(), is( instanceOf( ManagementConsoleRootItem.class ) ) );
    }//End Method
@@ -173,7 +178,7 @@ public class ConfigurationTreeTest {
    }//End Method
    
    @Test public void statisticsRootShouldBePresentAndAssociated(){
-      TreeItem< ConfigurationItem > stats = systemUnderTest.getRoot().getChildren().get( 2 );
+      TreeItem< ConfigurationItem > stats = systemUnderTest.getRoot().getChildren().get( 3 );
       assertThat( stats.getValue(), is( instanceOf( StatisticsRootItem.class ) ) );
       assertThat( stats, is( systemUnderTest.statisticsRoot() ) );
       
@@ -289,6 +294,10 @@ public class ConfigurationTreeTest {
       systemUnderTest.select( ConfigurationTreeItems.SystemVersion );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.systemVersion() ) );
       assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.SystemVersion ), is( true ) );
+      
+      systemUnderTest.select( ConfigurationTreeItems.ApiConnections );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.apiConnections() ) );
+      assertThat( systemUnderTest.isSelected( ConfigurationTreeItems.ApiConnections ), is( true ) );
       
       systemUnderTest.select( ConfigurationTreeItems.DualWallRoot );
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( systemUnderTest.dualWallRoot() ) );

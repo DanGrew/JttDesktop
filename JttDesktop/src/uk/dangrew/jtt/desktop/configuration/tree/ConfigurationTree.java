@@ -28,6 +28,7 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.JobPolicyTreeIte
 import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.SoundsTreeItem;
 import uk.dangrew.jtt.desktop.buildwall.configuration.tree.item.ThemesTreeItem;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
+import uk.dangrew.jtt.desktop.configuration.api.ApiConfigurationItem;
 import uk.dangrew.jtt.desktop.configuration.item.ConfigurationItem;
 import uk.dangrew.jtt.desktop.configuration.item.ConfigurationRootItem;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
@@ -53,6 +54,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    private final TreeItem< ConfigurationItem > root;
    private final TreeItem< ConfigurationItem > systemVersion;
+   private final TreeItem< ConfigurationItem > apiConnections;
    
    private final TreeItem< ConfigurationItem > dualWallProperties;
    private final TreeItem< ConfigurationItem > themes;
@@ -90,6 +92,10 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
       this.systemVersion = new TreeItem<>( new SystemVersionItem( controller ) );
       this.systemVersion.setExpanded( true );
       this.root.getChildren().add( systemVersion );
+      
+      this.apiConnections = new TreeItem<>( new ApiConfigurationItem( controller ) );
+      this.apiConnections.setExpanded( true );
+      this.root.getChildren().add( apiConnections );
       
       this.dualWallRoot = new TreeItem<>( new DualBuildWallRootItem( controller ) );
       this.dualWallRoot.setExpanded( true );
@@ -280,6 +286,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
     */
    private void populateItemMappings(){
       itemMapping.put( ConfigurationTreeItems.SystemVersion, systemVersion );
+      itemMapping.put( ConfigurationTreeItems.ApiConnections, apiConnections );
       
       itemMapping.put( ConfigurationTreeItems.DualWallProperties, dualWallProperties );
       itemMapping.put( ConfigurationTreeItems.Themes, themes ); 
@@ -336,6 +343,10 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
    
    TreeItem< ConfigurationItem > systemVersion(){
       return systemVersion;
+   }//End Method
+   
+   TreeItem< ConfigurationItem > apiConnections(){
+      return apiConnections;
    }//End Method
    
    TreeItem< ConfigurationItem > dualWallRoot(){

@@ -19,7 +19,7 @@ import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 public class SystemVersionItem extends ScrollableConfigurationItem {
    
    static final String NAME = "Software Version";
-   static final String TITLE = "Versioning details and information";
+   static final String TITLE = "Versioning Details and Information";
 
    /**
     * Constructs a new {@link SystemVersionItem}.
