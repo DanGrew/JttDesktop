@@ -1,3 +1,8 @@
+Release, "1.6.26"
+Date, "(May 28, 2017 11:54:13 AM)"
+Download, "https://dl.bintray.com/dangrew/JttDesktop/jtt/jtt-desktop/1.6.26/jtt-desktop-1.6.26-runnable.jar"
+Description, "You can now add and manage connections to instances of Jenkins in the configuration window. This allows multiple instances of Jenkins to be presented within a single display. This resolves feature request issue#221."
+
 Release, "1.6.15"
 Date, "(May 13, 2017 5:50:04 PM)"
 Download, "https://dl.bintray.com/dangrew/JttDesktop/jtt/jtt-desktop/1.6.15/jtt-desktop-1.6.15-runnable.jar"
