@@ -179,4 +179,14 @@ public class StatisticsExclusionsPanelTest {
       assertThat( GridPane.getRowIndex( systemUnderTest.checkBoxFor( jobF ) ), is( 3 ) );
    }//End Method
    
+   @Test public void shouldShowCurrentExclusionsWhenLoaded(){
+      configuration.excludedJobs().add( database.jenkinsJobs().get( 2 ) );
+      systemUnderTest = new StatisticsExclusionsPanel( database, configuration );
+      assertThat( systemUnderTest.checkBoxFor( database.jenkinsJobs().get( 0 ) ).isSelected(), is( true ) );
+      assertThat( systemUnderTest.checkBoxFor( database.jenkinsJobs().get( 1 ) ).isSelected(), is( true ) );
+      assertThat( systemUnderTest.checkBoxFor( database.jenkinsJobs().get( 2 ) ).isSelected(), is( false ) );
+      assertThat( systemUnderTest.checkBoxFor( database.jenkinsJobs().get( 3 ) ).isSelected(), is( true ) );
+      assertThat( systemUnderTest.checkBoxFor( database.jenkinsJobs().get( 4 ) ).isSelected(), is( true ) );
+   }//End Method
+   
 }//End Class

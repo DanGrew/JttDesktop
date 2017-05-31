@@ -100,7 +100,7 @@ public class StatisticsExclusionsPanel extends GridPane {
     */
    private void addJobCheckBox( JenkinsJob job, int row ){
       CheckBox box = new CheckBox( job.nameProperty().get() );
-      box.setSelected( true );
+      box.setSelected( !configuration.excludedJobs().contains( job ) );
       box.selectedProperty().addListener( ( s, o, n ) -> {
           if ( n ) {
              configuration.excludedJobs().remove( job );

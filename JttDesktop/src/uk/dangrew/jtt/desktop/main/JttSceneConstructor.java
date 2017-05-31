@@ -21,6 +21,7 @@ import uk.dangrew.jtt.desktop.core.JttCoreInitializer;
 import uk.dangrew.jtt.desktop.core.JttUiInitializer;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.desktop.main.digest.SystemDigestController;
+import uk.dangrew.jtt.desktop.statistics.persistence.StatisticsConfigurationSessions;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.SystemWideJenkinsDatabaseImpl;
 
@@ -40,6 +41,7 @@ public class JttSceneConstructor {
    private BuildWallConfigurationSessions buildWallSessions;
    private DualWallConfigurationSessions dualWallSessions;
    private SoundConfigurationSessions soundSessions;
+   private StatisticsConfigurationSessions statisticsSessions;
    
    /**
     * Constructs a new {@link JttSceneConstructor}.
@@ -84,6 +86,7 @@ public class JttSceneConstructor {
       );
       dualWallSessions = new DualWallConfigurationSessions( configuration.getDualConfiguration() );
       soundSessions = new SoundConfigurationSessions( configuration.getSoundConfiguration(), database );
+      statisticsSessions = new StatisticsConfigurationSessions( configuration.getStatisticsConfiguration() );
       
       EnvironmentWindow window = new EnvironmentWindow( configuration, database );
       
@@ -120,6 +123,10 @@ public class JttSceneConstructor {
 
    SoundConfigurationSessions soundSessions() {
       return soundSessions;
+   }//End Method
+
+   StatisticsConfigurationSessions statisticsSessions() {
+      return statisticsSessions;
    }//End Method
    
 }//End Class

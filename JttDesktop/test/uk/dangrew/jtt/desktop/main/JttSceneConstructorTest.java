@@ -93,4 +93,11 @@ public class JttSceneConstructorTest {
       assertThat( systemUnderTest.soundSessions().uses( systemUnderTest.configuration().getSoundConfiguration() ), is( true ) );
       assertThat( systemUnderTest.soundSessions().uses( systemUnderTest.database() ), is( true ) );
    }//End Method
+   
+   @Test public void shouldConstructStatisticsSessions(){
+      when( connector.connect( digest ) ).thenReturn( true );
+      systemUnderTest.makeScene();
+      assertThat( systemUnderTest.statisticsSessions(), is( notNullValue() ) );
+      assertThat( systemUnderTest.statisticsSessions().uses( systemUnderTest.configuration().getStatisticsConfiguration() ), is( true ) );
+   }//End Method
 }//End Class
