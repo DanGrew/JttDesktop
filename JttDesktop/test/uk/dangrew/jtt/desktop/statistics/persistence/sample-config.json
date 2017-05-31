@@ -1,0 +1,17 @@
+{"Statistics": {
+   "Exclusions": [
+      "Jupa-Build",
+      "ObjectBuilder",
+      "ObjectBuilderEnvironment"
+   ],
+   "Colours": {
+      "BackgroundColour": "#334db3",
+      "TextColour": "#ff9966"
+   },
+   "Fonts": {
+      "DescriptionTextSize": 5,
+      "ValueTextFamily": "Apple Chancery",
+      "ValueTextSize": 78,
+      "DescriptionTextFamily": "Apple Color Emoji"
+   }
+}}
