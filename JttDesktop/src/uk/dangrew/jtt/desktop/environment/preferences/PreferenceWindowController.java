@@ -21,6 +21,8 @@ import javafx.stage.Stage;
  */
 public class PreferenceWindowController {
    
+   static final String CONFIGURATION_WINDOW_TITLE = "Configuration & Preferences";
+   
    static final double HEIGHT = 600;
    static final double WIDTH = 900;
    
@@ -44,6 +46,7 @@ public class PreferenceWindowController {
          Scene configurationScene = new Scene( configurationWindow );
          PlatformImpl.runAndWait( () -> {
             configurationWindowStage = new Stage();
+            configurationWindowStage.setTitle( CONFIGURATION_WINDOW_TITLE );
             configurationWindowStage.setWidth( WIDTH );
             configurationWindowStage.setHeight( HEIGHT );
             configurationWindowStage.setFullScreen( false );

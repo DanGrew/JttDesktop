@@ -13,6 +13,8 @@ import uk.dangrew.jupa.javafx.platform.PlatformLifecycle;
  */
 public class JenkinsTestTracker extends Application {
    
+   static final String TITLE = "Jenkins Test Tracker";
+   
    private final JttSceneConstructor sceneConstructor;
    
    /**
@@ -41,6 +43,7 @@ public class JenkinsTestTracker extends Application {
          return;
       }
       
+      stage.setTitle( TITLE );
       stage.setOnCloseRequest( event -> PlatformLifecycle.shutdown() );
       stage.setScene( scene );
       stage.setMaximized( true );

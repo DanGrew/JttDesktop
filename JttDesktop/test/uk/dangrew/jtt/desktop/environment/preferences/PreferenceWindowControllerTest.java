@@ -94,4 +94,8 @@ public class PreferenceWindowControllerTest {
       assertThat( systemUnderTest.stage().widthProperty().get(), is( PreferenceWindowController.WIDTH ) );
       assertThat( systemUnderTest.stage().heightProperty().get(), is( PreferenceWindowController.HEIGHT ) );
    }//End Method
+   
+   @Test public void shouldHaveTitle(){
+      assertThat( systemUnderTest.stage().getTitle(), is( PreferenceWindowController.CONFIGURATION_WINDOW_TITLE ) );
+   }//End Method
 }//End Class

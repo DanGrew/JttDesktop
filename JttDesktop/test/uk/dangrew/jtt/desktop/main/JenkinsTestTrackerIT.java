@@ -123,4 +123,10 @@ public class JenkinsTestTrackerIT {
       assertThat( stage.isMaximized(), is( true ) );
    }//End Method
    
+   @Test public void shouldProvideTitle(){
+      constructorWillProvideScene();
+      launchApplication();
+      assertThat( stage.getTitle(), is( JenkinsTestTracker.TITLE ) );
+   }//End Method
+   
 }//End Class
