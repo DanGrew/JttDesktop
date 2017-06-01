@@ -1,3 +1,8 @@
+Release, "1.6.30"
+Date, "(Jun 1, 2017 8:53:43 PM)"
+Download, "https://dl.bintray.com/dangrew/JttDesktop/jtt/jtt-desktop/1.6.30/jtt-desktop-1.6.30-runnable.jar"
+Description, "Statistics configuration is now persisted with a configuration file in the same folder as other configuration. Minor change for media exception handling and titles added to jtt-desktop windows."
+
 Release, "1.6.26"
 Date, "(May 28, 2017 11:54:13 AM)"
 Download, "https://dl.bintray.com/dangrew/JttDesktop/jtt/jtt-desktop/1.6.26/jtt-desktop-1.6.26-runnable.jar"
