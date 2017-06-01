@@ -31,7 +31,12 @@ public class StringMediaConverter {
          return null;
       }
       
-      return new FriendlyMediaPlayer( media );
+      try {
+         return new FriendlyMediaPlayer( media );
+      } catch ( MediaException exception ) {
+         //should use digest, not tested for ease
+         return null;
+      }
    }//End Method
    
    /**
