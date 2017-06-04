@@ -20,12 +20,25 @@ public class WallBuilder extends Pane {
    
    private ContentArea initial;
    private final ContentAreaSelector selector;
+   private final ContentAreaIntersections intersections;
    
    /**
     * Constructs a new {@link WallBuilder}.
     */
    WallBuilder() {
-      this.selector = new ContentAreaSelector( getChildren() );
+      this( new ContentAreaSelector(), new ContentAreaIntersections() );
+   }//End Constructor
+      
+   /**
+    * Constructs a new {@link WallBuilder}.
+    * @param selector the {@link ContentAreaSelector}.
+    * @param intersections the {@link ContentAreaIntersections}.
+    */
+   WallBuilder( ContentAreaSelector selector, ContentAreaIntersections intersections ) {
+      this.selector = selector;
+      this.selector.setNodes( getChildren() );
+      this.intersections = intersections;
+      this.intersections.setNodes( getChildren() );
       
       initial = new ContentArea( 
                getWidth(), getHeight(), 
@@ -98,6 +111,62 @@ public class WallBuilder extends Pane {
     */
    private void addChild( ContentArea area ) {
       PlatformImpl.runAndWait( () -> getChildren().add( area ) );      
+   }//End Method
+   
+   /**
+    * Method to stretch the current selection to the left by the given percentage of the width.
+    * @param percentage the percentage to change by.
+    */
+   void stretchLeft( double percentage ) {
+      ContentArea selection = selector.getSelection();
+      if ( selection == null ) {
+         return;
+      }
+      
+      selection.changeXPositionPercentageBy( -percentage );
+      intersections.checkTranslationXIntersection( selection );
+   }//End Method
+   
+   /**
+    * Method to stretch the current selection to the right by the given percentage of the width.
+    * @param percentage the percentage to change by.
+    */
+   void stretchRight( double percentage ) {
+      ContentArea selection = selector.getSelection();
+      if ( selection == null ) {
+         return;
+      }
+      
+      selection.changeWidthPercentageBy( percentage );
+      intersections.checkWidthIntersection( selection );
+   }//End Method
+   
+   /**
+    * Method to stretch the current selection up by the given percentage of the height.
+    * @param percentage the percentage to change by.
+    */
+   void stretchUp( double percentage ) {
+      ContentArea selection = selector.getSelection();
+      if ( selection == null ) {
+         return;
+      }
+      
+      selection.changeYPositionPercentageBy( -percentage );
+      intersections.checkTranslationYIntersection( selection );
+   }//End Method
+   
+   /**
+    * Method to stretch the current selection down by the given percentage of the height.
+    * @param percentage the percentage to change by.
+    */
+   void stretchDown( double percentage ) {
+      ContentArea selection = selector.getSelection();
+      if ( selection == null ) {
+         return;
+      }
+      
+      selection.changeHeightPercentageBy( percentage );
+      intersections.checkHeightIntersection( selection );
    }//End Method
 
    ContentAreaSelector selectionController() {

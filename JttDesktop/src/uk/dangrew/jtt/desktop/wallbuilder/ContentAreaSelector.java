@@ -53,22 +53,28 @@ class ContentAreaSelector {
     * Constructs a new {@link ContentAreaSelector}.
     * @param areasthe {@link Node}s in the scene that can be selected.
     */
-   ContentAreaSelector( ObservableList< Node > areas ) {
-      this( new ContentAreaColours(), areas );
+   ContentAreaSelector() {
+      this( new ContentAreaColours() );
    }//End Constructor
    
    /**
     * Constructs a new {@link ContentAreaSelector}.
     * @param colours the {@link ContentAreaColours} for highlighting.
-    * @param areasthe {@link Node}s in the scene that can be selected.
     */
-   ContentAreaSelector( ContentAreaColours colours, ObservableList< Node > areas ) {
+   ContentAreaSelector( ContentAreaColours colours ) {
       this.colours = colours;
+   }//End Constructor
+
+   /**
+    * Method to set the {@link Node}s being observed.
+    * @param areas the {@link Node}s in the scene that can be selected.
+    */
+   void setNodes( ObservableList< Node > areas ) {
       areas.forEach( this::contentAdded );
       areas.addListener( new FunctionListChangeListenerImpl<>( 
                this::contentAdded, this::contentRemoved 
       ) );
-   }//End Constructor
+   }//End Method
    
    /**
     * Method to extract the {@link ContentArea} from a {@link Node}.

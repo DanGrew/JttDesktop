@@ -9,15 +9,20 @@
 package uk.dangrew.jtt.desktop.wallbuilder;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.sd.graphics.launch.TestApplication;
 
@@ -27,11 +32,15 @@ public class WallBuilderTest {
    private static final double PREFERRED_HEIGHT = 400;
 
    private ContentArea initial;
+   
+   @Mock private ContentAreaSelector selector;
+   @Mock private ContentAreaIntersections intersections;
    private WallBuilder systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
       TestApplication.startPlatform();
-      systemUnderTest = new WallBuilder();
+      MockitoAnnotations.initMocks( this );
+      systemUnderTest = new WallBuilder( selector, intersections );
       systemUnderTest.setPrefSize( PREFERRED_WIDTH, PREFERRED_HEIGHT );
       initial = getContent( 0 );
    }//End Method
@@ -49,6 +58,14 @@ public class WallBuilderTest {
       systemUnderTest.splitHorizontally( initial );
       
       Thread.sleep( 1000000 );
+   }//End Method
+   
+   @Test public void shouldSetNodesOnSelector(){
+      verify( selector ).setNodes( systemUnderTest.getChildren() );
+   }//End Method
+   
+   @Test public void shouldSetNodesOnIntersections(){
+      verify( intersections ).setNodes( systemUnderTest.getChildren() );
    }//End Method
    
    @Test public void shouldUpdateContentAreasWithDimensionUpdates(){
@@ -136,12 +153,70 @@ public class WallBuilderTest {
          .assertArea();
    }//End Method
    
+   @Test public void shouldStretchLeft(){
+      systemUnderTest.splitHorizontally( initial );
+      ContentArea subject = getContent( 1 );
+      
+      when( selector.getSelection() ).thenReturn( subject );
+      
+      systemUnderTest.stretchLeft( 10 );
+      assertThat( subject.percentageWidth(), is( 60.0 ) );
+      
+      verify( intersections ).checkTranslationXIntersection( subject );
+   }//End Method
+   
+   @Test public void shouldStretchRight(){
+      systemUnderTest.splitHorizontally( initial );
+      ContentArea subject = getContent( 0 );
+      
+      when( selector.getSelection() ).thenReturn( subject );
+      
+      systemUnderTest.stretchRight( 10 );
+      assertThat( subject.percentageWidth(), is( 60.0 ) );
+      
+      verify( intersections ).checkWidthIntersection( subject );
+   }//End Method
+   
+   @Test public void shouldStretchUp(){
+      systemUnderTest.splitVertically( initial );
+      ContentArea subject = getContent( 1 );
+      
+      when( selector.getSelection() ).thenReturn( subject );
+      
+      systemUnderTest.stretchUp( 10 );
+      assertThat( subject.percentageHeight(), is( 60.0 ) );
+      
+      verify( intersections ).checkTranslationYIntersection( subject );
+   }//End Method
+   
+   @Test public void shouldStretchDown(){
+      systemUnderTest.splitVertically( initial );
+      ContentArea subject = getContent( 0 );
+      
+      when( selector.getSelection() ).thenReturn( subject );
+      
+      systemUnderTest.stretchDown( 10 );
+      assertThat( subject.percentageHeight(), is( 60.0 ) );
+      
+      verify( intersections ).checkHeightIntersection( subject );
+   }//End Method
+   
+   @Test public void shouldIgnoreStretchesWithNoSelection(){
+      systemUnderTest.stretchLeft( 10 );
+      systemUnderTest.stretchRight( 10 );
+      systemUnderTest.stretchUp( 10 );
+      systemUnderTest.stretchDown( 10 );
+      
+      verify( intersections ).setNodes( systemUnderTest.getChildren() );
+      verifyNoMoreInteractions( intersections );
+   }//End Method
+   
    @Test public void shouldProvideSelectionController(){
       assertThat( systemUnderTest.selectionController(), is( instanceOf( ContentAreaSelector.class ) ) );
    }//End Method
    
    private ContentArea getContent( int index ) {
-      assertThat( systemUnderTest.getChildren(), hasSize( lessThanOrEqualTo( index + 1 ) ) );
+      assertThat( systemUnderTest.getChildren(), hasSize( greaterThanOrEqualTo( index + 1 ) ) );
       return ( ContentArea )systemUnderTest.getChildren().get( index );
    }//End Method
 

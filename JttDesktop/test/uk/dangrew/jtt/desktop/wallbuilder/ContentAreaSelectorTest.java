@@ -54,7 +54,8 @@ public class ContentAreaSelectorTest {
                100, 100 
       ) );
       areas.add( initialContent );
-      systemUnderTest = new ContentAreaSelector( colours, areas );
+      systemUnderTest = new ContentAreaSelector( colours );
+      systemUnderTest.setNodes( areas );
    }//End Method
 
    @Test public void shouldRespondToClickBySelecting() {
