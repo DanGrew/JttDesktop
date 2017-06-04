@@ -67,8 +67,22 @@ public class ContentAreaTest {
    }//End Method
    
    @Test public void shouldCalculateInitialWidthAndHeight(){
-      assertThat( systemUnderTest.getWidth(), is( 90.0 ) );
-      assertThat( systemUnderTest.getHeight(), is( 160.0 ) );
+      systemUnderTest = new ContentArea( 
+               PARENT_WIDTH, PARENT_HIEGHT,
+               POSITION_X_PERCENTAGE, POSITION_Y_PERCENTAGE,
+               20, 15
+      );
+      assertThat( systemUnderTest.getWidth(), is( 20.0 ) );
+      assertThat( systemUnderTest.getHeight(), is( 30.0 ) );
+      assertThat( systemUnderTest.percentageWidth(), is( 20.0 ) );
+      assertThat( systemUnderTest.percentageHeight(), is( 15.0 ) );
+   }//End Method
+   
+   @Test public void shouldAdjustWidthAndHeightBasedOnTranslationAndBoundaries(){
+      assertThat( systemUnderTest.getWidth(), is( 60.0 ) );
+      assertThat( systemUnderTest.getHeight(), is( 80.0 ) );
+      assertThat( systemUnderTest.percentageWidth(), is( 60.0 ) );
+      assertThat( systemUnderTest.percentageHeight(), is( 40.0 ) );
    }//End Method
    
    @Test public void shouldUpdateXPositionUsingPercentage(){
@@ -85,18 +99,18 @@ public class ContentAreaTest {
       systemUnderTest.setParentDimensions( 300, 100 );
       assertThat( systemUnderTest.getTranslateX(), is( 120.0 ) );
       assertThat( systemUnderTest.getTranslateY(), is( 60.0 ) );
-      assertThat( systemUnderTest.getWidth(), is( 270.0 ) );
-      assertThat( systemUnderTest.getHeight(), is( 80.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 180.0 ) );
+      assertThat( systemUnderTest.getHeight(), is( 40.0 ) );
    }//End Method
    
    @Test public void shouldUpdateWidthUsingParentPercentage(){
       systemUnderTest.changeWidthPercentageBy( -50 );
-      assertThat( systemUnderTest.getWidth(), is( 40.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 10.0 ) );
    }//End Method
    
    @Test public void shouldUpdateHeightUsingParentPercentage(){
-      systemUnderTest.changeHeightPercentageBy( -40 );
-      assertThat( systemUnderTest.getHeight(), is( 80.0 ) );
+      systemUnderTest.changeHeightPercentageBy( -10 );
+      assertThat( systemUnderTest.getHeight(), is( 60.0 ) );
    }//End Method
    
    @Test public void shouldCapTranslationAtMax(){
@@ -123,20 +137,24 @@ public class ContentAreaTest {
       systemUnderTest.changeWidthPercentageBy( 100 );
       assertThat( systemUnderTest.getWidth(), is( PARENT_WIDTH ) );
       assertThat( systemUnderTest.percentageWidth(), is( 100.0 ) );
+      assertThat( systemUnderTest.xPositionPercentage(), is( POSITION_X_PERCENTAGE ) );
       
       systemUnderTest.changeHeightPercentageBy( 100 );
       assertThat( systemUnderTest.getHeight(), is( PARENT_HIEGHT ) );
       assertThat( systemUnderTest.percentageHeight(), is( 100.0 ) );
+      assertThat( systemUnderTest.yPositionPercentage(), is( POSITION_Y_PERCENTAGE ) );
    }//End Method
    
    @Test public void shouldCapDimensionsAtMin(){
       systemUnderTest.changeWidthPercentageBy( -100 );
       assertThat( systemUnderTest.getWidth(), is( 0.0 ) );
       assertThat( systemUnderTest.percentageWidth(), is( 0.0 ) );
+      assertThat( systemUnderTest.xPositionPercentage(), is( POSITION_X_PERCENTAGE ) );
       
       systemUnderTest.changeHeightPercentageBy( -100 );
       assertThat( systemUnderTest.getHeight(), is( 0.0 ) );
       assertThat( systemUnderTest.percentageHeight(), is( 0.0 ) );
+      assertThat( systemUnderTest.yPositionPercentage(), is( POSITION_Y_PERCENTAGE ) );
    }//End Method
    
    @Test public void shouldUpdateWidthWhenTranslationChanges(){
@@ -148,5 +166,24 @@ public class ContentAreaTest {
       systemUnderTest.changeYPositionPercentageBy( 10 );
       assertThat( systemUnderTest.percentageHeight(), is( initialHeight - 10 ) );
    }//End Method
-
+   
+   @Test public void shouldReduceWidthWhenTranslationChanges(){
+      systemUnderTest.changeXPositionPercentageBy( 1 );
+      assertThat( systemUnderTest.xPositionPercentage(), is( 41.0 ) );
+      assertThat( systemUnderTest.percentageWidth(), is( 59.0 ) );
+      
+      systemUnderTest.changeXPositionPercentageBy( -2 );
+      assertThat( systemUnderTest.xPositionPercentage(), is( 39.0 ) );
+      assertThat( systemUnderTest.percentageWidth(), is( 61.0 ) );
+   }//End Method
+   
+   @Test public void shouldReduceHeightWhenTranslationChanges(){
+      systemUnderTest.changeYPositionPercentageBy( 1 );
+      assertThat( systemUnderTest.yPositionPercentage(), is( 61.0 ) );
+      assertThat( systemUnderTest.percentageHeight(), is( 39.0 ) );
+      
+      systemUnderTest.changeYPositionPercentageBy( -2 );
+      assertThat( systemUnderTest.yPositionPercentage(), is( 59.0 ) );
+      assertThat( systemUnderTest.percentageHeight(), is( 41.0 ) );
+   }//End Method
 }//End Class

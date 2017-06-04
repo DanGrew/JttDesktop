@@ -56,22 +56,14 @@ public class WallBuilder extends Pane {
    }//End Constructor
    
    /**
-    * Method to verify that the {@link ContentArea} is present in the {@link Pane}.
-    * @param area the {@link ContentArea} in question.
-    */
-   private void verifyPresence( ContentArea area ) {
-      if ( !getChildren().contains( area ) ) {
-         throw new IllegalArgumentException( "ContentArea not present in WallBuilder." );
-      }
-   }//End Method
-
-   /**
     * Method to split the given {@link ContentArea} vertically, resizing the given to be on top and adding a
     * new {@link ContentArea} for the bottom.
-    * @param area the given {@link ContentArea} to split.
     */
-   void splitVertically( ContentArea area ) {
-      verifyPresence( area );
+   void splitVertically() {
+      ContentArea area = selector.getSelection();
+      if ( area == null ) {
+         return;
+      }
       
       double percentageSplit = area.percentageHeight() / 2;
       area.changeHeightPercentageBy( -percentageSplit );
@@ -88,10 +80,12 @@ public class WallBuilder extends Pane {
    /**
     * Method to split the given {@link ContentArea} horizontally, resizing the given to be on the left and adding a
     * new {@link ContentArea} for the right.
-    * @param area the given {@link ContentArea} to split.
     */
-   void splitHorizontally( ContentArea area ) {
-      verifyPresence( area );
+   void splitHorizontally() {
+      ContentArea area = selector.getSelection();
+      if ( area == null ) {
+         return;
+      }
       
       double percentageSplit = area.percentageWidth() / 2;
       area.changeWidthPercentageBy( -percentageSplit );

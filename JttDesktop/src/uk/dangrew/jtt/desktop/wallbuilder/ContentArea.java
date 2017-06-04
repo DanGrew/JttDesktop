@@ -72,6 +72,11 @@ class ContentArea extends Rectangle {
     */
    private void updateTranslationX(){
       setTranslateX( ( xPositionPercentage / 100 ) * parentWidth );
+      
+      if ( xPositionPercentage + percentageWidth > 100 ) {
+         percentageWidth = 100 - xPositionPercentage;
+         updateWidth();
+      }
    }//End Method
    
    /**
@@ -79,6 +84,11 @@ class ContentArea extends Rectangle {
     */
    private void updateTranslationY(){
       setTranslateY( ( yPositionPercentage / 100 ) * parentHeight );
+      
+      if ( yPositionPercentage + percentageHeight > 100 ) {
+         percentageHeight = 100 - yPositionPercentage;
+         updateHeight();
+      }
    }//End Method
    
    /**
@@ -113,7 +123,7 @@ class ContentArea extends Rectangle {
    void changeXPositionPercentageBy( double change ) {
       this.xPositionPercentage += change;
       this.xPositionPercentage = clampPercentage( xPositionPercentage );
-      changeWidthPercentageBy( -change );
+      this.percentageWidth -= change;
       updateTranslationX();
    }//End Method
    
@@ -124,7 +134,7 @@ class ContentArea extends Rectangle {
    void changeYPositionPercentageBy( double change ) {
       this.yPositionPercentage += change;
       this.yPositionPercentage = clampPercentage( yPositionPercentage );
-      changeHeightPercentageBy( -change );
+      this.percentageHeight -= change;
       updateTranslationY();
    }//End Method
 

@@ -13,7 +13,6 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -23,6 +22,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import uk.dangrew.sd.graphics.launch.TestApplication;
 
@@ -34,7 +34,7 @@ public class WallBuilderTest {
    private ContentArea initial;
    
    @Mock private ContentAreaSelector selector;
-   @Mock private ContentAreaIntersections intersections;
+   @Spy private ContentAreaIntersections intersections;
    private WallBuilder systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
@@ -47,15 +47,15 @@ public class WallBuilderTest {
    
    @Ignore
    @Test public void manual() throws InterruptedException{
-      TestApplication.launch( () -> systemUnderTest );
+      TestApplication.launch( () -> new WallBuilder() );
       
       Thread.sleep( 5000 );
       
-      systemUnderTest.splitVertically( initial );
+      systemUnderTest.splitVertically();
       
       Thread.sleep( 5000 );
       
-      systemUnderTest.splitHorizontally( initial );
+      systemUnderTest.splitHorizontally();
       
       Thread.sleep( 1000000 );
    }//End Method
@@ -81,16 +81,18 @@ public class WallBuilderTest {
       assertThat( initial.getTranslateY(), is( 0.0 ) );
    }//End Method
    
-   @Test( expected = IllegalArgumentException.class ) public void shouldNotSplitVeritcallyIfNotPresent(){
-      systemUnderTest.splitVertically( mock( ContentArea.class ) );
+   @Test public void shouldIgnoreSplitVeritcallyIfNoSelection(){
+      systemUnderTest.splitVertically();
    }//End Method
    
-   @Test( expected = IllegalArgumentException.class ) public void shouldNotSplitHorizontallyIfNotPresent(){
-      systemUnderTest.splitHorizontally( mock( ContentArea.class ) );
+   @Test public void shouldIgnoreSplitHorizontllyIfNoSelection(){
+      systemUnderTest.splitHorizontally();
    }//End Method
    
    @Test public void shouldSplitInitialContentVertically(){
-      systemUnderTest.splitVertically( initial );
+      when( selector.getSelection() ).thenReturn( initial );
+      
+      systemUnderTest.splitVertically();
       new ContentAreaAsserter( initial )
          .withDimensionPercentages( 100, 50 )
          .withPositionPercentages( 0, 0 )
@@ -102,7 +104,9 @@ public class WallBuilderTest {
    }//End Method
    
    @Test public void shouldSplitInitialContentHorizontally(){
-      systemUnderTest.splitHorizontally( initial );
+      when( selector.getSelection() ).thenReturn( initial );
+      
+      systemUnderTest.splitHorizontally();
       new ContentAreaAsserter( initial )
          .withDimensionPercentages( 50, 100 )
          .withPositionPercentages( 0, 0 )
@@ -121,7 +125,9 @@ public class WallBuilderTest {
          .withDimensionPercentages( 80, 60 )
          .withPositionPercentages( 20, 40 )
          .assertArea();
-      systemUnderTest.splitVertically( initial );
+      
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitVertically();
       
       new ContentAreaAsserter( initial )
          .withDimensionPercentages( 80, 30 )
@@ -141,7 +147,9 @@ public class WallBuilderTest {
          .withDimensionPercentages( 80, 60 )
          .withPositionPercentages( 20, 40 )
          .assertArea();
-      systemUnderTest.splitHorizontally( initial );
+      
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitHorizontally();
       
       new ContentAreaAsserter( initial )
          .withDimensionPercentages( 40, 60 )
@@ -154,7 +162,8 @@ public class WallBuilderTest {
    }//End Method
    
    @Test public void shouldStretchLeft(){
-      systemUnderTest.splitHorizontally( initial );
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitHorizontally();
       ContentArea subject = getContent( 1 );
       
       when( selector.getSelection() ).thenReturn( subject );
@@ -163,10 +172,26 @@ public class WallBuilderTest {
       assertThat( subject.percentageWidth(), is( 60.0 ) );
       
       verify( intersections ).checkTranslationXIntersection( subject );
+      assertThat( initial.percentageWidth(), is( 40.0 ) );
+   }//End Method
+   
+   @Test public void shouldStretchLeft2(){
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitHorizontally();
+      ContentArea subject = getContent( 0 );
+      
+      when( selector.getSelection() ).thenReturn( subject );
+      
+      systemUnderTest.stretchLeft( 10 );
+      assertThat( subject.percentageWidth(), is( 50.0 ) );
+      
+      verify( intersections ).checkTranslationXIntersection( subject );
+      assertThat( getContent( 1 ).percentageWidth(), is( 50.0 ) );
    }//End Method
    
    @Test public void shouldStretchRight(){
-      systemUnderTest.splitHorizontally( initial );
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitHorizontally();
       ContentArea subject = getContent( 0 );
       
       when( selector.getSelection() ).thenReturn( subject );
@@ -178,7 +203,8 @@ public class WallBuilderTest {
    }//End Method
    
    @Test public void shouldStretchUp(){
-      systemUnderTest.splitVertically( initial );
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitVertically();
       ContentArea subject = getContent( 1 );
       
       when( selector.getSelection() ).thenReturn( subject );
@@ -190,7 +216,8 @@ public class WallBuilderTest {
    }//End Method
    
    @Test public void shouldStretchDown(){
-      systemUnderTest.splitVertically( initial );
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitVertically();
       ContentArea subject = getContent( 0 );
       
       when( selector.getSelection() ).thenReturn( subject );
