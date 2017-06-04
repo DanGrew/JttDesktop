@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.desktop.wallbuilder;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
@@ -133,6 +134,10 @@ public class WallBuilderTest {
          .withDimensionPercentages( 40, 60 )
          .withPositionPercentages( 60, 40 )
          .assertArea();
+   }//End Method
+   
+   @Test public void shouldProvideSelectionController(){
+      assertThat( systemUnderTest.selectionController(), is( instanceOf( ContentAreaSelector.class ) ) );
    }//End Method
    
    private ContentArea getContent( int index ) {

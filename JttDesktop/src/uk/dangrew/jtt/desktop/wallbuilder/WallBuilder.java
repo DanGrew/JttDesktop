@@ -19,11 +19,14 @@ import javafx.scene.layout.Pane;
 public class WallBuilder extends Pane {
    
    private ContentArea initial;
+   private final ContentAreaSelector selector;
    
    /**
     * Constructs a new {@link WallBuilder}.
     */
    WallBuilder() {
+      this.selector = new ContentAreaSelector( getChildren() );
+      
       initial = new ContentArea( 
                getWidth(), getHeight(), 
                0, 0, 
@@ -95,6 +98,10 @@ public class WallBuilder extends Pane {
     */
    private void addChild( ContentArea area ) {
       PlatformImpl.runAndWait( () -> getChildren().add( area ) );      
+   }//End Method
+
+   ContentAreaSelector selectionController() {
+      return selector;
    }//End Method
 
 }//End Class
