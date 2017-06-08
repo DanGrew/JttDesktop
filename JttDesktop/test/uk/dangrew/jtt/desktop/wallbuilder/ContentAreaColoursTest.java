@@ -20,11 +20,7 @@ public class ContentAreaColoursTest {
    private ContentAreaColours systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
-      area = new ContentArea( 
-               100, 100, 
-               0, 0,  
-               100, 100 
-      );
+      area = new TestContentArea();
       systemUnderTest = new ContentAreaColours();
    }//End Method
 

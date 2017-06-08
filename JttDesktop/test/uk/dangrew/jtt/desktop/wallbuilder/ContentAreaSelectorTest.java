@@ -43,16 +43,8 @@ public class ContentAreaSelectorTest {
       MockitoAnnotations.initMocks( this );
       
       areas = FXCollections.observableArrayList();
-      initialContent = spy( new ContentArea( 
-               100, 100, 
-               0, 0, 
-               100, 100 
-      ) );
-      alternateContent = spy( new ContentArea( 
-               100, 100, 
-               0, 0, 
-               100, 100 
-      ) );
+      initialContent = spy( new TestContentArea() );
+      alternateContent = spy( new TestContentArea() );
       areas.add( initialContent );
       systemUnderTest = new ContentAreaSelector( colours );
       systemUnderTest.setNodes( areas );

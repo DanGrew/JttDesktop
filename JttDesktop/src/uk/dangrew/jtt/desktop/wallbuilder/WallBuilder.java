@@ -18,32 +18,37 @@ import javafx.scene.layout.Pane;
  */
 public class WallBuilder extends Pane {
    
+   private ContentBoundary left;
+   private ContentBoundary top;
+   private ContentBoundary right;
+   private ContentBoundary bottom;
    private ContentArea initial;
+   
    private final ContentAreaSelector selector;
-   private final ContentAreaIntersections intersections;
    
    /**
     * Constructs a new {@link WallBuilder}.
     */
    WallBuilder() {
-      this( new ContentAreaSelector(), new ContentAreaIntersections() );
+      this( new ContentAreaSelector() );
    }//End Constructor
       
    /**
     * Constructs a new {@link WallBuilder}.
     * @param selector the {@link ContentAreaSelector}.
-    * @param intersections the {@link ContentAreaIntersections}.
     */
-   WallBuilder( ContentAreaSelector selector, ContentAreaIntersections intersections ) {
+   WallBuilder( ContentAreaSelector selector ) {
       this.selector = selector;
       this.selector.setNodes( getChildren() );
-      this.intersections = intersections;
-      this.intersections.setNodes( getChildren() );
+      
+      this.left = new ContentBoundary( 0 );
+      this.top = new ContentBoundary( 0 );
+      this.right = new ContentBoundary( 100 );
+      this.bottom = new ContentBoundary( 100 );
       
       initial = new ContentArea( 
-               getWidth(), getHeight(), 
-               0, 0, 
-               100, 100 
+               left, top, right, bottom,
+               getWidth(), getHeight() 
       );
       getChildren().add( initial );  
       
@@ -56,7 +61,23 @@ public class WallBuilder extends Pane {
    }//End Constructor
    
    /**
-    * Method to split the given {@link ContentArea} vertically, resizing the given to be on top and adding a
+    * Method to construct the {@link ContentBoundary} between the given {@link ContentBoundary}s.
+    * @param splitBetweenHere the split from {@link ContentBoundary}.
+    * @param splitBetweenThere the split to {@link ContentBoundary}.
+    * @return a new {@link ContentBoundary} between the two given.
+    */
+   private ContentBoundary constructBoundaryToSplit( 
+            ContentBoundary splitBetweenHere, 
+            ContentBoundary splitBetweenThere 
+   ){
+      double splitPosition = splitBetweenThere.positionPercentage() - splitBetweenHere.positionPercentage();
+      splitPosition /= 2;
+      splitPosition += splitBetweenHere.positionPercentage();
+      return new ContentBoundary( splitPosition );
+   }//End Method
+   
+   /**
+    * Method to split the current selection vertically, resizing the given to be on top and adding a
     * new {@link ContentArea} for the bottom.
     */
    void splitVertically() {
@@ -65,20 +86,21 @@ public class WallBuilder extends Pane {
          return;
       }
       
-      double percentageSplit = area.percentageHeight() / 2;
-      area.changeHeightPercentageBy( -percentageSplit );
-      
-      ContentArea newArea = new ContentArea( 
-               getWidth(), getHeight(), 
-               area.xPositionPercentage(), area.yPositionPercentage() + percentageSplit, 
-               area.percentageWidth(), area.percentageHeight() 
+      ContentBoundary newBoundary = constructBoundaryToSplit( 
+               area.topBoundary(), area.bottomBoundary() 
       );
       
+      ContentArea newArea = new ContentArea( 
+               area.leftBoundary(), newBoundary, area.rightBoundary(), area.bottomBoundary(), 
+               getWidth(), getHeight() 
+      );
       addChild( newArea );
+      
+      area.setBottomBoundary( newBoundary );
    }//End Method
 
    /**
-    * Method to split the given {@link ContentArea} horizontally, resizing the given to be on the left and adding a
+    * Method to split the current selection horizontally, resizing the given to be on the left and adding a
     * new {@link ContentArea} for the right.
     */
    void splitHorizontally() {
@@ -87,16 +109,17 @@ public class WallBuilder extends Pane {
          return;
       }
       
-      double percentageSplit = area.percentageWidth() / 2;
-      area.changeWidthPercentageBy( -percentageSplit );
-      
-      ContentArea newArea = new ContentArea( 
-               getWidth(), getHeight(), 
-               area.xPositionPercentage() + percentageSplit, area.yPositionPercentage(), 
-               area.percentageWidth(), area.percentageHeight() 
+      ContentBoundary newBoundary = constructBoundaryToSplit( 
+               area.leftBoundary(), area.rightBoundary() 
       );
       
+      ContentArea newArea = new ContentArea( 
+               newBoundary, area.topBoundary(), area.rightBoundary(), area.bottomBoundary(), 
+               getWidth(), getHeight() 
+      );
       addChild( newArea );
+      
+      area.setRightBoundary( newBoundary );
    }//End Method
    
    /**
@@ -108,63 +131,33 @@ public class WallBuilder extends Pane {
    }//End Method
    
    /**
-    * Method to stretch the current selection to the left by the given percentage of the width.
-    * @param percentage the percentage to change by.
+    * Method to push the current selection at the given {@link SquareBoundary} by the given
+    * percentage.
+    * @param boundaryType the {@link SquareBoundary} to push by.
+    * @param percentage the percentage to push by.
     */
-   void stretchLeft( double percentage ) {
+   void push( SquareBoundary boundaryType, double percentage ) {
       ContentArea selection = selector.getSelection();
       if ( selection == null ) {
          return;
       }
       
-      selection.changeXPositionPercentageBy( -percentage );
-      intersections.checkTranslationXIntersection( selection );
+      boundaryType.push( selection, percentage );
    }//End Method
    
    /**
-    * Method to stretch the current selection to the right by the given percentage of the width.
-    * @param percentage the percentage to change by.
+    * Method to pull the current selection at the given {@link SquareBoundary} by the given
+    * percentage.
+    * @param boundaryType the {@link SquareBoundary} to pull by.
+    * @param percentage the percentage to push by.
     */
-   void stretchRight( double percentage ) {
+   void pull( SquareBoundary boundaryType, double percentage ) {
       ContentArea selection = selector.getSelection();
       if ( selection == null ) {
          return;
       }
       
-      selection.changeWidthPercentageBy( percentage );
-      intersections.checkWidthIntersection( selection );
+      boundaryType.pull( selection, percentage );
    }//End Method
    
-   /**
-    * Method to stretch the current selection up by the given percentage of the height.
-    * @param percentage the percentage to change by.
-    */
-   void stretchUp( double percentage ) {
-      ContentArea selection = selector.getSelection();
-      if ( selection == null ) {
-         return;
-      }
-      
-      selection.changeYPositionPercentageBy( -percentage );
-      intersections.checkTranslationYIntersection( selection );
-   }//End Method
-   
-   /**
-    * Method to stretch the current selection down by the given percentage of the height.
-    * @param percentage the percentage to change by.
-    */
-   void stretchDown( double percentage ) {
-      ContentArea selection = selector.getSelection();
-      if ( selection == null ) {
-         return;
-      }
-      
-      selection.changeHeightPercentageBy( percentage );
-      intersections.checkHeightIntersection( selection );
-   }//End Method
-
-   ContentAreaSelector selectionController() {
-      return selector;
-   }//End Method
-
 }//End Class

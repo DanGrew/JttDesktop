@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.desktop.wallbuilder;
 
+import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -20,35 +21,50 @@ class ContentArea extends Rectangle {
    private double parentWidth = 0;
    private double parentHeight = 0;
    
-   private double xPositionPercentage = 0;
-   private double yPositionPercentage = 0;
+   private ContentBoundary top;
+   private ContentBoundary bottom;
+   private ContentBoundary left;
+   private ContentBoundary right;
    
-   private double percentageWidth = 0;
-   private double percentageHeight = 0;
+   private final ChangeListener< Number > horizontalListener;
+   private final ChangeListener< Number > verticalListener;
    
    /**
     * Constructs a new {@link ContentArea}.
-    * @param initialParentWidth the current width of the parent.
-    * @param initialParentHeight the current height of the parent.
-    * @param initialPositionXPercentage the initial x position as a percentage of the parent width.
-    * @param initialPositionYPercentage the initial y position as a percentage of the parent height.
-    * @param initialPercentageWidth the initial width as a percent of the parent width. 
-    * @param initialPercentageHeight the initial height as a percent of the parent height. 
+    * @param left the {@link ContentBoundary} on the left.
+    * @param top the {@link ContentBoundary} on the top.
+    * @param right the {@link ContentBoundary} on the right.
+    * @param bottom the {@link ContentBoundary} on the bottom.
+    * @param currentParentWidth the current width of the parent.
+    * @param currentParentHeight the current height of the parent.
     */
    ContentArea( 
-            double initialParentWidth, double initialParentHeight,
-            double initialPositionXPercentage, double initialPositionYPercentage,
-            double initialPercentageWidth, double initialPercentageHeight
+            ContentBoundary left,
+            ContentBoundary top,
+            ContentBoundary right,
+            ContentBoundary bottom,
+            double currentParentWidth,
+            double currentParentHeight
    ) {
       setFill( Color.BLACK );
       setStroke( Color.WHITE );
       setStrokeWidth( 5 );
       
-      this.xPositionPercentage = initialPositionXPercentage;
-      this.yPositionPercentage = initialPositionYPercentage;
-      this.percentageWidth = initialPercentageWidth;
-      this.percentageHeight = initialPercentageHeight;
-      setParentDimensions( initialParentWidth, initialParentHeight );
+      horizontalListener = ( s, o, n ) -> {
+         updateTranslationX();
+         updateWidth();
+      };
+      verticalListener = ( s, o, n ) -> {
+         updateTranslationY();
+         updateHeight();
+      };
+      
+      setLeftBoundary( left );
+      setTopBoundary( top );
+      setRightBoundary( right );
+      setBottomBoundary( bottom );
+      
+      setParentDimensions( currentParentWidth, currentParentHeight );
    }//End Constructor
 
    /**
@@ -68,126 +84,127 @@ class ContentArea extends Rectangle {
    }//End Method
    
    /**
-    * Method to update the {@link #translateXProperty()} given the {@link #xPositionPercentage()}.
+    * Method to update the {@link #translateXProperty()} given the {@link ContentBoundary}s.
     */
    private void updateTranslationX(){
-      setTranslateX( ( xPositionPercentage / 100 ) * parentWidth );
-      
-      if ( xPositionPercentage + percentageWidth > 100 ) {
-         percentageWidth = 100 - xPositionPercentage;
-         updateWidth();
-      }
+      setTranslateX( ( left.positionPercentage() / 100 ) * parentWidth );
    }//End Method
    
    /**
-    * Method to update the {@link #translateYProperty()} given the {@link #yPositionPercentage()}.
+    * Method to update the {@link #translateYProperty()} given the {@link ContentBoundary}s.
     */
    private void updateTranslationY(){
-      setTranslateY( ( yPositionPercentage / 100 ) * parentHeight );
-      
-      if ( yPositionPercentage + percentageHeight > 100 ) {
-         percentageHeight = 100 - yPositionPercentage;
-         updateHeight();
-      }
+      setTranslateY( ( top.positionPercentage() / 100 ) * parentHeight );
    }//End Method
    
    /**
-    * Method to update the {@link #widthProperty()} given the {@link #percentageWidth()}.
+    * Method to update the {@link #widthProperty()} given the {@link ContentBoundary}s.
     */
    private void updateWidth(){
-      setWidth( ( percentageWidth / 100 ) * parentWidth );
+      setWidth( ( ( right.positionPercentage() - left.positionPercentage() ) / 100 ) * parentWidth );
    }//End Method
    
    /**
-    * Method to update the {@link #heightProperty()} given the {@link #percentageHeight()}.
+    * Method to update the {@link #heightProperty()} given the {@link ContentBoundary}s.
     */
    private void updateHeight(){
-      setHeight( ( percentageHeight / 100 ) * parentHeight );
+      setHeight( ( ( bottom.positionPercentage() - top.positionPercentage() ) / 100 ) * parentHeight );
    }//End Method
    
    /**
-    * Method to clamp the given value as a percentage.
-    * @param value the value to clamp.
-    * @return the clamped percentage.
+    * Set the left {@link ContentBoundary}. This will bind the edge of the {@link ContentArea} to
+    * this boundary and unbind from the previous.
+    * @param boundary the {@link ContentBoundary}.
     */
-   private double clampPercentage( double value ) {
-      value = Math.max( value, 0 );
-      value = Math.min( value, 100 );
-      return value;
-   }//End Method
-
-   /**
-    * Method to change the current x position, as a percentage of the parent width, by the given amount.
-    * @param change the change in percentage, + or -.
-    */
-   void changeXPositionPercentageBy( double change ) {
-      this.xPositionPercentage += change;
-      this.xPositionPercentage = clampPercentage( xPositionPercentage );
-      this.percentageWidth -= change;
+   void setLeftBoundary( ContentBoundary boundary ) {
+      if ( left != null ) {
+         //removes memory leak but has not functional need
+         left.unregisterForPositionChanges( horizontalListener );
+      }
+      
+      left = boundary;
+      left.registerForPositionChanges( horizontalListener );
       updateTranslationX();
    }//End Method
    
    /**
-    * Method to change the current y position, as a percentage of the parent height, by the given amount.
-    * @param change the change in percentage, + or -.
+    * Set the right {@link ContentBoundary}. This will bind the edge of the {@link ContentArea} to
+    * this boundary and unbind from the previous.
+    * @param boundary the {@link ContentBoundary}.
     */
-   void changeYPositionPercentageBy( double change ) {
-      this.yPositionPercentage += change;
-      this.yPositionPercentage = clampPercentage( yPositionPercentage );
-      this.percentageHeight -= change;
-      updateTranslationY();
-   }//End Method
-
-   /**
-    * Method to change the width, as a percentage of the parent width, by the given amount.
-    * @param change the change in percentage, + or -.
-    */
-   void changeWidthPercentageBy( double change ) {
-      this.percentageWidth += change;
-      this.percentageWidth = clampPercentage( percentageWidth );
+   void setRightBoundary( ContentBoundary boundary ) {
+      if ( right != null ) {
+         //removes memory leak but has not functional need
+         right.unregisterForPositionChanges( horizontalListener );
+      }
+      
+      right = boundary;
+      right.registerForPositionChanges( horizontalListener );
       updateWidth();
    }//End Method
-
+   
    /**
-    * Method to change the height, as a percentage of the parent height, by the given amount.
-    * @param change the change in percentage, + or -.
+    * Set the top {@link ContentBoundary}. This will bind the edge of the {@link ContentArea} to
+    * this boundary and unbind from the previous.
+    * @param boundary the {@link ContentBoundary}.
     */
-   void changeHeightPercentageBy( double change ) {
-      this.percentageHeight += change;
-      this.percentageHeight = clampPercentage( percentageHeight );
+   void setTopBoundary( ContentBoundary boundary ) {
+      if ( top != null ) {
+         //removes memory leak but has not functional need
+         top.unregisterForPositionChanges( verticalListener );
+      }
+      
+      top = boundary;
+      top.registerForPositionChanges( verticalListener );
+      updateTranslationY();
+   }//End Method
+   
+   /**
+    * Set the bottom {@link ContentBoundary}. This will bind the edge of the {@link ContentArea} to
+    * this boundary and unbind from the previous.
+    * @param boundary the {@link ContentBoundary}.
+    */
+   void setBottomBoundary( ContentBoundary boundary ) {
+      if ( bottom != null ) {
+         //removes memory leak but has not functional need
+         bottom.unregisterForPositionChanges( verticalListener );
+      }
+      
+      bottom = boundary;
+      bottom.registerForPositionChanges( verticalListener );
       updateHeight();
    }//End Method
-
+   
    /**
-    * Access to the x position as a percentage of the parent width.
-    * @return the value.
+    * Access to the left {@link ContentBoundary}.
+    * @return the {@link ContentBoundary}.
     */
-   double xPositionPercentage() {
-      return xPositionPercentage;
+   ContentBoundary leftBoundary(){
+      return left;
    }//End Method
-
+   
    /**
-    * Access to the y position as a percentage of the parent height.
-    * @return the value.
+    * Access to the right {@link ContentBoundary}.
+    * @return the {@link ContentBoundary}.
     */
-   double yPositionPercentage() {
-      return yPositionPercentage;
+   ContentBoundary rightBoundary(){
+      return right;
    }//End Method
-
+   
    /**
-    * Access to the width as a percentage of the parent width.
-    * @return the value.
+    * Access to the top {@link ContentBoundary}.
+    * @return the {@link ContentBoundary}.
     */
-   double percentageWidth() {
-      return percentageWidth;
+   ContentBoundary topBoundary(){
+      return top;
    }//End Method
-
+   
    /**
-    * Access to the height as a percentage of the parent height.
-    * @return the value.
+    * Access to the bottom {@link ContentBoundary}.
+    * @return the {@link ContentBoundary}.
     */
-   double percentageHeight() {
-      return percentageHeight;
+   ContentBoundary bottomBoundary(){
+      return bottom;
    }//End Method
    
 }//End Class

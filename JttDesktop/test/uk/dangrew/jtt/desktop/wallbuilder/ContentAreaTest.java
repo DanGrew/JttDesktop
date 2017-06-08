@@ -8,182 +8,183 @@
  */
 package uk.dangrew.jtt.desktop.wallbuilder;
 
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static uk.dangrew.jtt.model.utility.TestCommon.precision;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import uk.dangrew.sd.graphics.launch.TestApplication;
 
 public class ContentAreaTest {
 
-   private static final double PARENT_WIDTH = 100;
-   private static final double PARENT_HIEGHT = 200;
+   private static final double LEFT_POSITION = 45;
+   private static final double RIGHT_POSITION = 80;
+   private static final double TOP_POSITION = 5;
+   private static final double BOTTOM_POSITION = 70;
    
-   private static final double POSITION_X_PERCENTAGE = 40;
-   private static final double POSITION_Y_PERCENTAGE = 60;
+   private static final double INITIAL_PARENT_WIDTH = 50;
+   private static final double INITIAL_PARENT_HEIGHT = 200;
    
-   private static final double WIDTH_PERCENTAGE = 90;
-   private static final double HEIGHT_PERCENTAGE = 80;
+   private ContentBoundary left;
+   private ContentBoundary right;
+   private ContentBoundary top;
+   private ContentBoundary bottom;
    private ContentArea systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
+      left = new ContentBoundary( LEFT_POSITION );
+      right = new ContentBoundary( RIGHT_POSITION );
+      top = new ContentBoundary( TOP_POSITION );
+      bottom = new ContentBoundary( BOTTOM_POSITION );
+      
       systemUnderTest = new ContentArea( 
-               PARENT_WIDTH, PARENT_HIEGHT,
-               POSITION_X_PERCENTAGE, POSITION_Y_PERCENTAGE,
-               WIDTH_PERCENTAGE, HEIGHT_PERCENTAGE
+               left, top, right, bottom,
+               INITIAL_PARENT_WIDTH, INITIAL_PARENT_HEIGHT
       );
    }//End Method
 
-   @Ignore
-   @Test public void manual() throws InterruptedException{
-      TestApplication.launch( () -> new Group( systemUnderTest ) );
-      
-      Thread.sleep( 5000 );
-      systemUnderTest.changeWidthPercentageBy( 30 );
-      systemUnderTest.changeHeightPercentageBy( 90 );
-      
-      Thread.sleep( 5000 );
-      systemUnderTest.changeXPositionPercentageBy( 10 );
-      systemUnderTest.changeXPositionPercentageBy( -10 );
-      
-      Thread.sleep( 5000 );
-      systemUnderTest.setParentDimensions( 300, 200 );
-      
-      Thread.sleep( 1000000 );
-   }//End Method
-   
    @Test public void shouldProvideContentStyle() {
       assertThat( systemUnderTest.getFill(), is( Color.BLACK ) );
    }//End Method
    
-   @Test public void shouldCalculateInitialPosition(){
-      assertThat( systemUnderTest.getTranslateX(), is( 40.0 ) );
-      assertThat( systemUnderTest.getTranslateY(), is( 120.0 ) );
+   @Test public void shouldCalculateInitialDimensions(){
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
    }//End Method
    
-   @Test public void shouldCalculateInitialWidthAndHeight(){
-      systemUnderTest = new ContentArea( 
-               PARENT_WIDTH, PARENT_HIEGHT,
-               POSITION_X_PERCENTAGE, POSITION_Y_PERCENTAGE,
-               20, 15
-      );
-      assertThat( systemUnderTest.getWidth(), is( 20.0 ) );
-      assertThat( systemUnderTest.getHeight(), is( 30.0 ) );
-      assertThat( systemUnderTest.percentageWidth(), is( 20.0 ) );
-      assertThat( systemUnderTest.percentageHeight(), is( 15.0 ) );
-   }//End Method
-   
-   @Test public void shouldAdjustWidthAndHeightBasedOnTranslationAndBoundaries(){
-      assertThat( systemUnderTest.getWidth(), is( 60.0 ) );
-      assertThat( systemUnderTest.getHeight(), is( 80.0 ) );
-      assertThat( systemUnderTest.percentageWidth(), is( 60.0 ) );
-      assertThat( systemUnderTest.percentageHeight(), is( 40.0 ) );
-   }//End Method
-   
-   @Test public void shouldUpdateXPositionUsingPercentage(){
-      systemUnderTest.changeXPositionPercentageBy( 30 );
-      assertThat( systemUnderTest.getTranslateX(), is( 70.0 ) );
-   }//End Method
-   
-   @Test public void shouldUpdateYPositionUsingPercentage(){
-      systemUnderTest.changeYPositionPercentageBy( 10 );
-      assertThat( systemUnderTest.getTranslateY(), is( 140.0 ) );
-   }//End Method
-   
-   @Test public void shouldRecalculateWhenParentDimensionChanges(){
-      systemUnderTest.setParentDimensions( 300, 100 );
-      assertThat( systemUnderTest.getTranslateX(), is( 120.0 ) );
-      assertThat( systemUnderTest.getTranslateY(), is( 60.0 ) );
-      assertThat( systemUnderTest.getWidth(), is( 180.0 ) );
-      assertThat( systemUnderTest.getHeight(), is( 40.0 ) );
-   }//End Method
-   
-   @Test public void shouldUpdateWidthUsingParentPercentage(){
-      systemUnderTest.changeWidthPercentageBy( -50 );
-      assertThat( systemUnderTest.getWidth(), is( 10.0 ) );
-   }//End Method
-   
-   @Test public void shouldUpdateHeightUsingParentPercentage(){
-      systemUnderTest.changeHeightPercentageBy( -10 );
-      assertThat( systemUnderTest.getHeight(), is( 60.0 ) );
-   }//End Method
-   
-   @Test public void shouldCapTranslationAtMax(){
-      systemUnderTest.changeXPositionPercentageBy( 100 );
-      assertThat( systemUnderTest.getTranslateX(), is( PARENT_WIDTH ) );
-      assertThat( systemUnderTest.xPositionPercentage(), is( 100.0 ) );
+   @Test public void shouldChangeLeftBoundary(){
+      ContentBoundary newLeft = new ContentBoundary( 20 );
+      systemUnderTest.setLeftBoundary( newLeft );
       
-      systemUnderTest.changeYPositionPercentageBy( 100 );
-      assertThat( systemUnderTest.getTranslateY(), is( PARENT_HIEGHT ) );
-      assertThat( systemUnderTest.yPositionPercentage(), is( 100.0 ) );
+      assertThat( systemUnderTest.getTranslateX(), is( 10.0 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
    }//End Method
    
-   @Test public void shouldCapTranslationAtMin(){
-      systemUnderTest.changeXPositionPercentageBy( -100 );
-      assertThat( systemUnderTest.getTranslateX(), is( 0.0 ) );
-      assertThat( systemUnderTest.xPositionPercentage(), is( 0.0 ) );
+   @Test public void shouldRespondToLeftBoundary(){
+      left.changePosition( 10 );
       
-      systemUnderTest.changeYPositionPercentageBy( -100 );
-      assertThat( systemUnderTest.getTranslateY(), is( 0.0 ) );
-      assertThat( systemUnderTest.yPositionPercentage(), is( 0.0 ) );
+      assertThat( systemUnderTest.getTranslateX(), is( closeTo( 27.5, precision() ) ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 12.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
    }//End Method
    
-   @Test public void shouldCapDimensionsAtMax(){
-      systemUnderTest.changeWidthPercentageBy( 100 );
-      assertThat( systemUnderTest.getWidth(), is( PARENT_WIDTH ) );
-      assertThat( systemUnderTest.percentageWidth(), is( 100.0 ) );
-      assertThat( systemUnderTest.xPositionPercentage(), is( POSITION_X_PERCENTAGE ) );
+   @Test public void shouldNotRespondToOldLeftBoundary(){
+      ContentBoundary newLeft = new ContentBoundary( LEFT_POSITION );
+      systemUnderTest.setLeftBoundary( newLeft );
       
-      systemUnderTest.changeHeightPercentageBy( 100 );
-      assertThat( systemUnderTest.getHeight(), is( PARENT_HIEGHT ) );
-      assertThat( systemUnderTest.percentageHeight(), is( 100.0 ) );
-      assertThat( systemUnderTest.yPositionPercentage(), is( POSITION_Y_PERCENTAGE ) );
+      left.changePosition( 10 );
+      
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
    }//End Method
    
-   @Test public void shouldCapDimensionsAtMin(){
-      systemUnderTest.changeWidthPercentageBy( -100 );
-      assertThat( systemUnderTest.getWidth(), is( 0.0 ) );
-      assertThat( systemUnderTest.percentageWidth(), is( 0.0 ) );
-      assertThat( systemUnderTest.xPositionPercentage(), is( POSITION_X_PERCENTAGE ) );
+   @Test public void shouldChangeRightBoundary(){
+      ContentBoundary newRight = new ContentBoundary( 90 );
+      systemUnderTest.setRightBoundary( newRight );
       
-      systemUnderTest.changeHeightPercentageBy( -100 );
-      assertThat( systemUnderTest.getHeight(), is( 0.0 ) );
-      assertThat( systemUnderTest.percentageHeight(), is( 0.0 ) );
-      assertThat( systemUnderTest.yPositionPercentage(), is( POSITION_Y_PERCENTAGE ) );
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 22.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
    }//End Method
    
-   @Test public void shouldUpdateWidthWhenTranslationChanges(){
-      double initialWidth = systemUnderTest.percentageWidth();
-      systemUnderTest.changeXPositionPercentageBy( 10 );
-      assertThat( systemUnderTest.percentageWidth(), is( initialWidth - 10 ) );
+   @Test public void shouldRespondToRightBoundary(){
+      right.changePosition( 10 );
       
-      double initialHeight = systemUnderTest.percentageHeight();
-      systemUnderTest.changeYPositionPercentageBy( 10 );
-      assertThat( systemUnderTest.percentageHeight(), is( initialHeight - 10 ) );
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 22.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
    }//End Method
    
-   @Test public void shouldReduceWidthWhenTranslationChanges(){
-      systemUnderTest.changeXPositionPercentageBy( 1 );
-      assertThat( systemUnderTest.xPositionPercentage(), is( 41.0 ) );
-      assertThat( systemUnderTest.percentageWidth(), is( 59.0 ) );
+   @Test public void shouldNotRespondToOldRightBoundary(){
+      ContentBoundary newRight = new ContentBoundary( RIGHT_POSITION );
+      systemUnderTest.setRightBoundary( newRight );
       
-      systemUnderTest.changeXPositionPercentageBy( -2 );
-      assertThat( systemUnderTest.xPositionPercentage(), is( 39.0 ) );
-      assertThat( systemUnderTest.percentageWidth(), is( 61.0 ) );
+      right.changePosition( 10 );
+      
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
    }//End Method
    
-   @Test public void shouldReduceHeightWhenTranslationChanges(){
-      systemUnderTest.changeYPositionPercentageBy( 1 );
-      assertThat( systemUnderTest.yPositionPercentage(), is( 61.0 ) );
-      assertThat( systemUnderTest.percentageHeight(), is( 39.0 ) );
+   @Test public void shouldChangeTopBoundary(){
+      ContentBoundary newTop = new ContentBoundary( 10 );
+      systemUnderTest.setTopBoundary( newTop );
       
-      systemUnderTest.changeYPositionPercentageBy( -2 );
-      assertThat( systemUnderTest.yPositionPercentage(), is( 59.0 ) );
-      assertThat( systemUnderTest.percentageHeight(), is( 41.0 ) );
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 20.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
+   }//End Method
+   
+   @Test public void shouldRespondToTopBoundary(){
+      top.changePosition( 10 );
+      
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 30.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( closeTo( 110.0, precision() ) ) );
+   }//End Method
+   
+   @Test public void shouldNotRespondToOldTopBoundary(){
+      ContentBoundary newTop = new ContentBoundary( TOP_POSITION );
+      systemUnderTest.setTopBoundary( newTop );
+      
+      top.changePosition( 10 );
+      
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
+   }//End Method
+   
+   @Test public void shouldChangeBottomBoundary(){
+      ContentBoundary newBottom = new ContentBoundary( 80 );
+      systemUnderTest.setBottomBoundary( newBottom );
+      
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 150.0 ) );
+   }//End Method
+   
+   @Test public void shouldRespondToBottomBoundary(){
+      bottom.changePosition( 10 );
+      
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 150.0 ) );
+   }//End Method
+   
+   @Test public void shouldNotRespondToOldBottomBoundary(){
+      ContentBoundary newBottom = new ContentBoundary( BOTTOM_POSITION );
+      systemUnderTest.setBottomBoundary( newBottom );
+      
+      bottom.changePosition( 10 );
+      
+      assertThat( systemUnderTest.getTranslateX(), is( 22.5 ) );
+      assertThat( systemUnderTest.getTranslateY(), is( 10.0 ) );
+      assertThat( systemUnderTest.getWidth(), is( 17.5 ) );
+      assertThat( systemUnderTest.getHeight(), is( 130.0 ) );
+   }//End Method
+   
+   @Test public void shouldProvideBoundaries(){
+      assertThat( systemUnderTest.leftBoundary(), is( left ) );
+      assertThat( systemUnderTest.rightBoundary(), is( right ) );
+      assertThat( systemUnderTest.topBoundary(), is( top ) );
+      assertThat( systemUnderTest.bottomBoundary(), is( bottom ) );
    }//End Method
 }//End Class

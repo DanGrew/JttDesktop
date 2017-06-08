@@ -19,15 +19,15 @@ class ContentAreaAsserter {
 
    private final ContentArea systemUnderTest;
    
+   private Double left;
+   private Double top;
+   private Double right;
+   private Double bottom;
+   
    private Double translateX;
    private Double translateY;
-   private Double positionPercentageX;
-   private Double positionPercentageY;
-   
    private Double width;
    private Double height;
-   private Double widthPercentage;
-   private Double heightPercentage;
    
    /**
     * Constructs a new {@link ContentAreaAsserter}.
@@ -63,25 +63,25 @@ class ContentAreaAsserter {
    
    /**
     * Builder pattern.
-    * @param x provides the expected position value.
-    * @param y provides the expected position value.
+    * @param t provides the expected position value.
+    * @param l provides the expected position value.
     * @return this.
     */
-   ContentAreaAsserter withPositionPercentages( double x, double y ) {
-      this.positionPercentageX = x;
-      this.positionPercentageY = y;
+   ContentAreaAsserter withTopLeft( double t, double l ) {
+      this.left = l;
+      this.top = t;
       return this;
    }//End Method
    
    /**
     * Builder pattern.
-    * @param w provides the expected width value.
-    * @param h provides the expected height value.
+    * @param b provides the expected position value.
+    * @param r provides the expected position value.
     * @return this.
     */
-   ContentAreaAsserter withDimensionPercentages( double w, double h ) {
-      this.widthPercentage = w;
-      this.heightPercentage = h;
+   ContentAreaAsserter withBottomRight( double b, double r ) {
+      this.right = r;
+      this.bottom = b;
       return this;
    }//End Method
    
@@ -97,12 +97,12 @@ class ContentAreaAsserter {
          assertThat( systemUnderTest.getTranslateY(), is( translateY.doubleValue() ) );
       }
       
-      if ( positionPercentageX != null ) {
-         assertThat( systemUnderTest.xPositionPercentage(), is( positionPercentageX.doubleValue() ) );
+      if ( left != null ) {
+         assertThat( systemUnderTest.leftBoundary().positionPercentage(), is( left.doubleValue() ) );
       }
       
-      if ( positionPercentageY != null ) {
-         assertThat( systemUnderTest.yPositionPercentage(), is( positionPercentageY.doubleValue() ) );
+      if ( top != null ) {
+         assertThat( systemUnderTest.topBoundary().positionPercentage(), is( top.doubleValue() ) );
       }
       
       if ( width != null ) {
@@ -113,12 +113,12 @@ class ContentAreaAsserter {
          assertThat( systemUnderTest.getHeight(), is( height.doubleValue() ) );
       }
       
-      if ( widthPercentage != null ) {
-         assertThat( systemUnderTest.percentageWidth(), is( widthPercentage.doubleValue() ) );
+      if ( right != null ) {
+         assertThat( systemUnderTest.rightBoundary().positionPercentage(), is( right.doubleValue() ) );
       }
       
-      if ( heightPercentage != null ) {
-         assertThat( systemUnderTest.percentageHeight(), is( heightPercentage.doubleValue() ) );
+      if ( bottom != null ) {
+         assertThat( systemUnderTest.bottomBoundary().positionPercentage(), is( bottom.doubleValue() ) );
       }
    }//End Method
 }//End Class

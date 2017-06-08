@@ -8,13 +8,12 @@
  */
 package uk.dangrew.jtt.desktop.wallbuilder;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -22,7 +21,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 import uk.dangrew.sd.graphics.launch.TestApplication;
 
@@ -34,13 +32,12 @@ public class WallBuilderTest {
    private ContentArea initial;
    
    @Mock private ContentAreaSelector selector;
-   @Spy private ContentAreaIntersections intersections;
    private WallBuilder systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
       TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new WallBuilder( selector, intersections );
+      systemUnderTest = new WallBuilder( selector );
       systemUnderTest.setPrefSize( PREFERRED_WIDTH, PREFERRED_HEIGHT );
       initial = getContent( 0 );
    }//End Method
@@ -62,10 +59,6 @@ public class WallBuilderTest {
    
    @Test public void shouldSetNodesOnSelector(){
       verify( selector ).setNodes( systemUnderTest.getChildren() );
-   }//End Method
-   
-   @Test public void shouldSetNodesOnIntersections(){
-      verify( intersections ).setNodes( systemUnderTest.getChildren() );
    }//End Method
    
    @Test public void shouldUpdateContentAreasWithDimensionUpdates(){
@@ -94,12 +87,12 @@ public class WallBuilderTest {
       
       systemUnderTest.splitVertically();
       new ContentAreaAsserter( initial )
-         .withDimensionPercentages( 100, 50 )
-         .withPositionPercentages( 0, 0 )
+         .withTopLeft( 0, 0 )
+         .withBottomRight( 50, 100 )
          .assertArea();
       new ContentAreaAsserter( getContent( 1 ) )
-         .withDimensionPercentages( 100, 50 )
-         .withPositionPercentages( 0, 50 )
+         .withTopLeft( 50, 0 )
+         .withBottomRight( 100, 100 )
          .assertArea();
    }//End Method
    
@@ -108,138 +101,99 @@ public class WallBuilderTest {
       
       systemUnderTest.splitHorizontally();
       new ContentAreaAsserter( initial )
-         .withDimensionPercentages( 50, 100 )
-         .withPositionPercentages( 0, 0 )
+         .withTopLeft( 0, 0 )
+         .withBottomRight( 100, 50 )
          .assertArea();
       new ContentAreaAsserter( getContent( 1 ) )
-         .withDimensionPercentages( 50, 100 )
-         .withPositionPercentages( 50, 0 )
+         .withTopLeft( 0, 50 )
+         .withBottomRight( 100, 100 )
          .assertArea();
    }//End Method
    
+   @Test public void shouldSplitVerticallyAndShareBoundaries(){
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitVertically();
+      
+      ContentArea other = getContent( 1 );
+      assertThat( initial.topBoundary(), is( not( other.bottomBoundary() ) ) );
+      assertThat( initial.bottomBoundary(), is( not( other.bottomBoundary() ) ) );
+      assertThat( initial.bottomBoundary(), is( other.topBoundary() ) );
+      
+      assertThat( initial.rightBoundary(), is( other.rightBoundary() ) );
+      assertThat( initial.leftBoundary(), is( other.leftBoundary() ) );
+   }//End Method
+   
+   @Test public void shouldSplitHorizontallyAndShareBoundaries(){
+      when( selector.getSelection() ).thenReturn( initial );
+      systemUnderTest.splitHorizontally();
+      
+      ContentArea other = getContent( 1 );
+      assertThat( initial.leftBoundary(), is( not( other.leftBoundary() ) ) );
+      assertThat( initial.rightBoundary(), is( not( other.rightBoundary() ) ) );
+      assertThat( initial.rightBoundary(), is( other.leftBoundary() ) );
+      
+      assertThat( initial.topBoundary(), is( other.topBoundary() ) );
+      assertThat( initial.bottomBoundary(), is( other.bottomBoundary() ) );
+   }//End Method
+   
    @Test public void shouldSplitContentVerticallyWithTranslation(){
-      initial.changeXPositionPercentageBy( 20 );
-      initial.changeYPositionPercentageBy( 40 );
+      initial.leftBoundary().changePosition( 20 );
+      initial.topBoundary().changePosition( 40 );
       
       new ContentAreaAsserter( initial )
-         .withDimensionPercentages( 80, 60 )
-         .withPositionPercentages( 20, 40 )
+         .withTopLeft( 40, 20 )
+         .withBottomRight( 100, 100 )
          .assertArea();
       
       when( selector.getSelection() ).thenReturn( initial );
       systemUnderTest.splitVertically();
       
       new ContentAreaAsserter( initial )
-         .withDimensionPercentages( 80, 30 )
-         .withPositionPercentages( 20, 40 )
+         .withTopLeft( 40, 20 )
+         .withBottomRight( 70, 100 )
          .assertArea();
       new ContentAreaAsserter( getContent( 1 ) )
-         .withDimensionPercentages( 80, 30 )
-         .withPositionPercentages( 20, 70 )
+         .withTopLeft( 70, 20 )
+         .withBottomRight( 100, 100 )
          .assertArea();
    }//End Method
    
    @Test public void shouldSplitInitialContentHorizontallyWithTranslation(){
-      initial.changeXPositionPercentageBy( 20 );
-      initial.changeYPositionPercentageBy( 40 );
+      initial.leftBoundary().changePosition( 20 );
+      initial.topBoundary().changePosition( 40 );
       
       new ContentAreaAsserter( initial )
-         .withDimensionPercentages( 80, 60 )
-         .withPositionPercentages( 20, 40 )
+         .withTopLeft( 40, 20 )
+         .withBottomRight( 100, 100 )
          .assertArea();
       
       when( selector.getSelection() ).thenReturn( initial );
       systemUnderTest.splitHorizontally();
       
       new ContentAreaAsserter( initial )
-         .withDimensionPercentages( 40, 60 )
-         .withPositionPercentages( 20, 40 )
+         .withTopLeft( 40, 20 )
+         .withBottomRight( 100, 60 )
          .assertArea();
       new ContentAreaAsserter( getContent( 1 ) )
-         .withDimensionPercentages( 40, 60 )
-         .withPositionPercentages( 60, 40 )
+         .withTopLeft( 40, 60 )
+         .withBottomRight( 100, 100 )
          .assertArea();
    }//End Method
    
-   @Test public void shouldStretchLeft(){
+   @Test public void shouldPushBoundary(){
+      initial.leftBoundary().changePosition( 40 );
       when( selector.getSelection() ).thenReturn( initial );
-      systemUnderTest.splitHorizontally();
-      ContentArea subject = getContent( 1 );
-      
-      when( selector.getSelection() ).thenReturn( subject );
-      
-      systemUnderTest.stretchLeft( 10 );
-      assertThat( subject.percentageWidth(), is( 60.0 ) );
-      
-      verify( intersections ).checkTranslationXIntersection( subject );
-      assertThat( initial.percentageWidth(), is( 40.0 ) );
+
+      systemUnderTest.push( SquareBoundary.Left, 15 );
+      assertThat( initial.leftBoundary().positionPercentage(), is( 25.0 ) );
    }//End Method
    
-   @Test public void shouldStretchLeft2(){
+   @Test public void shouldPullBoundary(){
+      initial.leftBoundary().changePosition( 40 );
       when( selector.getSelection() ).thenReturn( initial );
-      systemUnderTest.splitHorizontally();
-      ContentArea subject = getContent( 0 );
-      
-      when( selector.getSelection() ).thenReturn( subject );
-      
-      systemUnderTest.stretchLeft( 10 );
-      assertThat( subject.percentageWidth(), is( 50.0 ) );
-      
-      verify( intersections ).checkTranslationXIntersection( subject );
-      assertThat( getContent( 1 ).percentageWidth(), is( 50.0 ) );
-   }//End Method
-   
-   @Test public void shouldStretchRight(){
-      when( selector.getSelection() ).thenReturn( initial );
-      systemUnderTest.splitHorizontally();
-      ContentArea subject = getContent( 0 );
-      
-      when( selector.getSelection() ).thenReturn( subject );
-      
-      systemUnderTest.stretchRight( 10 );
-      assertThat( subject.percentageWidth(), is( 60.0 ) );
-      
-      verify( intersections ).checkWidthIntersection( subject );
-   }//End Method
-   
-   @Test public void shouldStretchUp(){
-      when( selector.getSelection() ).thenReturn( initial );
-      systemUnderTest.splitVertically();
-      ContentArea subject = getContent( 1 );
-      
-      when( selector.getSelection() ).thenReturn( subject );
-      
-      systemUnderTest.stretchUp( 10 );
-      assertThat( subject.percentageHeight(), is( 60.0 ) );
-      
-      verify( intersections ).checkTranslationYIntersection( subject );
-   }//End Method
-   
-   @Test public void shouldStretchDown(){
-      when( selector.getSelection() ).thenReturn( initial );
-      systemUnderTest.splitVertically();
-      ContentArea subject = getContent( 0 );
-      
-      when( selector.getSelection() ).thenReturn( subject );
-      
-      systemUnderTest.stretchDown( 10 );
-      assertThat( subject.percentageHeight(), is( 60.0 ) );
-      
-      verify( intersections ).checkHeightIntersection( subject );
-   }//End Method
-   
-   @Test public void shouldIgnoreStretchesWithNoSelection(){
-      systemUnderTest.stretchLeft( 10 );
-      systemUnderTest.stretchRight( 10 );
-      systemUnderTest.stretchUp( 10 );
-      systemUnderTest.stretchDown( 10 );
-      
-      verify( intersections ).setNodes( systemUnderTest.getChildren() );
-      verifyNoMoreInteractions( intersections );
-   }//End Method
-   
-   @Test public void shouldProvideSelectionController(){
-      assertThat( systemUnderTest.selectionController(), is( instanceOf( ContentAreaSelector.class ) ) );
+
+      systemUnderTest.pull( SquareBoundary.Left, 15 );
+      assertThat( initial.leftBoundary().positionPercentage(), is( 55.0 ) );
    }//End Method
    
    private ContentArea getContent( int index ) {
