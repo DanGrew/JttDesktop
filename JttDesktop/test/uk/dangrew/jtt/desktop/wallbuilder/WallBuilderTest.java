@@ -61,6 +61,13 @@ public class WallBuilderTest {
       verify( selector ).setNodes( systemUnderTest.getChildren() );
    }//End Method
    
+   @Test public void shouldFixBoundariesInitially(){
+      assertThat( initial.leftBoundary().isFixed(), is( true ) );
+      assertThat( initial.rightBoundary().isFixed(), is( true ) );
+      assertThat( initial.topBoundary().isFixed(), is( true ) );
+      assertThat( initial.bottomBoundary().isFixed(), is( true ) );
+   }//End Method
+   
    @Test public void shouldUpdateContentAreasWithDimensionUpdates(){
       systemUnderTest.resize( 100, 101 );
       assertThat( initial.getWidth(), is( 100.0 ) );
@@ -137,6 +144,8 @@ public class WallBuilderTest {
    }//End Method
    
    @Test public void shouldSplitContentVerticallyWithTranslation(){
+      unfixBoundsForTesting();
+      
       initial.leftBoundary().changePosition( 20 );
       initial.topBoundary().changePosition( 40 );
       
@@ -159,6 +168,8 @@ public class WallBuilderTest {
    }//End Method
    
    @Test public void shouldSplitInitialContentHorizontallyWithTranslation(){
+      unfixBoundsForTesting();
+      
       initial.leftBoundary().changePosition( 20 );
       initial.topBoundary().changePosition( 40 );
       
@@ -181,6 +192,8 @@ public class WallBuilderTest {
    }//End Method
    
    @Test public void shouldPushBoundary(){
+      unfixBoundsForTesting();
+      
       initial.leftBoundary().changePosition( 40 );
       when( selector.getSelection() ).thenReturn( initial );
 
@@ -189,6 +202,8 @@ public class WallBuilderTest {
    }//End Method
    
    @Test public void shouldPullBoundary(){
+      unfixBoundsForTesting();
+      
       initial.leftBoundary().changePosition( 40 );
       when( selector.getSelection() ).thenReturn( initial );
 
@@ -196,6 +211,21 @@ public class WallBuilderTest {
       assertThat( initial.leftBoundary().positionPercentage(), is( 55.0 ) );
    }//End Method
    
+   /**
+    * Method to unfix the {@link ContentBoundary}s surrounding the initial {@link ContentArea}.
+    */
+   private void unfixBoundsForTesting(){
+      initial.leftBoundary().setFixed( false );
+      initial.rightBoundary().setFixed( false );
+      initial.topBoundary().setFixed( false );
+      initial.bottomBoundary().setFixed( false );
+   }//End Method
+   
+   /**
+    * Convenience method to get the {@link ContentArea} at the given position in the {@link WallBuilder}.
+    * @param index the index of the {@link ContentArea}.
+    * @return the {@link ContentArea}. Assertion failure if not present.
+    */
    private ContentArea getContent( int index ) {
       assertThat( systemUnderTest.getChildren(), hasSize( greaterThanOrEqualTo( index + 1 ) ) );
       return ( ContentArea )systemUnderTest.getChildren().get( index );

@@ -35,7 +35,7 @@ public class ContentBoundaryTest {
       assertThat( systemUnderTest.positionPercentage(), is( INITIAL_POSITION ) );
    }//End Method
    
-   @Test public void shouldProvideRegistration(){
+   @Test public void shouldProvidePositionRegistration(){
       ChangeListener< Number > listener = mock( ChangeListener.class );
       systemUnderTest.registerForPositionChanges( listener );
       systemUnderTest.changePosition( 10 );
@@ -43,6 +43,26 @@ public class ContentBoundaryTest {
       
       systemUnderTest.unregisterForPositionChanges( listener );
       systemUnderTest.changePosition( 10 );
+      verifyNoMoreInteractions( listener );
+   }//End Method
+   
+   @Test public void shouldNotChangeWhenFixed(){
+      assertThat( systemUnderTest.isFixed(), is( false ) );
+      systemUnderTest.setFixed( true );
+      assertThat( systemUnderTest.isFixed(), is( true ) );
+      
+      systemUnderTest.changePosition( 10 );
+      assertThat( systemUnderTest.positionPercentage(), is( INITIAL_POSITION ) );
+   }//End Method
+   
+   @Test public void shouldProvideFixedRegistration(){
+      ChangeListener< Boolean > listener = mock( ChangeListener.class );
+      systemUnderTest.registerForFixedChanges( listener );
+      systemUnderTest.setFixed( true );
+      verify( listener ).changed( Mockito.any(), eq( false ), eq( true ) );
+      
+      systemUnderTest.unregisterForFixedChanges( listener );
+      systemUnderTest.setFixed( false );
       verifyNoMoreInteractions( listener );
    }//End Method
 

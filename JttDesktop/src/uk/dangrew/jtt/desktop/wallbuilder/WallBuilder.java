@@ -46,6 +46,11 @@ public class WallBuilder extends Pane {
       this.right = new ContentBoundary( 100 );
       this.bottom = new ContentBoundary( 100 );
       
+      this.left.setFixed( true );
+      this.right.setFixed( true );
+      this.top.setFixed( true );
+      this.bottom.setFixed( true );
+      
       initial = new ContentArea( 
                left, top, right, bottom,
                getWidth(), getHeight() 
