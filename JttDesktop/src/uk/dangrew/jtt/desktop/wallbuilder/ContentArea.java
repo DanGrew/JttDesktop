@@ -8,7 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.wallbuilder;
 
-import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -25,9 +24,6 @@ class ContentArea extends Rectangle {
    private ContentBoundary bottom;
    private ContentBoundary left;
    private ContentBoundary right;
-   
-   private final ChangeListener< Number > horizontalListener;
-   private final ChangeListener< Number > verticalListener;
    
    /**
     * Constructs a new {@link ContentArea}.
@@ -50,15 +46,6 @@ class ContentArea extends Rectangle {
       setStroke( Color.WHITE );
       setStrokeWidth( 5 );
       
-      horizontalListener = ( s, o, n ) -> {
-         updateTranslationX();
-         updateWidth();
-      };
-      verticalListener = ( s, o, n ) -> {
-         updateTranslationY();
-         updateHeight();
-      };
-      
       setLeftBoundary( left );
       setTopBoundary( top );
       setRightBoundary( right );
@@ -76,10 +63,17 @@ class ContentArea extends Rectangle {
       this.parentWidth = width;
       this.parentHeight = height;
       
+      refreshDimensions();
+   }//End Method
+   
+   /**
+    * Method to refresh the dimensions of the {@link ContentArea}.
+    */
+   void refreshDimensions(){
       updateTranslationX();
-      updateTranslationY();
-      
       updateWidth();
+      
+      updateTranslationY();
       updateHeight();
    }//End Method
    
@@ -87,6 +81,9 @@ class ContentArea extends Rectangle {
     * Method to update the {@link #translateXProperty()} given the {@link ContentBoundary}s.
     */
    private void updateTranslationX(){
+      if ( left == null ) {
+         return;
+      }
       setTranslateX( ( left.positionPercentage() / 100 ) * parentWidth );
    }//End Method
    
@@ -94,6 +91,9 @@ class ContentArea extends Rectangle {
     * Method to update the {@link #translateYProperty()} given the {@link ContentBoundary}s.
     */
    private void updateTranslationY(){
+      if ( top == null ) {
+         return;
+      }
       setTranslateY( ( top.positionPercentage() / 100 ) * parentHeight );
    }//End Method
    
@@ -101,6 +101,9 @@ class ContentArea extends Rectangle {
     * Method to update the {@link #widthProperty()} given the {@link ContentBoundary}s.
     */
    private void updateWidth(){
+      if ( right == null || left == null ) {
+         return;
+      }
       setWidth( ( ( right.positionPercentage() - left.positionPercentage() ) / 100 ) * parentWidth );
    }//End Method
    
@@ -108,6 +111,9 @@ class ContentArea extends Rectangle {
     * Method to update the {@link #heightProperty()} given the {@link ContentBoundary}s.
     */
    private void updateHeight(){
+      if ( top == null || bottom == null ) {
+         return;
+      }
       setHeight( ( ( bottom.positionPercentage() - top.positionPercentage() ) / 100 ) * parentHeight );
    }//End Method
    
@@ -119,12 +125,15 @@ class ContentArea extends Rectangle {
    void setLeftBoundary( ContentBoundary boundary ) {
       if ( left != null ) {
          //removes memory leak but has not functional need
-         left.unregisterForPositionChanges( horizontalListener );
+         left.unregisterForPositionChanges( this );
       }
       
       left = boundary;
-      left.registerForPositionChanges( horizontalListener );
-      updateTranslationX();
+      
+      if ( left != null ) {
+         left.registerForPositionChanges( this );
+         updateTranslationX();
+      }
    }//End Method
    
    /**
@@ -135,12 +144,15 @@ class ContentArea extends Rectangle {
    void setRightBoundary( ContentBoundary boundary ) {
       if ( right != null ) {
          //removes memory leak but has not functional need
-         right.unregisterForPositionChanges( horizontalListener );
+         right.unregisterForPositionChanges( this );
       }
       
       right = boundary;
-      right.registerForPositionChanges( horizontalListener );
-      updateWidth();
+      
+      if ( right != null ) {
+         right.registerForPositionChanges( this );
+         updateWidth();
+      }
    }//End Method
    
    /**
@@ -151,12 +163,15 @@ class ContentArea extends Rectangle {
    void setTopBoundary( ContentBoundary boundary ) {
       if ( top != null ) {
          //removes memory leak but has not functional need
-         top.unregisterForPositionChanges( verticalListener );
+         top.unregisterForPositionChanges( this );
       }
       
       top = boundary;
-      top.registerForPositionChanges( verticalListener );
-      updateTranslationY();
+      
+      if ( top != null ) {
+         top.registerForPositionChanges( this );
+         updateTranslationY();
+      }
    }//End Method
    
    /**
@@ -167,12 +182,15 @@ class ContentArea extends Rectangle {
    void setBottomBoundary( ContentBoundary boundary ) {
       if ( bottom != null ) {
          //removes memory leak but has not functional need
-         bottom.unregisterForPositionChanges( verticalListener );
+         bottom.unregisterForPositionChanges( this );
       }
       
       bottom = boundary;
-      bottom.registerForPositionChanges( verticalListener );
-      updateHeight();
+      
+      if ( bottom != null ) {
+         bottom.registerForPositionChanges( this );
+         updateHeight();
+      }
    }//End Method
    
    /**

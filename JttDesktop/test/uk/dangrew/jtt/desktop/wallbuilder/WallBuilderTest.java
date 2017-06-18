@@ -16,6 +16,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,12 +34,14 @@ public class WallBuilderTest {
    private ContentArea initial;
    
    @Mock private ContentAreaSelector selector;
+   @Mock private ContentAreaRemover remover;
+   @Mock private BoundaryCollisions collisions;
    private WallBuilder systemUnderTest;
 
    @Before public void initialiseSystemUnderTest() {
       TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
-      systemUnderTest = new WallBuilder( selector );
+      systemUnderTest = new WallBuilder( selector, remover, collisions );
       systemUnderTest.setPrefSize( PREFERRED_WIDTH, PREFERRED_HEIGHT );
       initial = getContent( 0 );
    }//End Method
@@ -59,6 +63,10 @@ public class WallBuilderTest {
    
    @Test public void shouldSetNodesOnSelector(){
       verify( selector ).setNodes( systemUnderTest.getChildren() );
+   }//End Method
+   
+   @Test public void shouldSetNodesOnRemover(){
+      verify( remover ).setNodes( systemUnderTest.getChildren() );
    }//End Method
    
    @Test public void shouldFixBoundariesInitially(){
@@ -199,6 +207,10 @@ public class WallBuilderTest {
 
       systemUnderTest.push( SquareBoundary.Left, 15 );
       assertThat( initial.leftBoundary().positionPercentage(), is( 25.0 ) );
+      
+      Collection< ContentArea > areas = SquareBoundary.Left.boundary( initial ).boundedAreas();
+      verify( collisions ).mergeBoundaries( SquareBoundary.Left.boundary( initial ) );
+      verify( remover ).verifyBoundaries( areas );
    }//End Method
    
    @Test public void shouldPullBoundary(){
@@ -209,6 +221,10 @@ public class WallBuilderTest {
 
       systemUnderTest.pull( SquareBoundary.Left, 15 );
       assertThat( initial.leftBoundary().positionPercentage(), is( 55.0 ) );
+      
+      Collection< ContentArea > areas = SquareBoundary.Left.boundary( initial ).boundedAreas();
+      verify( collisions ).mergeBoundaries( SquareBoundary.Left.boundary( initial ) );
+      verify( remover ).verifyBoundaries( areas );
    }//End Method
    
    /**

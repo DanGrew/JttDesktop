@@ -187,4 +187,20 @@ public class ContentAreaTest {
       assertThat( systemUnderTest.topBoundary(), is( top ) );
       assertThat( systemUnderTest.bottomBoundary(), is( bottom ) );
    }//End Method
+
+   @Test public void shouldNotUpdateDimensionsIfNoBoundariesPresent(){
+      double originalWidth = systemUnderTest.getWidth();
+      double originalHeight = systemUnderTest.getHeight();
+      
+      systemUnderTest.setLeftBoundary( null );
+      systemUnderTest.setRightBoundary( null );
+      systemUnderTest.setTopBoundary( null );
+      systemUnderTest.setBottomBoundary( null );
+      
+      systemUnderTest.refreshDimensions();
+      
+      assertThat( systemUnderTest.getWidth(), is( originalWidth ) );
+      assertThat( systemUnderTest.getHeight(), is( originalHeight ) );
+   }//End Method
+   
 }//End Class

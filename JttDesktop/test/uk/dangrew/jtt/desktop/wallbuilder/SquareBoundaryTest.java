@@ -85,4 +85,35 @@ public class SquareBoundaryTest {
       SquareBoundary.Bottom.pull( area, 5 );
       assertThat( area.bottomBoundary().positionPercentage(), is( current - 5 ) );
    }//End Method
+   
+   @Test public void shouldSetLeft(){
+      ContentBoundary boundary = new ContentBoundary( 45 );
+      SquareBoundary.Left.set( boundary, area );
+      assertThat( area.leftBoundary(), is( boundary ) );
+   }//End Method
+   
+   @Test public void shouldSetTop(){
+      ContentBoundary boundary = new ContentBoundary( 45 );
+      SquareBoundary.Top.set( boundary, area );
+      assertThat( area.topBoundary(), is( boundary ) );
+   }//End Method
+   
+   @Test public void shouldSetRight(){
+      ContentBoundary boundary = new ContentBoundary( 45 );
+      SquareBoundary.Right.set( boundary, area );
+      assertThat( area.rightBoundary(), is( boundary ) );
+   }//End Method
+   
+   @Test public void shouldSetBottom(){
+      ContentBoundary boundary = new ContentBoundary( 45 );
+      SquareBoundary.Bottom.set( boundary, area );
+      assertThat( area.bottomBoundary(), is( boundary ) );
+   }//End Method
+   
+   @Test public void shouldProvideOpposite(){
+      assertThat( SquareBoundary.Left.opposite(), is( SquareBoundary.Right ) );
+      assertThat( SquareBoundary.Top.opposite(), is( SquareBoundary.Bottom ) );
+      assertThat( SquareBoundary.Right.opposite(), is( SquareBoundary.Left ) );
+      assertThat( SquareBoundary.Bottom.opposite(), is( SquareBoundary.Top ) );
+   }//End Method
 }//End Class

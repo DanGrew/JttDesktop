@@ -8,6 +8,11 @@
  */
 package uk.dangrew.jtt.desktop.wallbuilder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,6 +27,7 @@ class ContentBoundary {
 
    private final BooleanProperty fixedProperty;
    private final DoubleProperty positionPercentageProperty;
+   private final Set< ContentArea > boundedAreas;
    
    /**
     * Constructs a new {@link ContentBoundary}.
@@ -30,6 +36,7 @@ class ContentBoundary {
    ContentBoundary( double position ) {
       this.positionPercentageProperty = new SimpleDoubleProperty( position );
       this.fixedProperty = new SimpleBooleanProperty( false );
+      this.boundedAreas = new LinkedHashSet<>();
    }//End Constructor
 
    /**
@@ -41,19 +48,27 @@ class ContentBoundary {
    }//End Method
    
    /**
-    * Register for changes made to the position.
-    * @param listener the {@link ChangeListener} to notify.
+    * Defensive access to the {@link ContentArea}s bound to this {@link ContentBoundary}.
+    * @return a {@link Collection} of {@link ContentArea}s.
     */
-   void registerForPositionChanges( ChangeListener< ? super Number > listener  ) {
-      positionPercentageProperty.addListener( listener );
+   Collection< ContentArea > boundedAreas() {
+      return new ArrayList<>( boundedAreas );
+   }//End Method
+   
+   /**
+    * Register for changes made to the position.
+    * @param area the {@link ContentArea} to bind to this {@link ContentBoundary}.
+    */
+   void registerForPositionChanges( ContentArea area ) {
+      boundedAreas.add( area );
    }//End Method
    
    /**
     * Unregister for changes made to the position.
-    * @param listener the {@link ChangeListener} to stop notifying.
+    * @param area the {@link ContentArea} to unbind from this {@link ContentBoundary}.
     */
-   void unregisterForPositionChanges( ChangeListener< ? super Number > listener  ) {
-      positionPercentageProperty.removeListener( listener );
+   void unregisterForPositionChanges( ContentArea area ) {
+      boundedAreas.remove( area );
    }//End Method
    
    /**
@@ -65,6 +80,7 @@ class ContentBoundary {
          return;
       }
       positionPercentageProperty.set( positionPercentageProperty.get() + change );
+      boundedAreas.forEach( a -> a.refreshDimensions() );
    }//End Method
 
    /**
@@ -98,5 +114,12 @@ class ContentBoundary {
     */
    void setFixed( boolean fixed ) {
       fixedProperty.set( fixed );
+   }//End Method
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override public String toString(){
+      return "Boundary @ " + positionPercentageProperty.get();
    }//End Method
 }//End Class

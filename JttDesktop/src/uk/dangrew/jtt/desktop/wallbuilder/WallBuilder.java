@@ -8,6 +8,8 @@
  */
 package uk.dangrew.jtt.desktop.wallbuilder;
 
+import java.util.Collection;
+
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.beans.value.ChangeListener;
@@ -25,21 +27,28 @@ public class WallBuilder extends Pane {
    private ContentArea initial;
    
    private final ContentAreaSelector selector;
+   private final BoundaryCollisions collisions;
+   private final ContentAreaRemover remover;
    
    /**
     * Constructs a new {@link WallBuilder}.
     */
    WallBuilder() {
-      this( new ContentAreaSelector() );
+      this( new ContentAreaSelector(), new ContentAreaRemover(), new BoundaryCollisions() );
    }//End Constructor
       
    /**
     * Constructs a new {@link WallBuilder}.
     * @param selector the {@link ContentAreaSelector}.
+    * @param remover the {@link ContentAreaRemover}.
+    * @param collisions the {@link BoundaryCollisions}.
     */
-   WallBuilder( ContentAreaSelector selector ) {
+   WallBuilder( ContentAreaSelector selector, ContentAreaRemover remover, BoundaryCollisions collisions ) {
       this.selector = selector;
       this.selector.setNodes( getChildren() );
+      this.remover = remover;
+      this.remover.setNodes( getChildren() );
+      this.collisions = collisions;;
       
       this.left = new ContentBoundary( 0 );
       this.top = new ContentBoundary( 0 );
@@ -148,6 +157,10 @@ public class WallBuilder extends Pane {
       }
       
       boundaryType.push( selection, percentage );
+      
+      Collection< ContentArea > areasBefore = boundaryType.boundary( selection ).boundedAreas();
+      collisions.mergeBoundaries( boundaryType.boundary( selection ) );
+      remover.verifyBoundaries( areasBefore );
    }//End Method
    
    /**
@@ -163,6 +176,10 @@ public class WallBuilder extends Pane {
       }
       
       boundaryType.pull( selection, percentage );
+      
+      Collection< ContentArea > areasBefore = boundaryType.boundary( selection ).boundedAreas();
+      collisions.mergeBoundaries( boundaryType.boundary( selection ) );
+      remover.verifyBoundaries( areasBefore );
    }//End Method
    
 }//End Class
