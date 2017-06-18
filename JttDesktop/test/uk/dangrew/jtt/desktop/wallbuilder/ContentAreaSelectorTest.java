@@ -107,5 +107,14 @@ public class ContentAreaSelectorTest {
       areas.add( alternateContent );
       verify( colours ).applyUnselectedColours( alternateContent );
    }//End Method
+   
+   @Test public void shouldNoSeletRemovedItem(){
+      areas.add( alternateContent );
+      alternateContent.getOnMouseClicked().handle( event );
+      assertThat( systemUnderTest.getSelection(), is( alternateContent ) );
+      
+      areas.remove( alternateContent );
+      assertThat( systemUnderTest.getSelection(), is( nullValue() ) );
+   }//End Method
 
 }//End Class

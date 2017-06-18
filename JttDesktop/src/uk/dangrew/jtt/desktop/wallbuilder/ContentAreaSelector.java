@@ -137,6 +137,10 @@ class ContentAreaSelector {
          return;
       }
       area.get().setOnMouseClicked( null );
+      
+      if ( selection == node ) {
+         selection = null;
+      }
    }//End Method
    
    /**
