@@ -10,13 +10,16 @@ package uk.dangrew.jtt.desktop.buildwall.configuration.style;
 
 import java.io.File;
 
+import de.jensd.fx.glyphs.GlyphIcon;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
@@ -211,6 +214,20 @@ public class JavaFxStyle {
    }//End Method
    
    /**
+    * Method to configure an even number of columns, fairly sharing the width.
+    * @param pane the {@link GridPane} to configure.
+    * @param numberOfColumns the number of columns to divide the width in to.
+    */
+   public void configureConstraintsForEvenRows( GridPane pane, int numberOfRows ){
+      double percentage = 100.0 / numberOfRows;
+      for ( int i = 0; i < numberOfRows; i++ ) {
+         RowConstraints column = new RowConstraints();
+         column.setPercentHeight( percentage );
+         pane.getRowConstraints().add( column );
+      }
+   }//End Method
+   
+   /**
     * Method to configure the {@link RowConstraints} for the {@link GridPane} given.
     * @param pane the {@link GridPane} to configure.
     * @param percentages the percentages to add as constraints, {@link RowConstraints} per
@@ -281,6 +298,28 @@ public class JavaFxStyle {
                new BackgroundFill( backgroundWhenPressed, null, null ) 
       ) ) );
       button.setOnMouseReleased( event -> button.setBackground( null ) );
+   }//End Method
+
+   /**
+    * Method to create a {@link Button} with the given {@link GlyphIcon} on it that resizes with the {@link Button}.
+    * @param glyph the {@link GlyphIcon} to place on the {@link Button}. 
+    * @return the {@link Button}.
+    */
+   public Button createGlyphButton( GlyphIcon< ? > glyph ) {
+      Button button = new Button( "", glyph );
+      
+      ChangeListener< Number > glyphSizeUpdater = ( s, o, n ) -> {
+         glyph.glyphSizeProperty().set( Math.min( 
+                  button.getWidth(), 
+                  button.getHeight()
+         ) - 20 );
+      };
+      
+      glyphSizeUpdater.changed( null, button.getWidth(), button.getWidth() );
+      
+      button.widthProperty().addListener( glyphSizeUpdater );
+      button.heightProperty().addListener( glyphSizeUpdater );
+      return button;
    }//End Method
    
 }//End Class

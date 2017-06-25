@@ -22,6 +22,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.jensd.fx.glyphs.GlyphIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -231,6 +234,16 @@ public class JavaFxStyleTest {
       }
    }//End Method
    
+   @Test public void shouldConfigureEvenHeightRowConstraints(){
+      GridPane pane = new GridPane();
+      systemUnderTest.configureConstraintsForEvenRows( pane, 5 );
+      
+      assertThat( pane.getRowConstraints(), hasSize( 5 ) );
+      for ( int i = 0; i < 5; i++ ) {
+         assertThat( pane.getRowConstraints().get( i ).getPercentHeight(), is( 20.0 ) );
+      }
+   }//End Method
+   
    @Test public void shouldConfigureFullWithColumnConstraints(){
       GridPane pane = new GridPane();
       systemUnderTest.configureFullWidthConstraints( pane );
@@ -294,4 +307,27 @@ public class JavaFxStyleTest {
       assertThat( factory.getMin(), is( JavaFxStyle.MINIMUM_FONT_SIZE ) );
    }//End Method
 
+   @Test public void shouldCreateButtonWithGlyph(){
+      GlyphIcon< ? > glyph = new FontAwesomeIconView( FontAwesomeIcon.ADJUST );
+      Button button = systemUnderTest.createGlyphButton( glyph );
+      assertThat( button.getGraphic(), is( glyph ) );
+   }//End Method
+   
+   @Test public void shouldResizeGlyphInGlyphButton() throws InterruptedException{
+      GlyphIcon< ? > glyph = new FontAwesomeIconView( FontAwesomeIcon.ADJUST );
+      Button button = systemUnderTest.createGlyphButton( glyph );
+      button.setMaxSize( Double.MAX_VALUE, Double.MAX_VALUE );
+      TestApplication.launch( () -> new BorderPane( button ) );
+      
+      assertThat( glyph.getGlyphSize(), is( 80.0 ) );
+      button.resize( 50, 50 );
+      assertThat( glyph.getGlyphSize(), is( 30.0 ) );
+      
+      button.resize( 60, 70 );
+      assertThat( glyph.getGlyphSize(), is( 40.0 ) );
+      
+      button.resize( 80, 55 );
+      assertThat( glyph.getGlyphSize(), is( 35.0 ) );
+   }//End Method
+   
 }//End Class
