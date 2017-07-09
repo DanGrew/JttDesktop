@@ -14,6 +14,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -30,6 +32,7 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfig
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
+import uk.dangrew.jtt.model.commit.Commit;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
@@ -49,9 +52,24 @@ public class FailureDetailTest {
    
    private static final String FAILURES_PREFIX = "0/0 Failed:";
    private BuildWallConfiguration configuration;
+   
    private JenkinsUser rick;
    private JenkinsUser daryl;
    private JenkinsUser carl;
+   private JenkinsUser jesus;
+   private JenkinsUser negan;
+   private JenkinsUser walker;
+   private JenkinsUser crawler;
+   private JenkinsUser govenor;
+   
+   private Commit commitForRick;
+   private Commit commitForDaryl;
+   private Commit commitForCarl;
+   private Commit commitForJesus;
+   private Commit commitForNegan;
+   private Commit commitForWalker;
+   private Commit commitForCrawler;
+   private Commit commitForGovenor;
    
    private TestCase survivalTestCase;
    private TestCase zombieKillingTestCase;
@@ -74,13 +92,28 @@ public class FailureDetailTest {
       rick = new JenkinsUserImpl( "Rick" );
       daryl = new JenkinsUserImpl( "Daryl" );
       carl = new JenkinsUserImpl( "Carl" );
+      jesus = new JenkinsUserImpl( "Jesus" );
+      negan = new JenkinsUserImpl( "Negan" );
+      walker = new JenkinsUserImpl( "Walker" );
+      crawler = new JenkinsUserImpl( "Crawler" );
+      govenor = new JenkinsUserImpl( "Governor" );
+      
+      commitForRick = makeCommitFor( rick );
+      commitForDaryl = makeCommitFor( daryl );
+      commitForCarl = makeCommitFor( carl );
+      commitForJesus = makeCommitFor( jesus );
+      commitForNegan = makeCommitFor( negan );
+      commitForWalker = makeCommitFor( walker );
+      commitForCrawler = makeCommitFor( crawler );
+      commitForGovenor = makeCommitFor( govenor );
       
       survivalTestCase = constructTestCase( "SurvivalTest", "shouldSurvive" );
       zombieKillingTestCase = constructTestCase( "ZombieKillingTest", "shouldStrikeTheHead" );
       spoilerTestCase = constructTestCase( "SpoilerTest", "shouldNotProvideSpoilers" );
       cliffHangerTestCase = constructTestCase( "CliffHangerTest", "shouldHaveAGoodButNotSillyCliffHanger" );
       
-      jenkinsJob.culprits().addAll( rick, daryl, carl );
+      jenkinsJob.commits().addAll( commitForRick, commitForDaryl, commitForCarl );
+      jenkinsJob.supplements().commitsSinceLastFailure().addAll( commitForJesus, commitForNegan );
       jenkinsJob.failingTestCases().addAll( survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase );
       
       configuration = new BuildWallConfigurationImpl();
@@ -99,7 +132,7 @@ public class FailureDetailTest {
       PlatformImpl.runLater( () -> {
          jenkinsJob.testFailureCount().set( 10 );
          jenkinsJob.testTotalCount().set( 1001 );
-         jenkinsJob.culprits().remove( 1 );
+         jenkinsJob.commits().remove( 1 );
          jenkinsJob.failingTestCases().clear();
       } );
       
@@ -107,20 +140,26 @@ public class FailureDetailTest {
       PlatformImpl.runLater( () -> {
          jenkinsJob.testFailureCount().set( 11 );
          jenkinsJob.testTotalCount().set( 23001 );
-         jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Maggie" ), new JenkinsUserImpl( "Carol" ) );
+         jenkinsJob.commits().addAll( 
+                  makeCommitFor( new JenkinsUserImpl( "Maggie" ) ), 
+                  makeCommitFor( new JenkinsUserImpl( "Carol" ) )
+         );
          jenkinsJob.failingTestCases().addAll( survivalTestCase, zombieKillingTestCase, spoilerTestCase, cliffHangerTestCase );
       } );
       
       Thread.sleep( 2000 );
       PlatformImpl.runLater( () -> {
-         jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Glenn" ), new JenkinsUserImpl( "Michonne" ) );
+         jenkinsJob.commits().addAll( 
+                  makeCommitFor( new JenkinsUserImpl( "Glenn" ) ), 
+                  makeCommitFor( new JenkinsUserImpl( "Michonne" ) )
+         );
       } );
       
       Thread.sleep( 2000 );
       PlatformImpl.runLater( () -> {
          jenkinsJob.testFailureCount().set( 999 );
          jenkinsJob.testTotalCount().set( 1000 );
-         jenkinsJob.culprits().remove( 4 );
+         jenkinsJob.commits().remove( 4 );
       } );
       
       Thread.sleep( 100000 );
@@ -151,33 +190,32 @@ public class FailureDetailTest {
    
    @Test public void shouldContainAllElements(){
       assertThat( systemUnderTest.getChildren(), contains(
-               systemUnderTest.culpritsLabel(), 
+               systemUnderTest.sinceLastFailureLabel(),
+               systemUnderTest.newCommittersLabel(),
                systemUnderTest.lastBuiltOnLabel(), 
                systemUnderTest.failuresLabel() 
       ) );
    }//End Method
    
-   @Test public void shouldPrefixCulpritsDescription(){
-      assertThat( systemUnderTest.culpritsLabel().getText(), startsWith( FailureDetail.CULPRITS_PREFIX ) );
+   @Test public void shouldPrefixCommittersDescription(){
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), startsWith( FailureDetail.SINCE_LAST_FAILURE_PREFIX ) );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), startsWith( FailureDetail.NEW_COMMITTERS_PREFIX ) );
    }//End Method
    
    @Test public void shouldDisplayUnknownStateWhenNoNodeAssociated(){
       assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + FailureDetail.UNKNOWN_NODE ) );
    }//End Method
    
-   @Test public void shouldListAllCulpritsInOrderDefinedByJob(){
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
+   @Test public void shouldListAllCommittersInOrderDefinedByJob(){
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan." ) );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl." ) );
    }//End Method
    
-   @Test public void shouldShowCulpritForSingle(){
-      jenkinsJob.culprits().clear();
-      jenkinsJob.culprits().add( rick );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspect: Rick." ) );
-   }//End Method
-   
-   @Test public void shouldShowNoCulpritsWhenNoneAvailable(){
-      jenkinsJob.culprits().clear();
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( FailureDetail.NO_CULPRITS ) );
+   @Test public void shouldShowNoCommittersWhenNoneAvailable(){
+      jenkinsJob.commits().clear();
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( FailureDetail.NEW_COMMITTERS_PREFIX + FailureDetail.NO_COMMITTERS ) );
+      jenkinsJob.supplements().commitsSinceLastFailure().clear();
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( FailureDetail.SINCE_LAST_FAILURE_PREFIX + FailureDetail.NO_COMMITTERS ) );
    }//End Method
    
    @Test public void shouldShowAbortedDescriptionWhenAborted(){
@@ -200,29 +238,54 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.lastBuiltOnLabel().getText(), is( FailureDetail.BUILT_ON_PREFIX + node.nameProperty().get() ) );
    }//End Method
    
-   @Test public void shouldUpdateCulpritsListWhenCulpritsAdded(){
-      shouldListAllCulpritsInOrderDefinedByJob();
+   @Test public void shouldUpdateNewCommittersListWhenAdded(){
+      shouldListAllCommittersInOrderDefinedByJob();
       
-      jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker." ) );
+      jenkinsJob.commits().add( commitForWalker );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl, Walker." ) );
       
-      jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Crawler" ), new JenkinsUserImpl( "Governor" ) );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker, Crawler, Governor." ) );
+      jenkinsJob.commits().addAll( commitForCrawler, commitForGovenor );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl, Walker, Crawler, Governor." ) );
    }//End Method
    
-   @Test public void shouldUpdateCulpritsListWhenCulpritsRemoved(){
-      jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Walker" ), new JenkinsUserImpl( "Crawler" ), new JenkinsUserImpl( "Governor" ) );
+   @Test public void shouldUpdateNewCommittersListWhenRemoved(){
+      jenkinsJob.commits().addAll( commitForWalker, commitForCrawler, commitForGovenor );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker, Crawler, Governor." ) );  
-      jenkinsJob.culprits().removeAll( 
-               jenkinsJob.culprits().get( 2 ), 
-               jenkinsJob.culprits().get( 4 ) 
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl, Walker, Crawler, Governor." ) );  
+      jenkinsJob.commits().removeAll( 
+               jenkinsJob.commits().get( 2 ), 
+               jenkinsJob.commits().get( 4 ) 
       );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Walker, Governor." ) );
-      jenkinsJob.culprits().remove( jenkinsJob.culprits().get( 2 ) );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Walker, Governor." ) );
+      jenkinsJob.commits().remove( jenkinsJob.commits().get( 2 ) );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Governor." ) );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Governor." ) );
+   }//End Method
+   
+   @Test public void shouldUpdateSinceFailureListWhenAdded(){
+      shouldListAllFailuresInOrderDefinedByJob();
+      
+      jenkinsJob.supplements().commitsSinceLastFailure().add( commitForWalker );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan, Walker." ) );
+      
+      jenkinsJob.supplements().commitsSinceLastFailure().addAll( commitForCrawler, commitForGovenor );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan, Walker, Crawler, Governor." ) );
+   }//End Method
+   
+   @Test public void shouldUpdateSinceFailureListWhenRemoved(){
+      jenkinsJob.supplements().commitsSinceLastFailure().addAll( commitForWalker, commitForCrawler, commitForGovenor );
+      
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan, Walker, Crawler, Governor." ) );  
+      jenkinsJob.supplements().commitsSinceLastFailure().removeAll( 
+               jenkinsJob.supplements().commitsSinceLastFailure().get( 2 ), 
+               jenkinsJob.supplements().commitsSinceLastFailure().get( 4 ) 
+      );
+      
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan, Crawler." ) );
+      jenkinsJob.supplements().commitsSinceLastFailure().remove( jenkinsJob.commits().get( 2 ) );
+      
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan, Crawler." ) );
    }//End Method
    
    @Test public void shouldUpdateLastBuiltWhenStateChanges(){
@@ -232,52 +295,63 @@ public class FailureDetailTest {
    }//End Method
    
    @Test public void shouldRestrainRowToFitInPanel(){
-      assertThat( systemUnderTest.getRowConstraints(), hasSize( 3 ) );
+      assertThat( systemUnderTest.getRowConstraints(), hasSize( 4 ) );
       
       RowConstraints constraint = systemUnderTest.getRowConstraints().get( 0 );
       assertThat( constraint.getMaxHeight(), is( Double.MAX_VALUE ) );
-      assertThat( constraint.getPercentHeight(), is( FailureDetail.CULPRITS_ROW_PERCENT ) );
+      assertThat( constraint.getPercentHeight(), is( FailureDetail.SINCE_FAILURE_COMMITTERS_ROW_PERCENT ) );
       
       constraint = systemUnderTest.getRowConstraints().get( 1 );
       assertThat( constraint.getMaxHeight(), is( Double.MAX_VALUE ) );
-      assertThat( constraint.getPercentHeight(), is( FailureDetail.BUILT_ON_ROW_PERCENT ) );
+      assertThat( constraint.getPercentHeight(), is( FailureDetail.NEW_COMMITTERS_ROW_PERCENT ) );
       
       constraint = systemUnderTest.getRowConstraints().get( 2 );
+      assertThat( constraint.getMaxHeight(), is( Double.MAX_VALUE ) );
+      assertThat( constraint.getPercentHeight(), is( FailureDetail.BUILT_ON_ROW_PERCENT ) );
+      
+      constraint = systemUnderTest.getRowConstraints().get( 3 );
       assertThat( constraint.getMaxHeight(), is( Double.MAX_VALUE ) );
       assertThat( constraint.getPercentHeight(), is( FailureDetail.FAILURES_ROW_PERCENT ) );
    }//End Method
    
    @Test public void shouldWrapTextToFillRow(){
-      assertThat( systemUnderTest.culpritsLabel().isWrapText(), is( true ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().isWrapText(), is( true ) );
+      assertThat( systemUnderTest.newCommittersLabel().isWrapText(), is( true ) );
       assertThat( systemUnderTest.lastBuiltOnLabel().isWrapText(), is( true ) );
       assertThat( systemUnderTest.failuresLabel().isWrapText(), is( true ) );
    }//End Method
    
    @Test public void shouldUseDefaultConfigurationOnText(){
-      assertThat( systemUnderTest.culpritsLabel().getFont(), is( configuration.detailFont().get() ) );
-      assertThat( systemUnderTest.culpritsLabel().getTextFill(), is( configuration.detailColour().get() ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getFont(), is( configuration.detailFont().get() ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getTextFill(), is( configuration.detailColour().get() ) );
+      assertThat( systemUnderTest.newCommittersLabel().getFont(), is( configuration.detailFont().get() ) );
+      assertThat( systemUnderTest.newCommittersLabel().getTextFill(), is( configuration.detailColour().get() ) );
       assertThat( systemUnderTest.lastBuiltOnLabel().getFont(), is( configuration.detailFont().get() ) );
       assertThat( systemUnderTest.lastBuiltOnLabel().getTextFill(), is( configuration.detailColour().get() ) );
       assertThat( systemUnderTest.failuresLabel().getFont(), is( configuration.detailFont().get() ) );
       assertThat( systemUnderTest.failuresLabel().getTextFill(), is( configuration.detailColour().get() ) );
    }//End Method
    
-   @Test public void shouldUpdateCulpritsFontFromConfiguration(){
-      assertThat( systemUnderTest.culpritsLabel().getFont(), is( configuration.detailFont().get() ) );
+   @Test public void shouldUpdateCommittersFontFromConfiguration(){
+      assertThat( systemUnderTest.sinceLastFailureLabel().getFont(), is( configuration.detailFont().get() ) );
+      assertThat( systemUnderTest.newCommittersLabel().getFont(), is( configuration.detailFont().get() ) );
       
       Font alternateFont = Font.font( 100 );
       configuration.detailFont().set( alternateFont );
       
-      assertThat( systemUnderTest.culpritsLabel().getFont(), is( alternateFont ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getFont(), is( alternateFont ) );
+      assertThat( systemUnderTest.newCommittersLabel().getFont(), is( alternateFont ) );
    }//End Method
    
-   @Test public void shouldUpdateCulpritsColourFromConfiguration(){
-      assertThat( systemUnderTest.culpritsLabel().getTextFill(), is( configuration.detailColour().get() ) );
+   @Test public void shouldUpdateCommittersColourFromConfiguration(){
+      assertThat( systemUnderTest.sinceLastFailureLabel().getTextFill(), is( configuration.detailColour().get() ) );
+      assertThat( systemUnderTest.newCommittersLabel().getTextFill(), is( configuration.detailColour().get() ) );
       
       Color alternateColour = Color.AQUAMARINE;
       configuration.detailColour().set( alternateColour );
       
-      assertThat( systemUnderTest.culpritsLabel().getTextFill(), is( alternateColour ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getTextFill(), is( alternateColour ) );
+      assertThat( systemUnderTest.newCommittersLabel().getTextFill(), is( alternateColour ) );
    }//End Method
    
    @Test public void shouldUpdateBuiltOnFontFromConfiguration(){
@@ -316,47 +390,61 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.failuresLabel().getTextFill(), is( alternateColour ) );
    }//End Method
    
-   @Test public void shouldDetachCulpritsFontListenersFromSystem(){
+   @Test public void shouldDetachCommittersFontListenersFromSystem(){
       systemUnderTest.detachFromSystem();
       
       Font original = configuration.detailFont().get();
-      assertThat( systemUnderTest.culpritsLabel().getFont(), is( configuration.detailFont().get() ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getFont(), is( configuration.detailFont().get() ) );
+      assertThat( systemUnderTest.newCommittersLabel().getFont(), is( configuration.detailFont().get() ) );
       
       Font alternateFont = Font.font( 100 );
       configuration.detailFont().set( alternateFont );
       
-      assertThat( systemUnderTest.culpritsLabel().getFont(), is( original ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getFont(), is( original ) );
+      assertThat( systemUnderTest.newCommittersLabel().getFont(), is( original ) );
    }//End Method
    
-   @Test public void shouldDetachCulpritsColorListenersFromSystem(){
+   @Test public void shouldDetachCommittersColorListenersFromSystem(){
       systemUnderTest.detachFromSystem();
       
       Color orignal = configuration.detailColour().get();
-      assertThat( systemUnderTest.culpritsLabel().getTextFill(), is( configuration.detailColour().get() ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getTextFill(), is( configuration.detailColour().get() ) );
+      assertThat( systemUnderTest.newCommittersLabel().getTextFill(), is( configuration.detailColour().get() ) );
       
       Color alternateColour = Color.AQUAMARINE;
       configuration.detailColour().set( alternateColour );
       
-      assertThat( systemUnderTest.culpritsLabel().getTextFill(), is( orignal ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getTextFill(), is( orignal ) );
+      assertThat( systemUnderTest.newCommittersLabel().getTextFill(), is( orignal ) );
    }//End Method
    
-   @Test public void shouldDetachCulpritUpdatesFromSystem(){
+   @Test public void shouldDetachCommittersUpdatesFromSystem(){
       systemUnderTest.detachFromSystem();
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan." ) );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl." ) );
       
-      jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
-      jenkinsJob.culprits().addAll( new JenkinsUserImpl( "Crawler" ), new JenkinsUserImpl( "Governor" ) );
+      jenkinsJob.commits().add( commitForWalker );
+      jenkinsJob.commits().addAll( commitForCrawler, commitForGovenor );
+      jenkinsJob.supplements().commitsSinceLastFailure().add( commitForWalker );
+      jenkinsJob.supplements().commitsSinceLastFailure().addAll( commitForCrawler, commitForGovenor );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan." ) );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl." ) );
       
-      jenkinsJob.culprits().removeAll( 
-               jenkinsJob.culprits().get( 2 ), 
-               jenkinsJob.culprits().get( 4 ) 
+      jenkinsJob.commits().removeAll( 
+               jenkinsJob.commits().get( 2 ), 
+               jenkinsJob.commits().get( 4 ) 
       );
-      jenkinsJob.culprits().remove( jenkinsJob.culprits().get( 2 ) );
+      jenkinsJob.commits().remove( jenkinsJob.commits().get( 2 ) );
+      jenkinsJob.supplements().commitsSinceLastFailure().removeAll( 
+               jenkinsJob.commits().get( 1 ), 
+               jenkinsJob.commits().get( 2 ) 
+      );
+      jenkinsJob.supplements().commitsSinceLastFailure().remove( jenkinsJob.commits().get( 2 ) );
       
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan." ) );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl." ) );
    }//End Method
    
    @Test public void shouldDetachBuiltOnFontListenersFromSystem(){
@@ -439,15 +527,26 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.failuresLabel().getText(), is( FAILURES_PREFIX + expected ) );
    }//End Method
    
-   @Test public void shouldUseDecoupledPlatformToSetCulpritText(){
+   @Test public void shouldUseDecoupledPlatformToSetNewCommitterText(){
       DecoupledPlatformImpl.setInstance( runnable -> {} );
     
-      jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl." ) );
+      jenkinsJob.commits().add( commitForWalker );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl." ) );
       
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
-      jenkinsJob.culprits().add( new JenkinsUserImpl( "Walker" ) );
-      assertThat( systemUnderTest.culpritsLabel().getText(), is( "Suspects: Rick, Daryl, Carl, Walker, Walker." ) );
+      jenkinsJob.commits().add( commitForWalker );
+      assertThat( systemUnderTest.newCommittersLabel().getText(), is( "New Committers: Rick, Daryl, Carl, Walker." ) );
+   }//End Method
+   
+   @Test public void shouldUseDecoupledPlatformToSetSinceFailureText(){
+      DecoupledPlatformImpl.setInstance( runnable -> {} );
+    
+      jenkinsJob.supplements().commitsSinceLastFailure().add( commitForWalker );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan." ) );
+      
+      DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
+      jenkinsJob.supplements().commitsSinceLastFailure().add( commitForWalker );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( "Since Last Failure: Jesus, Negan, Walker." ) );
    }//End Method
    
    @Test public void shouldUseDecoupledPlatformToSetBuiltOnText(){
@@ -596,6 +695,20 @@ public class FailureDetailTest {
       assertThat( systemUnderTest.failuresLabel().getText(), startsWith( "201/9876 Failed:" ) );
       jenkinsJob.testTotalCount().set( 202 );
       assertThat( systemUnderTest.failuresLabel().getText(), startsWith( "201/202 Failed:" ) );
+   }//End Method
+   
+   @Test public void shouldShowPassingMessageForSinceFailureWhenPassing(){
+      jenkinsJob.setBuildStatus( BuildResultStatus.SUCCESS );
+      assertThat( systemUnderTest.sinceLastFailureLabel().getText(), is( FailureDetail.SINCE_LAST_FAILURE_PREFIX + FailureDetail.PASSING ) );
+   }//End Method
+   
+   /**
+    * Convenience method for making a {@link Commit} for a {@link JenkinsUser}.
+    * @param user the {@link JenkinsUser}.
+    * @return the {@link Commit}.
+    */
+   private Commit makeCommitFor( JenkinsUser user ) {
+      return new Commit( "anything", 0L, user, "anything", "anything", new ArrayList<>() );
    }//End Method
 
 }//End Class

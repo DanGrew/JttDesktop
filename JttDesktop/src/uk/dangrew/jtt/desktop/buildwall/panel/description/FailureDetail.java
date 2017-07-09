@@ -11,6 +11,7 @@ package uk.dangrew.jtt.desktop.buildwall.panel.description;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -20,10 +21,12 @@ import uk.dangrew.jtt.desktop.javafx.registrations.ChangeListenerRegistrationImp
 import uk.dangrew.jtt.desktop.javafx.registrations.ListChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.desktop.javafx.registrations.RegisteredComponent;
 import uk.dangrew.jtt.desktop.javafx.registrations.RegistrationManager;
+import uk.dangrew.jtt.model.commit.Commit;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.nodes.JenkinsNode;
 import uk.dangrew.jtt.model.tests.TestClass;
+import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
 
 /**
@@ -34,14 +37,16 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    
    static final String UNKNOWN_NODE = "Unknown";
    static final String BUILT_ON_PREFIX = "Built on: ";
-   static final String CULPRIT_PREFIX = "Suspect: ";
-   static final String CULPRITS_PREFIX = "Suspects: ";
-   static final String NO_CULPRITS = "No Suspects.";
+   static final String NO_COMMITTERS = "Unaware of any committers.";
+   static final String PASSING = "Build stable.";
    
+   static final String NEW_COMMITTERS_PREFIX = "New Committers: ";
+   static final String SINCE_LAST_FAILURE_PREFIX = "Since Last Failure: ";
    static final String NO_FAILING_TESTS = "No Failures.";
-   static final double CULPRITS_ROW_PERCENT = 25.0;
+   static final double SINCE_FAILURE_COMMITTERS_ROW_PERCENT = 20.0;
+   static final double NEW_COMMITTERS_ROW_PERCENT = 15.0;
    static final double BUILT_ON_ROW_PERCENT = 10.0;
-   static final double FAILURES_ROW_PERCENT = 65.0;
+   static final double FAILURES_ROW_PERCENT = 55.0;
    
    static final String ABORTED_DESCRIPTION = "ABORTED: Manual, Build Timeout, etc.";
    static final String FAILURE_DESCRIPTION = "FAILURE: Compilation Problem, Partial Checkout, etc.";
@@ -50,7 +55,8 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    private final JenkinsJob jenkinsJob;
    
    private RegistrationManager registrations;
-   private Label culpritsLabel;
+   private Label sinceLastFailureLabel;
+   private Label newCommittersLabel;
    private Label lastBuiltOnLabel;
    private Label failingLabel;
    
@@ -63,7 +69,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       this.jenkinsJob = jenkinsJob;
       this.configuration = configuration;
       
-      provideCulprits();
+      provideCommitters();
       provideLastBuiltOnNode();
       provideFailingTestCases();
       
@@ -75,13 +81,16 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    }//End Constructor
    
    /**
-    * Method to provide the culprits on the component as a {@link Label}.
+    * Method to provide the committers on the component as a {@link Label}.
     */
-   private void provideCulprits(){  
-      culpritsLabel = new Label();
-      updateCulpritText();
-      culpritsLabel.setWrapText( true );
-      add( culpritsLabel, 0, 0 );
+   private void provideCommitters(){  
+      sinceLastFailureLabel = new Label();
+      sinceLastFailureLabel.setWrapText( true );
+      newCommittersLabel = new Label();
+      newCommittersLabel.setWrapText( true );
+      updateCommittersText();
+      add( sinceLastFailureLabel, 0, 0 );
+      add( newCommittersLabel, 0, 1 );
    }//End Method
    
    /**
@@ -92,50 +101,48 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       lastBuiltOnLabel = new Label();
       updateLastBuiltOnText();
       lastBuiltOnLabel.setWrapText( true );
-      add( lastBuiltOnLabel, 0, 1 );
+      add( lastBuiltOnLabel, 0, 2 );
    }//End Method
 
    /**
-    * Method to construct the list of culprits as a {@link StringBuilder}.
+    * Method to construct the list of committers as a {@link StringBuilder}.
     * @return the {@link StringBuilder} for further changes if needed.
     */
-   private StringBuilder constructCulpritsList() {
-      StringBuilder culprits = new StringBuilder();
+   private StringBuilder constructCommittersList( ObservableList< Commit > commits ) {
+      StringBuilder committers = new StringBuilder();
       
-      if ( jenkinsJob.culprits().isEmpty() ) {
-         culprits.append( NO_CULPRITS );
-         return culprits;
+      Set< JenkinsUser > committerUsers = new LinkedHashSet<>();
+      commits.forEach( c -> committerUsers.add( c.user() ) );
+      
+      if ( committerUsers.isEmpty() ) {
+         committers.append( NO_COMMITTERS );
+         return committers;
       }
       
-      if ( jenkinsJob.culprits().size() == 1 ) {
-         culprits.append( CULPRIT_PREFIX );
-      } else {
-         culprits.append( CULPRITS_PREFIX );
-      }
-      jenkinsJob.culprits().forEach( culprit -> {
-         culprits.append( culprit.nameProperty().get() );
-         culprits.append( ", " );
+      committerUsers.forEach( committer -> {
+         committers.append( committer.nameProperty().get() );
+         committers.append( ", " );
       } );
-      if ( culprits.length() > 0 ) {
-         culprits.setLength( culprits.length() - 1 );
-         culprits.setCharAt( culprits.length() - 1, '.' );
+      if ( committers.length() > 0 ) {
+         committers.setLength( committers.length() - 1 );
+         committers.setCharAt( committers.length() - 1, '.' );
       }
-      return culprits;
+      return committers;
    }//End Method
    
    /**
-    * Method to provide the culprits on the component as a {@link Label}.
+    * Method to provide the failing test cases on the component as a {@link Label}.
     */
    private void provideFailingTestCases(){  
       failingLabel = new Label();
       failingLabel.setLineSpacing( 0.0 );
       updateFailuresText();
       failingLabel.setWrapText( true );
-      add( failingLabel, 0, 2 );
+      add( failingLabel, 0, 3 );
    }//End Method
 
    /**
-    * Method to construct the list of culprits as a {@link StringBuilder}.
+    * Method to construct the list of failing test cases as a {@link StringBuilder}.
     * @return the {@link StringBuilder} for further changes if needed.
     */
    private StringBuilder constructFailingTestCasesList() {
@@ -174,9 +181,13 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
     * Method to apply the {@link RowConstraints} needed.
     */
    private void applyRowConstraints() {
-      RowConstraints culpritsRow = new RowConstraints();
-      culpritsRow.setPercentHeight( CULPRITS_ROW_PERCENT );
-      culpritsRow.setMaxHeight( Double.MAX_VALUE );
+      RowConstraints sinceFailureRow = new RowConstraints();
+      sinceFailureRow.setPercentHeight( SINCE_FAILURE_COMMITTERS_ROW_PERCENT );
+      sinceFailureRow.setMaxHeight( Double.MAX_VALUE );
+      
+      RowConstraints newCommittersRow = new RowConstraints();
+      newCommittersRow.setPercentHeight( NEW_COMMITTERS_ROW_PERCENT );
+      newCommittersRow.setMaxHeight( Double.MAX_VALUE );
       
       RowConstraints builtOnRow = new RowConstraints();
       builtOnRow.setPercentHeight( BUILT_ON_ROW_PERCENT );
@@ -186,7 +197,7 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       failuresRow.setPercentHeight( FAILURES_ROW_PERCENT );
       failuresRow.setMaxHeight( Double.MAX_VALUE );
       
-      getRowConstraints().addAll( culpritsRow, builtOnRow, failuresRow );
+      getRowConstraints().addAll( sinceFailureRow, newCommittersRow, builtOnRow, failuresRow );
    }//End Method
    
    /**
@@ -206,9 +217,16 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       ) );
       
       registrations.apply( new ListChangeListenerRegistrationImpl<>(
-               jenkinsJob.culprits(), 
+               jenkinsJob.commits(), 
                new FunctionListChangeListenerImpl<>( 
-                        added -> updateCulpritText(), removed -> updateCulpritText()
+                        added -> updateCommittersText(), removed -> updateCommittersText()
+               )
+      ) );
+      
+      registrations.apply( new ListChangeListenerRegistrationImpl<>(
+               jenkinsJob.supplements().commitsSinceLastFailure(), 
+               new FunctionListChangeListenerImpl<>( 
+                        added -> updateCommittersText(), removed -> updateCommittersText()
                )
       ) );
       
@@ -252,30 +270,39 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
    }//End Method
    
    /**
-    * Method to update the culprits {@link Font} in line with the {@link BuildWallConfiguration}.
+    * Method to update the committers {@link Font} in line with the {@link BuildWallConfiguration}.
     */
    private void updateDetailFont(){
-      culpritsLabel.fontProperty().set( configuration.detailFont().get() );
+      sinceLastFailureLabel.fontProperty().set( configuration.detailFont().get() );
+      newCommittersLabel.fontProperty().set( configuration.detailFont().get() );
       lastBuiltOnLabel.fontProperty().set( configuration.detailFont().get() );
       failingLabel.fontProperty().set( configuration.detailFont().get() );
    }//End Method
    
    /**
-    * Method to update the culprits {@link Color} in line with the {@link BuildWallConfiguration}.
+    * Method to update the committers {@link Color} in line with the {@link BuildWallConfiguration}.
     */
    private void updateDetailColour(){
-      culpritsLabel.textFillProperty().set( configuration.detailColour().get() );
+      sinceLastFailureLabel.textFillProperty().set( configuration.detailColour().get() );
+      newCommittersLabel.textFillProperty().set( configuration.detailColour().get() );
       lastBuiltOnLabel.textFillProperty().set( configuration.detailColour().get() );
       failingLabel.textFillProperty().set( configuration.detailColour().get() );
    }//End Method
    
    /**
-    * Method to update the culprit text displayed in the {@link Label}.
+    * Method to update the committers text displayed in the {@link Label}.
     */
-   private void updateCulpritText(){
-      StringBuilder culprits = constructCulpritsList();
+   private void updateCommittersText(){
+      StringBuilder sinceLastFailureText;
+      if ( jenkinsJob.getBuildStatus() == BuildResultStatus.SUCCESS ) {
+         sinceLastFailureText = new StringBuilder( PASSING );
+      } else { 
+         sinceLastFailureText = constructCommittersList( jenkinsJob.supplements().commitsSinceLastFailure() );
+      }
+      StringBuilder newCommittersText = constructCommittersList( jenkinsJob.commits() );
       DecoupledPlatformImpl.runLater( () -> {
-         culpritsLabel.setText( culprits.toString() );
+         sinceLastFailureLabel.setText( SINCE_LAST_FAILURE_PREFIX + sinceLastFailureText.toString() );
+         newCommittersLabel.setText( NEW_COMMITTERS_PREFIX + newCommittersText.toString() );
       } );
    }//End Method
    
@@ -300,8 +327,12 @@ public class FailureDetail extends GridPane implements RegisteredComponent {
       } );
    }//End Method
    
-   Label culpritsLabel() {
-      return culpritsLabel;
+   Label sinceLastFailureLabel() {
+      return sinceLastFailureLabel;
+   }//End Method
+   
+   Label newCommittersLabel() {
+      return newCommittersLabel;
    }//End Method
 
    Label lastBuiltOnLabel() {
