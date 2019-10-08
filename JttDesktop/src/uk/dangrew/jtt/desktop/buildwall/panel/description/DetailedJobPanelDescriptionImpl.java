@@ -24,6 +24,8 @@ public class DetailedJobPanelDescriptionImpl extends JobPanelDescriptionBaseImpl
    static final double BUILD_PROPERTY_PERCENTAGE = 100;
    static final double COMPLETION_ESTIMATE_PERCENTAGE = 100;
    
+   private FailureDetail failureDetail;
+   
    /**
     * Constructs a new {@link DetailedJobPanelDescriptionImpl}.
     * @param configuration the {@link BuildWallConfiguration}.
@@ -42,12 +44,17 @@ public class DetailedJobPanelDescriptionImpl extends JobPanelDescriptionBaseImpl
       jobName().setMaxWidth( Double.MAX_VALUE );
       setTop( jobName() );
       
-      setCenter( new FailureDetail( getJenkinsJob(), getConfiguration() ) );
+      detachFailureDetailFromSystem();
+      setCenter( failureDetail = new FailureDetail( getJenkinsJob(), getConfiguration() ) );
       
       propertiesPane().add( buildNumber(), 0, 0 );
       propertiesPane().add( completionEstimate(), 1, 0 );
       setBottom( propertiesPane() );
    }//End Class
+   
+   FailureDetail failureDetail(){
+      return failureDetail;
+   }//End Method
    
    /**
     * {@inheritDoc}
@@ -60,6 +67,20 @@ public class DetailedJobPanelDescriptionImpl extends JobPanelDescriptionBaseImpl
       completionEstimateColumn.setPercentWidth( COMPLETION_ESTIMATE_PERCENTAGE );
       completionEstimateColumn.setHalignment( HPos.RIGHT );
       propertiesPane().getColumnConstraints().addAll( buildNumberColumn, completionEstimateColumn );
+   }//End Method
+   
+   @Override public void detachFromSystem() {
+      super.detachFromSystem();
+      detachFailureDetailFromSystem();
+   }//End Method
+   
+   /**
+    * Method to detach the {@link FailureDetail} from the system as per {@link #detachFromSystem()}.
+    */
+   private void detachFailureDetailFromSystem(){
+      if ( failureDetail != null ) {
+         failureDetail.detachFromSystem();
+      }
    }//End Method
    
 }//End Class

@@ -8,6 +8,7 @@
  */
 package uk.dangrew.jtt.desktop.javafx.combobox;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -16,6 +17,7 @@ import static uk.dangrew.jtt.model.utility.TestCommon.assertThatFontIsBold;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.sun.javafx.application.PlatformImpl;
@@ -88,7 +90,7 @@ public class FontFamilyPropertyBoxTest {
       assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( FONT_FAMILY_CHOICES.get( COMMON_FONT_POSITION ) ) );
       
       property.set( Font.font( FONT_FAMILY_CHOICES.get( 10 ) ) );
-      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( FONT_FAMILY_CHOICES.get( 10 ) ) );
+      assertThat( systemUnderTest.getSelectionModel().getSelectedItem(), is( not( FONT_FAMILY_CHOICES.get( COMMON_FONT_POSITION ) ) ) );
    }//End Method
    
    @Test public void shouldHandleNoFontWhenFamilyIsSelected() {

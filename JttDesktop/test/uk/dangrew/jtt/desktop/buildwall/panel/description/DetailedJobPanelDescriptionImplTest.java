@@ -54,6 +54,10 @@ public class DetailedJobPanelDescriptionImplTest extends JobPanelDescriptionBase
       return new DetailedJobPanelDescriptionImpl( configuration, theme, job );
    }//End Method
    
+   private DetailedJobPanelDescriptionImpl exactSut(){ 
+      return ( DetailedJobPanelDescriptionImpl )systemUnderTest;
+   }//End Method
+   
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
       TestApplication.launch( () -> { 
@@ -101,6 +105,12 @@ public class DetailedJobPanelDescriptionImplTest extends JobPanelDescriptionBase
    
    @Test public void failureDetailShouldBeInCenter(){
       assertThat( systemUnderTest.getCenter(), instanceOf( FailureDetail.class ) );
+   }//End Method
+   
+   @Test public void shouldDetachFailureDetailFromSystem(){
+      assertThat( exactSut().failureDetail().isDetached(), is( false ) );
+      systemUnderTest.detachFromSystem();
+      assertThat( exactSut().failureDetail().isDetached(), is( true ) );
    }//End Method
    
 }//End Class
