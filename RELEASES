@@ -1,3 +1,8 @@
+Release, "1.6.36"
+Date, "(Oct 8, 2019 9:08:44 PM)"
+Download, "https://dl.bintray.com/dangrew/JttDesktop/jtt/jtt-desktop/1.6.36/jtt-desktop-1.6.36-runnable.jar"
+Description, "Minor bug fix to resolve memory leak identified in failure detail panels."
+
 Release, "1.6.30"
 Date, "(Jun 1, 2017 8:53:43 PM)"
 Download, "https://dl.bintray.com/dangrew/JttDesktop/jtt/jtt-desktop/1.6.30/jtt-desktop-1.6.30-runnable.jar"
