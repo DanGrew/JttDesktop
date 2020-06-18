@@ -8,23 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.dual;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -32,6 +15,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
@@ -40,10 +29,16 @@ import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
-import uk.dangrew.jtt.model.event.structure.EventAssertions;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.EventAssertions;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link DualBuildWallContextMenu} test.
@@ -67,7 +62,7 @@ public class DualBuildWallContextMenuTest {
    private DualBuildWallContextMenuOpener opener;
    
    @BeforeClass public static void initialisePlatform(){
-      PlatformImpl.startup( () -> {} );
+      JavaFxThreading.startup( () -> {} );
       DecoupledPlatformImpl.setInstance( new TestPlatformDecouplerImpl() );
       SystemStyling.initialise();
    }//End Method
@@ -75,7 +70,7 @@ public class DualBuildWallContextMenuTest {
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
       when( display.buildWallPane() ).thenReturn( buildWallPane );
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          systemUnderTest = new DualBuildWallContextMenu( display );
       } );
    }//End Method
@@ -149,7 +144,7 @@ public class DualBuildWallContextMenuTest {
    @Test public void shouldControlConfigWindow() {
       MenuItem controWindow = retrieveMenuItem( CONFIG_WINDOW );
       
-      EventAssertions.assertEventRaised( 
+      EventAssertions.assertEventRaised(
                () -> new PreferencesOpenEvent(), 
                () -> controWindow.getOnAction().handle( new ActionEvent() ), 
                new PreferenceBehaviour( WindowPolicy.Open, null )
@@ -184,11 +179,11 @@ public class DualBuildWallContextMenuTest {
    
    @Test public void cancelShouldHideWhenUsingHeavySetup() throws InterruptedException{
       fullLaunch();
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          opener.handle( new ContextMenuEvent( null, 0, 0, 0, 0, false, null ) );
       } );
       assertThat( systemUnderTest.friendly_isShowing(), is( true ) );
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          retrieveMenuItem( CANCEL ).getOnAction().handle( new ActionEvent() );
       } );
       assertThat( systemUnderTest.friendly_isShowing(), is( false ) );

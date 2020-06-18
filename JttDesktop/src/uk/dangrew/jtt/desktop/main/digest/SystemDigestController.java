@@ -21,7 +21,7 @@ import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
  * The {@link SystemDigestController} is responsible for the digest elements of the
- * {@link uk.dangrew.jtt.main.JenkinsTestTracker}.
+ * {@link JenkinsTestTracker}.
  */
 public class SystemDigestController {
    
@@ -33,7 +33,7 @@ public class SystemDigestController {
    private final JarLoggingProtocol protocol;
    
    /**
-    * Constructs a new {@link SystemDigestController} for the {@link uk.dangrew.jtt.main.JenkinsTestTracker}.
+    * Constructs a new {@link SystemDigestController} for the {@link JenkinsTestTracker}.
     */
    public SystemDigestController() {
       this( new DefaultTimestampProvider(), new ThreadedWrapper(), new DigestFileLogger(), new DigestViewer( 600, 200 ) );
@@ -56,7 +56,7 @@ public class SystemDigestController {
    }//End Constructor
 
    /**
-    * Method to get the {@link DigestViewer} associated with the {@link uk.dangrew.jtt.main.JenkinsTestTracker}.
+    * Method to get the {@link DigestViewer} associated with the {@link JenkinsTestTracker}.
     * @return the {@link DigestViewer}.
     */
    public DigestViewer getDigestViewer() {

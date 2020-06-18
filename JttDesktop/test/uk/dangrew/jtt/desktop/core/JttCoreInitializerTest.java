@@ -8,26 +8,19 @@
  */
 package uk.dangrew.jtt.desktop.core;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.*;
+import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.kode.launch.TestApplication;
 
 import java.util.function.Function;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
-import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
-import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class JttCoreInitializerTest {
 

@@ -11,7 +11,7 @@ package uk.dangrew.jtt.desktop.mc.sides.jobs;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 
 /**

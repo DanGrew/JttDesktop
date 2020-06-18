@@ -8,11 +8,12 @@
  */
 package uk.dangrew.jtt.desktop.environment.preferences;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
 
 /**
  * The {@link PreferenceWindowController} is responsible for controlling a
@@ -44,7 +45,7 @@ public class PreferenceWindowController {
             Parent configurationWindow
    ) {
          Scene configurationScene = new Scene( configurationWindow );
-         PlatformImpl.runAndWait( () -> {
+          JavaFxThreading.runAndWait( () -> {
             configurationWindowStage = new Stage();
             configurationWindowStage.setTitle( CONFIGURATION_WINDOW_TITLE );
             configurationWindowStage.setWidth( WIDTH );
@@ -68,7 +69,7 @@ public class PreferenceWindowController {
     */
    public void showConfigurationWindow(){
       verifyState();
-      PlatformImpl.runLater( () -> { 
+      JavaFxThreading.runLater( () -> {
          configurationWindowStage.show();
          configurationWindowStage.toFront();
       } );
@@ -79,7 +80,7 @@ public class PreferenceWindowController {
     */
    public void hideConfigurationWindow(){
       verifyState();
-      PlatformImpl.runLater( () -> configurationWindowStage.hide() );
+      JavaFxThreading.runLater( () -> configurationWindowStage.hide() );
    }//End Method
    
    /**

@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.effects.flasher.configuration;
 
-import java.io.File;
-
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -19,11 +17,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser.ExtensionFilter;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.ConfigurationPanelDefaults;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
-import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
-import uk.dangrew.jtt.desktop.javafx.spinner.DoublePropertySpinner;
-import uk.dangrew.jtt.desktop.javafx.spinner.IntegerPropertySpinner;
+import uk.dangrew.kode.friendly.controlsfx.FriendlyFileChooser;
+import uk.dangrew.kode.javafx.spinner.DoublePropertySpinner;
+import uk.dangrew.kode.javafx.spinner.IntegerPropertySpinner;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+
+import java.io.File;
 
 /**
  * The {@link ImageFlasherConfigurationPanel} provides a graphical configuration panel
@@ -76,7 +76,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
    /**
     * Constructs a new {@link ImageFlasherConfigurationPanel}.
     * @param title the title of the configuration pane.
-    * @param configuration the {@link ImageFlasherProperties} to configure.
+    * @param properties the {@link ImageFlasherProperties} to configure.
     */
    public ImageFlasherConfigurationPanel( String title, ImageFlasherProperties properties ) {
       this( new JavaFxStyle(), new ConfigurationPanelDefaults(), title, properties, new FriendlyFileChooser() );
@@ -87,7 +87,7 @@ public class ImageFlasherConfigurationPanel extends GridPane {
     * @param styling the {@link JavaFxStyle}.
     * @param defaults the {@link ConfigurationPanelDefaults}.
     * @param title the title for the configuration pane.
-    * @param configuration the {@link ImageFlasherProperties} to configure.
+    * @param properties the {@link ImageFlasherProperties} to configure.
     * @param fileChooser the {@link FriendlyFileChooser} to use.
     */
    ImageFlasherConfigurationPanel( 

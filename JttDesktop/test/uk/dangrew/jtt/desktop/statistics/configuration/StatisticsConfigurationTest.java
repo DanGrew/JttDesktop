@@ -8,16 +8,12 @@
  */
 package uk.dangrew.jtt.desktop.statistics.configuration;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
+import uk.dangrew.kode.synchronization.SynchronizedObservableList;
 
-import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class StatisticsConfigurationTest {
 

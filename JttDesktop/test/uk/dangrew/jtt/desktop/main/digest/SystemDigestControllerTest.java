@@ -25,7 +25,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.desktop.utility.time.TimestampProvider;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 import uk.dangrew.sd.logging.location.LoggingLocationProtocol;
 import uk.dangrew.sd.logging.logger.DigestFileLogger;
 import uk.dangrew.sd.table.presentation.DigestTableRowLimit;

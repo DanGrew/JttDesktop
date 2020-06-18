@@ -8,16 +8,13 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.effects.sound;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
+import uk.dangrew.kode.synchronization.SynchronizedObservableList;
+import uk.dangrew.kode.synchronization.SynchronizedObservableMap;
 
-import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
-import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class SoundConfigurationTest {
 

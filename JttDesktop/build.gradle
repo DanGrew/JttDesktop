@@ -2,9 +2,10 @@
  * PLGUINS: apply all plugins needed for the build
  */
 plugins {
-    id "com.jfrog.bintray" version "1.6"
+    id "com.jfrog.bintray" version "1.8.1"
 //plugin for making shadow jar
-  	id "com.github.johnrengelman.shadow" version "1.2.3"
+  	id "com.github.johnrengelman.shadow" version "5.2.0"
+    id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 allprojects { 
@@ -29,8 +30,13 @@ version = buildNumberForThisEnvironment
 /*
  * SOURCE: source specific configuration
  */
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
+
+javafx {
+    version = "11"
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.media', 'javafx.graphics']
+}
 
 sourceSets {
     main {
@@ -57,12 +63,12 @@ sourceSets {
  * DEPENDENCIES: define repos for resolving and dependencies to resolve
  */
 repositories {
+    maven { url  "http://dl.bintray.com/dangrew/dag-kode" }
      maven { url  "http://dl.bintray.com/dangrew/SystemDigest" }
      maven { url  "http://dl.bintray.com/dangrew/JsonUpgradingPersistenceArchitecture" }
      maven { url  "http://dl.bintray.com/dangrew/JttModel" }
      maven { url  "http://dl.bintray.com/dangrew/JttConnection" }
      maven { url  "http://dl.bintray.com/jerady/FontAwesomeFX/" }
-     maven { url "http://repo.maven.apache.org/maven2" }
      jcenter()
 }
 
@@ -71,19 +77,23 @@ dependencies {
     compile group: 'dom4j', name: 'dom4j', version:'1.6.1'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version:'4.1.2'
     compile group: 'org.json', name: 'json', version:'20151123'
-    compile group: 'SystemDigest', name: 'SystemDigest', version: '1.2.52'
-    compile group: 'jupa', name: 'JsonUpgradingPersistenceArchitecture', version: '1.1.55'
-    compile group: 'jtt', name: 'jtt-model', version: '1.0.3'
-    compile group: 'jtt', name: 'jtt-connection', version: '1.0.15'
     compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9'
-    
+
+    compile group: 'uk.dangrew', name: 'dag-kode', version: '1.1.69'
+    compile group: 'SystemDigest', name: 'SystemDigest', version: '1.3.14'
+    compile group: 'jupa', name: 'JsonUpgradingPersistenceArchitecture', version: '1.3.10'
+    compile group: 'jtt', name: 'jtt-model', version: '1.1.7'
+    compile group: 'jtt', name: 'jtt-connection', version: '1.1.16'
+
     testCompile group: 'junit', name: 'junit', version:'4.12'
     testCompile group: 'pl.pragmatists', name: 'JUnitParams', version:'1.0.5'
     testCompile group: 'org.hamcrest', name: 'hamcrest-all', version:'1.3'
     testCompile group: 'org.mockito', name: 'mockito-all', version:'1.9.5'
-    testCompile group: 'SystemDigest', name: 'SystemDigest', version: '1.2.52', classifier: 'tests'
-    testCompile group: 'jtt', name: 'jtt-model', version: '1.0.3', classifier: 'tests'
-    testCompile group: 'jtt', name: 'jtt-connection', version: '1.0.15', classifier: 'tests'
+
+    testCompile group: 'uk.dangrew', name: 'dag-kode', version: '1.1.69', classifier: 'tests'
+    testCompile group: 'SystemDigest', name: 'SystemDigest', version: '1.3.14', classifier: 'tests'
+    testCompile group: 'jtt', name: 'jtt-model', version: '1.1.7', classifier: 'tests'
+    testCompile group: 'jtt', name: 'jtt-connection', version: '1.1.16', classifier: 'tests'
 }
 
 /*
@@ -127,14 +137,14 @@ task packageTests(type: Jar) {
 artifacts.archives packageTests
 
 //task to write the version number to the version file
-task versioning << {
+task versioning {
    File file = new File( "${projectDir}/src/uk/dangrew/jtt/desktop/versioning/VERSION" )
    if ( file.exists() ) {
 	   print( file.absolutePath )
 	   file.write( version )
    }
 }
-processResources.dependsOn versioning 
+processResources.dependsOn versioning
 
 /*
  * SHADOW: configure runnable element
@@ -146,14 +156,6 @@ shadowJar.outputs.upToDateWhen { false }
 mainClassName = "uk.dangrew.jtt.desktop.main.JenkinsTestTracker"
 //bind with jar so that whenever jar is run, shadow is run
 jar.dependsOn shadowJar
-//automatic distribution options pulled in from application plugin - not interested
-distZip.enabled = false
-distTar.enabled = false
-//publish will fail with above disabled if we do not tell it to ignore them
-configurations.archives.with {
-    artifacts.remove artifacts.find { it.archiveTask.is distZip }
-    artifacts.remove artifacts.find { it.archiveTask.is distTar }
-}
 
 /*
  * REMOTE ARCHIVING: publish release candidates to bintray

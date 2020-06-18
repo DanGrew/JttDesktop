@@ -13,7 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.connection.api.sources.JenkinsConnection;
 import uk.dangrew.jtt.connection.login.JenkinsLoginDetails;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.configuration.api.ButtonConfigurer.StateTranslator;
 
 /**

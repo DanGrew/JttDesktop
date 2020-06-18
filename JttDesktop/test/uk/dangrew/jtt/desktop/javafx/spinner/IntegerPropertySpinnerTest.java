@@ -8,18 +8,18 @@
  */
 package uk.dangrew.jtt.desktop.javafx.spinner;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import org.junit.Before;
+import org.junit.Test;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.javafx.spinner.IntegerPropertySpinner;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link IntegerPropertySpinner} test.
@@ -30,7 +30,7 @@ public class IntegerPropertySpinnerTest {
    
    @Before public void initialiseSystemUnderTest(){
       TestApplication.startPlatform();
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          systemUnderTest = new IntegerPropertySpinner();
          systemUnderTest.setValueFactory( new IntegerSpinnerValueFactory( 0, 100 ) );
       } );

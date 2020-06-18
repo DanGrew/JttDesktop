@@ -8,23 +8,18 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.effects.flasher;
 
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link ImageFlasherImpl} test.

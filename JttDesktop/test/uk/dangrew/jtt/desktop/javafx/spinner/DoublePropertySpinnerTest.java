@@ -14,12 +14,14 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.javafx.spinner.DoublePropertySpinner;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link DoublePropertySpinner} test.
@@ -30,7 +32,7 @@ public class DoublePropertySpinnerTest {
    
    @Before public void initialiseSystemUnderTest(){
       TestApplication.startPlatform();
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          systemUnderTest = new DoublePropertySpinner();
          systemUnderTest.setValueFactory( new DoubleSpinnerValueFactory( 0, 100 ) );
       } );

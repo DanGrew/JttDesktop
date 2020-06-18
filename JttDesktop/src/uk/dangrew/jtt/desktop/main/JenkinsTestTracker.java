@@ -1,4 +1,5 @@
 package uk.dangrew.jtt.desktop.main;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -6,7 +7,7 @@ import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.desktop.system.properties.DateAndTimes;
-import uk.dangrew.jupa.javafx.platform.PlatformLifecycle;
+import uk.dangrew.kode.javafx.platform.PlatformLifecycle;
 
 /**
  * The {@link JenkinsTestTracker} is the launcher for the application.

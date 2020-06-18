@@ -8,14 +8,10 @@
  */
 package uk.dangrew.jtt.desktop.configuration.tree;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
-
 import uk.dangrew.jtt.desktop.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
@@ -24,10 +20,13 @@ import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.Event;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link ConfigurationTreePane} test.
@@ -52,7 +51,7 @@ public class ConfigurationTreePaneTest {
    
    @Ignore
    @Test public void manual() throws InterruptedException {
-      new PreferencesOpenEvent().fire( new Event< PreferenceBehaviour >( 
+      new PreferencesOpenEvent().fire( new Event< PreferenceBehaviour >(
                new PreferenceBehaviour( WindowPolicy.Open, ConfigurationTreeItems.DualWallProperties ) ) 
       );
       

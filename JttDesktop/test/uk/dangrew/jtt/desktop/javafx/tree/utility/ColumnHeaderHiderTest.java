@@ -19,18 +19,19 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.Pane;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link ColumnHeaderHider} test.
  */
 public class ColumnHeaderHiderTest {
 
-   @Mock private Pane header;
+   private Pane header;
    private WidthSettableTable table;
    private ColumnHeaderHider systemUnderTest;
    
@@ -44,6 +45,7 @@ public class ColumnHeaderHiderTest {
    @Before public void initialiseSystemUnderTest(){
       TestApplication.startPlatform();
       MockitoAnnotations.initMocks( this );
+      header = new Pane();
       table = spy( new WidthSettableTable() );
       
       when( table.lookup( ColumnHeaderHider.TABLE_HEADER_ROW ) ).thenReturn( header );
@@ -58,7 +60,7 @@ public class ColumnHeaderHiderTest {
       systemUnderTest.hideColumnHeaders( table );
       
       table.setWidth( 100 );
-      PlatformImpl.runAndWait( () -> {} );
+       JavaFxThreading.runAndWait( () -> {} );
       assertThat( header.getMaxHeight(), is( ColumnHeaderHider.ZERO_DIMENSION ) );
       assertThat( header.getMinHeight(), is( ColumnHeaderHider.ZERO_DIMENSION ) );
       assertThat( header.getPrefHeight(), is( ColumnHeaderHider.ZERO_DIMENSION ) );

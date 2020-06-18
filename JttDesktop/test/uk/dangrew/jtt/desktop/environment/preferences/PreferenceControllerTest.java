@@ -8,31 +8,28 @@
  */
 package uk.dangrew.jtt.desktop.environment.preferences;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import uk.dangrew.jtt.desktop.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreeItems;
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreePane;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.Event;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 /**
  * {@link PreferenceController} test.

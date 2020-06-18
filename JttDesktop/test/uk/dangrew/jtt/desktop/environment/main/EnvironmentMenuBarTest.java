@@ -8,24 +8,23 @@
  */
 package uk.dangrew.jtt.desktop.environment.main;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
-
+import javafx.event.ActionEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javafx.event.ActionEvent;
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreeItems;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.desktop.utility.system.OperatingSystem;
-import uk.dangrew.jtt.model.event.structure.EventAssertions;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.EventAssertions;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link EnvironmentMenuBar} test.
@@ -70,7 +69,7 @@ public class EnvironmentMenuBarTest {
    }//End Method
    
    @Test public void preferencesShouldOpenPreferencesWindowWithEvent(){
-      EventAssertions.assertEventRaised( 
+      EventAssertions.assertEventRaised(
                () -> new PreferencesOpenEvent(), 
                () -> systemUnderTest.preferences().getOnAction().handle( new ActionEvent() ), 
                new PreferenceBehaviour( WindowPolicy.Open, null ) 

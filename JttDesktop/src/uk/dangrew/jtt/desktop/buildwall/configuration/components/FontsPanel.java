@@ -14,9 +14,9 @@ import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.javafx.combobox.FontFamilyPropertyBox;
-import uk.dangrew.jtt.desktop.javafx.spinner.PropertySpinner;
+import uk.dangrew.kode.javafx.spinner.PropertySpinner;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * The {@link FontsPanel} is responsible for displaying all configurable items related to {@link Font}s
@@ -57,7 +57,7 @@ public class FontsPanel extends GridPane {
    /**
     * Constructs a new {@link FontsPanel}.
     * @param configuration the {@link BuildWallConfiguration} associated to be configured.
-    * @param styling the {@link BuildWallConfigurationStyle} to use for style.
+    * @param styling the {@link JavaFxStyle} to use for style.
     * @param defaults the {@link ConfigurationPanelDefaults}.
     */
    FontsPanel( BuildWallConfiguration configuration, JavaFxStyle styling, ConfigurationPanelDefaults defaults ) {

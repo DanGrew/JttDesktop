@@ -8,24 +8,20 @@
  */
 package uk.dangrew.jtt.desktop.friendly.javafx;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import javafx.scene.Node;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.layout.BorderPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import javafx.scene.Node;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeContextMenu;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 /**
  * {@link FriendlyMenuOpener} test.

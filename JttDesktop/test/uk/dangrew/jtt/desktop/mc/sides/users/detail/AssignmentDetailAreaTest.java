@@ -32,7 +32,7 @@ import javafx.scene.image.ImageView;
 import uk.dangrew.jtt.desktop.mc.resources.ManagementConsoleImages;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.desktop.mc.view.ManagementConsoleStyle;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link AssignmentDetailArea} test.

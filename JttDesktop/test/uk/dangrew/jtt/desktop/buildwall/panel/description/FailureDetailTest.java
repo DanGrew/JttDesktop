@@ -8,26 +8,16 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.panel.description;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertThat;
-
-import java.util.ArrayList;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
@@ -43,7 +33,13 @@ import uk.dangrew.jtt.model.tests.TestCaseImpl;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.util.ArrayList;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link FailureDetail} test.
@@ -129,7 +125,7 @@ public class FailureDetailTest {
       } );
       
       Thread.sleep( 2000 );
-      PlatformImpl.runLater( () -> {
+       JavaFxThreading.runLater( () -> {
          jenkinsJob.testFailureCount().set( 10 );
          jenkinsJob.testTotalCount().set( 1001 );
          jenkinsJob.commits().remove( 1 );
@@ -137,7 +133,7 @@ public class FailureDetailTest {
       } );
       
       Thread.sleep( 2000 );
-      PlatformImpl.runLater( () -> {
+       JavaFxThreading.runLater( () -> {
          jenkinsJob.testFailureCount().set( 11 );
          jenkinsJob.testTotalCount().set( 23001 );
          jenkinsJob.commits().addAll( 
@@ -148,7 +144,7 @@ public class FailureDetailTest {
       } );
       
       Thread.sleep( 2000 );
-      PlatformImpl.runLater( () -> {
+       JavaFxThreading.runLater( () -> {
          jenkinsJob.commits().addAll( 
                   makeCommitFor( new JenkinsUserImpl( "Glenn" ) ), 
                   makeCommitFor( new JenkinsUserImpl( "Michonne" ) )
@@ -156,7 +152,7 @@ public class FailureDetailTest {
       } );
       
       Thread.sleep( 2000 );
-      PlatformImpl.runLater( () -> {
+       JavaFxThreading.runLater( () -> {
          jenkinsJob.testFailureCount().set( 999 );
          jenkinsJob.testTotalCount().set( 1000 );
          jenkinsJob.commits().remove( 4 );

@@ -18,7 +18,7 @@ import org.junit.Test;
 import javafx.scene.control.Label;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link AssignedTreeItem} test.

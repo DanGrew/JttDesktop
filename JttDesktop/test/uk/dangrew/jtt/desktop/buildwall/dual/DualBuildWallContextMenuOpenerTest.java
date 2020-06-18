@@ -21,9 +21,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.scene.input.ContextMenuEvent;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
 
 /**
  * {@link DualBuildWallContextMenuOpener} test.
@@ -35,7 +36,7 @@ public class DualBuildWallContextMenuOpenerTest {
    private DualBuildWallContextMenuOpener systemUnderTest;
 
    @BeforeClass public static void initialisePlatform(){
-      PlatformImpl.startup( () -> {} );
+      JavaFxThreading.startup( () -> {} );
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){

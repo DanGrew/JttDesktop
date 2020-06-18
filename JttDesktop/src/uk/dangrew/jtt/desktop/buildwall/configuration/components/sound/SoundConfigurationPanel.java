@@ -20,7 +20,7 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.F
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.IndividualChangeApplier;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.PassFailApplier;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.PassPassApplier;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.utility.observable.FunctionMapChangeListenerImpl;

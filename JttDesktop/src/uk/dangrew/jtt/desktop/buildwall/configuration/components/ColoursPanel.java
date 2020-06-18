@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * The {@link ColoursPanel} provides a panel for configuring the colours in the system and 
@@ -44,7 +44,7 @@ public class ColoursPanel extends GridPane {
    /**
     * Constructs a new {@link ColoursPanel}.
     * @param configuration the {@link BuildWallConfiguration} to configure.
-    * @param styling the {@link BuildWallConfigurationStyle} to apply.
+    * @param styling the {@link JavaFxStyle} to apply.
     * @param defaults the {@link ConfigurationPanelDefaults}.
     */
    ColoursPanel( BuildWallConfiguration configuration, JavaFxStyle styling, ConfigurationPanelDefaults defaults ) {

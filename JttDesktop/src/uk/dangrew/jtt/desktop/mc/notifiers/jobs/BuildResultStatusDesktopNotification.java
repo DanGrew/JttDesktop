@@ -10,11 +10,12 @@ package uk.dangrew.jtt.desktop.mc.notifiers.jobs;
 
 import org.controlsfx.control.Notifications;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.util.Duration;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
 
 /**
  * {@link BuildResultStatusDesktopNotification} is responsible for showing a desktop notification
@@ -31,7 +32,7 @@ public class BuildResultStatusDesktopNotification {
     * @param duration the duration to display for.
     */
    public void showNotification( BuildResultStatusNotification notification, Notifications notifications, int duration ) {
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          notifications
             .darkStyle()
             .hideAfter( new Duration( duration ) )

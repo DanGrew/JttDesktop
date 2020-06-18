@@ -28,7 +28,7 @@ import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.desktop.statistics.configuration.components.StatisticsStylePanel;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 public class StatisticsStyleItemTest {
 

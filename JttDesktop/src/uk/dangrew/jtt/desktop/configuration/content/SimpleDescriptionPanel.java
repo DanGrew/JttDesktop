@@ -10,7 +10,7 @@ package uk.dangrew.jtt.desktop.configuration.content;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * the {@link SimpleDescriptionPanel} provides a simple panel that describes what the

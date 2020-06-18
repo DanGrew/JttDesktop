@@ -8,21 +8,20 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.panel.description;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.model.utility.TestCommon;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link SimpleJobPanelDescriptionImpl} test.
@@ -35,7 +34,7 @@ public class SimpleJobPanelDescriptionImplTest extends JobPanelDescriptionBaseIm
    
    @Ignore //For manual inspection.
    @Test public void manualInspection() throws InterruptedException {
-      TestApplication.launch( () -> { 
+      TestApplication.launch( () -> {
          configuration.buildNumberColour().set( Color.BLACK );
          configuration.jobNameColour().set( Color.BLACK );
          configuration.completionEstimateColour().set( Color.BLACK );

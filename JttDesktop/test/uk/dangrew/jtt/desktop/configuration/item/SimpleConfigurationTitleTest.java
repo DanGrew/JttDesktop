@@ -8,24 +8,20 @@
  */
 package uk.dangrew.jtt.desktop.configuration.item;
 
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
-
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.launch.TestApplication;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.model.utility.TestCommon;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link SimpleConfigurationTitle} test.

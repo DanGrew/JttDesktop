@@ -12,10 +12,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.JobProgressImpl;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * The {@link JobProgressTreeNode} is the graphic for a {@link JobProgressTree} item.

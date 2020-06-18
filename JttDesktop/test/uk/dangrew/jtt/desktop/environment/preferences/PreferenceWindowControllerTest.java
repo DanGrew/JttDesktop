@@ -8,21 +8,20 @@
  */
 package uk.dangrew.jtt.desktop.environment.preferences;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 
+import javafx.scene.Parent;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.sun.javafx.application.PlatformImpl;
-
-import javafx.scene.Parent;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.utility.javafx.TestableParent;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link PreferenceWindowController} test.
@@ -75,7 +74,7 @@ public class PreferenceWindowControllerTest {
    @Test public void stageShouldShowWhenTold(){
       assertThat( systemUnderTest.stage().isShowing(), is( false ) );
       systemUnderTest.showConfigurationWindow();
-      PlatformImpl.runAndWait( () -> {} );
+      JavaFxThreading.runAndWait( () -> {} );
       assertThat( systemUnderTest.stage().isShowing(), is( true ) );
       assertThat( systemUnderTest.isConfigurationWindowShowing(), is( true ) );
    }//End Method
@@ -84,7 +83,7 @@ public class PreferenceWindowControllerTest {
       stageShouldShowWhenTold();
       assertThat( systemUnderTest.stage().isShowing(), is( true ) );
       systemUnderTest.hideConfigurationWindow();
-      PlatformImpl.runAndWait( () -> {} );
+      JavaFxThreading.runAndWait( () -> {} );
       assertThat( systemUnderTest.stage().isShowing(), is( false ) );
       assertThat( systemUnderTest.isConfigurationWindowShowing(), is( false ) );
    }//End Method

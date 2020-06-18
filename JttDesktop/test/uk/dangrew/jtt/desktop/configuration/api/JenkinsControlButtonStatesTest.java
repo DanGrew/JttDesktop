@@ -8,19 +8,18 @@
  */
 package uk.dangrew.jtt.desktop.configuration.api;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-
+import javafx.scene.control.Button;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import uk.dangrew.kode.launch.TestApplication;
 
-import javafx.scene.control.Button;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 public class JenkinsControlButtonStatesTest {
 

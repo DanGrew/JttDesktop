@@ -13,13 +13,14 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.jtt.desktop.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.desktop.buildwall.panel.type.JobPanelDescriptionProviders;
-import uk.dangrew.jtt.desktop.javafx.spinner.IntegerPropertySpinner;
+import uk.dangrew.kode.javafx.spinner.IntegerPropertySpinner;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * The {@link DimensionsPanel} provides a {@link GridPane} for configuring the dimension
- * properties of a {@link uk.dangrew.jtt.buildwall.layout.GridWallImpl}.
+ * properties of a {@link GridWallImpl}.
  */
 public class DimensionsPanel extends GridPane {
    
@@ -47,7 +48,7 @@ public class DimensionsPanel extends GridPane {
    /**
     * Constructs a new {@link DimensionsPanel}.
     * @param configuration the {@link BuildWallConfiguration} associated, to configure.
-    * @param styling the {@link BuildWallConfigurationStyle} to apply.
+    * @param styling the {@link JavaFxStyle} to apply.
     * @param defaults the {@link ConfigurationPanelDefaults}.
     */
    DimensionsPanel( BuildWallConfiguration configuration, JavaFxStyle styling, ConfigurationPanelDefaults defaults ) {
@@ -56,7 +57,7 @@ public class DimensionsPanel extends GridPane {
       columnsLabel = styling.createBoldLabel( "Columns" );
       add( columnsLabel, 0, 0 );
       
-      columnsSpinner = new IntegerPropertySpinner();  
+      columnsSpinner = new IntegerPropertySpinner();
       styling.configureIntegerSpinner( columnsSpinner, configuration.numberOfColumns(), 1, 1000, 1 );
       add( columnsSpinner, 1, 0 );
       

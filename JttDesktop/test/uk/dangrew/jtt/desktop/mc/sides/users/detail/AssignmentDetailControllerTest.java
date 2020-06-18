@@ -22,7 +22,7 @@ import uk.dangrew.jtt.desktop.mc.sides.users.AssignedTreeItem;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentsTreeItem;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link AssignmentDetailController} test.

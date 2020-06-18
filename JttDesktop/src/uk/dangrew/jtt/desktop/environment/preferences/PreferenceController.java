@@ -13,11 +13,11 @@ import uk.dangrew.jtt.desktop.configuration.content.ConfigurationTreeContent;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTree;
 import uk.dangrew.jtt.desktop.configuration.tree.ConfigurationTreePane;
-import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.kode.event.structure.Event;
 
 /**
- * The {@link PreferenceOpener} provides a mechanism for listening to events to open
+ * The {@link PreferenceController} provides a mechanism for listening to events to open
  * the preference window.
  */
 public class PreferenceController {
@@ -29,7 +29,7 @@ public class PreferenceController {
    private final ConfigurationTree tree;
    
    /**
-    * Constructs a new {@link PreferenceOpener}.
+    * Constructs a new {@link PreferenceController}.
     * @param configuration the {@link SystemConfiguration}.
     * @param database the {@link JenkinsDatabase}.
     */
@@ -38,7 +38,7 @@ public class PreferenceController {
    }//End Constructor
    
    /**
-    * Constructs a new {@link PreferenceOpener}.
+    * Constructs a new {@link PreferenceController}.
     * @param controller the {@link PreferenceWindowController} for controlling the window.
     * @param configuration the {@link SystemConfiguration} associated.
     * @param contentHolder the {@link ConfigurationTreeContent}.

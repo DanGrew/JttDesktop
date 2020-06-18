@@ -18,9 +18,10 @@ import org.junit.Test;
 import javafx.geometry.Orientation;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.kode.TestCommon;
 import uk.dangrew.jupa.file.protocol.JarJsonPersistingProtocol;
 import uk.dangrew.jupa.json.marshall.ModelMarshaller;
+import uk.dangrew.kode.utility.io.IoCommon;
 
 /**
  * {@link DualWallConfigurationPersistence} end to end test to prove writing and reading from file.
@@ -36,7 +37,7 @@ public class DualWallConfigurationPersistenceE2ETest {
    }//End Method
    
    @Test public void readExistingFileInWriteItOutThenReadItBackInAndCompareWithOriginal() {
-      String input = TestCommon.readFileIntoString( getClass(), "sample-config.json" );
+      String input = new IoCommon().readFileIntoString( getClass(), "sample-config.json" );
       JSONObject object = new JSONObject( input );
       systemUnderTest.readHandles().parse( object );
       

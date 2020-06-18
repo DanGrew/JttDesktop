@@ -8,41 +8,36 @@
  */
 package uk.dangrew.jtt.desktop.mc.sides.jobs;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeContextMenu.constructDescriptionFor;
 
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.layout.BorderPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import com.sun.javafx.application.PlatformImpl;
-
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.desktop.javafx.contextmenu.ContextMenuWithCancel;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentEvent;
 import uk.dangrew.jtt.desktop.mc.sides.users.shared.AssignmentMenu;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.desktop.utility.time.InstantProvider;
-import uk.dangrew.jtt.model.event.structure.Event;
-import uk.dangrew.jtt.model.event.structure.EventSubscription;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.Event;
+import uk.dangrew.kode.event.structure.EventSubscription;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
+import static uk.dangrew.jtt.desktop.mc.sides.jobs.JobProgressTreeContextMenu.constructDescriptionFor;
 
 /**
  * {@link JobProgressTreeContextMenu} test.
@@ -53,7 +48,7 @@ public class JobProgressTreeContextMenuTest {
    
    private UserAssignmentEvent assignments;
    @Mock private EventSubscription< UserAssignment > subscription;
-   @Captor private ArgumentCaptor< Event< UserAssignment > > captor;
+   @Captor private ArgumentCaptor<Event< UserAssignment >> captor;
    
    private JenkinsUser user1;
    private JenkinsUser user2;
@@ -106,9 +101,9 @@ public class JobProgressTreeContextMenuTest {
       BorderPane pane = new BorderPane();
       TestApplication.launch( () -> pane );
 
-      PlatformImpl.runAndWait( () -> systemUnderTest.show( pane, 0, 0 ) );
+       JavaFxThreading.runAndWait( () -> systemUnderTest.show( pane, 0, 0 ) );
       assertThat( systemUnderTest.isShowing(), is( true ) );
-      PlatformImpl.runAndWait( () -> systemUnderTest.getItems().get( 2 ).fire() );
+       JavaFxThreading.runAndWait( () -> systemUnderTest.getItems().get( 2 ).fire() );
       assertThat( systemUnderTest.isShowing(), is( false ) );
    }//End Method
    

@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.scene.Scene;
 import uk.dangrew.jtt.connection.api.JenkinsApiConnectionPrompt;
@@ -30,7 +30,8 @@ import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.main.digest.SystemDigestController;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -61,7 +62,7 @@ public class JttSceneConstructorTest {
       when( connector.connect( digest ) ).thenReturn( true );
       
       systemUnderTest = new JttSceneConstructor( Scene::new, digestController, connector );
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          Scene scene = systemUnderTest.makeScene();
          assertThat( scene.getRoot(), instanceOf( EnvironmentWindow.class ) );
          assertThat( scene.getAccelerators().isEmpty(), is( true ) );

@@ -8,22 +8,19 @@
  */
 package uk.dangrew.jtt.desktop.mc.sides.users;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
-
 import uk.dangrew.jtt.desktop.javafx.contextmenu.ContextMenuWithCancel;
-import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.Event;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link UserAssignmentsTreeContextMenu} test.

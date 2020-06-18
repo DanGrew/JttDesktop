@@ -8,18 +8,17 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.dual;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
+import javafx.scene.layout.BorderPane;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link DualBuildWallConfigurer} test.

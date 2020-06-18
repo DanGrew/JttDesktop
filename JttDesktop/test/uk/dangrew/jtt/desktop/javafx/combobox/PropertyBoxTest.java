@@ -8,22 +8,21 @@
  */
 package uk.dangrew.jtt.desktop.javafx.combobox;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
 
-import java.util.function.Function;
-
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
 
-import com.sun.javafx.application.PlatformImpl;
+import java.util.function.Function;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link PropertyBox} test.
@@ -42,7 +41,7 @@ public class PropertyBoxTest {
    
    @Before public void initialiseSystemUnderTest(){
       TestApplication.startPlatform();
-      PlatformImpl.runAndWait( () -> {
+      JavaFxThreading.runAndWait( () -> {
          systemUnderTest = new PropertyBox<>();
       } );
       systemUnderTest.getItems().addAll( TestItem.values() );

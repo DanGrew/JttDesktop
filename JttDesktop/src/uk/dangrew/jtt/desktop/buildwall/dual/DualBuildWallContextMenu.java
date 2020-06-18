@@ -12,10 +12,11 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import uk.dangrew.jtt.desktop.buildwall.layout.GridWallImpl;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
-import uk.dangrew.jtt.model.event.structure.Event;
+import uk.dangrew.kode.event.structure.Event;
 
 /**
  * The {@link DualBuildWallContextMenu} provides a {@link ContextMenu} that allows
@@ -159,7 +160,6 @@ public class DualBuildWallContextMenu extends ContextMenu {
    
    /**
     * Method to control the configuration window.
-    * @param display the {@link DualBuildWallDisplayImpl} to change.
     * @param configWindowControl the {@link MenuItem} to update.
     */
    private void controlConfigWindow( MenuItem configWindowControl ) {
@@ -168,8 +168,7 @@ public class DualBuildWallContextMenu extends ContextMenu {
    }//End Method
    
    /**
-    * Method to control the left {@link GridWallImpl}.
-    * @param display the {@link DualBuildWallDisplayImpl} to change.
+    * Method to control the left {@link uk.dangrew.jtt.desktop.buildwall.layout.GridWallImpl}.
     * @param digestControl the {@link MenuItem} to update.
     */
    private void controlDigest( MenuItem digestControl ) {

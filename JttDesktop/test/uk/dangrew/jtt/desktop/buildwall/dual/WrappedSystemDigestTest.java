@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**

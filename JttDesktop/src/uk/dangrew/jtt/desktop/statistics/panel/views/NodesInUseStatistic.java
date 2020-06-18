@@ -8,11 +8,11 @@
  */
 package uk.dangrew.jtt.desktop.statistics.panel.views;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.desktop.statistics.metrics.NodesInUse;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticPanel;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * The {@link NodesInUseStatistic} is a graphical {@link StatisticPanel} for the

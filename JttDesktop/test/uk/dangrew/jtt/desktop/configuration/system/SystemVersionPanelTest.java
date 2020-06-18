@@ -29,7 +29,7 @@ import org.mockito.MockitoAnnotations;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyDesktop;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link SystemVersionPanel} test.

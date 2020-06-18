@@ -13,8 +13,10 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * The {@link BuildWallConfigurationPanelImpl} provides a {@link GridPane} for configuring

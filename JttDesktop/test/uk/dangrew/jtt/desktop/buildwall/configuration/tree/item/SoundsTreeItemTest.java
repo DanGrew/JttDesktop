@@ -8,27 +8,26 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.tree.item;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-
+import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.SoundConfigurationPanel;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 public class SoundsTreeItemTest {
 

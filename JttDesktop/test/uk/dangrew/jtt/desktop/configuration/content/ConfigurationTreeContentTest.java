@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link ConfigurationTreeContent} test.

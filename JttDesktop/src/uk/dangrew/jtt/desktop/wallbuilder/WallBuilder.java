@@ -8,12 +8,11 @@
  */
 package uk.dangrew.jtt.desktop.wallbuilder;
 
-import java.util.Collection;
-
-import com.sun.javafx.application.PlatformImpl;
-
 import javafx.beans.value.ChangeListener;
 import javafx.scene.layout.Pane;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+
+import java.util.Collection;
 
 /**
  * The {@link WallBuilder} is a {@link Pane} for arranging content in the tool.
@@ -141,7 +140,7 @@ public class WallBuilder extends Pane {
     * @param area the {@link ContentArea} to add.
     */
    private void addChild( ContentArea area ) {
-      PlatformImpl.runAndWait( () -> getChildren().add( area ) );      
+       JavaFxThreading.runAndWait( () -> getChildren().add( area ) );
    }//End Method
    
    /**

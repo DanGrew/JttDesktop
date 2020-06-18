@@ -17,12 +17,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link CenterScreenWrapper} test.
@@ -37,7 +38,7 @@ public class CenterScreenWrapperTest {
       TestApplication.startPlatform();
       initialCenter = new Rectangle( 10, 10 );
       center = new Rectangle( 10, 10 );
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          systemUnderTest = new CenterScreenWrapper( initialCenter );
          new Scene( systemUnderTest );
       } );

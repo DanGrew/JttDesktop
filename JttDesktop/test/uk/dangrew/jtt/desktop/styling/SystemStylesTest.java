@@ -16,7 +16,8 @@ import org.mockito.Mockito;
 import javafx.scene.Parent;
 import uk.dangrew.jtt.desktop.utility.javafx.TestableParent;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.utility.io.IoCommon;
 
 /**
  * {@link SystemStyles} test.
@@ -37,8 +38,8 @@ public class SystemStylesTest {
    
    @Test public void shouldHaveStandardStylesPresent(){
       for ( BuildWallStyles style : BuildWallStyles.values() ) {
-            Assert.assertTrue( 
-                  TestCommon.readFileIntoString( getClass(), BuildWallThemes.Standard.sheet() )
+            Assert.assertTrue(
+                    new IoCommon().readFileIntoString( getClass(), BuildWallThemes.Standard.sheet() )
                      .contains( systemUnderTest.getLabel( style ) ) 
             );
       }
@@ -46,8 +47,8 @@ public class SystemStylesTest {
    
    @Test public void shouldHaveFrozenStylesPresentInSheet(){
       for ( BuildWallStyles style : BuildWallStyles.values() ) {
-            Assert.assertTrue( 
-                  TestCommon.readFileIntoString( getClass(), BuildWallThemes.Frozen.sheet() )
+            Assert.assertTrue(
+                    new IoCommon().readFileIntoString( getClass(), BuildWallThemes.Frozen.sheet() )
                      .contains( systemUnderTest.getLabel( style ) ) 
             );
       }

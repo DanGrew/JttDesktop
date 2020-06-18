@@ -20,8 +20,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import javafx.scene.control.Label;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link JobProgressTreeItemBranch} test.

@@ -17,7 +17,7 @@ import uk.dangrew.jtt.desktop.environment.preferences.PreferenceBehaviour;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferencesOpenEvent;
 import uk.dangrew.jtt.desktop.environment.preferences.WindowPolicy;
 import uk.dangrew.jtt.desktop.utility.system.OperatingSystem;
-import uk.dangrew.jtt.model.event.structure.Event;
+import uk.dangrew.kode.event.structure.Event;
 
 /**
  * {@link EnvironmentMenuBar} provides a {@link MenuBar} for the {@link EnvironmentWindow}.
@@ -53,7 +53,7 @@ public class EnvironmentMenuBar extends MenuBar {
       PreferencesOpenEvent preferenceOpener = new PreferencesOpenEvent();
       preferences = new MenuItem( PREFERENCES_MENU );
       preferences.setOnAction( event -> preferenceOpener.fire( 
-               new Event<>( new PreferenceBehaviour( WindowPolicy.Open, null ) ) 
+               new Event<>( new PreferenceBehaviour( WindowPolicy.Open, null ) )
       ) );
       about = new MenuItem( ABOUT_MENU );
       about.setOnAction( event -> preferenceOpener.fire( 

@@ -8,27 +8,26 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallThemeImpl;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 public class StatusConfigurationPaneTest {
 

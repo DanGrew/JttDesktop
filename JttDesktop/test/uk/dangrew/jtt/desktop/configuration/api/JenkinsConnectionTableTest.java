@@ -8,28 +8,25 @@
  */
 package uk.dangrew.jtt.desktop.configuration.api;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
-import org.apache.http.client.HttpClient;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.mockito.Mockito;
-
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Pair;
+import org.apache.http.client.HttpClient;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.mockito.Mockito;
 import uk.dangrew.jtt.connection.api.connections.ConnectionEvent;
 import uk.dangrew.jtt.connection.api.connections.ConnectionState;
 import uk.dangrew.jtt.connection.api.sources.JenkinsConnection;
 import uk.dangrew.jtt.connection.api.sources.TestJenkinsConnection;
-import uk.dangrew.jtt.model.event.structure.Event;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.Event;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class JenkinsConnectionTableTest {
    
@@ -44,7 +41,7 @@ public class JenkinsConnectionTableTest {
    @Test public void manual() throws InterruptedException {
       TestApplication.launch( () -> new JenkinsConnectionTable() );
       
-      new ConnectionEvent().fire( new Event<>( new Pair<>( 
+      new ConnectionEvent().fire( new Event<>( new Pair<>(
                new TestJenkinsConnection( "192.1.0.3:324", "danielg", "p", Mockito.mock( HttpClient.class ) ), 
                ConnectionState.Connected 
       ) ) );

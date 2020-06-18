@@ -9,18 +9,20 @@
 package uk.dangrew.jtt.desktop.mc.sides.jobs;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.desktop.javafx.contextmenu.ContextMenuWithCancel;
+import uk.dangrew.jtt.desktop.mc.model.Notification;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignment;
 import uk.dangrew.jtt.desktop.mc.sides.users.UserAssignmentEvent;
 import uk.dangrew.jtt.desktop.mc.sides.users.shared.AssignmentMenu;
 import uk.dangrew.jtt.desktop.utility.time.DefaultInstantProvider;
 import uk.dangrew.jtt.desktop.utility.time.InstantProvider;
-import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.users.JenkinsUser;
+import uk.dangrew.kode.event.structure.Event;
 
 /**
  * The {@link JobProgressTreeContextMenu} provides a {@link ContextMenu} that allows
@@ -92,7 +94,7 @@ public class JobProgressTreeContextMenu extends ContextMenuWithCancel {
                   description, 
                   ENTER_DETAIL
          );
-         events.fire( new Event<>( assignment ) );         
+         events.fire( new Event<>( assignment ) );
       }
    }//End Method
    

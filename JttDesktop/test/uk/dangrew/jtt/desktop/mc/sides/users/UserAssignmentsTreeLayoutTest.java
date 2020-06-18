@@ -8,30 +8,26 @@
  */
 package uk.dangrew.jtt.desktop.mc.sides.users;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import javafx.collections.ObservableList;
+import javafx.scene.control.TreeItem;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import com.sun.javafx.application.PlatformImpl;
-
-import javafx.collections.ObservableList;
-import javafx.scene.control.TreeItem;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link UserAssignmentsTreeLayout} test.
@@ -173,7 +169,7 @@ public class UserAssignmentsTreeLayoutTest {
       
       tree = new UserAssignmentsTree( database );
       systemUnderTest = new UserAssignmentsTreeLayout( tree );
-      PlatformImpl.runAndWait( () -> {} );
+       JavaFxThreading.runAndWait( () -> {} );
       systemUnderTest.reconstructBranches( Arrays.asList( user1, user2, user3 ) );
       assertThat( systemUnderTest.isControlling( tree ), is( true ) );
    }//End Method

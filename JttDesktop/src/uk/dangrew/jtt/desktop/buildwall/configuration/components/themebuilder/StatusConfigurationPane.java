@@ -14,9 +14,9 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * {@link StatusConfigurationPane} provides the configuration items for a single
@@ -156,7 +156,7 @@ class StatusConfigurationPane extends GridPane {
    
    /**
     * Method to determine whether this is associated with the given.
-    * @param theme the {@link ThemeBuilderShortcutProperties} in question.
+    * @param shortcuts the {@link ThemeBuilderShortcutProperties} in question.
     * @return true if identical.
     */
    public boolean isAssociatedWith( ThemeBuilderShortcutProperties shortcuts ) {

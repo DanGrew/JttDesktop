@@ -25,7 +25,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.javafx.combobox.SimplePropertyBox;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;

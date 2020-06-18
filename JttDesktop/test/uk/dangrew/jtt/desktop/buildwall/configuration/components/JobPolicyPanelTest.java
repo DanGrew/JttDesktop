@@ -8,19 +8,12 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.components;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import javafx.beans.property.ObjectProperty;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -29,26 +22,29 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-
-import javafx.beans.property.ObjectProperty;
-import javafx.event.ActionEvent;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecoupler;
 import uk.dangrew.jtt.desktop.graphics.TestPlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.javafx.combobox.SimplePropertyBox;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.kode.TestCommon;
 import uk.dangrew.jtt.model.utility.comparator.Comparators;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 /**
  * {@link JobPolicyPanel} test.

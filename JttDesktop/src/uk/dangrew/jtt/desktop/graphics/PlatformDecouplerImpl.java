@@ -8,19 +8,22 @@
  */
 package uk.dangrew.jtt.desktop.graphics;
 
-import com.sun.javafx.application.PlatformImpl;
+
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
 
 /**
  * {@link PlatformImpl} implementation of {@link PlatformDecoupler} to run
  * on the {@link PlatformImpl}.
+ * @deprecated
  */
+@Deprecated
 public class PlatformDecouplerImpl implements PlatformDecoupler {
 
    /**
     * {@inheritDoc}
     */
    @Override public void run( Runnable runnable ) {
-      PlatformImpl.runLater( runnable );
+       JavaFxThreading.runLater( runnable );
    }//End Method
 
-}//End Class
+}//End Classπ

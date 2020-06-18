@@ -14,11 +14,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
+import uk.dangrew.kode.synchronization.SynchronizedObservableList;
 
 /**
  * The {@link StatisticsConfiguration} provides the configuration items for customising the
- * {@link uk.dangrew.jtt.statistics.panel.StatisticPanel}s.
+ * {@link uk.dangrew.jtt.desktop.statistics.panel.StatisticPanel}s.
  */
 public class StatisticsConfiguration {
 

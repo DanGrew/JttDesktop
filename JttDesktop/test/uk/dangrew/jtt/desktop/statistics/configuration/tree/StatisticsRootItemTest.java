@@ -26,7 +26,7 @@ import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.desktop.statistics.configuration.components.StatisticsDescriptionPanel;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 public class StatisticsRootItemTest {
 

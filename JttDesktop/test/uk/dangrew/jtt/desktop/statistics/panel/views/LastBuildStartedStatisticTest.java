@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticPanel;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticPanelTest;

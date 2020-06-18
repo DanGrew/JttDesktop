@@ -8,15 +8,10 @@
  */
 package uk.dangrew.jtt.desktop.environment.launch;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -24,11 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javafx.event.ActionEvent;
-import javafx.scene.Node;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.BorderPane;
 import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallContextMenuOpener;
 import uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallDisplayImpl;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
@@ -39,8 +29,12 @@ import uk.dangrew.jtt.desktop.mc.view.console.ManagementConsole;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 /**
  * {@link LaunchOptions} test.

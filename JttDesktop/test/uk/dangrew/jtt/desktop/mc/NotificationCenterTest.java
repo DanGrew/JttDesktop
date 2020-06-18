@@ -8,19 +8,18 @@
  */
 package uk.dangrew.jtt.desktop.mc;
 
+import org.junit.Before;
+import org.junit.Test;
+import uk.dangrew.jtt.desktop.mc.model.Notification;
+import uk.dangrew.jtt.desktop.mc.view.tree.NotificationEvent;
+import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
+import uk.dangrew.kode.event.structure.Event;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import uk.dangrew.jtt.desktop.mc.model.Notification;
-import uk.dangrew.jtt.desktop.mc.view.tree.NotificationEvent;
-import uk.dangrew.jtt.model.event.structure.Event;
-import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
 
 /**
  * {@link NotificationCenter} test.

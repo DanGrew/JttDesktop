@@ -25,8 +25,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import uk.dangrew.jtt.model.users.JenkinsUser;
 import uk.dangrew.jtt.model.users.JenkinsUserImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link DetailedJobPanelDescriptionImpl} test.

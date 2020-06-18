@@ -8,31 +8,25 @@
  */
 package uk.dangrew.jtt.desktop.configuration.api;
 
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-
+import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javafx.util.Pair;
 import uk.dangrew.jtt.connection.api.connections.ConnectionEvent;
 import uk.dangrew.jtt.connection.api.connections.ConnectionManager;
 import uk.dangrew.jtt.connection.api.connections.ConnectionState;
 import uk.dangrew.jtt.connection.api.sources.JenkinsConnection;
 import uk.dangrew.jtt.connection.api.sources.TestJenkinsConnection;
-import uk.dangrew.jtt.model.event.structure.Event;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.Event;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class ApiConfigurationControllerTest {
 

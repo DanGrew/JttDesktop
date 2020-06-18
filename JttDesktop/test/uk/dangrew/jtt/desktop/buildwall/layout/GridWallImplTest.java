@@ -8,23 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.layout;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
@@ -32,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import org.junit.*;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
@@ -47,8 +31,17 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 /**
  * {@link GridWallImpl} test.
@@ -388,19 +381,19 @@ public class GridWallImplTest {
       systemUnderTest.emptyProperty().addListener( emptyListener );
       
       configuration.jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.NeverShow );
-      PlatformImpl.runAndWait( () -> {} );
+       JavaFxThreading.runAndWait( () -> {} );
       verify( emptyListener, times( 0 ) ).changed( systemUnderTest.emptyProperty(), false, true );
       
       configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.NeverShow ) );
-      PlatformImpl.runAndWait( () -> {} );
+       JavaFxThreading.runAndWait( () -> {} );
       verify( emptyListener ).changed( systemUnderTest.emptyProperty(), false, true );
       
       configuration.jobPolicies().entrySet().iterator().next().setValue( BuildWallJobPolicy.AlwaysShow );
-      PlatformImpl.runAndWait( () -> {} );
+       JavaFxThreading.runAndWait( () -> {} );
       verify( emptyListener ).changed( systemUnderTest.emptyProperty(), true, false );
       
       configuration.jobPolicies().entrySet().forEach( entry -> entry.setValue( BuildWallJobPolicy.AlwaysShow ) );
-      PlatformImpl.runAndWait( () -> {} );
+       JavaFxThreading.runAndWait( () -> {} );
       verify( emptyListener ).changed( systemUnderTest.emptyProperty(), true, false );
    }//End Method
    

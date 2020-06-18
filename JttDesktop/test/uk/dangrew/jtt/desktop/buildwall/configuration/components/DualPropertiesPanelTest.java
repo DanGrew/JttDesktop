@@ -8,28 +8,25 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.components;
 
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.verify;
-import static uk.dangrew.jtt.model.utility.TestCommon.precision;
-
+import javafx.event.ActionEvent;
+import javafx.geometry.Orientation;
+import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
+import javafx.scene.text.FontWeight;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-
-import javafx.event.ActionEvent;
-import javafx.geometry.Orientation;
-import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
-import javafx.scene.text.FontWeight;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
+import static uk.dangrew.jtt.model.utility.TestCommon.precision;
 
 /**
  * {@link DualPropertiesPanel} test.

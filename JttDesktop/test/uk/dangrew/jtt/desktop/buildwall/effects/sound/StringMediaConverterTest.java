@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMediaPlayer;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 public class StringMediaConverterTest {
    

@@ -8,14 +8,14 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.effects.sound;
 
-import java.util.LinkedHashMap;
-
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
-import uk.dangrew.sd.utility.synchronization.SynchronizedObservableList;
-import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
+import uk.dangrew.kode.synchronization.SynchronizedObservableList;
+import uk.dangrew.kode.synchronization.SynchronizedObservableMap;
+
+import java.util.LinkedHashMap;
 
 /**
  * Configuration object for sounds.

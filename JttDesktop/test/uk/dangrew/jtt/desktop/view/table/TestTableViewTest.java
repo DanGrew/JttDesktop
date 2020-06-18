@@ -31,8 +31,9 @@ import uk.dangrew.jtt.model.tests.TestCaseImpl;
 import uk.dangrew.jtt.model.tests.TestClass;
 import uk.dangrew.jtt.model.tests.TestClassImpl;
 import uk.dangrew.jtt.model.tests.TestResultStatus;
-import uk.dangrew.jtt.model.utility.TestCommon;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.launch.TestApplication;
+import uk.dangrew.kode.utility.io.IoCommon;
 
 /**
  * {@link TestTableView} test.
@@ -48,7 +49,7 @@ public class TestTableViewTest {
    }//End Method
    
    @Before public void initialiseSystemUnderTest(){
-      String input = TestCommon.readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
+      String input = new IoCommon().readFileIntoString( getClass(), "multiple-test-case-multiple-test-class.json" );
       database = new TestJenkinsDatabaseImpl();
       database.store( new JenkinsJobImpl( "anything" ) );
       JsonTestResultsImporter importer = new JsonTestResultsImporterImpl( database );

@@ -29,7 +29,7 @@ import uk.dangrew.jtt.desktop.styling.BuildWallStyles;
 import uk.dangrew.jtt.desktop.styling.BuildWallThemes;
 import uk.dangrew.jtt.desktop.styling.SystemStyles;
 import uk.dangrew.jtt.desktop.utility.conversion.ColorConverter;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 public class DynamicCssOnlyPropertiesTest {
    

@@ -8,25 +8,23 @@
  */
 package uk.dangrew.jtt.desktop.javafx.combobox;
 
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.text.Font;
+import org.junit.Before;
+import org.junit.Test;
+import uk.dangrew.jtt.desktop.styling.FontFamilies;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static uk.dangrew.jtt.model.utility.TestCommon.assertThatFontIsBold;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.sun.javafx.application.PlatformImpl;
-
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.text.Font;
-import uk.dangrew.jtt.desktop.styling.FontFamilies;
-import uk.dangrew.sd.graphics.launch.TestApplication;
 
 /**
  * {@link FontFamilyPropertyBox} test.
@@ -48,7 +46,7 @@ public class FontFamilyPropertyBoxTest {
     */
    private void launchBox(){
       TestApplication.startPlatform();
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          systemUnderTest = new FontFamilyPropertyBox( property );
       } );
    }//End Method

@@ -10,7 +10,7 @@ package uk.dangrew.jtt.desktop.buildwall.configuration.components;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * {@link ConfigurationPanelDefaults} provides default styling and properties for the configuration panel.
@@ -30,7 +30,7 @@ public class ConfigurationPanelDefaults {
    }//End Constructor
    
    /**
-    * Method to configure the {@link ColumnConstraints} on the given {@link GridPane}.
+    * Method to configure the {@link javafx.scene.layout.ColumnConstraints} on the given {@link GridPane}.
     * @param grid the {@link GridPane} to apply constraints to.
     */
    public void configureColumnConstraints( GridPane grid ){

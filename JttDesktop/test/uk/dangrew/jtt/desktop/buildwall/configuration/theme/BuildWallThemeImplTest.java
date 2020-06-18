@@ -8,15 +8,12 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.theme;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
+import uk.dangrew.kode.synchronization.SynchronizedObservableMap;
 
-import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class BuildWallThemeImplTest {
 
@@ -52,22 +49,22 @@ public class BuildWallThemeImplTest {
    
    @Test public void shouldProvideSynchronisedMapForJobNameColours() {
       assertThat( systemUnderTest.jobNameColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
-      assertThat( systemUnderTest.jobNameColoursMap(), is( systemUnderTest.trackColoursMap() ) );
+      assertThat( systemUnderTest.jobNameColoursMap(), is( systemUnderTest.jobNameColoursMap() ) );
    }//End Method
    
    @Test public void shouldProvideSynchronisedMapForBuildNumberColours() {
       assertThat( systemUnderTest.buildNumberColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
-      assertThat( systemUnderTest.buildNumberColoursMap(), is( systemUnderTest.trackColoursMap() ) );
+      assertThat( systemUnderTest.buildNumberColoursMap(), is( systemUnderTest.buildNumberColoursMap() ) );
    }//End Method
    
    @Test public void shouldProvideSynchronisedMapForCompletionEstimateColours() {
       assertThat( systemUnderTest.completionEstimateColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
-      assertThat( systemUnderTest.completionEstimateColoursMap(), is( systemUnderTest.trackColoursMap() ) );
+      assertThat( systemUnderTest.completionEstimateColoursMap(), is( systemUnderTest.completionEstimateColoursMap() ) );
    }//End Method
    
    @Test public void shouldProvideSynchronisedMapForDetailColours() {
       assertThat( systemUnderTest.detailColoursMap(), is( instanceOf( SynchronizedObservableMap.class ) ) );
-      assertThat( systemUnderTest.detailColoursMap(), is( systemUnderTest.trackColoursMap() ) );
+      assertThat( systemUnderTest.detailColoursMap(), is( systemUnderTest.detailColoursMap() ) );
    }//End Method
 
 }//End Class

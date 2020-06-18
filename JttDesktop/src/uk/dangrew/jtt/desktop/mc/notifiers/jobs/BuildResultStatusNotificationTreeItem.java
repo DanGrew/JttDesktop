@@ -19,16 +19,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.mc.model.Notification;
 import uk.dangrew.jtt.desktop.mc.resources.ManagementConsoleImages;
 import uk.dangrew.jtt.desktop.mc.view.ManagementConsoleStyle;
 import uk.dangrew.jtt.desktop.mc.view.item.NotificationTreeItem;
 import uk.dangrew.jtt.desktop.mc.view.tree.NotificationTreeController;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * {@link BuildResultStatusNotificationTreeItem} represents a {@link BuildResultStatusNotification}
- * in the {@link uk.dangrew.jtt.mc.view.tree.NotificationTree}.
+ * in the {@link uk.dangrew.jtt.desktop.mc.view.tree.NotificationTree}.
  */
 public class BuildResultStatusNotificationTreeItem implements NotificationTreeItem {
 

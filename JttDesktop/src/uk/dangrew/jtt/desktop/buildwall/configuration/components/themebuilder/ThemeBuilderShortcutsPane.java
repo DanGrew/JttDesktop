@@ -12,7 +12,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.javafx.registrations.ChangeListenerBindingImpl;
 import uk.dangrew.jtt.desktop.javafx.registrations.RegistrationManager;
 

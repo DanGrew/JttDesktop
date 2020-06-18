@@ -14,7 +14,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.javafx.registrations.ChangeListenerBindingImpl;
 import uk.dangrew.jtt.desktop.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.desktop.javafx.registrations.RegistrationManager;

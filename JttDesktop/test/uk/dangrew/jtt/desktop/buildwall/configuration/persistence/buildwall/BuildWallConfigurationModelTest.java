@@ -8,27 +8,10 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.persistence.buildwall;
 
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static uk.dangrew.jtt.desktop.utility.TestableFonts.commonFont;
-import static uk.dangrew.jtt.model.utility.TestCommon.precision;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import org.junit.Before;
+import org.junit.Test;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
@@ -38,7 +21,16 @@ import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.sd.utility.TestCommon;
+import uk.dangrew.kode.TestCommon;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static uk.dangrew.jtt.desktop.utility.TestableFonts.commonFont;
+import static uk.dangrew.jtt.model.utility.TestCommon.precision;
 
 /**
  * {@link BuildWallConfigurationModel} test.
@@ -546,7 +538,7 @@ public class BuildWallConfigurationModelTest {
    }//End Method
    
    @Test public void shouldNotConcurrentExceptionWhenIteratingOverJobPolicies() throws InterruptedException{
-      TestCommon.assertConcurrencyIsNotAnIssue( 
+      TestCommon.assertConcurrencyIsNotAnIssue(
                i -> configuration.jobPolicies().put( new JenkinsJobImpl( "" + i ), BuildWallJobPolicy.NeverShow ),
                i -> systemUnderTest.startWritingJobs( ANYTHING ),
                1000

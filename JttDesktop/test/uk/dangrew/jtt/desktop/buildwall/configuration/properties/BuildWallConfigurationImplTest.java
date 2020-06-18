@@ -8,16 +8,15 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.properties;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import uk.dangrew.jtt.desktop.buildwall.panel.type.JobPanelDescriptionProviders;
-import uk.dangrew.sd.utility.synchronization.SynchronizedObservableMap;
+import uk.dangrew.kode.synchronization.SynchronizedObservableMap;
+
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link BuildWallConfigurationImpl} test.

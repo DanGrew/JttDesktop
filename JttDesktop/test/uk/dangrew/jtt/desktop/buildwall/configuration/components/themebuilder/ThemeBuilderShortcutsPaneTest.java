@@ -8,19 +8,18 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.components.themebuilder;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-
+import javafx.scene.paint.Color;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+import uk.dangrew.kode.launch.TestApplication;
 
-import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 public class ThemeBuilderShortcutsPaneTest {
 

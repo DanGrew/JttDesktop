@@ -1,4 +1,4 @@
-env.VERSION_NUMBER = "1.6.${BUILD_NUMBER}"
+env.VERSION_NUMBER = "1.7.${BUILD_NUMBER}"
 
 node {
     stage 'Checkout'
@@ -16,11 +16,11 @@ node {
             
         stage 'Unit Tests'
             sh "./gradlew test"
-            junit 'build/test-results/*.xml'
+            junit 'build/test-results/test/*.xml'
             
         stage 'Integration Tests'
         	sh "./gradlew integrationTests"
-            junit 'build/test-results/*.xml'
+            junit 'build/test-results/test/*.xml'
             
         stage 'Publish'
             sh "./gradlew bintrayUpload"

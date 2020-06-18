@@ -14,7 +14,7 @@ import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 

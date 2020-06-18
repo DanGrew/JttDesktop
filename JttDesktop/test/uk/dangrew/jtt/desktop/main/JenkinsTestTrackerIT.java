@@ -8,33 +8,30 @@
  */
 package uk.dangrew.jtt.desktop.main;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
 import uk.dangrew.jtt.desktop.styling.BuildWallStyles;
 import uk.dangrew.jtt.desktop.styling.BuildWallThemes;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
-import uk.dangrew.jupa.javafx.platform.PlatformLifecycle;
-import uk.dangrew.jupa.javafx.platform.PlatformLifecycleImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.javafx.platform.PlatformLifecycle;
+import uk.dangrew.kode.javafx.platform.PlatformLifecycleImpl;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 /**
  * {@link JenkinsTestTracker} test.
@@ -64,7 +61,7 @@ public class JenkinsTestTrackerIT {
     */
    private void launchApplication(){
       TestApplication.startPlatform();
-      PlatformImpl.runAndWait( () -> {
+       JavaFxThreading.runAndWait( () -> {
          stage = spy( new Stage() );
          JenkinsTestTracker main = new JenkinsTestTracker( constructor );
          try {

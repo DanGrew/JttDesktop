@@ -8,19 +8,19 @@
  */
 package uk.dangrew.jtt.desktop.environment.preferences;
 
+import uk.dangrew.kode.event.structure.EventManager;
+import uk.dangrew.kode.event.structure.EventSubscription;
+
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.concurrent.locks.ReentrantLock;
 
-import uk.dangrew.jtt.model.event.structure.EventManager;
-import uk.dangrew.jtt.model.event.structure.EventSubscription;
-
 /**
  * {@link EventManager} for the event of opening the preferences window.
  */
-public class PreferencesOpenEvent extends EventManager< PreferenceBehaviour >{
+public class PreferencesOpenEvent extends EventManager< PreferenceBehaviour > {
 
-   private static final Collection< EventSubscription< PreferenceBehaviour > > subscriptions = 
+   private static final Collection<EventSubscription< PreferenceBehaviour >> subscriptions =
             new LinkedHashSet<>();
    private static final ReentrantLock lock = new ReentrantLock();
    

@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -30,13 +31,15 @@ import static uk.dangrew.jtt.desktop.statistics.persistence.StatisticsConfigurat
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
-import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.utility.io.IoCommon;
 
 public class StatisticsConfigurationPersistenceTest {
 
@@ -60,6 +63,7 @@ public class StatisticsConfigurationPersistenceTest {
    @Before public void initialiseSystemUnderTest(){
       MockitoAnnotations.initMocks( this );
       when( writeModel.getNumberOfExclusions( Mockito.anyString() ) ).thenReturn( EXCLUSION_COUNT );
+      when(writeModel.getExclusion(any(), any())).thenReturn("anything");
       
       systemUnderTest = new StatisticsConfigurationPersistence( parseModel, writeModel );
    }//End Method
@@ -98,7 +102,7 @@ public class StatisticsConfigurationPersistenceTest {
    }//End Method
    
    @Test public void readShouldInvokeHandles(){
-      String input = TestCommon.readFileIntoString( getClass(), "sample-config.json" );
+      String input = new IoCommon().readFileIntoString( getClass(), "sample-config.json" );
       JSONObject object = new JSONObject( input );
       
       systemUnderTest.readHandles().parse( object );
@@ -118,7 +122,7 @@ public class StatisticsConfigurationPersistenceTest {
       
       verifyNoMoreInteractions( parseModel );
    }//End Method
-   
+
    @Test public void writeShouldInvokeHandles(){
       JSONObject object = new JSONObject();
       systemUnderTest.structure().build( object );

@@ -8,7 +8,7 @@
  */
 package uk.dangrew.jtt.desktop.statistics.panel.views;
 
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.desktop.statistics.metrics.TotalPassingTests;
 import uk.dangrew.jtt.desktop.statistics.panel.StatisticPanel;

@@ -13,7 +13,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.desktop.statistics.panel.views.LastBuildStartedStatistic;
 import uk.dangrew.jtt.desktop.statistics.panel.views.NodesInUseStatistic;

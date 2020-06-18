@@ -8,19 +8,12 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.panel.description;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
-
-import java.time.LocalDateTime;
-
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfigurationImpl;
 import uk.dangrew.jtt.desktop.buildwall.configuration.theme.BuildWallTheme;
@@ -31,8 +24,14 @@ import uk.dangrew.jtt.desktop.system.properties.DateAndTimes;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.time.LocalDateTime;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link JobPanelDescriptionBaseImpl} test.

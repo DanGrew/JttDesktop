@@ -11,7 +11,7 @@ package uk.dangrew.jtt.desktop.configuration.tree;
 import java.util.EnumMap;
 import java.util.Map;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
@@ -43,6 +43,7 @@ import uk.dangrew.jtt.desktop.statistics.configuration.tree.StatisticsExclusions
 import uk.dangrew.jtt.desktop.statistics.configuration.tree.StatisticsRootItem;
 import uk.dangrew.jtt.desktop.statistics.configuration.tree.StatisticsStyleItem;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
 
 /**
  * The {@link ConfigurationTree} provides a {@link TreeView} for {@link ConfigurationItem}s.
@@ -334,7 +335,7 @@ public class ConfigurationTree extends TreeView< ConfigurationItem > {
          return;
       }
       
-      PlatformImpl.runAndWait( () -> getSelectionModel().select( treeItem ) );
+       JavaFxThreading.runAndWait( () -> getSelectionModel().select( treeItem ) );
    }//End Method
    
    TreeItem< ConfigurationItem > root(){

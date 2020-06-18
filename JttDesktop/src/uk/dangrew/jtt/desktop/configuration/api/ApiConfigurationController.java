@@ -14,8 +14,8 @@ import uk.dangrew.jtt.connection.api.connections.ConnectionManager;
 import uk.dangrew.jtt.connection.api.connections.ConnectionState;
 import uk.dangrew.jtt.connection.api.connections.SystemWideConnectionManager;
 import uk.dangrew.jtt.connection.api.sources.JenkinsConnection;
-import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
+import uk.dangrew.kode.event.structure.Event;
 
 /**
  * The {@link ApiConfigurationController} is responsible for controlling all elements associated with

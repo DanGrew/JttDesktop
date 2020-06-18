@@ -51,7 +51,8 @@ import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallConfig
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.BuildWallJobPolicy;
 import uk.dangrew.jtt.desktop.buildwall.panel.type.JobPanelDescriptionProviders;
 import uk.dangrew.jtt.model.storage.database.TestJenkinsDatabaseImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.utility.io.IoCommon;
 
 /**
  * {@link BuildWallConfigurationPersistence} test.
@@ -144,7 +145,7 @@ public class BuildWallConfigurationPersistenceTest {
    }//End Method
    
    @Test public void readShouldInvokeHandles(){
-      String input = TestCommon.readFileIntoString( getClass(), "sample-config.json" );
+      String input = new IoCommon().readFileIntoString( getClass(), "sample-config.json" );
       JSONObject object = new JSONObject( input );
       
       systemUnderTest.readHandles().parse( object );

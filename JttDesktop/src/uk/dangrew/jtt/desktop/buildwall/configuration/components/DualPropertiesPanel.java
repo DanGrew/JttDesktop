@@ -14,12 +14,12 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfiguration;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.javafx.spinner.DoublePropertySpinner;
+import uk.dangrew.kode.javafx.spinner.DoublePropertySpinner;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * The {@link DualPropertiesPanel} provides a {@link GridPane} for configuring the dual
- * wall properties of a {@link uk.dangrew.jtt.buildwall.dual.DualBuildWallDisplayImpl}.
+ * wall properties of a {@link uk.dangrew.jtt.desktop.buildwall.dual.DualBuildWallDisplayImpl}.
  */
 public class DualPropertiesPanel extends GridPane {
    
@@ -47,7 +47,7 @@ public class DualPropertiesPanel extends GridPane {
    /**
     * Constructs a new {@link DualPropertiesPanel}.
     * @param configuration the {@link DualWallConfiguration} associated, to configure.
-    * @param styling the {@link BuildWallConfigurationStyle} to apply.
+    * @param styling the {@link JavaFxStyle} to apply.
     * @param defaults the {@link ConfigurationPanelDefaults}.
     */
    DualPropertiesPanel( DualWallConfiguration configuration, JavaFxStyle styling, ConfigurationPanelDefaults defaults ) {
@@ -56,7 +56,7 @@ public class DualPropertiesPanel extends GridPane {
       positionLabel = styling.createBoldLabel( "Divider Position" );
       add( positionLabel, 0, 0 );
       
-      positionSpinner = new DoublePropertySpinner();  
+      positionSpinner = new DoublePropertySpinner();
       styling.configureDoubleSpinner( 
                positionSpinner, 
                configuration.dividerPositionProperty(), 
@@ -99,7 +99,7 @@ public class DualPropertiesPanel extends GridPane {
    
    /**
     * Method to update the {@link RadioButton}s for the {@link Orientation}.
-    * @param value the {@link Orientation} set in the {@link DualConfiguration}.
+    * @param value the {@link Orientation} set in the {@link DualWallConfiguration}.
     */
    private void updateOrientationButton( Orientation value ){
       horizontalButton.setSelected( Orientation.HORIZONTAL.equals( value )  );
@@ -107,8 +107,8 @@ public class DualPropertiesPanel extends GridPane {
    }//End Method
    
    /**
-    * Method to determine whether the given {@link DualConfiguration} is associated.
-    * @param configuration the {@link DualConfiguration} in question.
+    * Method to determine whether the given {@link DualWallConfiguration} is associated.
+    * @param configuration the {@link DualWallConfiguration} in question.
     * @return true if associated.
     */
    public boolean hasConfiguration( DualWallConfiguration configuration ) {

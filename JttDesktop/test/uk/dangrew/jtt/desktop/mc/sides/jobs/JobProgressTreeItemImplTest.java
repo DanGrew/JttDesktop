@@ -18,7 +18,7 @@ import org.junit.Test;
 import uk.dangrew.jtt.desktop.styling.SystemStyling;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link JobProgressTreeItemImpl} test.

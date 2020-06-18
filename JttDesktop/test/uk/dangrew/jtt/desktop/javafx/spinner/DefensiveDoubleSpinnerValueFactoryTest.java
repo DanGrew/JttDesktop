@@ -14,6 +14,8 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
+import uk.dangrew.kode.javafx.spinner.DefensiveDoubleSpinnerValueFactory;
+import uk.dangrew.kode.javafx.spinner.DefensiveDoubleStringConverter;
 
 /**
  * {@link DefensiveDoubleSpinnerValueFactory} test.

@@ -8,25 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.effects.flasher.configuration;
 
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,17 +18,31 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser.ExtensionFilter;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.ConfigurationPanelDefaults;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyleTest;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherImplTest;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherProperties;
 import uk.dangrew.jtt.desktop.buildwall.effects.flasher.ImageFlasherPropertiesImpl;
-import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.desktop.graphics.DecoupledPlatformImpl;
 import uk.dangrew.jtt.desktop.graphics.PlatformDecouplerImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.friendly.controlsfx.FriendlyFileChooser;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+import uk.dangrew.kode.javafx.style.JavaFxStyleTest;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.io.File;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link ImageFlasherConfigurationPanel} test.
@@ -59,7 +54,7 @@ public class ImageFlasherConfigurationPanelTest {
    private final File ALERT_IMAGE_FILE = new File( ImageFlasherImplTest.class.getResource( "alert-image.png" ).getFile() );
    @Spy private JavaFxStyle styling;
    @Spy private ConfigurationPanelDefaults defaults;
-   @Mock private FriendlyFileChooser fileChooser; 
+   @Mock private FriendlyFileChooser fileChooser;
    private ObservableList< ExtensionFilter > extensionFilters;
    private ImageFlasherProperties properties;
    private ImageFlasherConfigurationPanel systemUnderTest;

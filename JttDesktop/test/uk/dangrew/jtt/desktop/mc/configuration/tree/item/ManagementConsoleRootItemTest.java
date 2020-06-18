@@ -26,7 +26,7 @@ import javafx.scene.control.ScrollPane;
 import uk.dangrew.jtt.desktop.configuration.item.SimpleConfigurationTitle;
 import uk.dangrew.jtt.desktop.environment.preferences.PreferenceController;
 import uk.dangrew.jtt.desktop.mc.configuration.components.ManagementConsoleDescriptionPanel;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link ManagementConsoleRootItem} test.

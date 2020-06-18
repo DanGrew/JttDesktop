@@ -8,15 +8,15 @@
  */
 package uk.dangrew.jtt.desktop.core;
 
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.configuration.system.SystemConfiguration;
 import uk.dangrew.jtt.desktop.environment.launch.LaunchOptions;
 import uk.dangrew.jtt.desktop.environment.main.EnvironmentWindow;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.sd.viewer.basic.DigestViewer;
 
 /**
@@ -72,7 +72,7 @@ public class JttUiInitializer implements JttSystemInitialization {
     * {@inheritDoc}
     */
    @Override public void systemReady(){
-      PlatformImpl.runAndWait( () -> window.setContent( 
+       JavaFxThreading.runAndWait( () -> window.setContent(
                new LaunchOptions( window, configuration, database, viewer ) 
       ) );
    }//End Method

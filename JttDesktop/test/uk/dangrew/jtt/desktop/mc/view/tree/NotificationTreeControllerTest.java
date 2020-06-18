@@ -8,23 +8,22 @@
  */
 package uk.dangrew.jtt.desktop.mc.view.tree;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import uk.dangrew.jtt.desktop.mc.model.Notification;
 import uk.dangrew.jtt.desktop.mc.notifiers.jobs.BuildResultStatusNotification;
 import uk.dangrew.jtt.desktop.mc.view.item.NotificationTreeItem;
-import uk.dangrew.jtt.model.event.structure.Event;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
 import uk.dangrew.jtt.model.jobs.JenkinsJobImpl;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.event.structure.Event;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 /**
  * {@link NotificationTreeController} test.

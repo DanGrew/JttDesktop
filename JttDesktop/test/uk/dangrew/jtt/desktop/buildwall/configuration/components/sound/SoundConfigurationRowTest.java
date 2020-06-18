@@ -8,36 +8,30 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.components.sound;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
-
+import javafx.event.ActionEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-
-import javafx.event.ActionEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.BrsChangeListApplier;
 import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.PassPassApplier;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.StringMediaConverter;
-import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMediaPlayer;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.friendly.controlsfx.FriendlyFileChooser;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.io.File;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class SoundConfigurationRowTest {
 

@@ -18,10 +18,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
-import com.sun.javafx.application.PlatformImpl;
+
 
 import javafx.scene.layout.BorderPane;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.launch.TestApplication;
 
 /**
  * {@link ContextMenuWithCancel} test.
@@ -79,9 +80,9 @@ public class ContextMenuWithCancelTest {
       BorderPane pane = new BorderPane();
       TestApplication.launch( () -> pane );
 
-      PlatformImpl.runAndWait( () -> systemUnderTest.show( pane, 0, 0 ) );
+       JavaFxThreading.runAndWait( () -> systemUnderTest.show( pane, 0, 0 ) );
       assertThat( systemUnderTest.isShowing(), is( true ) );
-      PlatformImpl.runAndWait( () -> systemUnderTest.getItems().get( systemUnderTest.getItems().size() - 1 ).fire() );
+       JavaFxThreading.runAndWait( () -> systemUnderTest.getItems().get( systemUnderTest.getItems().size() - 1 ).fire() );
       assertThat( systemUnderTest.isShowing(), is( false ) );
    }//End Method
    

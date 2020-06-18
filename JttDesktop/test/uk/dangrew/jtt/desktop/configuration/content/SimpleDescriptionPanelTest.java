@@ -8,18 +8,15 @@
  */
 package uk.dangrew.jtt.desktop.configuration.content;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
+import uk.dangrew.kode.launch.TestApplication;
 
-import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link SimpleDescriptionPanel} test, built for extending.

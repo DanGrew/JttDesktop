@@ -8,20 +8,20 @@
  */
 package uk.dangrew.jtt.desktop.statistics.configuration.components;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.GridPane;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.model.jobs.JenkinsJob;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
 import uk.dangrew.jtt.model.utility.comparator.Comparators;
 import uk.dangrew.jtt.model.utility.observable.FunctionListChangeListenerImpl;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The {@link StatisticsExclusionsPanel} provides a configuration panel for excluding jobs from the 
@@ -53,7 +53,7 @@ public class StatisticsExclusionsPanel extends GridPane {
     * @param database the {@link JenkinsDatabase}.
     * @param confgiuration the {@link StatisticsConfiguration}.
     */
-   StatisticsExclusionsPanel( JavaFxStyle styling, JenkinsDatabase database, StatisticsConfiguration confgiuration ) {
+   StatisticsExclusionsPanel(JavaFxStyle styling, JenkinsDatabase database, StatisticsConfiguration confgiuration ) {
       this.database = database;
       this.configuration = confgiuration;
       this.boxes = new HashMap<>();

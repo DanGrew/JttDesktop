@@ -8,31 +8,26 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.components.sound;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.Region;
+import junitparams.JUnitParamsRunner;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Region;
-import junitparams.JUnitParamsRunner;
 import uk.dangrew.jtt.connection.api.handling.live.BuildResultStatusChange;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.FailFailApplier;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.FailPassApplier;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.IndividualChangeApplier;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.PassFailApplier;
-import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.PassPassApplier;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
+import uk.dangrew.jtt.desktop.buildwall.configuration.components.sound.applier.*;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.model.jobs.BuildResultStatus;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import uk.dangrew.kode.launch.TestApplication;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 @RunWith( JUnitParamsRunner.class )
 public class SoundConfigurationPanelTest {

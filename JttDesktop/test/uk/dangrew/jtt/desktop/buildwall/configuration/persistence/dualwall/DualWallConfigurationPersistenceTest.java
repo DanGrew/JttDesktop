@@ -28,7 +28,8 @@ import org.mockito.MockitoAnnotations;
 
 import javafx.geometry.Orientation;
 import uk.dangrew.jtt.desktop.buildwall.configuration.properties.DualWallConfigurationImpl;
-import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.kode.TestCommon;
+import uk.dangrew.kode.utility.io.IoCommon;
 
 /**
  * {@link DualWallConfigurationPersistence} test.
@@ -64,7 +65,7 @@ public class DualWallConfigurationPersistenceTest {
    }//End Method
    
    @Test public void readShouldInvokeHandles(){
-      String input = TestCommon.readFileIntoString( getClass(), "sample-config.json" );
+      String input = new IoCommon().readFileIntoString( getClass(), "sample-config.json" );
       JSONObject object = new JSONObject( input );
       
       systemUnderTest.readHandles().parse( object );

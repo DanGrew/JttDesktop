@@ -10,7 +10,7 @@ package uk.dangrew.jtt.desktop.configuration.tree;
 
 import org.junit.Test;
 
-import uk.dangrew.jtt.model.utility.TestCommon;
+import uk.dangrew.kode.TestCommon;
 
 /**
  * {@link ConfigurationTreeItems} test.

@@ -8,8 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.buildwall.configuration.components.sound;
 
-import java.io.File;
-
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,11 +16,13 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.SoundConfiguration;
 import uk.dangrew.jtt.desktop.buildwall.effects.sound.StringMediaConverter;
-import uk.dangrew.jtt.desktop.friendly.controlsfx.FriendlyFileChooser;
 import uk.dangrew.jtt.desktop.friendly.javafx.FriendlyMediaPlayer;
+import uk.dangrew.kode.friendly.controlsfx.FriendlyFileChooser;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
+
+import java.io.File;
 
 /**
  * The {@link SoundConfigurationRow} provides the controls for configuring a sound.
@@ -70,8 +70,8 @@ class SoundConfigurationRow extends GridPane {
     * @param configurationApplier the {@link SoundConfigurationApplier} to call when a sound is selected.
     */
    SoundConfigurationRow( 
-            JavaFxStyle styling, 
-            FriendlyFileChooser fileChooser, 
+            JavaFxStyle styling,
+            FriendlyFileChooser fileChooser,
             StringMediaConverter converter, 
             String labelText, 
             SoundConfigurationApplier configurationApplier 

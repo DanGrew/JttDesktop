@@ -8,22 +8,22 @@
  */
 package uk.dangrew.jtt.desktop.javafx.spinner;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.function.Function;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.SpinnerValueFactory;
-import uk.dangrew.sd.graphics.launch.TestApplication;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.javafx.spinner.PropertySpinner;
+import uk.dangrew.kode.launch.TestApplication;
+
+import java.util.function.Function;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * {@link PropertySpinner} test.
@@ -39,7 +39,7 @@ public class PropertySpinnerTest {
    
    @Before public void initialiseSystemUnderTest(){
       TestApplication.startPlatform();
-      PlatformImpl.runAndWait( () -> {
+      JavaFxThreading.runAndWait( () -> {
          systemUnderTest = new PropertySpinner<>();
          systemUnderTest.setValueFactory( new SpinnerValueFactory.IntegerSpinnerValueFactory( 1, 1000, 1 ) );
       } );
@@ -106,7 +106,7 @@ public class PropertySpinnerTest {
    @Test public void shouldNotAllowRebindingOfProperty() {
       systemUnderTest.bindProperty( property, boxToPropertyFunction, propertyToBoxFunction );
       exception.expect( IllegalStateException.class );
-      exception.expectMessage( PropertySpinner.ILLEGAL_BINDING );
+      exception.expectMessage( "Property already bound." );
       systemUnderTest.bindProperty( property, boxToPropertyFunction, propertyToBoxFunction );
    }//End Method
 

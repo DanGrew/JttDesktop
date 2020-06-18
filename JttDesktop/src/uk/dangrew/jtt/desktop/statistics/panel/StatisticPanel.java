@@ -8,7 +8,6 @@
  */
 package uk.dangrew.jtt.desktop.statistics.panel;
 
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,11 +18,12 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import uk.dangrew.jtt.desktop.buildwall.configuration.style.JavaFxStyle;
 import uk.dangrew.jtt.desktop.javafx.registrations.ChangeListenerRegistrationImpl;
 import uk.dangrew.jtt.desktop.javafx.registrations.RegistrationManager;
 import uk.dangrew.jtt.desktop.statistics.configuration.StatisticsConfiguration;
 import uk.dangrew.jtt.model.storage.database.JenkinsDatabase;
+import uk.dangrew.kode.javafx.platform.JavaFxThreading;
+import uk.dangrew.kode.javafx.style.JavaFxStyle;
 
 /**
  * The {@link StatisticPanel} provides a {@link StatisticView} for a general value with
@@ -147,7 +147,7 @@ public class StatisticPanel extends BorderPane implements StatisticView {
     * {@inheritDoc}
     */
    @Override public void setStatisticValue( String value ) {
-      PlatformImpl.runAndWait( () -> statValue.setText( value ) );
+      JavaFxThreading.runAndWait( () -> statValue.setText( value ) );
    }//End Method
    
    /**
