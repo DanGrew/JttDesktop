@@ -1,6 +1,11 @@
 env.VERSION_NUMBER = "1.7.${BUILD_NUMBER}"
 
 node {
+  jdk = tool name: 'jdk 11'
+  env.JAVA_HOME = "${jdk}"
+
+  echo "jdk installation path is: ${jdk}"
+
     stage 'Checkout'
         git url: 'https://github.com/DanGrew/JttDesktop.git'
 
